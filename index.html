@@ -19,14 +19,23 @@
             padding: 0;
             margin: 0;
             padding-bottom: 100px;
-            overflow-x: hidden;
+            overflow: hidden;
             color: #FFFFFF;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
         }
 
         .container {
             max-width: 480px;
             margin: 0 auto;
             padding: 16px 20px 100px;
+            height: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
         }
 
         /* Page system */
@@ -259,7 +268,6 @@
             transform: translateX(4px);
         }
 
-        /* Game card gradients */
         .game-card.brawl {
             background: linear-gradient(135deg, rgba(255, 193, 7, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
             border-color: rgba(255, 193, 7, 0.1);
@@ -278,21 +286,18 @@
         }
         .game-card.telegram .game-tag { background: rgba(91, 140, 255, 0.15); color: #7DD8FF; }
 
-        /* Profile Page */
-        .profile-card {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 28px;
-            padding: 32px 24px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        /* Profile Page - NO CONTAINER, NO BORDERS */
+        .profile-page {
+            padding: 0;
+            background: transparent;
         }
 
         .profile-header {
             display: flex;
             align-items: center;
             gap: 16px;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
+            padding-top: 8px;
         }
 
         .profile-avatar {
@@ -331,7 +336,6 @@
             border-radius: 20px;
             padding: 20px;
             margin-bottom: 16px;
-            border: 1px solid rgba(91, 140, 255, 0.08);
         }
 
         .profile-balance .label {
@@ -371,7 +375,7 @@
             cursor: pointer;
             transition: all 0.2s;
             box-shadow: 0 4px 20px rgba(91, 140, 255, 0.2);
-            margin-bottom: 24px;
+            margin-bottom: 28px;
         }
 
         .profile-button:active {
@@ -379,7 +383,7 @@
         }
 
         .profile-section {
-            margin-top: 20px;
+            margin-top: 24px;
         }
 
         .profile-section .section-label {
@@ -396,7 +400,6 @@
             border-radius: 16px;
             padding: 32px 20px;
             text-align: center;
-            border: 1px dashed rgba(255, 255, 255, 0.05);
         }
 
         .profile-empty .empty-icon {
@@ -409,6 +412,12 @@
             color: rgba(255, 255, 255, 0.2);
             font-size: 0.85rem;
             font-weight: 400;
+        }
+
+        /* Info Page */
+        .info-page {
+            padding: 0;
+            background: transparent;
         }
 
         /* Navigation Island */
@@ -514,8 +523,18 @@
             animation: fadeUp 0.6s ease 0.05s both;
         }
 
-        .profile-card {
-            animation: fadeUp 0.4s ease;
+        /* Scrollbar */
+        .container::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .container::-webkit-scrollbar-thumb {
+            background: rgba(91, 140, 255, 0.3);
+            border-radius: 10px;
         }
     </style>
 </head>
@@ -523,7 +542,6 @@
     <div class="container">
         <!-- PAGE: HOME -->
         <div id="pageHome" class="page active">
-            <!-- Welcome Card -->
             <div class="welcome-card">
                 <span class="abstract">💎</span>
                 <span class="abstract">🎮</span>
@@ -541,7 +559,6 @@
                 <button class="buy-button">🔥 Купить сейчас</button>
             </div>
 
-            <!-- Games -->
             <div class="section-title"><span class="emoji">🎮</span> Игры</div>
             <div class="game-scroll">
                 <div class="game-card brawl" data-game="brawl">
@@ -589,67 +606,62 @@
         </div>
 
         <!-- PAGE: PROFILE -->
-        <div id="pageProfile" class="page">
-            <div class="profile-card">
-                <div class="profile-header">
-                    <div class="profile-avatar">👤</div>
-                    <div class="profile-info">
-                        <div class="name">Vintyx</div>
-                        <div class="username">@vintyx_shop</div>
-                    </div>
+        <div id="pageProfile" class="page profile-page">
+            <div class="profile-header">
+                <div class="profile-avatar">👤</div>
+                <div class="profile-info">
+                    <div class="name">Vintyx</div>
+                    <div class="username">@vintyx_shop</div>
                 </div>
+            </div>
 
-                <div class="profile-balance">
-                    <div class="label">💰 Баланс</div>
-                    <div>
-                        <span class="amount">1,250</span>
-                        <span class="currency">₽</span>
-                    </div>
+            <div class="profile-balance">
+                <div class="label">💰 Баланс</div>
+                <div>
+                    <span class="amount">1,250</span>
+                    <span class="currency">₽</span>
                 </div>
+            </div>
 
-                <button class="profile-button" onclick="alert('Пополнение баланса скоро будет доступно')">
-                    ➕ Пополнить баланс
-                </button>
+            <button class="profile-button" onclick="if(tg)tg.showAlert('💳 Пополнение баланса скоро будет доступно')">
+                ➕ Пополнить баланс
+            </button>
 
-                <div class="profile-section">
-                    <div class="section-label">📦 История заказов</div>
-                    <div class="profile-empty">
-                        <div class="empty-icon">📭</div>
-                        <div class="empty-text">У вас пока нет заказов</div>
-                    </div>
+            <div class="profile-section">
+                <div class="section-label">📦 История заказов</div>
+                <div class="profile-empty">
+                    <div class="empty-icon">📭</div>
+                    <div class="empty-text">У вас пока нет заказов</div>
                 </div>
+            </div>
 
-                <div class="profile-section">
-                    <div class="section-label">💳 Транзакции</div>
-                    <div class="profile-empty">
-                        <div class="empty-icon">📊</div>
-                        <div class="empty-text">История транзакций пуста</div>
-                    </div>
+            <div class="profile-section">
+                <div class="section-label">💳 Транзакции</div>
+                <div class="profile-empty">
+                    <div class="empty-icon">📊</div>
+                    <div class="empty-text">История транзакций пуста</div>
                 </div>
             </div>
         </div>
 
         <!-- PAGE: INFO -->
-        <div id="pageInfo" class="page">
-            <div class="profile-card">
-                <div style="text-align: center; padding: 20px 0;">
-                    <div style="font-size: 3rem; margin-bottom: 12px;">ℹ️</div>
-                    <div style="font-size: 1.5rem; font-weight: 700; margin-bottom: 4px;">Vintyx Store</div>
-                    <div style="color: rgba(255,255,255,0.3); font-size: 0.85rem;">v1.0.0</div>
-                    <div style="margin-top: 16px; color: rgba(255,255,255,0.4); font-size: 0.9rem; line-height: 1.6;">
-                        Премиальный игровой магазин<br>
-                        Быстро. Безопасно. Надёжно.
-                    </div>
-                    <div style="margin-top: 20px; padding: 16px; background: rgba(91,140,255,0.05); border-radius: 16px; border: 1px solid rgba(91,140,255,0.08);">
-                        <div style="color: rgba(255,255,255,0.3); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px;">Разработано с ❤️</div>
-                        <div style="color: rgba(255,255,255,0.2); font-size: 0.8rem; margin-top: 4px;">Vintyx Team</div>
-                    </div>
+        <div id="pageInfo" class="page info-page">
+            <div style="text-align: center; padding: 20px 0;">
+                <div style="font-size: 3rem; margin-bottom: 12px;">ℹ️</div>
+                <div style="font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; color: #FFFFFF;">Vintyx Store</div>
+                <div style="color: rgba(255,255,255,0.3); font-size: 0.85rem;">v1.0.0</div>
+                <div style="margin-top: 16px; color: rgba(255,255,255,0.4); font-size: 0.9rem; line-height: 1.6;">
+                    Премиальный игровой магазин<br>
+                    Быстро. Безопасно. Надёжно.
+                </div>
+                <div style="margin-top: 20px; padding: 16px; background: rgba(91,140,255,0.05); border-radius: 16px;">
+                    <div style="color: rgba(255,255,255,0.3); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px;">Разработано с ❤️</div>
+                    <div style="color: rgba(255,255,255,0.2); font-size: 0.8rem; margin-top: 4px;">Vintyx Team</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Navigation Island -->
     <nav class="bottom-nav">
         <button class="nav-item" data-page="profile" onclick="navigateTo('profile')">
             <span class="nav-icon">👤</span>
@@ -674,7 +686,6 @@
             tg.setHeaderColor('#0A0A0F');
         }
 
-        // Navigation System
         const pages = {
             home: document.getElementById('pageHome'),
             profile: document.getElementById('pageProfile'),
@@ -684,22 +695,18 @@
         const navItems = document.querySelectorAll('.nav-item');
 
         function navigateTo(pageName) {
-            // Hide all pages
             Object.keys(pages).forEach(key => {
                 pages[key].classList.remove('active');
             });
             
-            // Show target page
             if (pages[pageName]) {
                 pages[pageName].classList.add('active');
             }
 
-            // Update nav
             navItems.forEach(item => {
                 item.classList.remove('active');
                 if (item.dataset.page === pageName) {
                     item.classList.add('active');
-                    // Trigger animation
                     const icon = item.querySelector('.nav-icon');
                     icon.style.animation = 'none';
                     icon.offsetHeight;
@@ -707,11 +714,12 @@
                 }
             });
 
-            // Update URL hash
             if (pageName === 'home') {
                 window.location.hash = '';
+                if (tg) tg.BackButton.hide();
             } else {
                 window.location.hash = pageName;
+                if (tg) tg.BackButton.show();
             }
 
             if (tg && tg.HapticFeedback) {
@@ -719,7 +727,6 @@
             }
         }
 
-        // Hash-based routing
         function handleHash() {
             const hash = window.location.hash.replace('#', '');
             if (hash && pages[hash]) {
@@ -731,7 +738,6 @@
 
         window.addEventListener('hashchange', handleHash);
 
-        // Game cards
         document.querySelectorAll('.game-card').forEach(card => {
             card.addEventListener('click', function() {
                 const name = this.querySelector('.game-name')?.textContent || 'Игра';
@@ -744,7 +750,6 @@
             });
         });
 
-        // Buy button
         document.querySelector('.buy-button').addEventListener('click', function() {
             if (tg && tg.HapticFeedback) {
                 tg.HapticFeedback.impactOccurred('heavy');
@@ -754,12 +759,6 @@
             }
         });
 
-        // Profile button (avatar)
-        document.querySelector('.avatar-circle').addEventListener('click', function() {
-            navigateTo('profile');
-        });
-
-        // Handle back button in Telegram
         if (tg) {
             tg.BackButton.onClick(() => {
                 const currentHash = window.location.hash.replace('#', '');
@@ -767,30 +766,9 @@
                     navigateTo('home');
                 }
             });
-
-            // Show back button when not on home
-            setInterval(() => {
-                const hash = window.location.hash.replace('#', '');
-                if (hash && hash !== 'home' && hash !== '') {
-                    tg.BackButton.show();
-                } else {
-                    tg.BackButton.hide();
-                }
-            }, 100);
         }
 
-        // Initial route
         handleHash();
-
-        // Profile button handlers
-        document.querySelector('.profile-button')?.addEventListener('click', function() {
-            if (tg && tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('medium');
-            }
-            if (tg) {
-                tg.showAlert('💳 Пополнение баланса скоро будет доступно');
-            }
-        });
     </script>
 </body>
 </html>
