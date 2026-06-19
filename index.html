@@ -13,7 +13,7 @@
         }
 
         body {
-            background: #F4F5FF;
+            background: #0A0A0F;
             font-family: -apple-system, 'Segoe UI', 'Roboto', system-ui, sans-serif;
             min-height: 100vh;
             padding: 0;
@@ -30,11 +30,474 @@
 
         /* Welcome Card */
         .welcome-card {
-            background: linear-gradient(135deg, #6675FF 0%, #8ED8FF 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #2D1B69 100%);
             border-radius: 28px;
             padding: 24px 24px 28px;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 12px 40px rgba(91, 140, 255, 0.15);
+            margin-bottom: 28px;
+            border: 1px solid rgba(91, 140, 255, 0.1);
+        }
+
+        .welcome-card::before {
+            content: '';
+            position: absolute;
+            top: -40%;
+            right: -20%;
+            width: 60%;
+            height: 80%;
+            background: rgba(91, 140, 255, 0.05);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .welcome-card .abstract {
+            position: absolute;
+            font-size: 3rem;
+            opacity: 0.08;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .welcome-card .abstract:nth-child(1) { top: 5%; right: 10%; font-size: 4.5rem; transform: rotate(20deg); }
+        .welcome-card .abstract:nth-child(2) { bottom: 10%; left: 0%; font-size: 3.5rem; transform: rotate(-15deg); }
+        .welcome-card .abstract:nth-child(3) { top: 40%; right: 0%; font-size: 2.8rem; }
+
+        .welcome-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 18px;
+        }
+
+        .welcome-text {
+            color: white;
+            flex: 1;
+        }
+
+        .welcome-text .greeting {
+            font-size: 0.85rem;
+            opacity: 0.6;
+            font-weight: 400;
+            margin-bottom: 2px;
+        }
+
+        .welcome-text h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #7DD8FF 0%, #6675FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .welcome-text .sub {
+            font-size: 0.9rem;
+            opacity: 0.5;
+            font-weight: 400;
+            margin-top: 4px;
+        }
+
+        .avatar-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(91, 140, 255, 0.15);
+            border: 2px solid rgba(91, 140, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            flex-shrink: 0;
+            margin-left: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .avatar-circle:active {
+            transform: scale(0.92);
+        }
+
+        .buy-button {
+            background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 700;
+            width: 100%;
+            margin-top: 14px;
+            position: relative;
+            z-index: 1;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 20px rgba(91, 140, 255, 0.2);
+            letter-spacing: 0.3px;
+        }
+
+        .buy-button:active {
+            transform: scale(0.97);
+        }
+
+        /* Section Title */
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 14px;
+            letter-spacing: -0.2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title .emoji {
+            font-size: 1.2rem;
+        }
+
+        /* Game Cards */
+        .game-scroll {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .game-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 24px;
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+        }
+
+        .game-card:active {
+            transform: scale(0.98);
+        }
+
+        .game-card .game-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .game-card .game-icon {
+            font-size: 2.2rem;
+            width: 48px;
+            text-align: center;
+        }
+
+        .game-card .game-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-card .game-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+
+        .game-card .game-tags {
+            display: flex;
+            gap: 6px;
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+
+        .game-card .game-tag {
+            font-size: 0.65rem;
+            padding: 2px 10px;
+            border-radius: 12px;
+            background: rgba(91, 140, 255, 0.1);
+            color: #7DD8FF;
+            font-weight: 600;
+        }
+
+        .game-card .game-arrow {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.2);
+            transition: all 0.2s;
+        }
+
+        .game-card:hover .game-arrow {
+            color: #7DD8FF;
+            transform: translateX(4px);
+        }
+
+        /* Game card gradients */
+        .game-card.brawl {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border-color: rgba(255, 193, 7, 0.1);
+        }
+        .game-card.brawl .game-tag { background: rgba(255, 193, 7, 0.15); color: #FFD54F; }
+
+        .game-card.clash {
+            background: linear-gradient(135deg, rgba(33, 150, 243, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border-color: rgba(33, 150, 243, 0.1);
+        }
+        .game-card.clash .game-tag { background: rgba(33, 150, 243, 0.15); color: #64B5F6; }
+
+        .game-card.telegram {
+            background: linear-gradient(135deg, rgba(91, 140, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border-color: rgba(91, 140, 255, 0.1);
+        }
+        .game-card.telegram .game-tag { background: rgba(91, 140, 255, 0.15); color: #7DD8FF; }
+
+        /* Navigation Island */
+        .bottom-nav {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(20, 20, 35, 0.85);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-radius: 32px;
+            padding: 8px 16px;
+            display: flex;
+            gap: 6px;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 1000;
+            max-width: 360px;
+            width: calc(100% - 40px);
+            justify-content: space-around;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: none;
+            background: transparent;
+            font-family: inherit;
+            gap: 0px;
+            min-width: 48px;
+            position: relative;
+        }
+
+        .nav-item .nav-icon {
+            font-size: 1.3rem;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            opacity: 0.3;
+            line-height: 1;
+            padding: 4px;
+        }
+
+        .nav-item .nav-label {
+            font-size: 0.5rem;
+            font-weight: 500;
+            color: #FFFFFF;
+            opacity: 0.3;
+            transition: all 0.3s;
+            margin-top: 1px;
+        }
+
+        .nav-item.active .nav-icon {
+            background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 6px 12px;
+            opacity: 1;
+            box-shadow: 0 4px 16px rgba(91, 140, 255, 0.3);
+        }
+
+        .nav-item.active .nav-label {
+            opacity: 0.7;
+        }
+
+        .nav-item:active {
+            transform: scale(0.92);
+        }
+
+        /* Animations */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .welcome-card {
+            animation: fadeUp 0.6s ease;
+        }
+
+        .game-scroll {
+            animation: fadeUp 0.6s ease 0.1s both;
+        }
+
+        .section-title {
+            animation: fadeUp 0.6s ease 0.05s both;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Welcome Card -->
+        <div class="welcome-card">
+            <span class="abstract">💎</span>
+            <span class="abstract">🎮</span>
+            <span class="abstract">⭐</span>
+            
+            <div class="welcome-header">
+                <div class="welcome-text">
+                    <div class="greeting">👋 Привет,</div>
+                    <h1>Vintyx</h1>
+                    <div class="sub">Игровой донат <br>быстро и безопасно</div>
+                </div>
+                <div class="avatar-circle">👤</div>
+            </div>
+
+            <button class="buy-button">🔥 Купить сейчас</button>
+        </div>
+
+        <!-- Games -->
+        <div class="section-title"><span class="emoji">🎮</span> Игры</div>
+        <div class="game-scroll">
+            <div class="game-card brawl" data-game="brawl">
+                <div class="game-left">
+                    <span class="game-icon">💎</span>
+                    <div class="game-info">
+                        <div class="game-name">Brawl Stars</div>
+                        <div class="game-tags">
+                            <span class="game-tag">Кристаллы</span>
+                            <span class="game-tag">Пропуска</span>
+                        </div>
+                    </div>
+                </div>
+                <span class="game-arrow">→</span>
+            </div>
+
+            <div class="game-card clash" data-game="clash">
+                <div class="game-left">
+                    <span class="game-icon">👑</span>
+                    <div class="game-info">
+                        <div class="game-name">Clash Royale</div>
+                        <div class="game-tags">
+                            <span class="game-tag">Кристаллы</span>
+                            <span class="game-tag">Пропуска</span>
+                        </div>
+                    </div>
+                </div>
+                <span class="game-arrow">→</span>
+            </div>
+
+            <div class="game-card telegram" data-game="telegram">
+                <div class="game-left">
+                    <span class="game-icon">✈️</span>
+                    <div class="game-info">
+                        <div class="game-name">Telegram</div>
+                        <div class="game-tags">
+                            <span class="game-tag">звезды</span>
+                            <span class="game-tag">премиум</span>
+                        </div>
+                    </div>
+                </div>
+                <span class="game-arrow">→</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Island -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" data-page="home">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">Главная</span>
+        </button>
+        <button class="nav-item" data-page="profile">
+            <span class="nav-icon">👤</span>
+            <span class="nav-label">Профиль</span>
+        </button>
+        <button class="nav-item" data-page="info">
+            <span class="nav-icon">ℹ️</span>
+            <span class="nav-label">Инфо</span>
+        </button>
+    </nav>
+
+    <script>
+        const tg = window.Telegram?.WebApp;
+        if (tg) {
+            tg.ready();
+            tg.expand();
+        }
+
+        // Navigation
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                navItems.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+
+                if (tg && tg.HapticFeedback) {
+                    tg.HapticFeedback.impactOccurred('light');
+                }
+
+                const page = this.dataset.page;
+                if (page === 'profile') {
+                    if (tg) tg.showAlert('👤 Профиль Vintyx\nСкоро здесь будет ваша статистика');
+                } else if (page === 'info') {
+                    if (tg) tg.showAlert('ℹ️ Vintyx Store v1.0\nПремиальный игровой магазин');
+                }
+            });
+        });
+
+        // Game cards
+        document.querySelectorAll('.game-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const name = this.querySelector('.game-name')?.textContent || 'Игра';
+                if (tg && tg.HapticFeedback) {
+                    tg.HapticFeedback.impactOccurred('medium');
+                }
+                if (tg) {
+                    tg.showAlert(`🎮 ${name}\nВыберите категорию товара`);
+                }
+            });
+        });
+
+        // Buy button
+        document.querySelector('.buy-button').addEventListener('click', function() {
+            if (tg && tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('heavy');
+            }
+            if (tg) {
+                tg.showAlert('🚀 Перейти к оформлению?');
+            }
+        });
+
+        // Avatar
+        document.querySelector('.avatar-circle').addEventListener('click', function() {
+            if (tg && tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
+            if (tg) {
+                tg.showAlert('👤 Ваш профиль Vintyx');
+            }
+        });
+    </script>
+</body>
+</html>            overflow: hidden;
             box-shadow: 0 12px 40px rgba(102, 117, 255, 0.25);
             margin-bottom: 24px;
         }
