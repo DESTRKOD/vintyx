@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Vintyx Shop</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Segoe UI', 'Roboto', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 20px;
+            overflow: hidden;
+        }
+        .container {
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            position: relative;
+        }
+        .animated-text {
+            display: inline-block;
+            font-size: clamp(2rem, 8vw, 3.5rem);
+            font-weight: 700;
+            color: #000000;
+            line-height: 1.4;
+            letter-spacing: -0.02em;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .animated-text.exit {
+            transform: scale(3) translateY(-20px);
+            opacity: 0;
+            pointer-events: none;
+        }
+        .line {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+        .char {
+            display: inline-block;
+            opacity: 0;
+            animation: typeAndVibrate 0.15s ease-out forwards;
+            transform-origin: center;
+        }
+        @keyframes typeAndVibrate {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) translateX(0px) rotate(-2deg);
+            }
+            30% {
+                opacity: 1;
+                transform: scale(1.1) translateX(-4px) rotate(1deg);
+            }
+            60% {
+                opacity: 1;
+                transform: scale(0.95) translateX(4px) rotate(-1deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateX(0px) rotate(0deg);
+            }
+        }
+        .menu {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            z-index: 1;
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            width: 100%;
+            padding: 40px 20px;
+        }
+        .menu.show {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+        .menu-text {
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            font-weight: 600;
+            color: #000000;
+            background: #f5f5f5;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        }
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #1c1c1e;
+            }
+            .animated-text {
+                color: #ffffff;
+            }
+            .menu-text {
+                color: #ffffff;
+                background: #2c2c2e;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            }
+        }
+        body[data-theme="dark"] {
+            background-color: #1c1c1e;
+        }
+        body[data-theme="dark"] .animated-text {
+            color: #ffffff;
+        }
+        body[data-theme="dark"] .menu-text {
+            color: #ffffff;
+            background: #2c2c2e;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="textContainer" class="animated-text"></div>
+        <div id="menu" class="menu">
+            <div class="menu-text">Тут будет магазин</div>
+        </div>
+    </div>
+    <script>
+        const tg = window.Telegram?.WebApp;
+        if (tg) {
+            tg.ready();
+            tg.expand();
+            tg.onEvent('themeChanged', () => {
+                const isDark = tg.colorScheme === 'dark';
+                document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
+            });
+            if (tg.colorScheme) {
+                document.body.setAttribute('data-theme', tg.colorScheme);
+            }
+        }
+
+        const lines = ['Добро пожаловать', 'в Vintyx Shop'];
+        const container = document.getElementById('textContainer');
+        container.innerHTML = '';
+
+        let globalIndex = 0;
+
+        lines.forEach((lineText, lineIndex) => {
+            const lineDiv = document.createElement('div');
+            lineDiv.classList.add('line');
+            
+            const chars = lineText.split('');
+            chars.forEach((char) => {
+                const span = document.createElement('span');
+                span.classList.add('char');
+                span.textContent = char === ' ' ? '\u00A0' : char;
+                const delay = globalIndex * 80;
+                const variation = Math.random() * 20;
+                span.style.animationDelay = `${delay + variation}ms`;
+                const duration = 0.15 + Math.random() * 0.1;
+                span.style.animationDuration = `${duration}s`;
+                lineDiv.appendChild(span);
+                globalIndex++;
+            });
+
+            container.appendChild(lineDiv);
+        });
+
+        if (tg && tg.HapticFeedback) {
+            tg.HapticFeedback.impactOccurred('light');
+            setTimeout(() => {
+                tg.HapticFeedback.impactOccurred('medium');
+            }, 500);
+        }
+
+        const totalDuration = globalIndex * 80 + 500;
+        setTimeout(() => {
+            container.classList.add('exit');
+            setTimeout(() => {
+                document.getElementById('menu').classList.add('show');
+                if (tg && tg.HapticFeedback) {
+                    tg.HapticFeedback.impactOccurred('heavy');
+                }
+            }, 800);
+        }, totalDuration + 500);
+    </script>
+</body>
+</html>
