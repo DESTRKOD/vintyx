@@ -20,12 +20,34 @@
             margin: 0;
             padding-bottom: 100px;
             overflow-x: hidden;
+            color: #FFFFFF;
         }
 
         .container {
             max-width: 480px;
             margin: 0 auto;
             padding: 16px 20px 100px;
+        }
+
+        /* Page system */
+        .page {
+            display: none;
+            animation: fadeUp 0.4s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Welcome Card */
@@ -256,6 +278,139 @@
         }
         .game-card.telegram .game-tag { background: rgba(91, 140, 255, 0.15); color: #7DD8FF; }
 
+        /* Profile Page */
+        .profile-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 28px;
+            padding: 32px 24px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .profile-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            flex-shrink: 0;
+            box-shadow: 0 4px 16px rgba(91, 140, 255, 0.3);
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-info .name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 2px;
+        }
+
+        .profile-info .username {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.4);
+            font-weight: 400;
+        }
+
+        .profile-balance {
+            background: rgba(91, 140, 255, 0.05);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(91, 140, 255, 0.08);
+        }
+
+        .profile-balance .label {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .profile-balance .amount {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #7DD8FF 0%, #6675FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .profile-balance .currency {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 400;
+            margin-left: 4px;
+        }
+
+        .profile-button {
+            background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 20px rgba(91, 140, 255, 0.2);
+            margin-bottom: 24px;
+        }
+
+        .profile-button:active {
+            transform: scale(0.97);
+        }
+
+        .profile-section {
+            margin-top: 20px;
+        }
+
+        .profile-section .section-label {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .profile-empty {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 16px;
+            padding: 32px 20px;
+            text-align: center;
+            border: 1px dashed rgba(255, 255, 255, 0.05);
+        }
+
+        .profile-empty .empty-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+            opacity: 0.3;
+        }
+
+        .profile-empty .empty-text {
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 0.85rem;
+            font-weight: 400;
+        }
+
         /* Navigation Island */
         .bottom-nav {
             position: fixed;
@@ -318,6 +473,13 @@
             padding: 6px 12px;
             opacity: 1;
             box-shadow: 0 4px 16px rgba(91, 140, 255, 0.3);
+            animation: navPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes navPop {
+            0% { transform: scale(0.8); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
         }
 
         .nav-item.active .nav-label {
@@ -325,7 +487,7 @@
         }
 
         .nav-item:active {
-            transform: scale(0.92);
+            transform: scale(0.88);
         }
 
         /* Animations */
@@ -351,86 +513,153 @@
         .section-title {
             animation: fadeUp 0.6s ease 0.05s both;
         }
+
+        .profile-card {
+            animation: fadeUp 0.4s ease;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Welcome Card -->
-        <div class="welcome-card">
-            <span class="abstract">💎</span>
-            <span class="abstract">🎮</span>
-            <span class="abstract">⭐</span>
-            
-            <div class="welcome-header">
-                <div class="welcome-text">
-                    <div class="greeting">👋 Привет,</div>
-                    <h1>Vintyx</h1>
-                    <div class="sub">Игровой донат <br>быстро и безопасно</div>
+        <!-- PAGE: HOME -->
+        <div id="pageHome" class="page active">
+            <!-- Welcome Card -->
+            <div class="welcome-card">
+                <span class="abstract">💎</span>
+                <span class="abstract">🎮</span>
+                <span class="abstract">⭐</span>
+                
+                <div class="welcome-header">
+                    <div class="welcome-text">
+                        <div class="greeting">👋 Привет,</div>
+                        <h1>Vintyx</h1>
+                        <div class="sub">Игровой донат <br>быстро и безопасно</div>
+                    </div>
+                    <div class="avatar-circle" onclick="navigateTo('profile')">👤</div>
                 </div>
-                <div class="avatar-circle">👤</div>
+
+                <button class="buy-button">🔥 Купить сейчас</button>
             </div>
 
-            <button class="buy-button">🔥 Купить сейчас</button>
+            <!-- Games -->
+            <div class="section-title"><span class="emoji">🎮</span> Игры</div>
+            <div class="game-scroll">
+                <div class="game-card brawl" data-game="brawl">
+                    <div class="game-left">
+                        <span class="game-icon">💎</span>
+                        <div class="game-info">
+                            <div class="game-name">Brawl Stars</div>
+                            <div class="game-tags">
+                                <span class="game-tag">Гемы</span>
+                                <span class="game-tag">Пропуск</span>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="game-arrow">→</span>
+                </div>
+
+                <div class="game-card clash" data-game="clash">
+                    <div class="game-left">
+                        <span class="game-icon">👑</span>
+                        <div class="game-info">
+                            <div class="game-name">Clash Royale</div>
+                            <div class="game-tags">
+                                <span class="game-tag">Кристаллы</span>
+                                <span class="game-tag">Pass</span>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="game-arrow">→</span>
+                </div>
+
+                <div class="game-card telegram" data-game="telegram">
+                    <div class="game-left">
+                        <span class="game-icon">✈️</span>
+                        <div class="game-info">
+                            <div class="game-name">Telegram</div>
+                            <div class="game-tags">
+                                <span class="game-tag">Stars</span>
+                                <span class="game-tag">Premium</span>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="game-arrow">→</span>
+                </div>
+            </div>
         </div>
 
-        <!-- Games -->
-        <div class="section-title"><span class="emoji">🎮</span> Игры</div>
-        <div class="game-scroll">
-            <div class="game-card brawl" data-game="brawl">
-                <div class="game-left">
-                    <span class="game-icon">💎</span>
-                    <div class="game-info">
-                        <div class="game-name">Brawl Stars</div>
-                        <div class="game-tags">
-                            <span class="game-tag">Гемы</span>
-                            <span class="game-tag">Пропуск</span>
-                        </div>
+        <!-- PAGE: PROFILE -->
+        <div id="pageProfile" class="page">
+            <div class="profile-card">
+                <div class="profile-header">
+                    <div class="profile-avatar">👤</div>
+                    <div class="profile-info">
+                        <div class="name">Vintyx</div>
+                        <div class="username">@vintyx_shop</div>
                     </div>
                 </div>
-                <span class="game-arrow">→</span>
-            </div>
 
-            <div class="game-card clash" data-game="clash">
-                <div class="game-left">
-                    <span class="game-icon">👑</span>
-                    <div class="game-info">
-                        <div class="game-name">Clash Royale</div>
-                        <div class="game-tags">
-                            <span class="game-tag">Кристаллы</span>
-                            <span class="game-tag">Pass</span>
-                        </div>
+                <div class="profile-balance">
+                    <div class="label">💰 Баланс</div>
+                    <div>
+                        <span class="amount">1,250</span>
+                        <span class="currency">₽</span>
                     </div>
                 </div>
-                <span class="game-arrow">→</span>
-            </div>
 
-            <div class="game-card telegram" data-game="telegram">
-                <div class="game-left">
-                    <span class="game-icon">✈️</span>
-                    <div class="game-info">
-                        <div class="game-name">Telegram</div>
-                        <div class="game-tags">
-                            <span class="game-tag">Stars</span>
-                            <span class="game-tag">Premium</span>
-                        </div>
+                <button class="profile-button" onclick="alert('Пополнение баланса скоро будет доступно')">
+                    ➕ Пополнить баланс
+                </button>
+
+                <div class="profile-section">
+                    <div class="section-label">📦 История заказов</div>
+                    <div class="profile-empty">
+                        <div class="empty-icon">📭</div>
+                        <div class="empty-text">У вас пока нет заказов</div>
                     </div>
                 </div>
-                <span class="game-arrow">→</span>
+
+                <div class="profile-section">
+                    <div class="section-label">💳 Транзакции</div>
+                    <div class="profile-empty">
+                        <div class="empty-icon">📊</div>
+                        <div class="empty-text">История транзакций пуста</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE: INFO -->
+        <div id="pageInfo" class="page">
+            <div class="profile-card">
+                <div style="text-align: center; padding: 20px 0;">
+                    <div style="font-size: 3rem; margin-bottom: 12px;">ℹ️</div>
+                    <div style="font-size: 1.5rem; font-weight: 700; margin-bottom: 4px;">Vintyx Store</div>
+                    <div style="color: rgba(255,255,255,0.3); font-size: 0.85rem;">v1.0.0</div>
+                    <div style="margin-top: 16px; color: rgba(255,255,255,0.4); font-size: 0.9rem; line-height: 1.6;">
+                        Премиальный игровой магазин<br>
+                        Быстро. Безопасно. Надёжно.
+                    </div>
+                    <div style="margin-top: 20px; padding: 16px; background: rgba(91,140,255,0.05); border-radius: 16px; border: 1px solid rgba(91,140,255,0.08);">
+                        <div style="color: rgba(255,255,255,0.3); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px;">Разработано с ❤️</div>
+                        <div style="color: rgba(255,255,255,0.2); font-size: 0.8rem; margin-top: 4px;">Vintyx Team</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Navigation Island -->
     <nav class="bottom-nav">
-        <button class="nav-item active" data-page="home">
-            <span class="nav-icon">🏠</span>
-            <span class="nav-label">Главная</span>
-        </button>
-        <button class="nav-item" data-page="profile">
+        <button class="nav-item" data-page="profile" onclick="navigateTo('profile')">
             <span class="nav-icon">👤</span>
             <span class="nav-label">Профиль</span>
         </button>
-        <button class="nav-item" data-page="info">
+        <button class="nav-item active" data-page="home" onclick="navigateTo('home')">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">Главная</span>
+        </button>
+        <button class="nav-item" data-page="info" onclick="navigateTo('info')">
             <span class="nav-icon">ℹ️</span>
             <span class="nav-label">Инфо</span>
         </button>
@@ -441,27 +670,66 @@
         if (tg) {
             tg.ready();
             tg.expand();
+            tg.setBackgroundColor('#0A0A0F');
+            tg.setHeaderColor('#0A0A0F');
         }
 
-        // Navigation
+        // Navigation System
+        const pages = {
+            home: document.getElementById('pageHome'),
+            profile: document.getElementById('pageProfile'),
+            info: document.getElementById('pageInfo')
+        };
+
         const navItems = document.querySelectorAll('.nav-item');
-        navItems.forEach(item => {
-            item.addEventListener('click', function() {
-                navItems.forEach(i => i.classList.remove('active'));
-                this.classList.add('active');
 
-                if (tg && tg.HapticFeedback) {
-                    tg.HapticFeedback.impactOccurred('light');
-                }
+        function navigateTo(pageName) {
+            // Hide all pages
+            Object.keys(pages).forEach(key => {
+                pages[key].classList.remove('active');
+            });
+            
+            // Show target page
+            if (pages[pageName]) {
+                pages[pageName].classList.add('active');
+            }
 
-                const page = this.dataset.page;
-                if (page === 'profile') {
-                    if (tg) tg.showAlert('👤 Профиль Vintyx\nСкоро здесь будет ваша статистика');
-                } else if (page === 'info') {
-                    if (tg) tg.showAlert('ℹ️ Vintyx Store v1.0\nПремиальный игровой магазин');
+            // Update nav
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.page === pageName) {
+                    item.classList.add('active');
+                    // Trigger animation
+                    const icon = item.querySelector('.nav-icon');
+                    icon.style.animation = 'none';
+                    icon.offsetHeight;
+                    icon.style.animation = 'navPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
                 }
             });
-        });
+
+            // Update URL hash
+            if (pageName === 'home') {
+                window.location.hash = '';
+            } else {
+                window.location.hash = pageName;
+            }
+
+            if (tg && tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
+        }
+
+        // Hash-based routing
+        function handleHash() {
+            const hash = window.location.hash.replace('#', '');
+            if (hash && pages[hash]) {
+                navigateTo(hash);
+            } else {
+                navigateTo('home');
+            }
+        }
+
+        window.addEventListener('hashchange', handleHash);
 
         // Game cards
         document.querySelectorAll('.game-card').forEach(card => {
@@ -486,13 +754,41 @@
             }
         });
 
-        // Avatar
+        // Profile button (avatar)
         document.querySelector('.avatar-circle').addEventListener('click', function() {
+            navigateTo('profile');
+        });
+
+        // Handle back button in Telegram
+        if (tg) {
+            tg.BackButton.onClick(() => {
+                const currentHash = window.location.hash.replace('#', '');
+                if (currentHash && currentHash !== 'home') {
+                    navigateTo('home');
+                }
+            });
+
+            // Show back button when not on home
+            setInterval(() => {
+                const hash = window.location.hash.replace('#', '');
+                if (hash && hash !== 'home' && hash !== '') {
+                    tg.BackButton.show();
+                } else {
+                    tg.BackButton.hide();
+                }
+            }, 100);
+        }
+
+        // Initial route
+        handleHash();
+
+        // Profile button handlers
+        document.querySelector('.profile-button')?.addEventListener('click', function() {
             if (tg && tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('light');
+                tg.HapticFeedback.impactOccurred('medium');
             }
             if (tg) {
-                tg.showAlert('👤 Ваш профиль Vintyx');
+                tg.showAlert('💳 Пополнение баланса скоро будет доступно');
             }
         });
     </script>
