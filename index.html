@@ -534,11 +534,11 @@
                 if (page === 'profile') {
                     // Здесь можно открыть страницу профиля
                     if (tg) {
-                        tg.showAlert('Profile page coming soon! 👤');
+                        tg.showAlert('скоро 👤');
                     }
                 } else if (page === 'info') {
                     if (tg) {
-                        tg.showAlert('Vintyx Store v1.0.0\nPremium gaming marketplace');
+                        tg.showAlert('Ты лох');
                     }
                 }
                 // Home does nothing, stays on main
@@ -553,7 +553,7 @@
                     tg.HapticFeedback.impactOccurred('medium');
                 }
                 if (tg) {
-                    tg.showAlert('🛒 Added to cart!');
+                    tg.showAlert('добавлено в корзину');
                 }
             });
         });
@@ -564,7 +564,7 @@
                 tg.HapticFeedback.impactOccurred('heavy');
             }
             if (tg) {
-                tg.showAlert('🚀 Proceed to checkout?');
+                tg.showAlert('окупим корзину?');
             }
         });
 
@@ -576,7 +576,7 @@
                 }
                 const name = this.querySelector('.dev-name')?.textContent || 'Developer';
                 if (tg) {
-                    tg.showAlert(`📱 ${name} section coming soon`);
+                    tg.showAlert(`скоро`);
                 }
             });
         });
@@ -587,7 +587,7 @@
                 tg.HapticFeedback.impactOccurred('light');
             }
             if (tg) {
-                tg.showAlert('👤 Your profile');
+                tg.showAlert('ты лох');
             }
         });
     </script>
