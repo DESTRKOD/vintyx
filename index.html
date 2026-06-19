@@ -13,20 +13,22 @@
         }
         body {
             background-color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
             font-family: 'Segoe UI', 'Roboto', system-ui, -apple-system, sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
             overflow: hidden;
         }
         .container {
-            text-align: center;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
             max-width: 600px;
             width: 100%;
-            padding: 20px;
+            margin: 0 auto;
             position: relative;
         }
         .animated-text {
@@ -40,12 +42,15 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            position: relative;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             z-index: 2;
             transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .animated-text.exit {
-            transform: scale(3) translateY(-20px);
+            transform: translate(-50%, -50%) scale(3);
             opacity: 0;
             pointer-events: none;
         }
@@ -79,29 +84,61 @@
                 transform: scale(1) translateX(0px) rotate(0deg);
             }
         }
-        .menu {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             opacity: 0;
-            z-index: 1;
-            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-            width: 100%;
-            padding: 40px 20px;
+            transition: opacity 0.6s ease;
+            padding-bottom: 80px;
         }
-        .menu.show {
-            transform: translate(-50%, -50%) scale(1);
+        .main-content.show {
             opacity: 1;
         }
-        .menu-text {
-            font-size: clamp(1.5rem, 5vw, 2.5rem);
-            font-weight: 600;
-            color: #000000;
+        .squares-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .square {
+            aspect-ratio: 1;
             background: #f5f5f5;
-            padding: 40px 30px;
             border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            text-decoration: none;
+            color: #000000;
+            padding: 20px;
+        }
+        .square:active {
+            transform: scale(0.95);
+        }
+        .square .icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+        }
+        .square .label {
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: center;
+        }
+        .square:nth-child(1) {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .square:nth-child(2) {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
         }
         @media (prefers-color-scheme: dark) {
             body {
@@ -110,10 +147,9 @@
             .animated-text {
                 color: #ffffff;
             }
-            .menu-text {
-                color: #ffffff;
+            .square {
                 background: #2c2c2e;
-                box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+                color: #ffffff;
             }
         }
         body[data-theme="dark"] {
@@ -122,20 +158,123 @@
         body[data-theme="dark"] .animated-text {
             color: #ffffff;
         }
-        body[data-theme="dark"] .menu-text {
-            color: #ffffff;
+        body[data-theme="dark"] .square {
             background: #2c2c2e;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            color: #ffffff;
+        }
+        .bottom-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 8px 20px;
+            display: flex;
+            gap: 10px;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.08);
+            border: 1px solid rgba(255,255,255,0.2);
+            z-index: 100;
+            max-width: 400px;
+            width: calc(100% - 40px);
+            justify-content: space-around;
+            transition: opacity 0.6s ease;
+            opacity: 0;
+        }
+        .bottom-nav.show {
+            opacity: 1;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: #888;
+            font-size: 0.7rem;
+            font-weight: 500;
+            gap: 2px;
+            min-width: 56px;
+            border: none;
+            background: transparent;
+            font-family: inherit;
+        }
+        .nav-item .nav-icon {
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        .nav-item.active {
+            color: #007aff;
+        }
+        .nav-item.active .nav-icon {
+            background: #007aff;
+            color: white;
+            border-radius: 12px;
+            padding: 6px 12px;
+        }
+        .nav-item:active {
+            transform: scale(0.9);
+        }
+        @media (prefers-color-scheme: dark) {
+            .bottom-nav {
+                background: rgba(28, 28, 30, 0.92);
+                border-color: rgba(255,255,255,0.05);
+            }
+            .nav-item {
+                color: #666;
+            }
+            .nav-item.active {
+                color: #0a84ff;
+            }
+        }
+        body[data-theme="dark"] .bottom-nav {
+            background: rgba(28, 28, 30, 0.92);
+            border-color: rgba(255,255,255,0.05);
+        }
+        body[data-theme="dark"] .nav-item {
+            color: #666;
+        }
+        body[data-theme="dark"] .nav-item.active {
+            color: #0a84ff;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div id="textContainer" class="animated-text"></div>
-        <div id="menu" class="menu">
-            <div class="menu-text">Тут будет магазин</div>
+        <div id="mainContent" class="main-content">
+            <div class="squares-container">
+                <a href="https://destrkod.github.io/vintyx/profile" class="square" id="profileLink">
+                    <div class="icon">👤</div>
+                    <div class="label">Профиль</div>
+                </a>
+                <a href="https://destrkod.github.io/vintyx/information" class="square" id="infoLink">
+                    <div class="icon">ℹ️</div>
+                    <div class="label">Информация</div>
+                </a>
+            </div>
         </div>
     </div>
+    <nav class="bottom-nav" id="bottomNav">
+        <a href="https://destrkod.github.io/vintyx/profile" class="nav-item" data-page="profile">
+            <span class="nav-icon">👤</span>
+            <span>Профиль</span>
+        </a>
+        <button class="nav-item active" data-page="home">
+            <span class="nav-icon">🏠</span>
+            <span>Главная</span>
+        </button>
+        <a href="https://destrkod.github.io/vintyx/information" class="nav-item" data-page="info">
+            <span class="nav-icon">ℹ️</span>
+            <span>Инфо</span>
+        </a>
+    </nav>
     <script>
         const tg = window.Telegram?.WebApp;
         if (tg) {
@@ -156,7 +295,7 @@
 
         let globalIndex = 0;
 
-        lines.forEach((lineText, lineIndex) => {
+        lines.forEach((lineText) => {
             const lineDiv = document.createElement('div');
             lineDiv.classList.add('line');
             
@@ -188,12 +327,42 @@
         setTimeout(() => {
             container.classList.add('exit');
             setTimeout(() => {
-                document.getElementById('menu').classList.add('show');
+                document.getElementById('mainContent').classList.add('show');
+                document.getElementById('bottomNav').classList.add('show');
                 if (tg && tg.HapticFeedback) {
                     tg.HapticFeedback.impactOccurred('heavy');
                 }
             }, 800);
         }, totalDuration + 500);
+
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                if (this.tagName === 'A') {
+                    return;
+                }
+                e.preventDefault();
+                navItems.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+                if (tg && tg.HapticFeedback) {
+                    tg.HapticFeedback.impactOccurred('light');
+                }
+            });
+        });
+
+        document.getElementById('profileLink').addEventListener('click', function(e) {
+            if (tg) {
+                e.preventDefault();
+                tg.openLink('https://destrkod.github.io/vintyx/profile');
+            }
+        });
+
+        document.getElementById('infoLink').addEventListener('click', function(e) {
+            if (tg) {
+                e.preventDefault();
+                tg.openLink('https://destrkod.github.io/vintyx/information');
+            }
+        });
     </script>
 </body>
 </html>
