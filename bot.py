@@ -36,17 +36,58 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
+async def test_order(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Тестовая команда для отправки заказа"""
+    text = "🧾 *Тестовый заказ:*\n\n"
+    text += "• 💎 80 Gems × 1 — 99 ₽\n"
+    text += "• 🎟️ Brawl Pass × 1 — 499 ₽\n"
+    text += f"\n💎 *Итого: 598 ₽*"
+    
+    keyboard = InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton(
+                text="💳 Оплатить",
+                callback_data="pay_598"
+            )
+        ]
+    ])
+    
+    await update.message.reply_text(
+        text=text,
+        parse_mode="Markdown",
+        reply_markup=keyboard
+    )
+
+
 async def handle_webapp_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logger.info("=" * 50)
     logger.info("📩 ПОЛУЧЕН ЗАПРОС ОТ WEBAPP")
     
-    if not update.message or not update.message.web_app_data:
-        logger.error("❌ Нет данных web_app")
+    # ПРОВЕРКА: есть ли сообщение
+    if not update.message:
+        logger.error("❌ Нет update.message")
+        return
+    
+    # ТЕСТОВЫЙ ОТВЕТ СРАЗУ!
+    try:
+        await update.message.reply_text("✅ Данные получены! Обрабатываю...")
+        logger.info("✅ Тестовый ответ отправлен!")
+    except Exception as e:
+        logger.error(f"❌ Не могу отправить тестовый ответ: {e}")
+        return
+    
+    # ПРОВЕРКА: есть ли web_app_data
+    if not update.message.web_app_data:
+        logger.error("❌ Нет web_app_data")
+        await update.message.reply_text("❌ Нет данных WebApp")
         return
     
     try:
         raw_data = update.message.web_app_data.data
         logger.info(f"📦 RAW DATA: {raw_data}")
+        
+        # ЕЩЁ ОДИН ТЕСТОВЫЙ ОТВЕТ
+        await update.message.reply_text(f"📦 Получены данные: {raw_data[:100]}...")
         
         data = json.loads(raw_data)
         logger.info(f"📊 ПАРСИНГ УСПЕШЕН: {data}")
@@ -54,6 +95,8 @@ async def handle_webapp_data(update: Update, context: ContextTypes.DEFAULT_TYPE)
         if data.get('action') == 'checkout':
             items = data.get('items', [])
             total = data.get('total', 0)
+            
+            logger.info(f"🛒 ТОВАРОВ: {len(items)}, СУММА: {total}")
             
             if not items:
                 await update.message.reply_text("🛒 Ваша корзина пуста!")
@@ -94,7 +137,7 @@ async def handle_webapp_data(update: Update, context: ContextTypes.DEFAULT_TYPE)
     except Exception as e:
         logger.error(f"❌ ОШИБКА: {e}")
         logger.exception(e)
-        await update.message.reply_text("❌ Ошибка обработки заказа")
+        await update.message.reply_text(f"❌ Ошибка: {str(e)[:100]}")
 
 
 async def handle_payment(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -129,6 +172,7 @@ def main():
     app = Application.builder().token(BOT_TOKEN).build()
     
     app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("test", test_order))
     app.add_handler(MessageHandler(filters.StatusUpdate.WEB_APP_DATA, handle_webapp_data))
     app.add_handler(CallbackQueryHandler(handle_payment, pattern="^pay_"))
     
