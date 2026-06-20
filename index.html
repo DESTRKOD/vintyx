@@ -140,6 +140,7 @@
             flex-direction: column;
             gap: 12px;
             margin-bottom: 24px;
+            position: relative;
         }
 
         .game-card {
@@ -151,21 +152,60 @@
             justify-content: space-between;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
             border: 1px solid rgba(255, 255, 255, 0.06);
             backdrop-filter: blur(10px);
+            position: relative;
+            opacity: 1;
+            transform: translateY(0);
+            height: auto;
+            overflow: hidden;
         }
+
+        /* Анимация только когда позиция меняется */
+        .game-card.moving-up {
+            animation: slideUp 0.5s ease forwards;
+        }
+
+        .game-card.moving-down {
+            animation: slideDown 0.5s ease forwards;
+        }
+
+        @keyframes slideUp {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-30px);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideDown {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(30px);
+                opacity: 1;
+            }
+        }
+
         .game-card:active { transform: scale(0.98); }
         .game-card .game-left {
             display: flex;
             align-items: center;
             gap: 14px;
+            flex: 1;
         }
         .game-card .game-icon {
             width: 44px;
             height: 44px;
             object-fit: contain;
             border-radius: 10px;
+            flex-shrink: 0;
         }
         .game-card .game-name {
             font-size: 1rem;
@@ -190,6 +230,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            flex-shrink: 0;
         }
         .game-card .heart-btn {
             font-size: 1.5rem;
@@ -201,13 +242,18 @@
             padding: 4px;
             line-height: 1;
             font-family: inherit;
+            position: relative;
         }
         .game-card .heart-btn.active {
             color: #FF3B6F;
+            animation: heartPop 0.3s ease;
         }
-        .game-card .heart-btn:active {
-            transform: scale(1.2);
+        @keyframes heartPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
         }
+        .game-card .heart-btn:active { transform: scale(1.2); }
         .game-card .game-arrow {
             font-size: 1.2rem;
             color: rgba(255, 255, 255, 0.15);
@@ -615,7 +661,7 @@
                 </div>
             </div>
 
-            <div class="section-title"><span class="emoji">🎮</span> Игры</div>
+            <div class="section-title"><span class="emoji">🎮</span> Выберите раздел</div>
             <div class="game-scroll" id="gameList"></div>
         </div>
     </div>
@@ -637,13 +683,45 @@
 
             <div class="categories">
                 <button class="category-btn active" data-cat="all">Все</button>
-                <button class="category-btn" data-cat="gems">Вход</button>
-                <button class="category-btn" data-cat="pass">Подарком</button>
+                <button class="category-btn" data-cat="gems">Гемы</button>
+                <button class="category-btn" data-cat="pass">Brawl Pass</button>
                 <button class="category-btn" data-cat="store">Суперселл Стор</button>
                 <button class="category-btn" data-cat="skins">Матчерино</button>
             </div>
 
             <div class="products-grid" id="productsGrid"></div>
+        </div>
+    </div>
+
+    <!-- PAGE: CLASH ROYALE (заглушка) -->
+    <div id="pageClash" class="page game-page">
+        <span class="floating-bg">👑</span>
+        <span class="floating-bg">⚔️</span>
+        <span class="floating-bg">🏆</span>
+
+        <div class="content">
+            <div class="game-header">
+                <button class="back-btn" onclick="closeGame()">←</button>
+                <div class="game-title">
+                    <img class="icon" src="https://i.imgur.com/B4idahX.png" alt="Clash Royale">
+                    Clash Royale
+                </div>
+            </div>
+
+            <div class="categories">
+                <button class="category-btn active" data-cat="all">Все</button>
+                <button class="category-btn" data-cat="gems">Кристаллы</button>
+                <button class="category-btn" data-cat="pass">Pass Royale</button>
+                <button class="category-btn" data-cat="store">Суперселл Стор</button>
+                <button class="category-btn" data-cat="emotes">Эмодзи</button>
+            </div>
+
+            <div class="products-grid" id="clashProductsGrid">
+                <div style="grid-column: 1/-1; text-align: center; padding: 40px 0; color: rgba(255,255,255,0.2);">
+                    <div style="font-size: 2rem; margin-bottom: 8px;">👑</div>
+                    <div>Clash Royale — скоро!</div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -748,17 +826,17 @@
                 id: 'brawl',
                 name: 'Brawl Stars',
                 icon: 'https://i.imgur.com/3Zm7Tr0.png',
-                tags: ['Гемы', 'Пропуск'],
+                tags: ['Гемы', 'Brawl Pass'],
                 cardClass: 'brawl',
-                onClick: 'openGame'
+                pageId: 'pageBrawl'
             },
             {
                 id: 'clash',
                 name: 'Clash Royale',
                 icon: 'https://i.imgur.com/B4idahX.png',
-                tags: ['Кристаллы', 'Pass'],
+                tags: ['Кристаллы', 'Pass Royale'],
                 cardClass: 'clash',
-                onClick: 'showComingSoon'
+                pageId: 'pageClash'
             },
             {
                 id: 'telegram',
@@ -766,7 +844,7 @@
                 icon: 'https://i.imgur.com/eM5u3Td.png',
                 tags: ['Stars', 'Premium'],
                 cardClass: 'telegram',
-                onClick: 'showComingSoon'
+                pageId: null
             }
         ];
 
@@ -781,43 +859,98 @@
 
         function saveFavorites(favorites) {
             localStorage.setItem('vintyx_favorites', JSON.stringify(favorites));
-            renderGames();
         }
 
         function toggleHeart(gameId) {
             const favorites = getFavorites();
-            favorites[gameId] = !favorites[gameId];
+            const newState = !favorites[gameId];
+            
+            // Запоминаем старую позицию игры
+            const oldIndex = gamesData.findIndex(g => g.id === gameId);
+            const oldFavState = favorites[gameId] || false;
+            
+            favorites[gameId] = newState;
             saveFavorites(favorites);
+
+            // Находим карточку
+            const cards = document.querySelectorAll('.game-card');
+            let targetCard = null;
+            cards.forEach(card => {
+                if (card.dataset.gameId === gameId) {
+                    targetCard = card;
+                }
+            });
+
+            if (targetCard) {
+                const heartBtn = targetCard.querySelector('.heart-btn');
+                heartBtn.classList.toggle('active');
+                heartBtn.textContent = newState ? '♥' : '♡';
+
+                // Проверяем, меняется ли позиция
+                // Если игра была избранной и стала не избранной — она опускается вниз
+                // Если игра была не избранной и стала избранной — она поднимается вверх
+                // Но если игра уже была наверху (избранная) и остаётся избранной — позиция не меняется
+                
+                const sortedGames = [...gamesData].sort((a, b) => {
+                    const aFav = favorites[a.id] || false;
+                    const bFav = favorites[b.id] || false;
+                    return bFav - aFav;
+                });
+                
+                const newIndex = sortedGames.findIndex(g => g.id === gameId);
+                
+                // Если позиция изменилась — анимируем
+                if (oldIndex !== newIndex) {
+                    // Определяем направление: если индекс уменьшился — поднимается вверх
+                    const isMovingUp = newIndex < oldIndex;
+                    targetCard.classList.remove('moving-up', 'moving-down');
+                    
+                    // Принудительно перезапускаем анимацию
+                    void targetCard.offsetWidth;
+                    
+                    if (isMovingUp) {
+                        targetCard.classList.add('moving-up');
+                    } else {
+                        targetCard.classList.add('moving-down');
+                    }
+                    
+                    setTimeout(() => {
+                        targetCard.classList.remove('moving-up', 'moving-down');
+                        renderGames();
+                    }, 500);
+                } else {
+                    // Позиция не изменилась — просто обновляем список без анимации
+                    setTimeout(() => {
+                        renderGames();
+                    }, 100);
+                }
+            }
+
             if (tg && tg.HapticFeedback) {
                 tg.HapticFeedback.impactOccurred('light');
             }
         }
 
-        // ===== RENDER GAMES (с сортировкой) =====
+        // ===== RENDER GAMES =====
         function renderGames() {
             const container = document.getElementById('gameList');
             const favorites = getFavorites();
 
-            // Сортируем: избранные вверх
             const sortedGames = [...gamesData].sort((a, b) => {
                 const aFav = favorites[a.id] || false;
                 const bFav = favorites[b.id] || false;
-                return bFav - aFav; // true (1) > false (0)
+                return bFav - aFav;
             });
 
             container.innerHTML = '';
 
-            sortedGames.forEach(game => {
+            sortedGames.forEach((game) => {
                 const isFavorite = favorites[game.id] || false;
                 const card = document.createElement('div');
                 card.className = `game-card ${game.cardClass}`;
+                card.dataset.gameId = game.id;
 
-                let onClickAttr = '';
-                if (game.onClick === 'openGame') {
-                    onClickAttr = `onclick="openGame('${game.id}')"`;
-                } else if (game.onClick === 'showComingSoon') {
-                    onClickAttr = `onclick="showComingSoon('${game.name}')"`;
-                }
+                const onClickAttr = game.pageId ? `onclick="openGame('${game.pageId}')"` : `onclick="showComingSoon('${game.name}')"`;
 
                 card.innerHTML = `
                     <div class="game-left" ${onClickAttr}>
@@ -846,13 +979,14 @@
             home: document.getElementById('pageHome'),
             profile: document.getElementById('pageProfile'),
             info: document.getElementById('pageInfo'),
-            brawl: document.getElementById('pageBrawl')
+            brawl: document.getElementById('pageBrawl'),
+            clash: document.getElementById('pageClash')
         };
 
         const navItems = document.querySelectorAll('.nav-item');
 
         function navigateTo(pageName) {
-            if (pageName === 'brawl') return;
+            if (pageName === 'brawl' || pageName === 'clash') return;
 
             Object.keys(pages).forEach(key => {
                 pages[key].classList.remove('active');
@@ -882,15 +1016,17 @@
             }
         }
 
-        function openGame(game) {
-            if (game === 'brawl') {
+        function openGame(pageId) {
+            if (pageId) {
                 Object.keys(pages).forEach(key => {
                     pages[key].classList.remove('active');
                 });
-                pages.brawl.classList.add('active');
+                pages[pageId].classList.add('active');
 
                 if (tg) tg.BackButton.show();
-                renderProducts('all');
+                if (pageId === 'pageBrawl') {
+                    renderProducts('all');
+                }
                 if (tg && tg.HapticFeedback) {
                     tg.HapticFeedback.impactOccurred('medium');
                 }
@@ -927,8 +1063,9 @@
 
         function handleHash() {
             const hash = window.location.hash.replace('#', '');
-            if (hash === 'brawl') {
-                openGame('brawl');
+            if (hash === 'brawl' || hash === 'clash') {
+                const pageId = hash === 'brawl' ? 'pageBrawl' : 'pageClash';
+                openGame(pageId);
                 return;
             }
             if (hash && pages[hash]) {
@@ -944,7 +1081,7 @@
         if (tg) {
             tg.BackButton.onClick(() => {
                 const currentPage = document.querySelector('.page.active');
-                if (currentPage && currentPage.id === 'pageBrawl') {
+                if (currentPage && (currentPage.id === 'pageBrawl' || currentPage.id === 'pageClash')) {
                     closeGame();
                 } else {
                     const hash = window.location.hash.replace('#', '');
@@ -981,6 +1118,7 @@
 
         function renderProducts(category) {
             const grid = document.getElementById('productsGrid');
+            if (!grid) return;
             grid.innerHTML = '';
 
             let items = [];
