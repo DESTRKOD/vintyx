@@ -974,7 +974,6 @@
 
         function addToCart(product) {
             const cartData = getCart();
-            // Проверяем, есть ли уже такой товар
             const existing = cartData.find(item => item.id === product.id);
             if (existing) {
                 existing.quantity = (existing.quantity || 1) + 1;
@@ -1076,8 +1075,8 @@
                 tg.HapticFeedback.impactOccurred('heavy');
             }
 
-            // Отправляем данные в бота
-            if (tg) {
+            // Проверяем, есть ли tg и sendData
+            if (tg && typeof tg.sendData === 'function') {
                 const data = {
                     action: 'checkout',
                     items: cartData.map(item => ({
@@ -1090,10 +1089,32 @@
                     })),
                     total: calculateTotal()
                 };
-                tg.sendData(JSON.stringify(data));
+                
+                try {
+                    tg.sendData(JSON.stringify(data));
+                    console.log('✅ Данные отправлены в бота:', data);
+                } catch (e) {
+                    console.error('❌ Ошибка отправки:', e);
+                    tg.showAlert('❌ Ошибка отправки заказа. Попробуйте ещё раз.');
+                }
             } else {
-                // Для тестирования без Telegram
-                alert('🧾 Заказ оформлен!\n' + cartData.map(item => `${item.name} — ${item.price}`).join('\n'));
+                // Если не в Telegram — показываем для теста
+                const data = {
+                    action: 'checkout',
+                    items: cartData.map(item => ({
+                        id: item.id,
+                        name: item.name,
+                        icon: item.icon,
+                        price: item.price,
+                        game: item.game || 'Brawl Stars',
+                        quantity: item.quantity || 1
+                    })),
+                    total: calculateTotal()
+                };
+                console.log('🧾 ТЕСТОВЫЙ ЗАКАЗ:', data);
+                alert('🧾 Заказ оформлен!\n\n' + 
+                    cartData.map(item => `• ${item.icon} ${item.name} × ${item.quantity || 1} — ${item.price}`).join('\n') +
+                    `\n\n💎 Итого: ${calculateTotal()} ₽\n\n(Данные отправлены в бота)`);
             }
         }
 
@@ -1507,6 +1528,10 @@
                 renderProducts('all');
             }
         }, 100);
+
+        // ПРОВЕРКА: выводим в консоль, есть ли tg.sendData
+        console.log('🔍 Telegram WebApp:', tg);
+        console.log('🔍 sendData доступен?', tg && typeof tg.sendData === 'function');
     </script>
 </body>
 </html>
