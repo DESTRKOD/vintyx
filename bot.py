@@ -2,14 +2,15 @@ import logging
 import json
 import os
 import sys
+import asyncio
+import signal
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
 from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters, CallbackQueryHandler
 import requests
-import asyncio
 
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    format='%(asctime)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
 
@@ -17,7 +18,14 @@ BOT_TOKEN = "8613566197:AAFZSc9JBjTY7POUQJLfUaceZom4L_cUGFA"
 PIN_ID = "5796440171364749940"
 GEM_ID = "5807465992363710697"
 
-# ====================== ЗАЩИТА ОТ ДВОЙНОГО ЗАПУСКА ======================
+# ====================== ЗАЩИТА ======================
+def cleanup_pid():
+    try:
+        if os.path.exists("/tmp/vintyx_bot.pid"):
+            os.remove("/tmp/vintyx_bot.pid")
+    except:
+        pass
+
 def is_already_running():
     pid_file = "/tmp/vintyx_bot.pid"
     try:
@@ -25,7 +33,7 @@ def is_already_running():
             with open(pid_file, "r") as f:
                 old_pid = int(f.read().strip())
                 if os.path.exists(f"/proc/{old_pid}"):
-                    logger.error(f"❌ Бот уже запущен с PID {old_pid}")
+                    logger.warning(f"⚠️ Бот уже запущен (PID {old_pid})")
                     return True
         with open(pid_file, "w") as f:
             f.write(str(os.getpid()))
@@ -33,7 +41,15 @@ def is_already_running():
     except:
         return False
 
-# ====================== УДАЛЕНИЕ WEBHOOK ======================
+def signal_handler(sig, frame):
+    logger.info("⛔ Бот завершается...")
+    cleanup_pid()
+    sys.exit(0)
+
+signal.signal(signal.SIGINT, signal_handler)
+signal.signal(signal.SIGTERM, signal_handler)
+
+# ====================== WEBHOOK ======================
 def force_delete_webhook():
     try:
         response = requests.get(
@@ -41,9 +57,9 @@ def force_delete_webhook():
             params={"drop_pending_updates": True},
             timeout=10
         )
-        logger.info(f"🗑️ Webhook успешно удалён: {response.json()}")
+        logger.info(f"🗑️ Webhook: {response.json()}")
     except Exception as e:
-        logger.error(f"❌ Ошибка удаления webhook: {e}")
+        logger.error(f"❌ Webhook error: {e}")
 
 # ====================== HANDLERS ======================
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -53,49 +69,33 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f'<tg-emoji emoji-id="{GEM_ID}">💎</tg-emoji> '
         "Открыть магазин ниже:"
     )
-
     keyboard = InlineKeyboardMarkup([
         [InlineKeyboardButton("🛒 Открыть магазин", web_app=WebAppInfo(url="https://destrkod.github.io/vintyx/"))]
     ])
-
     await update.message.reply_text(text=text, parse_mode="HTML", reply_markup=keyboard)
-
 
 async def test_order(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = "🧾 *Тестовый заказ:*\n\n• 💎 80 Gems × 1 — 99 ₽\n• 🎟️ Brawl Pass × 1 — 499 ₽\n\n💎 *Итого: 598 ₽*"
-    
-    keyboard = InlineKeyboardMarkup([
-        [InlineKeyboardButton("💳 Оплатить", callback_data="pay_598")]
-    ])
-    
+    keyboard = InlineKeyboardMarkup([[InlineKeyboardButton("💳 Оплатить", callback_data="pay_598")]])
     await update.message.reply_text(text=text, parse_mode="Markdown", reply_markup=keyboard)
 
-
 async def handle_webapp_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logger.info("=" * 60)
-    logger.info("🔥 ПОЛУЧЕН WEB_APP_DATA от пользователя")
-    logger.info(f"Chat ID: {update.effective_chat.id if update.effective_chat else 'Unknown'}")
+    logger.info("=" * 70)
+    logger.info("🔥 ПОЛУЧЕН WEB_APP_DATA")
+    logger.info(f"Chat ID: {update.effective_chat.id}")
 
-    if not update.message or not update.message.web_app_data:
-        logger.error("❌ Нет web_app_data в сообщении")
-        if update.message:
-            await update.message.reply_text("❌ Не удалось получить данные от WebApp")
+    if not update.message.web_app_data:
+        logger.error("❌ Нет web_app_data")
         return
 
     try:
         raw_data = update.message.web_app_data.data
-        logger.info(f"📦 RAW DATA: {raw_data}")
+        logger.info(f"📦 RAW: {raw_data}")
 
         data = json.loads(raw_data)
-        logger.info(f"✅ JSON распарсен: {data}")
-
         if data.get('action') == 'checkout':
             items = data.get('items', [])
             total = data.get('total', 0)
-
-            if not items:
-                await update.message.reply_text("🛒 Корзина пуста!")
-                return
 
             text = "🧾 *Ваш заказ:*\n\n"
             for item in items:
@@ -105,44 +105,21 @@ async def handle_webapp_data(update: Update, context: ContextTypes.DEFAULT_TYPE)
 
             keyboard = InlineKeyboardMarkup([
                 [InlineKeyboardButton("💳 Оплатить", callback_data=f"pay_{total}")],
-                [InlineKeyboardButton("✏️ Редактировать корзину", 
-                                    web_app=WebAppInfo(url="https://destrkod.github.io/vintyx/#cart"))]
+                [InlineKeyboardButton("✏️ Редактировать корзину", web_app=WebAppInfo(url="https://destrkod.github.io/vintyx/#cart"))]
             ])
 
-            await update.message.reply_text(
-                text=text,
-                parse_mode="Markdown",
-                reply_markup=keyboard
-            )
-            logger.info(f"✅ ЗАКАЗ УСПЕШНО ОТПРАВЛЕН! Сумма: {total} ₽")
-
-    except json.JSONDecodeError as e:
-        logger.error(f"❌ Ошибка JSON: {e}")
-        await update.message.reply_text("❌ Ошибка формата данных от WebApp")
+            await update.message.reply_text(text=text, parse_mode="Markdown", reply_markup=keyboard)
+            logger.info(f"✅ Заказ на {total} ₽ отправлен")
     except Exception as e:
         logger.exception(e)
-        await update.message.reply_text(f"❌ Неизвестная ошибка: {str(e)[:100]}")
-
 
 async def handle_payment(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
     total = query.data.replace('pay_', '')
-
-    text = (
-        f"✅ *Оплата прошла успешно!*\n\n"
-        f"💎 Сумма: *{total} ₽*\n"
-        f"📦 Статус: *Оплачено*\n\n"
-        f"🕐 Ожидайте доставку в течение 5-15 минут."
-    )
-
-    keyboard = InlineKeyboardMarkup([
-        [InlineKeyboardButton("🛒 Вернуться в магазин", web_app=WebAppInfo(url="https://destrkod.github.io/vintyx/"))]
-    ])
-
+    text = f"✅ *Оплата прошла успешно!*\n\n💎 Сумма: *{total} ₽*\n📦 Статус: *Оплачено*\n\nОжидайте доставку 5-15 мин."
+    keyboard = InlineKeyboardMarkup([[InlineKeyboardButton("🛒 Вернуться в магазин", web_app=WebAppInfo(url="https://destrkod.github.io/vintyx/"))]])
     await query.edit_message_text(text=text, parse_mode="Markdown", reply_markup=keyboard)
-    logger.info(f"💰 Оплата на сумму {total} ₽ подтверждена")
-
 
 # ====================== MAIN ======================
 async def main():
@@ -152,24 +129,22 @@ async def main():
     force_delete_webhook()
 
     app = Application.builder().token(BOT_TOKEN).build()
+    await app.initialize()
+    await app.bot.delete_webhook(drop_pending_updates=True)
 
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("test", test_order))
     app.add_handler(MessageHandler(filters.StatusUpdate.WEB_APP_DATA, handle_webapp_data))
     app.add_handler(CallbackQueryHandler(handle_payment, pattern="^pay_"))
 
-    logger.info("🚀 Бот Vintyx Shop успешно запущен (polling)")
-
-    await app.initialize()
-    await app.bot.delete_webhook(drop_pending_updates=True)
-
+    logger.info("🚀 Бот запущен успешно")
     await app.run_polling(drop_pending_updates=True)
-
 
 if __name__ == "__main__":
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        logger.info("⛔ Бот остановлен вручную")
+        cleanup_pid()
     except Exception as e:
         logger.error(f"Критическая ошибка: {e}")
+        cleanup_pid()
