@@ -108,18 +108,40 @@
             padding-top: 4px;
         }
         .main-header .header-right .cart-btn {
-            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             cursor: pointer;
             transition: all 0.2s;
-            opacity: 0.6;
-            background: none;
-            border: none;
             color: #FFFFFF;
             font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 500;
+            position: relative;
         }
         .main-header .header-right .cart-btn:active {
-            transform: scale(0.88);
-            opacity: 1;
+            transform: scale(0.92);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .main-header .header-right .cart-btn .cart-icon {
+            font-size: 1.2rem;
+        }
+        .main-header .header-right .cart-btn .cart-count {
+            background: #FF3B6F;
+            color: white;
+            border-radius: 50%;
+            min-width: 20px;
+            height: 20px;
+            font-size: 0.6rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5px;
         }
 
         .section-title {
@@ -410,6 +432,135 @@
             letter-spacing: 0.2px;
         }
 
+        /* ===== CART PAGE ===== */
+        .cart-page .cart-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-top: 4px;
+        }
+        .cart-page .cart-header .back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #FFFFFF;
+            flex-shrink: 0;
+            font-family: inherit;
+        }
+        .cart-page .cart-header .back-btn:active { transform: scale(0.9); background: rgba(255, 255, 255, 0.1); }
+        .cart-page .cart-header .cart-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+
+        .cart-item {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            margin-bottom: 10px;
+            backdrop-filter: blur(10px);
+        }
+        .cart-item .item-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .cart-item .item-icon { font-size: 1.8rem; }
+        .cart-item .item-info .item-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #FFFFFF;
+        }
+        .cart-item .item-info .item-game {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.2);
+        }
+        .cart-item .item-price {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #7DD8FF;
+        }
+        .cart-item .remove-btn {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.15);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            padding: 4px;
+        }
+        .cart-item .remove-btn:active { transform: scale(0.8); color: #FF3B6F; }
+
+        .cart-empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(255, 255, 255, 0.15);
+        }
+        .cart-empty .empty-icon { font-size: 3rem; margin-bottom: 12px; opacity: 0.3; }
+        .cart-empty .empty-text { font-size: 0.9rem; }
+
+        .cart-total {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            margin-top: 16px;
+            backdrop-filter: blur(10px);
+        }
+        .cart-total .total-label {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+        .cart-total .total-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #7DD8FF 0%, #6675FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .checkout-btn {
+            background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.25s;
+            box-shadow: 0 4px 24px rgba(91, 140, 255, 0.2);
+            font-family: inherit;
+            margin-top: 16px;
+            letter-spacing: 0.5px;
+        }
+        .checkout-btn:active { transform: scale(0.97); }
+        .checkout-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none;
+        }
+
         /* ===== PROFILE PAGE ===== */
         .profile-page .profile-header {
             display: flex;
@@ -652,7 +803,11 @@
                     <div class="greeting">👋 Привет, Vintyx</div>
                 </div>
                 <div class="header-right">
-                    <button class="cart-btn" onclick="if(tg)tg.showAlert('🛒 Корзина\nЗдесь будут ваши товары')">🛒</button>
+                    <button class="cart-btn" onclick="openCart()">
+                        <span class="cart-icon">🛒</span>
+                        <span>Корзина</span>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </button>
                 </div>
             </div>
 
@@ -685,6 +840,24 @@
             </div>
 
             <div class="products-grid" id="productsGrid"></div>
+        </div>
+    </div>
+
+    <!-- PAGE: CART -->
+    <div id="pageCart" class="page cart-page">
+        <span class="floating-bg">🛒</span>
+        <span class="floating-bg">💎</span>
+        <span class="floating-bg">⭐</span>
+
+        <div class="content">
+            <div class="cart-header">
+                <button class="back-btn" onclick="closeCart()">←</button>
+                <div class="cart-title">🛒 Корзина</div>
+            </div>
+
+            <div id="cartItems"></div>
+            <div id="cartTotal"></div>
+            <button class="checkout-btn" id="checkoutBtn" onclick="checkout()">💳 Оплатить</button>
         </div>
     </div>
 
@@ -781,6 +954,292 @@
             tg.expand();
             tg.setBackgroundColor('#0A0A0F');
             tg.setHeaderColor('#0A0A0F');
+        }
+
+        // ===== CART SYSTEM =====
+        let cart = [];
+
+        function getCart() {
+            try {
+                return JSON.parse(localStorage.getItem('vintyx_cart')) || [];
+            } catch {
+                return [];
+            }
+        }
+
+        function saveCart(cartData) {
+            localStorage.setItem('vintyx_cart', JSON.stringify(cartData));
+            updateCartCount();
+        }
+
+        function addToCart(product) {
+            const cartData = getCart();
+            // Проверяем, есть ли уже такой товар
+            const existing = cartData.find(item => item.id === product.id);
+            if (existing) {
+                existing.quantity = (existing.quantity || 1) + 1;
+            } else {
+                cartData.push({ ...product, quantity: 1 });
+            }
+            saveCart(cartData);
+            if (tg && tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
+            if (tg) {
+                tg.showAlert(`✅ ${product.name} добавлен в корзину`);
+            }
+        }
+
+        function removeFromCart(productId) {
+            let cartData = getCart();
+            cartData = cartData.filter(item => item.id !== productId);
+            saveCart(cartData);
+            renderCart();
+        }
+
+        function updateCartCount() {
+            const cartData = getCart();
+            const count = cartData.reduce((sum, item) => sum + (item.quantity || 1), 0);
+            const countEl = document.getElementById('cartCount');
+            if (countEl) {
+                countEl.textContent = count;
+                countEl.style.display = count > 0 ? 'flex' : 'none';
+            }
+        }
+
+        function calculateTotal() {
+            const cartData = getCart();
+            return cartData.reduce((sum, item) => {
+                const price = parseInt(item.price.replace(/[^0-9]/g, ''));
+                return sum + (price * (item.quantity || 1));
+            }, 0);
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cartItems');
+            const totalContainer = document.getElementById('cartTotal');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            const cartData = getCart();
+
+            if (cartData.length === 0) {
+                container.innerHTML = `
+                    <div class="cart-empty">
+                        <div class="empty-icon">🛒</div>
+                        <div class="empty-text">Корзина пуста</div>
+                    </div>
+                `;
+                totalContainer.innerHTML = '';
+                checkoutBtn.disabled = true;
+                return;
+            }
+
+            let html = '';
+            cartData.forEach(item => {
+                const quantity = item.quantity || 1;
+                const price = parseInt(item.price.replace(/[^0-9]/g, ''));
+                const totalPrice = price * quantity;
+                html += `
+                    <div class="cart-item">
+                        <div class="item-left">
+                            <span class="item-icon">${item.icon}</span>
+                            <div class="item-info">
+                                <div class="item-name">${item.name}</div>
+                                <div class="item-game">${item.game || 'Brawl Stars'} × ${quantity}</div>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="item-price">${totalPrice} ₽</span>
+                            <button class="remove-btn" onclick="removeFromCart(${item.id})">✕</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+
+            const total = calculateTotal();
+            totalContainer.innerHTML = `
+                <div class="cart-total">
+                    <span class="total-label">Итого:</span>
+                    <span class="total-price">${total} ₽</span>
+                </div>
+            `;
+            checkoutBtn.disabled = false;
+        }
+
+        // ===== CHECKOUT =====
+        function checkout() {
+            const cartData = getCart();
+            if (cartData.length === 0) return;
+
+            if (tg && tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('heavy');
+            }
+
+            // Отправляем данные в бота
+            if (tg) {
+                const data = {
+                    action: 'checkout',
+                    items: cartData.map(item => ({
+                        id: item.id,
+                        name: item.name,
+                        icon: item.icon,
+                        price: item.price,
+                        game: item.game || 'Brawl Stars',
+                        quantity: item.quantity || 1
+                    })),
+                    total: calculateTotal()
+                };
+                tg.sendData(JSON.stringify(data));
+            } else {
+                // Для тестирования без Telegram
+                alert('🧾 Заказ оформлен!\n' + cartData.map(item => `${item.name} — ${item.price}`).join('\n'));
+            }
+        }
+
+        // ===== NAVIGATION =====
+        const pages = {
+            home: document.getElementById('pageHome'),
+            profile: document.getElementById('pageProfile'),
+            info: document.getElementById('pageInfo'),
+            brawl: document.getElementById('pageBrawl'),
+            cart: document.getElementById('pageCart')
+        };
+
+        const navItems = document.querySelectorAll('.nav-item');
+
+        function updateNavIcons(activePage) {
+            const profileIcon = document.getElementById('navProfile');
+            const homeIcon = document.getElementById('navHome');
+            const infoIcon = document.getElementById('navInfo');
+
+            profileIcon.src = activePage === 'profile' 
+                ? 'https://i.imgur.com/mZsrrkM.jpeg' 
+                : 'https://i.imgur.com/qWqc3ry.jpeg';
+
+            homeIcon.src = activePage === 'home' 
+                ? 'https://i.imgur.com/inAWCTe.jpeg' 
+                : 'https://i.imgur.com/8F5qFUB.jpeg';
+
+            infoIcon.src = activePage === 'info' 
+                ? 'https://i.imgur.com/ZuBcUJK.jpeg' 
+                : 'https://i.imgur.com/qWAHF0n.jpeg';
+        }
+
+        function navigateTo(pageName) {
+            if (pageName === 'brawl' || pageName === 'cart') return;
+
+            Object.keys(pages).forEach(key => {
+                pages[key].classList.remove('active');
+            });
+
+            if (pages[pageName]) {
+                pages[pageName].classList.add('active');
+            }
+
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.page === pageName) {
+                    item.classList.add('active');
+                }
+            });
+
+            updateNavIcons(pageName);
+
+            if (pageName === 'home') {
+                window.location.hash = '';
+                if (tg) tg.BackButton.hide();
+            } else {
+                window.location.hash = pageName;
+                if (tg) tg.BackButton.show();
+            }
+
+            if (tg && tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
+        }
+
+        function openCart() {
+            Object.keys(pages).forEach(key => {
+                pages[key].classList.remove('active');
+            });
+            pages.cart.classList.add('active');
+            renderCart();
+            if (tg) tg.BackButton.show();
+            if (tg && tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
+            window.location.hash = 'cart';
+        }
+
+        function closeCart() {
+            Object.keys(pages).forEach(key => {
+                pages[key].classList.remove('active');
+            });
+            pages.home.classList.add('active');
+
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.page === 'home') {
+                    item.classList.add('active');
+                }
+            });
+
+            updateNavIcons('home');
+            window.location.hash = '';
+            if (tg) tg.BackButton.hide();
+            if (tg && tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
+        }
+
+        function openGame(pageId) {
+            if (pageId === 'pageBrawl') {
+                Object.keys(pages).forEach(key => {
+                    pages[key].classList.remove('active');
+                });
+                pages.brawl.classList.add('active');
+
+                if (tg) tg.BackButton.show();
+                
+                setTimeout(function() {
+                    renderProducts('all');
+                }, 50);
+                
+                if (tg && tg.HapticFeedback) {
+                    tg.HapticFeedback.impactOccurred('medium');
+                }
+            }
+        }
+
+        function closeGame() {
+            Object.keys(pages).forEach(key => {
+                pages[key].classList.remove('active');
+            });
+            pages.home.classList.add('active');
+
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.page === 'home') {
+                    item.classList.add('active');
+                }
+            });
+
+            updateNavIcons('home');
+
+            window.location.hash = '';
+            if (tg) tg.BackButton.hide();
+
+            if (tg && tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
+        }
+
+        function showComingSoon(gameName) {
+            if (tg) {
+                tg.HapticFeedback?.impactOccurred('light');
+                tg.showAlert(`🎮 ${gameName}\nРаздел скоро появится!`);
+            }
         }
 
         // ===== GAMES DATA =====
@@ -927,33 +1386,30 @@
         // ===== BRAWL STARS DATA =====
         const productsData = {
             gems: [
-                { id: 1, icon: '💎', name: '80 Gems', price: '99 ₽' },
-                { id: 2, icon: '💎', name: '170 Gems', price: '199 ₽' },
-                { id: 3, icon: '💎', name: '360 Gems', price: '399 ₽' },
-                { id: 4, icon: '💎', name: '950 Gems', price: '999 ₽' },
+                { id: 1, icon: '💎', name: '80 Gems', price: '99 ₽', game: 'Brawl Stars' },
+                { id: 2, icon: '💎', name: '170 Gems', price: '199 ₽', game: 'Brawl Stars' },
+                { id: 3, icon: '💎', name: '360 Gems', price: '399 ₽', game: 'Brawl Stars' },
+                { id: 4, icon: '💎', name: '950 Gems', price: '999 ₽', game: 'Brawl Stars' },
             ],
             pass: [
-                { id: 5, icon: '🎟️', name: 'Brawl Pass', price: '499 ₽' },
-                { id: 6, icon: '🎟️', name: 'Brawl Pass+', price: '799 ₽' },
+                { id: 5, icon: '🎟️', name: 'Brawl Pass', price: '499 ₽', game: 'Brawl Stars' },
+                { id: 6, icon: '🎟️', name: 'Brawl Pass+', price: '799 ₽', game: 'Brawl Stars' },
             ],
             store: [
-                { id: 7, icon: '🏪', name: 'Megabox', price: '149 ₽' },
-                { id: 8, icon: '🏪', name: 'Hypercharge', price: '299 ₽' },
-                { id: 9, icon: '🏪', name: 'Exclusive Skin', price: '599 ₽' },
+                { id: 7, icon: '🏪', name: 'Megabox', price: '149 ₽', game: 'Brawl Stars' },
+                { id: 8, icon: '🏪', name: 'Hypercharge', price: '299 ₽', game: 'Brawl Stars' },
+                { id: 9, icon: '🏪', name: 'Exclusive Skin', price: '599 ₽', game: 'Brawl Stars' },
             ],
             skins: [
-                { id: 10, icon: '🎨', name: 'Virus 8-Bit', price: '399 ₽' },
-                { id: 11, icon: '🎨', name: 'Dark Angel Colt', price: '499 ₽' },
-                { id: 12, icon: '🎨', name: 'Pirate Poco', price: '299 ₽' },
+                { id: 10, icon: '🎨', name: 'Virus 8-Bit', price: '399 ₽', game: 'Brawl Stars' },
+                { id: 11, icon: '🎨', name: 'Dark Angel Colt', price: '499 ₽', game: 'Brawl Stars' },
+                { id: 12, icon: '🎨', name: 'Pirate Poco', price: '299 ₽', game: 'Brawl Stars' },
             ]
         };
 
         function renderProducts(category) {
             const grid = document.getElementById('productsGrid');
-            if (!grid) {
-                console.log('productsGrid not found');
-                return;
-            }
+            if (!grid) return;
             
             grid.innerHTML = '';
 
@@ -980,136 +1436,14 @@
                 card.innerHTML = `
                     <div class="prod-icon">${item.icon}</div>
                     <div class="prod-name">${item.name}</div>
-                    <div class="prod-sub">Brawl Stars</div>
-                    <button class="prod-btn" onclick="buyProduct('${item.name}', '${item.price}')">
+                    <div class="prod-sub">${item.game}</div>
+                    <button class="prod-btn" onclick="addToCart({id: ${item.id}, icon: '${item.icon}', name: '${item.name}', price: '${item.price}', game: '${item.game}'})">
                         <span class="price">${item.price}</span>
                         <span class="cart-text">+ добавить в корзину</span>
                     </button>
                 `;
                 grid.appendChild(card);
             });
-        }
-
-        // ===== NAVIGATION =====
-        const pages = {
-            home: document.getElementById('pageHome'),
-            profile: document.getElementById('pageProfile'),
-            info: document.getElementById('pageInfo'),
-            brawl: document.getElementById('pageBrawl')
-        };
-
-        const navItems = document.querySelectorAll('.nav-item');
-
-        function updateNavIcons(activePage) {
-            const profileIcon = document.getElementById('navProfile');
-            const homeIcon = document.getElementById('navHome');
-            const infoIcon = document.getElementById('navInfo');
-
-            // Profile
-            profileIcon.src = activePage === 'profile' 
-                ? 'https://i.imgur.com/mZsrrkM.jpeg' 
-                : 'https://i.imgur.com/qWqc3ry.jpeg';
-
-            // Home
-            homeIcon.src = activePage === 'home' 
-                ? 'https://i.imgur.com/inAWCTe.jpeg' 
-                : 'https://i.imgur.com/8F5qFUB.jpeg';
-
-            // Info
-            infoIcon.src = activePage === 'info' 
-                ? 'https://i.imgur.com/ZuBcUJK.jpeg' 
-                : 'https://i.imgur.com/qWAHF0n.jpeg';
-        }
-
-        function navigateTo(pageName) {
-            if (pageName === 'brawl') return;
-
-            Object.keys(pages).forEach(key => {
-                pages[key].classList.remove('active');
-            });
-
-            if (pages[pageName]) {
-                pages[pageName].classList.add('active');
-            }
-
-            navItems.forEach(item => {
-                item.classList.remove('active');
-                if (item.dataset.page === pageName) {
-                    item.classList.add('active');
-                }
-            });
-
-            updateNavIcons(pageName);
-
-            if (pageName === 'home') {
-                window.location.hash = '';
-                if (tg) tg.BackButton.hide();
-            } else {
-                window.location.hash = pageName;
-                if (tg) tg.BackButton.show();
-            }
-
-            if (tg && tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('light');
-            }
-        }
-
-        function openGame(pageId) {
-            if (pageId === 'pageBrawl') {
-                Object.keys(pages).forEach(key => {
-                    pages[key].classList.remove('active');
-                });
-                pages.brawl.classList.add('active');
-
-                if (tg) tg.BackButton.show();
-                
-                setTimeout(function() {
-                    renderProducts('all');
-                }, 50);
-                
-                if (tg && tg.HapticFeedback) {
-                    tg.HapticFeedback.impactOccurred('medium');
-                }
-            }
-        }
-
-        function closeGame() {
-            Object.keys(pages).forEach(key => {
-                pages[key].classList.remove('active');
-            });
-            pages.home.classList.add('active');
-
-            navItems.forEach(item => {
-                item.classList.remove('active');
-                if (item.dataset.page === 'home') {
-                    item.classList.add('active');
-                }
-            });
-
-            updateNavIcons('home');
-
-            window.location.hash = '';
-            if (tg) tg.BackButton.hide();
-
-            if (tg && tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('light');
-            }
-        }
-
-        function showComingSoon(gameName) {
-            if (tg) {
-                tg.HapticFeedback?.impactOccurred('light');
-                tg.showAlert(`🎮 ${gameName}\nРаздел скоро появится!`);
-            }
-        }
-
-        function buyProduct(name, price) {
-            if (tg && tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('medium');
-            }
-            if (tg) {
-                tg.showAlert(`🛒 ${name}\nСумма: ${price}\nПерейти к оплате?`);
-            }
         }
 
         // ===== CATEGORY FILTER =====
@@ -1131,6 +1465,10 @@
                 openGame('pageBrawl');
                 return;
             }
+            if (hash === 'cart') {
+                openCart();
+                return;
+            }
             if (hash && pages[hash]) {
                 navigateTo(hash);
             } else {
@@ -1144,12 +1482,17 @@
         if (tg) {
             tg.BackButton.onClick(() => {
                 const currentPage = document.querySelector('.page.active');
-                if (currentPage && currentPage.id === 'pageBrawl') {
-                    closeGame();
-                } else {
-                    const hash = window.location.hash.replace('#', '');
-                    if (hash && hash !== 'home' && hash !== '') {
-                        navigateTo('home');
+                if (currentPage) {
+                    const id = currentPage.id;
+                    if (id === 'pageBrawl') {
+                        closeGame();
+                    } else if (id === 'pageCart') {
+                        closeCart();
+                    } else {
+                        const hash = window.location.hash.replace('#', '');
+                        if (hash && hash !== 'home' && hash !== '') {
+                            navigateTo('home');
+                        }
                     }
                 }
             });
@@ -1158,7 +1501,7 @@
         // ===== INIT =====
         renderGames();
         handleHash();
-        updateNavIcons('home');
+        updateCartCount();
         setTimeout(function() {
             if (document.getElementById('pageBrawl').classList.contains('active')) {
                 renderProducts('all');
