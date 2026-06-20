@@ -20,7 +20,6 @@
             color: #FFFFFF;
         }
 
-        /* ===== ГРАДИЕНТНЫЙ ФОН ДЛЯ ВСЕХ СТРАНИЦ ===== */
         .page {
             display: none;
             animation: fadeUp 0.4s ease;
@@ -53,7 +52,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Общие плавающие элементы для всех страниц */
         .page .floating-bg {
             position: fixed;
             font-size: 3rem;
@@ -80,7 +78,6 @@
             z-index: 1;
         }
 
-        /* ===== HEADER ===== */
         .main-header {
             display: flex;
             justify-content: space-between;
@@ -125,7 +122,6 @@
             opacity: 1;
         }
 
-        /* ===== SECTION TITLE ===== */
         .section-title {
             font-size: 1.1rem;
             font-weight: 700;
@@ -620,58 +616,7 @@
             </div>
 
             <div class="section-title"><span class="emoji">🎮</span> Игры</div>
-            <div class="game-scroll">
-                <div class="game-card brawl" onclick="openGame('brawl')">
-                    <div class="game-left">
-                        <img class="game-icon" src="https://i.imgur.com/3Zm7Tr0.png" alt="Brawl Stars">
-                        <div class="game-info">
-                            <div class="game-name">Brawl Stars</div>
-                            <div class="game-tags">
-                                <span class="game-tag">Гемы</span>
-                                <span class="game-tag">Пропуск</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="game-right">
-                        <button class="heart-btn" data-game="brawl" onclick="event.stopPropagation();toggleHeart('brawl')">♡</button>
-                        <span class="game-arrow">→</span>
-                    </div>
-                </div>
-
-                <div class="game-card clash" onclick="showComingSoon('Clash Royale')">
-                    <div class="game-left">
-                        <img class="game-icon" src="https://i.imgur.com/B4idahX.png" alt="Clash Royale">
-                        <div class="game-info">
-                            <div class="game-name">Clash Royale</div>
-                            <div class="game-tags">
-                                <span class="game-tag">Кристаллы</span>
-                                <span class="game-tag">Pass</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="game-right">
-                        <button class="heart-btn" data-game="clash" onclick="event.stopPropagation();toggleHeart('clash')">♡</button>
-                        <span class="game-arrow">→</span>
-                    </div>
-                </div>
-
-                <div class="game-card telegram" onclick="showComingSoon('Telegram')">
-                    <div class="game-left">
-                        <img class="game-icon" src="https://i.imgur.com/eM5u3Td.png" alt="Telegram">
-                        <div class="game-info">
-                            <div class="game-name">Telegram</div>
-                            <div class="game-tags">
-                                <span class="game-tag">Stars</span>
-                                <span class="game-tag">Premium</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="game-right">
-                        <button class="heart-btn" data-game="telegram" onclick="event.stopPropagation();toggleHeart('telegram')">♡</button>
-                        <span class="game-arrow">→</span>
-                    </div>
-                </div>
-            </div>
+            <div class="game-scroll" id="gameList"></div>
         </div>
     </div>
 
@@ -797,7 +742,35 @@
             tg.setHeaderColor('#0A0A0F');
         }
 
-        // ===== HEARTS (Favorites) =====
+        // ===== GAMES DATA =====
+        const gamesData = [
+            {
+                id: 'brawl',
+                name: 'Brawl Stars',
+                icon: 'https://i.imgur.com/3Zm7Tr0.png',
+                tags: ['Гемы', 'Пропуск'],
+                cardClass: 'brawl',
+                onClick: 'openGame'
+            },
+            {
+                id: 'clash',
+                name: 'Clash Royale',
+                icon: 'https://i.imgur.com/B4idahX.png',
+                tags: ['Кристаллы', 'Pass'],
+                cardClass: 'clash',
+                onClick: 'showComingSoon'
+            },
+            {
+                id: 'telegram',
+                name: 'Telegram',
+                icon: 'https://i.imgur.com/eM5u3Td.png',
+                tags: ['Stars', 'Premium'],
+                cardClass: 'telegram',
+                onClick: 'showComingSoon'
+            }
+        ];
+
+        // ===== FAVORITES =====
         function getFavorites() {
             try {
                 return JSON.parse(localStorage.getItem('vintyx_favorites')) || {};
@@ -808,29 +781,63 @@
 
         function saveFavorites(favorites) {
             localStorage.setItem('vintyx_favorites', JSON.stringify(favorites));
+            renderGames();
         }
 
-        function toggleHeart(game) {
+        function toggleHeart(gameId) {
             const favorites = getFavorites();
-            favorites[game] = !favorites[game];
+            favorites[gameId] = !favorites[gameId];
             saveFavorites(favorites);
-            updateHearts();
             if (tg && tg.HapticFeedback) {
                 tg.HapticFeedback.impactOccurred('light');
             }
         }
 
-        function updateHearts() {
+        // ===== RENDER GAMES (с сортировкой) =====
+        function renderGames() {
+            const container = document.getElementById('gameList');
             const favorites = getFavorites();
-            document.querySelectorAll('.heart-btn').forEach(btn => {
-                const game = btn.dataset.game;
-                if (favorites[game]) {
-                    btn.textContent = '♥';
-                    btn.classList.add('active');
-                } else {
-                    btn.textContent = '♡';
-                    btn.classList.remove('active');
+
+            // Сортируем: избранные вверх
+            const sortedGames = [...gamesData].sort((a, b) => {
+                const aFav = favorites[a.id] || false;
+                const bFav = favorites[b.id] || false;
+                return bFav - aFav; // true (1) > false (0)
+            });
+
+            container.innerHTML = '';
+
+            sortedGames.forEach(game => {
+                const isFavorite = favorites[game.id] || false;
+                const card = document.createElement('div');
+                card.className = `game-card ${game.cardClass}`;
+
+                let onClickAttr = '';
+                if (game.onClick === 'openGame') {
+                    onClickAttr = `onclick="openGame('${game.id}')"`;
+                } else if (game.onClick === 'showComingSoon') {
+                    onClickAttr = `onclick="showComingSoon('${game.name}')"`;
                 }
+
+                card.innerHTML = `
+                    <div class="game-left" ${onClickAttr}>
+                        <img class="game-icon" src="${game.icon}" alt="${game.name}">
+                        <div class="game-info">
+                            <div class="game-name">${game.name}</div>
+                            <div class="game-tags">
+                                ${game.tags.map(tag => `<span class="game-tag">${tag}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="game-right">
+                        <button class="heart-btn ${isFavorite ? 'active' : ''}" data-game="${game.id}" onclick="event.stopPropagation();toggleHeart('${game.id}')">
+                            ${isFavorite ? '♥' : '♡'}
+                        </button>
+                        <span class="game-arrow" ${onClickAttr}>→</span>
+                    </div>
+                `;
+
+                container.appendChild(card);
             });
         }
 
@@ -1030,7 +1037,7 @@
         }
 
         // ===== INIT =====
-        updateHearts();
+        renderGames();
         handleHash();
         renderProducts('all');
     </script>
