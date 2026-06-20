@@ -584,6 +584,7 @@
             width: calc(100% - 40px);
             justify-content: space-around;
         }
+
         .nav-item {
             display: flex;
             flex-direction: column;
@@ -600,13 +601,15 @@
             min-width: 48px;
             position: relative;
         }
+
         .nav-item .nav-icon {
-            font-size: 1.3rem;
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             opacity: 0.3;
-            line-height: 1;
-            padding: 4px;
         }
+
         .nav-item .nav-label {
             font-size: 0.5rem;
             font-weight: 500;
@@ -615,11 +618,16 @@
             transition: all 0.3s;
             margin-top: 1px;
         }
+
         .nav-item.active .nav-icon {
             opacity: 1;
             animation: navPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .nav-item.active .nav-label { opacity: 0.7; }
+
+        .nav-item.active .nav-label {
+            opacity: 0.7;
+        }
+
         .nav-item:active { transform: scale(0.88); }
 
         @keyframes navPop {
@@ -753,15 +761,15 @@
     <!-- NAVIGATION ISLAND -->
     <nav class="bottom-nav">
         <button class="nav-item" data-page="profile" onclick="navigateTo('profile')">
-            <span class="nav-icon">👤</span>
+            <img class="nav-icon" id="navProfile" src="https://i.imgur.com/qWqc3ry.jpeg" alt="Profile">
             <span class="nav-label">Профиль</span>
         </button>
         <button class="nav-item active" data-page="home" onclick="navigateTo('home')">
-            <span class="nav-icon">🏠</span>
+            <img class="nav-icon" id="navHome" src="https://i.imgur.com/8F5qFUB.jpeg" alt="Home">
             <span class="nav-label">Главная</span>
         </button>
         <button class="nav-item" data-page="info" onclick="navigateTo('info')">
-            <span class="nav-icon">ℹ️</span>
+            <img class="nav-icon" id="navInfo" src="https://i.imgur.com/qWAHF0n.jpeg" alt="Info">
             <span class="nav-label">Инфо</span>
         </button>
     </nav>
@@ -992,6 +1000,27 @@
 
         const navItems = document.querySelectorAll('.nav-item');
 
+        function updateNavIcons(activePage) {
+            const profileIcon = document.getElementById('navProfile');
+            const homeIcon = document.getElementById('navHome');
+            const infoIcon = document.getElementById('navInfo');
+
+            // Profile
+            profileIcon.src = activePage === 'profile' 
+                ? 'https://i.imgur.com/mZsrrkM.jpeg' 
+                : 'https://i.imgur.com/qWqc3ry.jpeg';
+
+            // Home
+            homeIcon.src = activePage === 'home' 
+                ? 'https://i.imgur.com/inAWCTe.jpeg' 
+                : 'https://i.imgur.com/8F5qFUB.jpeg';
+
+            // Info
+            infoIcon.src = activePage === 'info' 
+                ? 'https://i.imgur.com/ZuBcUJK.jpeg' 
+                : 'https://i.imgur.com/qWAHF0n.jpeg';
+        }
+
         function navigateTo(pageName) {
             if (pageName === 'brawl') return;
 
@@ -1010,6 +1039,8 @@
                 }
             });
 
+            updateNavIcons(pageName);
+
             if (pageName === 'home') {
                 window.location.hash = '';
                 if (tg) tg.BackButton.hide();
@@ -1025,7 +1056,6 @@
 
         function openGame(pageId) {
             if (pageId === 'pageBrawl') {
-                // Показываем страницу Brawl Stars
                 Object.keys(pages).forEach(key => {
                     pages[key].classList.remove('active');
                 });
@@ -1033,7 +1063,6 @@
 
                 if (tg) tg.BackButton.show();
                 
-                // Принудительно рендерим товары
                 setTimeout(function() {
                     renderProducts('all');
                 }, 50);
@@ -1056,6 +1085,8 @@
                     item.classList.add('active');
                 }
             });
+
+            updateNavIcons('home');
 
             window.location.hash = '';
             if (tg) tg.BackButton.hide();
@@ -1127,7 +1158,7 @@
         // ===== INIT =====
         renderGames();
         handleHash();
-        // Если Brawl Stars активна при загрузке — рендерим товары
+        updateNavIcons('home');
         setTimeout(function() {
             if (document.getElementById('pageBrawl').classList.contains('active')) {
                 renderProducts('all');
