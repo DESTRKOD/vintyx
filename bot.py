@@ -1,5 +1,8 @@
 import logging
 import json
+import os
+import sys
+import signal
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
 from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters, CallbackQueryHandler
 
@@ -37,13 +40,20 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def handle_webapp_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    logger.info("=" * 50)
     logger.info("📩 ПОЛУЧЕН ЗАПРОС ОТ WEBAPP")
     
-    if not update.message.web_app_data:
+    if not update.message or not update.message.web_app_data:
+        logger.error("❌ Нет данных web_app")
         return
     
     try:
-        data = json.loads(update.message.web_app_data.data)
+        raw_data = update.message.web_app_data.data
+        logger.info(f"📦 RAW DATA: {raw_data[:200]}...")
+        
+        data = json.loads(raw_data)
+        logger.info(f"📊 action: {data.get('action')}")
+        logger.info(f"📊 total: {data.get('total')}")
         
         if data.get('action') == 'checkout':
             items = data.get('items', [])
@@ -80,11 +90,15 @@ async def handle_webapp_data(update: Update, context: ContextTypes.DEFAULT_TYPE)
                 reply_markup=keyboard
             )
             
-            logger.info(f"✅ Заказ на {total} ₽ отправлен")
+            logger.info(f"✅ ЗАКАЗ ОТПРАВЛЕН! Сумма: {total} ₽")
             
+    except json.JSONDecodeError as e:
+        logger.error(f"❌ JSON ОШИБКА: {e}")
+        await update.message.reply_text("❌ Ошибка формата данных")
     except Exception as e:
-        logger.error(f"❌ Ошибка: {e}")
-        await update.message.reply_text("❌ Ошибка")
+        logger.error(f"❌ ОШИБКА: {e}")
+        logger.exception(e)
+        await update.message.reply_text("❌ Ошибка обработки заказа")
 
 
 async def handle_payment(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -116,13 +130,26 @@ async def handle_payment(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 def main():
+    # ПРИНУДИТЕЛЬНО УБИВАЕМ СТАРЫЕ ПРОЦЕССЫ
+    try:
+        # Для Linux/Unix
+        with open('/tmp/bot.pid', 'w') as f:
+            f.write(str(os.getpid()))
+        logger.info(f"🔒 PID файл создан: {os.getpid()}")
+    except:
+        pass
+    
     app = Application.builder().token(BOT_TOKEN).build()
+    
     app.add_handler(CommandHandler("start", start))
     app.add_handler(MessageHandler(filters.StatusUpdate.WEB_APP_DATA, handle_webapp_data))
     app.add_handler(CallbackQueryHandler(handle_payment, pattern="^pay_"))
     
     logger.info("🚀 Бот Vintyx Shop запущен!")
-    app.run_polling()
+    logger.info(f"📌 PID: {os.getpid()}")
+    
+    # ЗАПУСКАЕМ С ОЧИСТКОЙ СТАРЫХ ОБНОВЛЕНИЙ
+    app.run_polling(drop_pending_updates=True)
 
 
 if __name__ == "__main__":
