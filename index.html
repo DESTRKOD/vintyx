@@ -28,14 +28,67 @@
             left: 0;
         }
 
+        /* ===== ГРАДИЕНТНЫЙ ФОН ДЛЯ ВСЕХ СТРАНИЦ ===== */
+        .page {
+            display: none;
+            animation: fadeUp 0.4s ease;
+            background: linear-gradient(145deg, #0A0A1A 0%, #1A1A3E 30%, #2D1B69 70%, #1A1A3E 100%);
+            min-height: 100vh;
+            padding: 16px 20px 100px;
+            border-radius: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Общие плавающие элементы для всех страниц */
+        .page::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -20%;
+            width: 70%;
+            height: 90%;
+            background: radial-gradient(circle, rgba(91, 140, 255, 0.04) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .page .floating-bg {
+            position: absolute;
+            font-size: 3rem;
+            opacity: 0.03;
+            pointer-events: none;
+            user-select: none;
+            animation: floatGem 8s ease-in-out infinite;
+        }
+        .page .floating-bg:nth-child(1) { top: 5%; right: 5%; font-size: 5rem; animation-delay: 0s; }
+        .page .floating-bg:nth-child(2) { bottom: 15%; left: 3%; font-size: 4rem; animation-delay: 2.5s; }
+        .page .floating-bg:nth-child(3) { top: 50%; right: 2%; font-size: 3rem; animation-delay: 5s; }
+        .page .floating-bg:nth-child(4) { bottom: 40%; left: 5%; font-size: 3.5rem; animation-delay: 1.5s; }
+
+        @keyframes floatGem {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(10deg); }
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .container {
             max-width: 480px;
             margin: 0 auto;
-            padding: 16px 20px 100px;
             height: 100%;
             overflow-y: auto;
             overflow-x: hidden;
             -webkit-overflow-scrolling: touch;
+            position: relative;
+            z-index: 1;
         }
 
         .container::-webkit-scrollbar {
@@ -49,123 +102,53 @@
             border-radius: 10px;
         }
 
-        .page {
-            display: none;
-            animation: fadeUp 0.4s ease;
-        }
-        .page.active {
-            display: block;
-        }
-
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Welcome Card */
-        .welcome-card {
-            background: linear-gradient(135deg, #1A1A2E 0%, #2D1B69 100%);
-            border-radius: 28px;
-            padding: 24px 24px 28px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 12px 40px rgba(91, 140, 255, 0.15);
-            margin-bottom: 28px;
-            border: 1px solid rgba(91, 140, 255, 0.1);
-        }
-        .welcome-card::before {
-            content: '';
-            position: absolute;
-            top: -40%;
-            right: -20%;
-            width: 60%;
-            height: 80%;
-            background: rgba(91, 140, 255, 0.05);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-        .welcome-card .abstract {
-            position: absolute;
-            font-size: 3rem;
-            opacity: 0.08;
-            pointer-events: none;
-            user-select: none;
-        }
-        .welcome-card .abstract:nth-child(1) { top: 5%; right: 10%; font-size: 4.5rem; transform: rotate(20deg); }
-        .welcome-card .abstract:nth-child(2) { bottom: 10%; left: 0%; font-size: 3.5rem; transform: rotate(-15deg); }
-        .welcome-card .abstract:nth-child(3) { top: 40%; right: 0%; font-size: 2.8rem; }
-
-        .welcome-header {
+        /* ===== HEADER ===== */
+        .main-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding-top: 4px;
             position: relative;
-            z-index: 1;
-            margin-bottom: 18px;
+            z-index: 2;
         }
-        .welcome-text {
-            color: white;
-            flex: 1;
+        .main-header .header-left .store-name {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.2);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
-        .welcome-text .greeting {
-            font-size: 0.85rem;
-            opacity: 0.6;
-            font-weight: 400;
-            margin-bottom: 2px;
-        }
-        .welcome-text h1 {
-            font-size: 1.8rem;
+        .main-header .header-left .greeting {
+            font-size: 1.6rem;
             font-weight: 700;
-            letter-spacing: -0.5px;
             background: linear-gradient(135deg, #7DD8FF 0%, #6675FF 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            letter-spacing: -0.5px;
         }
-        .welcome-text .sub {
-            font-size: 0.9rem;
-            opacity: 0.5;
-            font-weight: 400;
-            margin-top: 4px;
-        }
-
-        .avatar-circle {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: rgba(91, 140, 255, 0.15);
-            border: 2px solid rgba(91, 140, 255, 0.2);
+        .main-header .header-right {
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 12px;
+            padding-top: 4px;
+        }
+        .main-header .header-right .cart-btn {
             font-size: 1.5rem;
-            color: white;
-            flex-shrink: 0;
-            margin-left: 12px;
             cursor: pointer;
             transition: all 0.2s;
-        }
-        .avatar-circle:active { transform: scale(0.92); }
-
-        .buy-button {
-            background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
-            color: white;
+            opacity: 0.6;
+            background: none;
             border: none;
-            padding: 14px 28px;
-            border-radius: 16px;
-            font-size: 1rem;
-            font-weight: 700;
-            width: 100%;
-            margin-top: 14px;
-            position: relative;
-            z-index: 1;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 4px 20px rgba(91, 140, 255, 0.2);
-            letter-spacing: 0.3px;
+            color: #FFFFFF;
         }
-        .buy-button:active { transform: scale(0.97); }
+        .main-header .header-right .cart-btn:active {
+            transform: scale(0.88);
+            opacity: 1;
+        }
 
+        /* ===== SECTION TITLE ===== */
         .section-title {
             font-size: 1.1rem;
             font-weight: 700;
@@ -175,28 +158,32 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            position: relative;
+            z-index: 2;
         }
         .section-title .emoji { font-size: 1.2rem; }
 
-        /* Game Cards (Home) */
+        /* ===== GAME CARDS ===== */
         .game-scroll {
             display: flex;
             flex-direction: column;
             gap: 12px;
             margin-bottom: 24px;
+            position: relative;
+            z-index: 2;
         }
 
         .game-card {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.04);
             border-radius: 24px;
-            padding: 16px 18px;
+            padding: 14px 18px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
             cursor: pointer;
             transition: all 0.2s;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             backdrop-filter: blur(10px);
         }
         .game-card:active { transform: scale(0.98); }
@@ -205,7 +192,12 @@
             align-items: center;
             gap: 14px;
         }
-        .game-card .game-icon { font-size: 2.2rem; width: 48px; text-align: center; }
+        .game-card .game-icon {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+            border-radius: 10px;
+        }
         .game-card .game-name {
             font-size: 1rem;
             font-weight: 700;
@@ -218,16 +210,37 @@
             flex-wrap: wrap;
         }
         .game-card .game-tag {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             padding: 2px 10px;
             border-radius: 12px;
-            background: rgba(91, 140, 255, 0.1);
+            background: rgba(91, 140, 255, 0.12);
             color: #7DD8FF;
-            font-weight: 600;
+            font-weight: 500;
+        }
+        .game-card .game-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .game-card .heart-btn {
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s;
+            color: rgba(255, 255, 255, 0.15);
+            padding: 4px;
+            line-height: 1;
+        }
+        .game-card .heart-btn.active {
+            color: #FF3B6F;
+        }
+        .game-card .heart-btn:active {
+            transform: scale(1.2);
         }
         .game-card .game-arrow {
             font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.15);
             transition: all 0.2s;
         }
         .game-card:hover .game-arrow {
@@ -236,40 +249,38 @@
         }
 
         .game-card.brawl {
-            background: linear-gradient(135deg, rgba(255, 193, 7, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
-            border-color: rgba(255, 193, 7, 0.1);
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border-color: rgba(255, 193, 7, 0.08);
         }
-        .game-card.brawl .game-tag { background: rgba(255, 193, 7, 0.15); color: #FFD54F; }
+        .game-card.brawl .game-tag { background: rgba(255, 193, 7, 0.12); color: #FFD54F; }
 
         .game-card.clash {
-            background: linear-gradient(135deg, rgba(33, 150, 243, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
-            border-color: rgba(33, 150, 243, 0.1);
+            background: linear-gradient(135deg, rgba(33, 150, 243, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border-color: rgba(33, 150, 243, 0.08);
         }
-        .game-card.clash .game-tag { background: rgba(33, 150, 243, 0.15); color: #64B5F6; }
+        .game-card.clash .game-tag { background: rgba(33, 150, 243, 0.12); color: #64B5F6; }
 
         .game-card.telegram {
-            background: linear-gradient(135deg, rgba(91, 140, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
-            border-color: rgba(91, 140, 255, 0.1);
+            background: linear-gradient(135deg, rgba(91, 140, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border-color: rgba(91, 140, 255, 0.08);
         }
-        .game-card.telegram .game-tag { background: rgba(91, 140, 255, 0.15); color: #7DD8FF; }
+        .game-card.telegram .game-tag { background: rgba(91, 140, 255, 0.12); color: #7DD8FF; }
 
-        /* ===== GAME PAGE (Brawl Stars) ===== */
-        .game-page {
-            padding: 0;
-        }
-
-        .game-header {
+        /* ===== GAME PAGE ===== */
+        .game-page .game-header {
             display: flex;
             align-items: center;
             gap: 12px;
             margin-bottom: 16px;
             padding-top: 4px;
+            position: relative;
+            z-index: 2;
         }
-        .game-header .back-btn {
+        .game-page .game-header .back-btn {
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.06);
             border: 1px solid rgba(255, 255, 255, 0.08);
             display: flex;
             align-items: center;
@@ -280,9 +291,9 @@
             color: #FFFFFF;
             flex-shrink: 0;
         }
-        .game-header .back-btn:active { transform: scale(0.9); background: rgba(255, 255, 255, 0.1); }
+        .game-page .game-header .back-btn:active { transform: scale(0.9); background: rgba(255, 255, 255, 0.1); }
 
-        .game-header .game-title {
+        .game-page .game-header .game-title {
             font-size: 1.4rem;
             font-weight: 700;
             color: #FFFFFF;
@@ -290,9 +301,13 @@
             align-items: center;
             gap: 10px;
         }
-        .game-header .game-title .icon { font-size: 1.6rem; }
+        .game-page .game-header .game-title .icon {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+        }
 
-        .categories {
+        .game-page .categories {
             display: flex;
             gap: 8px;
             margin-bottom: 16px;
@@ -300,14 +315,16 @@
             scrollbar-width: none;
             -webkit-overflow-scrolling: touch;
             padding: 2px 0;
+            position: relative;
+            z-index: 2;
         }
-        .categories::-webkit-scrollbar { display: none; }
+        .game-page .categories::-webkit-scrollbar { display: none; }
 
-        .category-btn {
+        .game-page .category-btn {
             padding: 6px 14px;
             border-radius: 18px;
             border: 1px solid rgba(255, 255, 255, 0.08);
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.04);
             color: rgba(255, 255, 255, 0.5);
             font-size: 0.75rem;
             font-weight: 500;
@@ -317,52 +334,55 @@
             font-family: inherit;
             flex-shrink: 0;
         }
-        .category-btn:active { transform: scale(0.95); }
-        .category-btn.active {
+        .game-page .category-btn:active { transform: scale(0.95); }
+        .game-page .category-btn.active {
             background: rgba(91, 140, 255, 0.15);
             border-color: rgba(91, 140, 255, 0.3);
             color: #7DD8FF;
         }
 
-        .products-grid {
+        .game-page .products-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
             margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
         }
 
-        .product-card {
-            background: rgba(255, 255, 255, 0.03);
+        .game-page .product-card {
+            background: rgba(255, 255, 255, 0.04);
             border-radius: 18px;
             padding: 12px 10px 10px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
             transition: all 0.2s;
             cursor: pointer;
+            backdrop-filter: blur(10px);
         }
-        .product-card:active { transform: scale(0.96); }
+        .game-page .product-card:active { transform: scale(0.96); }
 
-        .product-card .prod-icon {
+        .game-page .product-card .prod-icon {
             font-size: 2rem;
             margin-bottom: 4px;
         }
-        .product-card .prod-name {
+        .game-page .product-card .prod-name {
             font-size: 0.8rem;
             font-weight: 600;
             color: #FFFFFF;
             margin-bottom: 1px;
             line-height: 1.2;
         }
-        .product-card .prod-sub {
+        .game-page .product-card .prod-sub {
             font-size: 0.6rem;
             color: rgba(255, 255, 255, 0.2);
             margin-bottom: 6px;
         }
 
-        .product-card .prod-btn {
+        .game-page .product-card .prod-btn {
             background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
             color: white;
             border: none;
@@ -380,59 +400,66 @@
             align-items: center;
             gap: 0px;
         }
-        .product-card .prod-btn:active { transform: scale(0.95); }
-        .product-card .prod-btn .price {
+        .game-page .product-card .prod-btn:active { transform: scale(0.95); }
+        .game-page .product-card .prod-btn .price {
             font-size: 0.8rem;
             font-weight: 700;
         }
-        .product-card .prod-btn .cart-text {
+        .game-page .product-card .prod-btn .cart-text {
             font-size: 0.45rem;
             font-weight: 400;
             opacity: 0.5;
             letter-spacing: 0.2px;
         }
 
-        /* Profile Page */
-        .profile-page { padding: 0; background: transparent; }
-
-        .profile-header {
+        /* ===== PROFILE PAGE ===== */
+        .profile-page .profile-header {
             display: flex;
             align-items: center;
             gap: 16px;
-            margin-bottom: 28px;
-            padding-top: 8px;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 2;
         }
-        .profile-avatar {
+        .profile-page .profile-avatar {
             width: 64px;
             height: 64px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.15);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 2rem;
             color: white;
             flex-shrink: 0;
-            box-shadow: 0 4px 16px rgba(91, 140, 255, 0.3);
         }
-        .profile-info .name {
+        .profile-page .profile-info .name {
             font-size: 1.3rem;
             font-weight: 700;
             color: #FFFFFF;
-            margin-bottom: 2px;
         }
-        .profile-info .username {
+        .profile-page .profile-info .username {
             font-size: 0.85rem;
             color: rgba(255, 255, 255, 0.4);
         }
+        .profile-page .profile-info .sub {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 4px;
+        }
 
-        .profile-balance {
-            background: rgba(91, 140, 255, 0.05);
+        .profile-page .profile-balance {
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 20px;
             padding: 20px;
             margin-bottom: 16px;
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
         }
-        .profile-balance .label {
+        .profile-page .profile-balance .label {
             font-size: 0.75rem;
             color: rgba(255, 255, 255, 0.4);
             text-transform: uppercase;
@@ -440,7 +467,7 @@
             font-weight: 600;
             margin-bottom: 4px;
         }
-        .profile-balance .amount {
+        .profile-page .profile-balance .amount {
             font-size: 2rem;
             font-weight: 700;
             background: linear-gradient(135deg, #7DD8FF 0%, #6675FF 100%);
@@ -448,14 +475,14 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        .profile-balance .currency {
+        .profile-page .profile-balance .currency {
             font-size: 1rem;
             color: rgba(255, 255, 255, 0.5);
             font-weight: 400;
             margin-left: 4px;
         }
 
-        .profile-button {
+        .profile-page .profile-button {
             background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
             color: white;
             border: none;
@@ -467,12 +494,18 @@
             cursor: pointer;
             transition: all 0.2s;
             box-shadow: 0 4px 20px rgba(91, 140, 255, 0.2);
-            margin-bottom: 28px;
+            margin-bottom: 24px;
+            position: relative;
+            z-index: 2;
         }
-        .profile-button:active { transform: scale(0.97); }
+        .profile-page .profile-button:active { transform: scale(0.97); }
 
-        .profile-section { margin-top: 24px; }
-        .profile-section .section-label {
+        .profile-page .profile-section {
+            margin-top: 20px;
+            position: relative;
+            z-index: 2;
+        }
+        .profile-page .profile-section .section-label {
             font-size: 0.75rem;
             color: rgba(255, 255, 255, 0.3);
             text-transform: uppercase;
@@ -480,35 +513,82 @@
             font-weight: 600;
             margin-bottom: 12px;
         }
-        .profile-empty {
+        .profile-page .profile-empty {
             background: rgba(255, 255, 255, 0.02);
             border-radius: 16px;
-            padding: 32px 20px;
+            padding: 28px 20px;
             text-align: center;
+            border: 1px dashed rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(5px);
         }
-        .profile-empty .empty-icon { font-size: 2rem; margin-bottom: 8px; opacity: 0.3; }
-        .profile-empty .empty-text {
-            color: rgba(255, 255, 255, 0.2);
+        .profile-page .profile-empty .empty-icon { font-size: 2rem; margin-bottom: 8px; opacity: 0.3; }
+        .profile-page .profile-empty .empty-text {
+            color: rgba(255, 255, 255, 0.15);
             font-size: 0.85rem;
             font-weight: 400;
         }
 
-        .info-page { padding: 0; background: transparent; }
+        /* ===== INFO PAGE ===== */
+        .info-page .info-card {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 28px;
+            padding: 40px 24px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 2;
+        }
+        .info-page .info-card .info-icon { font-size: 3rem; margin-bottom: 12px; }
+        .info-page .info-card .info-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 4px;
+        }
+        .info-page .info-card .info-version {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.15);
+            margin-bottom: 16px;
+        }
+        .info-page .info-card .info-desc {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .info-page .info-card .info-footer {
+            padding: 16px;
+            background: rgba(91, 140, 255, 0.04);
+            border-radius: 16px;
+            border: 1px solid rgba(91, 140, 255, 0.06);
+        }
+        .info-page .info-card .info-footer .label {
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.15);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .info-page .info-card .info-footer .team {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.2);
+            margin-top: 4px;
+        }
 
-        /* Navigation Island */
+        /* ===== NAVIGATION ISLAND ===== */
         .bottom-nav {
             position: fixed;
             bottom: 24px;
             left: 50%;
             transform: translateX(-50%);
             background: rgba(20, 20, 35, 0.85);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
             border-radius: 32px;
             padding: 8px 16px;
             display: flex;
             gap: 6px;
-            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 8px 48px rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.05);
             z-index: 1000;
             max-width: 360px;
@@ -547,47 +627,43 @@
             margin-top: 1px;
         }
         .nav-item.active .nav-icon {
-            background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
-            color: white;
-            border-radius: 12px;
-            padding: 6px 12px;
             opacity: 1;
-            box-shadow: 0 4px 16px rgba(91, 140, 255, 0.3);
             animation: navPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
+        .nav-item.active .nav-label { opacity: 0.7; }
+        .nav-item:active { transform: scale(0.88); }
+
         @keyframes navPop {
             0% { transform: scale(0.8); }
             50% { transform: scale(1.15); }
             100% { transform: scale(1); }
         }
-        .nav-item.active .nav-label { opacity: 0.7; }
-        .nav-item:active { transform: scale(0.88); }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- PAGE: HOME -->
-        <div id="pageHome" class="page active">
-            <div class="welcome-card">
-                <span class="abstract">💎</span>
-                <span class="abstract">🎮</span>
-                <span class="abstract">⭐</span>
-                <div class="welcome-header">
-                    <div class="welcome-text">
-                        <div class="greeting">👋 Привет,</div>
-                        <h1>Vintyx</h1>
-                        <div class="sub">Игровой донат <br>быстро и безопасно</div>
-                    </div>
-                    <div class="avatar-circle" onclick="navigateTo('profile')">👤</div>
+    <!-- PAGE: HOME -->
+    <div id="pageHome" class="page active">
+        <span class="floating-bg">💎</span>
+        <span class="floating-bg">🎮</span>
+        <span class="floating-bg">⭐</span>
+        <span class="floating-bg">✨</span>
+
+        <div class="container">
+            <div class="main-header">
+                <div class="header-left">
+                    <div class="store-name">Vintyx Store</div>
+                    <div class="greeting">👋 Привет, Vintyx</div>
                 </div>
-                <button class="buy-button">🔥 Купить сейчас</button>
+                <div class="header-right">
+                    <button class="cart-btn" onclick="if(tg)tg.showAlert('🛒 Корзина\nЗдесь будут ваши товары')">🛒</button>
+                </div>
             </div>
 
             <div class="section-title"><span class="emoji">🎮</span> Игры</div>
             <div class="game-scroll">
                 <div class="game-card brawl" onclick="openGame('brawl')">
                     <div class="game-left">
-                        <span class="game-icon">💎</span>
+                        <img class="game-icon" src="https://i.imgur.com/3Zm7Tr0.png" alt="Brawl Stars">
                         <div class="game-info">
                             <div class="game-name">Brawl Stars</div>
                             <div class="game-tags">
@@ -596,12 +672,15 @@
                             </div>
                         </div>
                     </div>
-                    <span class="game-arrow">→</span>
+                    <div class="game-right">
+                        <button class="heart-btn" data-game="brawl" onclick="event.stopPropagation();toggleHeart('brawl')">♡</button>
+                        <span class="game-arrow">→</span>
+                    </div>
                 </div>
 
                 <div class="game-card clash" onclick="showComingSoon('Clash Royale')">
                     <div class="game-left">
-                        <span class="game-icon">👑</span>
+                        <img class="game-icon" src="https://i.imgur.com/B4idahX.png" alt="Clash Royale">
                         <div class="game-info">
                             <div class="game-name">Clash Royale</div>
                             <div class="game-tags">
@@ -610,12 +689,15 @@
                             </div>
                         </div>
                     </div>
-                    <span class="game-arrow">→</span>
+                    <div class="game-right">
+                        <button class="heart-btn" data-game="clash" onclick="event.stopPropagation();toggleHeart('clash')">♡</button>
+                        <span class="game-arrow">→</span>
+                    </div>
                 </div>
 
                 <div class="game-card telegram" onclick="showComingSoon('Telegram')">
                     <div class="game-left">
-                        <span class="game-icon">✈️</span>
+                        <img class="game-icon" src="https://i.imgur.com/eM5u3Td.png" alt="Telegram">
                         <div class="game-info">
                             <div class="game-name">Telegram</div>
                             <div class="game-tags">
@@ -624,17 +706,26 @@
                             </div>
                         </div>
                     </div>
-                    <span class="game-arrow">→</span>
+                    <div class="game-right">
+                        <button class="heart-btn" data-game="telegram" onclick="event.stopPropagation();toggleHeart('telegram')">♡</button>
+                        <span class="game-arrow">→</span>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- PAGE: BRAWL STARS -->
-        <div id="pageBrawl" class="page game-page">
+    <!-- PAGE: BRAWL STARS -->
+    <div id="pageBrawl" class="page game-page">
+        <span class="floating-bg">💎</span>
+        <span class="floating-bg">⚔️</span>
+        <span class="floating-bg">🏆</span>
+
+        <div class="container">
             <div class="game-header">
                 <button class="back-btn" onclick="closeGame()">←</button>
                 <div class="game-title">
-                    <span class="icon">💎</span>
+                    <img class="icon" src="https://i.imgur.com/3Zm7Tr0.png" alt="Brawl Stars">
                     Brawl Stars
                 </div>
             </div>
@@ -649,14 +740,22 @@
 
             <div class="products-grid" id="productsGrid"></div>
         </div>
+    </div>
 
-        <!-- PAGE: PROFILE -->
-        <div id="pageProfile" class="page profile-page">
+    <!-- PAGE: PROFILE -->
+    <div id="pageProfile" class="page profile-page">
+        <span class="floating-bg">💎</span>
+        <span class="floating-bg">🎮</span>
+        <span class="floating-bg">⭐</span>
+        <span class="floating-bg">✨</span>
+
+        <div class="container">
             <div class="profile-header">
                 <div class="profile-avatar">👤</div>
                 <div class="profile-info">
                     <div class="name">Vintyx</div>
                     <div class="username">@vintyx_shop</div>
+                    <div class="sub">Игровой донат быстро и безопасно</div>
                 </div>
             </div>
 
@@ -688,25 +787,32 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- PAGE: INFO -->
-        <div id="pageInfo" class="page info-page">
-            <div style="text-align: center; padding: 20px 0;">
-                <div style="font-size: 3rem; margin-bottom: 12px;">ℹ️</div>
-                <div style="font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; color: #FFFFFF;">Vintyx Store</div>
-                <div style="color: rgba(255,255,255,0.3); font-size: 0.85rem;">v1.0.0</div>
-                <div style="margin-top: 16px; color: rgba(255,255,255,0.4); font-size: 0.9rem; line-height: 1.6;">
-                    Премиальный игровой магазин<br>
+    <!-- PAGE: INFO -->
+    <div id="pageInfo" class="page info-page">
+        <span class="floating-bg">ℹ️</span>
+        <span class="floating-bg">✨</span>
+        <span class="floating-bg">💎</span>
+
+        <div class="container">
+            <div class="info-card">
+                <div class="info-icon">ℹ️</div>
+                <div class="info-title">Vintyx Store</div>
+                <div class="info-version">v1.0.0</div>
+                <div class="info-desc">
+                    Премиальный игровой магазин.<br>
                     Быстро. Безопасно. Надёжно.
                 </div>
-                <div style="margin-top: 20px; padding: 16px; background: rgba(91,140,255,0.05); border-radius: 16px;">
-                    <div style="color: rgba(255,255,255,0.3); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px;">Разработано с ❤️</div>
-                    <div style="color: rgba(255,255,255,0.2); font-size: 0.8rem; margin-top: 4px;">Vintyx Team</div>
+                <div class="info-footer">
+                    <div class="label">Разработано с ❤️</div>
+                    <div class="team">Vintyx Team</div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- NAVIGATION ISLAND -->
     <nav class="bottom-nav">
         <button class="nav-item" data-page="profile" onclick="navigateTo('profile')">
             <span class="nav-icon">👤</span>
@@ -731,6 +837,44 @@
             tg.setHeaderColor('#0A0A0F');
         }
 
+        // ===== HEARTS (Favorites) =====
+        function getFavorites() {
+            try {
+                return JSON.parse(localStorage.getItem('vintyx_favorites')) || {};
+            } catch {
+                return {};
+            }
+        }
+
+        function saveFavorites(favorites) {
+            localStorage.setItem('vintyx_favorites', JSON.stringify(favorites));
+        }
+
+        function toggleHeart(game) {
+            const favorites = getFavorites();
+            favorites[game] = !favorites[game];
+            saveFavorites(favorites);
+            updateHearts();
+            if (tg && tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
+        }
+
+        function updateHearts() {
+            const favorites = getFavorites();
+            document.querySelectorAll('.heart-btn').forEach(btn => {
+                const game = btn.dataset.game;
+                if (favorites[game]) {
+                    btn.textContent = '♥';
+                    btn.classList.add('active');
+                } else {
+                    btn.textContent = '♡';
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        // ===== NAVIGATION =====
         const pages = {
             home: document.getElementById('pageHome'),
             profile: document.getElementById('pageProfile'),
@@ -753,12 +897,8 @@
 
             navItems.forEach(item => {
                 item.classList.remove('active');
-                if (item.dataset.page === 'home') {
+                if (item.dataset.page === pageName) {
                     item.classList.add('active');
-                    const icon = item.querySelector('.nav-icon');
-                    icon.style.animation = 'none';
-                    icon.offsetHeight;
-                    icon.style.animation = 'navPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
                 }
             });
 
@@ -782,15 +922,11 @@
                 });
                 pages.brawl.classList.add('active');
 
-                navItems.forEach(item => {
-                    item.classList.remove('active');
-                    if (item.dataset.page === 'home') {
-                        item.classList.add('active');
-                    }
-                });
-
                 if (tg) tg.BackButton.show();
                 renderProducts('all');
+                if (tg && tg.HapticFeedback) {
+                    tg.HapticFeedback.impactOccurred('medium');
+                }
             }
         }
 
@@ -817,6 +953,7 @@
 
         function showComingSoon(gameName) {
             if (tg) {
+                tg.HapticFeedback?.impactOccurred('light');
                 tg.showAlert(`🎮 ${gameName}\nРаздел скоро появится!`);
             }
         }
@@ -835,6 +972,21 @@
         }
 
         window.addEventListener('hashchange', handleHash);
+
+        // ===== TELEGRAM BACK BUTTON =====
+        if (tg) {
+            tg.BackButton.onClick(() => {
+                const currentPage = document.querySelector('.page.active');
+                if (currentPage && currentPage.id === 'pageBrawl') {
+                    closeGame();
+                } else {
+                    const hash = window.location.hash.replace('#', '');
+                    if (hash && hash !== 'home' && hash !== '') {
+                        navigateTo('home');
+                    }
+                }
+            });
+        }
 
         // ===== BRAWL STARS DATA =====
         const products = {
@@ -901,8 +1053,7 @@
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
-                const cat = this.dataset.cat;
-                renderProducts(cat);
+                renderProducts(this.dataset.cat);
                 if (tg && tg.HapticFeedback) {
                     tg.HapticFeedback.impactOccurred('light');
                 }
@@ -918,30 +1069,10 @@
             }
         }
 
-        document.querySelector('.buy-button').addEventListener('click', function() {
-            if (tg && tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('heavy');
-            }
-            if (tg) {
-                tg.showAlert('🚀 Перейти к оформлению?');
-            }
-        });
-
-        if (tg) {
-            tg.BackButton.onClick(() => {
-                const currentPage = document.querySelector('.page.active');
-                if (currentPage && currentPage.id === 'pageBrawl') {
-                    closeGame();
-                } else {
-                    const hash = window.location.hash.replace('#', '');
-                    if (hash && hash !== 'home' && hash !== '') {
-                        navigateTo('home');
-                    }
-                }
-            });
-        }
-
+        // ===== INIT =====
+        updateHearts();
         handleHash();
+        renderProducts('all');
     </script>
 </body>
 </html>
