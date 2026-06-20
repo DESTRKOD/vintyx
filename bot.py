@@ -1,6 +1,5 @@
 import logging
 import json
-import asyncio
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
 from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters, CallbackQueryHandler
 
@@ -127,21 +126,18 @@ async def handle_payment(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-async def main():
+def main():
     app = Application.builder().token(BOT_TOKEN).build()
     
     app.add_handler(CommandHandler("start", start))
     app.add_handler(MessageHandler(filters.StatusUpdate.WEB_APP_DATA, handle_webapp_data))
     app.add_handler(CallbackQueryHandler(handle_payment, pattern="^pay_"))
     
-    # УДАЛЯЕМ WEBHOOK
-    logger.info("🗑️ Удаляем старый webhook...")
-    await app.bot.delete_webhook(drop_pending_updates=True)
-    logger.info("✅ Webhook удалён!")
-    
     logger.info("🚀 Бот Vintyx Shop запущен в режиме polling!")
-    await app.run_polling(drop_pending_updates=True)
+    
+    # ЗАПУСКАЕМ БЕЗ asyncio.run() - просто напрямую
+    app.run_polling(drop_pending_updates=True)
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
