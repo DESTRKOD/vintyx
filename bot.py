@@ -1,22 +1,16 @@
 import logging
 import json
-from flask import Flask, request, jsonify
+import asyncio
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
 from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters, CallbackQueryHandler
-import asyncio
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 BOT_TOKEN = "8613566197:AAFZSc9JBjTY7POUQJLfUaceZom4L_cUGFA"
+
 PIN_ID = "5796440171364749940"
 GEM_ID = "5807465992363710697"
-
-# СОЗДАЁМ FLASK ПРИЛОЖЕНИЕ
-app_flask = Flask(__name__)
-
-# СОЗДАЁМ TELEGRAM БОТА
-telegram_app = Application.builder().token(BOT_TOKEN).build()
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -53,7 +47,7 @@ async def handle_webapp_data(update: Update, context: ContextTypes.DEFAULT_TYPE)
     
     try:
         raw_data = update.message.web_app_data.data
-        logger.info(f"📦 RAW DATA: {raw_data}")
+        logger.info(f"📦 RAW DATA: {raw_data[:200]}...")
         
         data = json.loads(raw_data)
         logger.info(f"📊 action: {data.get('action')}")
@@ -133,73 +127,21 @@ async def handle_payment(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-# НАСТРАИВАЕМ ОБРАБОТЧИКИ
-telegram_app.add_handler(CommandHandler("start", start))
-telegram_app.add_handler(MessageHandler(filters.StatusUpdate.WEB_APP_DATA, handle_webapp_data))
-telegram_app.add_handler(CallbackQueryHandler(handle_payment, pattern="^pay_"))
-
-
-# FLASK ЭНДПОИНТ ДЛЯ WEBHOOK
-@app_flask.route(f'/{BOT_TOKEN}', methods=['POST'])
-def webhook():
-    """Принимает обновления от Telegram"""
-    try:
-        # Получаем JSON из запроса
-        json_data = request.get_json(force=True)
-        logger.info("📩 Webhook получил данные")
-        
-        # Создаём Update из JSON
-        update = Update.de_json(json_data, telegram_app.bot)
-        
-        # Обрабатываем обновление (синхронно)
-        asyncio.run(telegram_app.process_update(update))
-        
-        return jsonify({"status": "ok"}), 200
-    except Exception as e:
-        logger.error(f"❌ Ошибка в webhook: {e}")
-        logger.exception(e)
-        return jsonify({"error": str(e)}), 500
-
-
-@app_flask.route('/health', methods=['GET'])
-def health():
-    """Проверка здоровья сервиса"""
-    return jsonify({"status": "ok"}), 200
-
-
-@app_flask.route('/', methods=['GET'])
-def index():
-    return "Bot is running!", 200
-
-
-def set_webhook():
-    """Устанавливает webhook при запуске"""
-    webhook_url = f"https://vintyxbot-destr.waw0.amvera.tech/{BOT_TOKEN}"
+async def main():
+    app = Application.builder().token(BOT_TOKEN).build()
     
-    # Удаляем старый webhook
-    import requests
-    requests.get(f"https://api.telegram.org/bot{BOT_TOKEN}/deleteWebhook")
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(MessageHandler(filters.StatusUpdate.WEB_APP_DATA, handle_webapp_data))
+    app.add_handler(CallbackQueryHandler(handle_payment, pattern="^pay_"))
     
-    # Устанавливаем новый
-    response = requests.post(
-        f"https://api.telegram.org/bot{BOT_TOKEN}/setWebhook",
-        json={"url": webhook_url, "drop_pending_updates": True}
-    )
+    # УДАЛЯЕМ WEBHOOK
+    logger.info("🗑️ Удаляем старый webhook...")
+    await app.bot.delete_webhook(drop_pending_updates=True)
+    logger.info("✅ Webhook удалён!")
     
-    logger.info(f"📋 Ответ API: {response.json()}")
-    
-    if response.json().get('ok'):
-        logger.info(f"✅ Webhook установлен: {webhook_url}")
-    else:
-        logger.error(f"❌ Ошибка установки webhook: {response.json()}")
+    logger.info("🚀 Бот Vintyx Shop запущен в режиме polling!")
+    await app.run_polling(drop_pending_updates=True)
 
 
 if __name__ == "__main__":
-    # Устанавливаем webhook
-    set_webhook()
-    
-    # Запускаем Flask
-    logger.info("🚀 Бот Vintyx Shop запущен на webhook!")
-    logger.info(f"🔗 URL: https://vintyxbot-destr.waw0.amvera.tech/{BOT_TOKEN}")
-    
-    app_flask.run(host='0.0.0.0', port=8080)
+    asyncio.run(main())
