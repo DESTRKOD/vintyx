@@ -162,7 +162,6 @@
             overflow: hidden;
         }
 
-        /* Анимация только когда позиция меняется */
         .game-card.moving-up {
             animation: slideUp 0.5s ease forwards;
         }
@@ -172,25 +171,13 @@
         }
 
         @keyframes slideUp {
-            0% {
-                transform: translateY(0);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-30px);
-                opacity: 1;
-            }
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-30px); opacity: 1; }
         }
 
         @keyframes slideDown {
-            0% {
-                transform: translateY(0);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(30px);
-                opacity: 1;
-            }
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(30px); opacity: 1; }
         }
 
         .game-card:active { transform: scale(0.98); }
@@ -681,47 +668,15 @@
                 </div>
             </div>
 
-            <div class="categories">
-                <button class="category-btn active" data-cat="all">Все</button>
-                <button class="category-btn" data-cat="gems">Гемы</button>
-                <button class="category-btn" data-cat="pass">Brawl Pass</button>
-                <button class="category-btn" data-cat="store">Суперселл Стор</button>
-                <button class="category-btn" data-cat="skins">Матчерино</button>
+            <div class="categories" id="brawlCategories">
+                <button class="category-btn active" data-cat="all" data-game="brawl">Все</button>
+                <button class="category-btn" data-cat="gems" data-game="brawl">Гемы</button>
+                <button class="category-btn" data-cat="pass" data-game="brawl">Brawl Pass</button>
+                <button class="category-btn" data-cat="store" data-game="brawl">Суперселл Стор</button>
+                <button class="category-btn" data-cat="skins" data-game="brawl">Матчерино</button>
             </div>
 
             <div class="products-grid" id="productsGrid"></div>
-        </div>
-    </div>
-
-    <!-- PAGE: CLASH ROYALE (заглушка) -->
-    <div id="pageClash" class="page game-page">
-        <span class="floating-bg">👑</span>
-        <span class="floating-bg">⚔️</span>
-        <span class="floating-bg">🏆</span>
-
-        <div class="content">
-            <div class="game-header">
-                <button class="back-btn" onclick="closeGame()">←</button>
-                <div class="game-title">
-                    <img class="icon" src="https://i.imgur.com/B4idahX.png" alt="Clash Royale">
-                    Clash Royale
-                </div>
-            </div>
-
-            <div class="categories">
-                <button class="category-btn active" data-cat="all">Все</button>
-                <button class="category-btn" data-cat="gems">Кристаллы</button>
-                <button class="category-btn" data-cat="pass">Pass Royale</button>
-                <button class="category-btn" data-cat="store">Суперселл Стор</button>
-                <button class="category-btn" data-cat="emotes">Эмодзи</button>
-            </div>
-
-            <div class="products-grid" id="clashProductsGrid">
-                <div style="grid-column: 1/-1; text-align: center; padding: 40px 0; color: rgba(255,255,255,0.2);">
-                    <div style="font-size: 2rem; margin-bottom: 8px;">👑</div>
-                    <div>Clash Royale — скоро!</div>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -836,7 +791,7 @@
                 icon: 'https://i.imgur.com/B4idahX.png',
                 tags: ['Кристаллы', 'Pass Royale'],
                 cardClass: 'clash',
-                pageId: 'pageClash'
+                pageId: null
             },
             {
                 id: 'telegram',
@@ -865,14 +820,11 @@
             const favorites = getFavorites();
             const newState = !favorites[gameId];
             
-            // Запоминаем старую позицию игры
             const oldIndex = gamesData.findIndex(g => g.id === gameId);
-            const oldFavState = favorites[gameId] || false;
             
             favorites[gameId] = newState;
             saveFavorites(favorites);
 
-            // Находим карточку
             const cards = document.querySelectorAll('.game-card');
             let targetCard = null;
             cards.forEach(card => {
@@ -886,11 +838,6 @@
                 heartBtn.classList.toggle('active');
                 heartBtn.textContent = newState ? '♥' : '♡';
 
-                // Проверяем, меняется ли позиция
-                // Если игра была избранной и стала не избранной — она опускается вниз
-                // Если игра была не избранной и стала избранной — она поднимается вверх
-                // Но если игра уже была наверху (избранная) и остаётся избранной — позиция не меняется
-                
                 const sortedGames = [...gamesData].sort((a, b) => {
                     const aFav = favorites[a.id] || false;
                     const bFav = favorites[b.id] || false;
@@ -899,13 +846,9 @@
                 
                 const newIndex = sortedGames.findIndex(g => g.id === gameId);
                 
-                // Если позиция изменилась — анимируем
                 if (oldIndex !== newIndex) {
-                    // Определяем направление: если индекс уменьшился — поднимается вверх
                     const isMovingUp = newIndex < oldIndex;
                     targetCard.classList.remove('moving-up', 'moving-down');
-                    
-                    // Принудительно перезапускаем анимацию
                     void targetCard.offsetWidth;
                     
                     if (isMovingUp) {
@@ -919,7 +862,6 @@
                         renderGames();
                     }, 500);
                 } else {
-                    // Позиция не изменилась — просто обновляем список без анимации
                     setTimeout(() => {
                         renderGames();
                     }, 100);
@@ -974,19 +916,84 @@
             });
         }
 
+        // ===== BRAWL STARS DATA =====
+        const productsData = {
+            gems: [
+                { id: 1, icon: '💎', name: '80 Gems', price: '99 ₽' },
+                { id: 2, icon: '💎', name: '170 Gems', price: '199 ₽' },
+                { id: 3, icon: '💎', name: '360 Gems', price: '399 ₽' },
+                { id: 4, icon: '💎', name: '950 Gems', price: '999 ₽' },
+            ],
+            pass: [
+                { id: 5, icon: '🎟️', name: 'Brawl Pass', price: '499 ₽' },
+                { id: 6, icon: '🎟️', name: 'Brawl Pass+', price: '799 ₽' },
+            ],
+            store: [
+                { id: 7, icon: '🏪', name: 'Megabox', price: '149 ₽' },
+                { id: 8, icon: '🏪', name: 'Hypercharge', price: '299 ₽' },
+                { id: 9, icon: '🏪', name: 'Exclusive Skin', price: '599 ₽' },
+            ],
+            skins: [
+                { id: 10, icon: '🎨', name: 'Virus 8-Bit', price: '399 ₽' },
+                { id: 11, icon: '🎨', name: 'Dark Angel Colt', price: '499 ₽' },
+                { id: 12, icon: '🎨', name: 'Pirate Poco', price: '299 ₽' },
+            ]
+        };
+
+        function renderProducts(category) {
+            const grid = document.getElementById('productsGrid');
+            if (!grid) {
+                console.log('productsGrid not found');
+                return;
+            }
+            
+            grid.innerHTML = '';
+
+            let items = [];
+            if (category === 'all') {
+                items = [...productsData.gems, ...productsData.pass, ...productsData.store, ...productsData.skins];
+            } else {
+                items = productsData[category] || [];
+            }
+
+            if (items.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 40px 0; color: rgba(255,255,255,0.2);">
+                        <div style="font-size: 2rem; margin-bottom: 8px;">📭</div>
+                        <div>Товаров в этой категории пока нет</div>
+                    </div>
+                `;
+                return;
+            }
+
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <div class="prod-icon">${item.icon}</div>
+                    <div class="prod-name">${item.name}</div>
+                    <div class="prod-sub">Brawl Stars</div>
+                    <button class="prod-btn" onclick="buyProduct('${item.name}', '${item.price}')">
+                        <span class="price">${item.price}</span>
+                        <span class="cart-text">+ добавить в корзину</span>
+                    </button>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
         // ===== NAVIGATION =====
         const pages = {
             home: document.getElementById('pageHome'),
             profile: document.getElementById('pageProfile'),
             info: document.getElementById('pageInfo'),
-            brawl: document.getElementById('pageBrawl'),
-            clash: document.getElementById('pageClash')
+            brawl: document.getElementById('pageBrawl')
         };
 
         const navItems = document.querySelectorAll('.nav-item');
 
         function navigateTo(pageName) {
-            if (pageName === 'brawl' || pageName === 'clash') return;
+            if (pageName === 'brawl') return;
 
             Object.keys(pages).forEach(key => {
                 pages[key].classList.remove('active');
@@ -1017,16 +1024,20 @@
         }
 
         function openGame(pageId) {
-            if (pageId) {
+            if (pageId === 'pageBrawl') {
+                // Показываем страницу Brawl Stars
                 Object.keys(pages).forEach(key => {
                     pages[key].classList.remove('active');
                 });
-                pages[pageId].classList.add('active');
+                pages.brawl.classList.add('active');
 
                 if (tg) tg.BackButton.show();
-                if (pageId === 'pageBrawl') {
+                
+                // Принудительно рендерим товары
+                setTimeout(function() {
                     renderProducts('all');
-                }
+                }, 50);
+                
                 if (tg && tg.HapticFeedback) {
                     tg.HapticFeedback.impactOccurred('medium');
                 }
@@ -1061,11 +1072,32 @@
             }
         }
 
+        function buyProduct(name, price) {
+            if (tg && tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('medium');
+            }
+            if (tg) {
+                tg.showAlert(`🛒 ${name}\nСумма: ${price}\nПерейти к оплате?`);
+            }
+        }
+
+        // ===== CATEGORY FILTER =====
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('category-btn') && e.target.dataset.game === 'brawl') {
+                document.querySelectorAll('#brawlCategories .category-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                renderProducts(e.target.dataset.cat);
+                if (tg && tg.HapticFeedback) {
+                    tg.HapticFeedback.impactOccurred('light');
+                }
+            }
+        });
+
+        // ===== HASH ROUTING =====
         function handleHash() {
             const hash = window.location.hash.replace('#', '');
-            if (hash === 'brawl' || hash === 'clash') {
-                const pageId = hash === 'brawl' ? 'pageBrawl' : 'pageClash';
-                openGame(pageId);
+            if (hash === 'brawl') {
+                openGame('pageBrawl');
                 return;
             }
             if (hash && pages[hash]) {
@@ -1081,7 +1113,7 @@
         if (tg) {
             tg.BackButton.onClick(() => {
                 const currentPage = document.querySelector('.page.active');
-                if (currentPage && (currentPage.id === 'pageBrawl' || currentPage.id === 'pageClash')) {
+                if (currentPage && currentPage.id === 'pageBrawl') {
                     closeGame();
                 } else {
                     const hash = window.location.hash.replace('#', '');
@@ -1092,92 +1124,15 @@
             });
         }
 
-        // ===== BRAWL STARS DATA =====
-        const products = {
-            gems: [
-                { id: 1, icon: '💎', name: '80 Gems', price: '99 ₽' },
-                { id: 2, icon: '💎', name: '170 Gems', price: '199 ₽' },
-                { id: 3, icon: '💎', name: '360 Gems', price: '399 ₽' },
-                { id: 4, icon: '💎', name: '950 Gems', price: '999 ₽' },
-            ],
-            pass: [
-                { id: 5, icon: '🎟️', name: 'Brawl Pass', price: '499 ₽' },
-                { id: 6, icon: '🎟️', name: 'Brawl Pass+', price: '799 ₽' },
-            ],
-            store: [
-                { id: 7, icon: '🏪', name: 'Megabox', price: '149 ₽' },
-                { id: 8, icon: '🏪', name: 'Hypercharge', price: '299 ₽' },
-                { id: 9, icon: '🏪', name: 'Exclusive Skin', price: '599 ₽' },
-            ],
-            skins: [
-                { id: 10, icon: '🎨', name: 'Virus 8-Bit', price: '399 ₽' },
-                { id: 11, icon: '🎨', name: 'Dark Angel Colt', price: '499 ₽' },
-                { id: 12, icon: '🎨', name: 'Pirate Poco', price: '299 ₽' },
-            ]
-        };
-
-        function renderProducts(category) {
-            const grid = document.getElementById('productsGrid');
-            if (!grid) return;
-            grid.innerHTML = '';
-
-            let items = [];
-            if (category === 'all') {
-                items = [...products.gems, ...products.pass, ...products.store, ...products.skins];
-            } else {
-                items = products[category] || [];
-            }
-
-            if (items.length === 0) {
-                grid.innerHTML = `
-                    <div style="grid-column: 1/-1; text-align: center; padding: 40px 0; color: rgba(255,255,255,0.2);">
-                        <div style="font-size: 2rem; margin-bottom: 8px;">📭</div>
-                        <div>Товаров в этой категории пока нет</div>
-                    </div>
-                `;
-                return;
-            }
-
-            items.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'product-card';
-                card.innerHTML = `
-                    <div class="prod-icon">${item.icon}</div>
-                    <div class="prod-name">${item.name}</div>
-                    <div class="prod-sub">Brawl Stars</div>
-                    <button class="prod-btn" onclick="buyProduct('${item.name}', '${item.price}')">
-                        <span class="price">${item.price}</span>
-                        <span class="cart-text">+ добавить в корзину</span>
-                    </button>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        document.querySelectorAll('.category-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                renderProducts(this.dataset.cat);
-                if (tg && tg.HapticFeedback) {
-                    tg.HapticFeedback.impactOccurred('light');
-                }
-            });
-        });
-
-        function buyProduct(name, price) {
-            if (tg && tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('medium');
-            }
-            if (tg) {
-                tg.showAlert(`🛒 ${name}\nСумма: ${price}\nПерейти к оплате?`);
-            }
-        }
-
         // ===== INIT =====
         renderGames();
         handleHash();
-        renderProducts('all');
+        // Если Brawl Stars активна при загрузке — рендерим товары
+        setTimeout(function() {
+            if (document.getElementById('pageBrawl').classList.contains('active')) {
+                renderProducts('all');
+            }
+        }, 100);
     </script>
 </body>
 </html>
