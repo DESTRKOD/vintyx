@@ -46,11 +46,10 @@ async def handle_webapp_data(update: Update, context: ContextTypes.DEFAULT_TYPE)
     
     try:
         raw_data = update.message.web_app_data.data
-        logger.info(f"📦 RAW DATA: {raw_data[:200]}...")
+        logger.info(f"📦 RAW DATA: {raw_data}")
         
         data = json.loads(raw_data)
-        logger.info(f"📊 action: {data.get('action')}")
-        logger.info(f"📊 total: {data.get('total')}")
+        logger.info(f"📊 ПАРСИНГ УСПЕШЕН: {data}")
         
         if data.get('action') == 'checkout':
             items = data.get('items', [])
@@ -133,9 +132,7 @@ def main():
     app.add_handler(MessageHandler(filters.StatusUpdate.WEB_APP_DATA, handle_webapp_data))
     app.add_handler(CallbackQueryHandler(handle_payment, pattern="^pay_"))
     
-    logger.info("🚀 Бот Vintyx Shop запущен в режиме polling!")
-    
-    # ЗАПУСКАЕМ БЕЗ asyncio.run() - просто напрямую
+    logger.info("🚀 Бот Vintyx Shop запущен!")
     app.run_polling(drop_pending_updates=True)
 
 
