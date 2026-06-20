@@ -1,7 +1,9 @@
 import logging
 import json
+import time
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
 from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters, CallbackQueryHandler
+import requests
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -10,6 +12,19 @@ BOT_TOKEN = "8613566197:AAFZSc9JBjTY7POUQJLfUaceZom4L_cUGFA"
 
 PIN_ID = "5796440171364749940"
 GEM_ID = "5807465992363710697"
+
+
+# ПРИНУДИТЕЛЬНО УДАЛЯЕМ WEBHOOK ПРИ ЗАПУСКЕ
+def force_delete_webhook():
+    try:
+        response = requests.get(
+            f"https://api.telegram.org/bot{BOT_TOKEN}/deleteWebhook",
+            params={"drop_pending_updates": True},
+            timeout=5
+        )
+        logger.info(f"🗑️ Webhook удалён: {response.json()}")
+    except Exception as e:
+        logger.error(f"❌ Ошибка удаления webhook: {e}")
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -37,7 +52,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def test_order(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Тестовая команда для отправки заказа"""
     text = "🧾 *Тестовый заказ:*\n\n"
     text += "• 💎 80 Gems × 1 — 99 ₽\n"
     text += "• 🎟️ Brawl Pass × 1 — 499 ₽\n"
@@ -63,12 +77,11 @@ async def handle_webapp_data(update: Update, context: ContextTypes.DEFAULT_TYPE)
     logger.info("=" * 50)
     logger.info("📩 ПОЛУЧЕН ЗАПРОС ОТ WEBAPP")
     
-    # ПРОВЕРКА: есть ли сообщение
     if not update.message:
         logger.error("❌ Нет update.message")
         return
     
-    # ТЕСТОВЫЙ ОТВЕТ СРАЗУ!
+    # ТЕСТОВЫЙ ОТВЕТ
     try:
         await update.message.reply_text("✅ Данные получены! Обрабатываю...")
         logger.info("✅ Тестовый ответ отправлен!")
@@ -76,7 +89,6 @@ async def handle_webapp_data(update: Update, context: ContextTypes.DEFAULT_TYPE)
         logger.error(f"❌ Не могу отправить тестовый ответ: {e}")
         return
     
-    # ПРОВЕРКА: есть ли web_app_data
     if not update.message.web_app_data:
         logger.error("❌ Нет web_app_data")
         await update.message.reply_text("❌ Нет данных WebApp")
@@ -86,17 +98,12 @@ async def handle_webapp_data(update: Update, context: ContextTypes.DEFAULT_TYPE)
         raw_data = update.message.web_app_data.data
         logger.info(f"📦 RAW DATA: {raw_data}")
         
-        # ЕЩЁ ОДИН ТЕСТОВЫЙ ОТВЕТ
-        await update.message.reply_text(f"📦 Получены данные: {raw_data[:100]}...")
-        
         data = json.loads(raw_data)
         logger.info(f"📊 ПАРСИНГ УСПЕШЕН: {data}")
         
         if data.get('action') == 'checkout':
             items = data.get('items', [])
             total = data.get('total', 0)
-            
-            logger.info(f"🛒 ТОВАРОВ: {len(items)}, СУММА: {total}")
             
             if not items:
                 await update.message.reply_text("🛒 Ваша корзина пуста!")
@@ -169,6 +176,9 @@ async def handle_payment(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 def main():
+    # ПРИНУДИТЕЛЬНО УДАЛЯЕМ WEBHOOK
+    force_delete_webhook()
+    
     app = Application.builder().token(BOT_TOKEN).build()
     
     app.add_handler(CommandHandler("start", start))
