@@ -1068,55 +1068,69 @@
 
         // ===== CHECKOUT =====
         function checkout() {
-            const cartData = getCart();
-            if (cartData.length === 0) return;
+    const cartData = getCart();
+    if (cartData.length === 0) {
+        if (tg) tg.showAlert('🛒 Корзина пуста!');
+        return;
+    }
 
-            if (tg && tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('heavy');
-            }
+    if (tg && tg.HapticFeedback) {
+        tg.HapticFeedback.impactOccurred('heavy');
+    }
 
-            // Проверяем, есть ли tg и sendData
-            if (tg && typeof tg.sendData === 'function') {
-                const data = {
-                    action: 'checkout',
-                    items: cartData.map(item => ({
-                        id: item.id,
-                        name: item.name,
-                        icon: item.icon,
-                        price: item.price,
-                        game: item.game || 'Brawl Stars',
-                        quantity: item.quantity || 1
-                    })),
-                    total: calculateTotal()
-                };
+    const data = {
+        action: 'checkout',
+        items: cartData.map(item => ({
+            id: item.id,
+            name: item.name,
+            icon: item.icon,
+            price: item.price,
+            game: item.game || 'Brawl Stars',
+            quantity: item.quantity || 1
+        })),
+        total: calculateTotal()
+    };
+    
+    console.log('📤 ОТПРАВКА В БОТА:', JSON.stringify(data));
+    
+    // ПРОВЕРКА: есть ли Telegram WebApp
+    if (typeof window.Telegram !== 'undefined' && window.Telegram.WebApp) {
+        const webapp = window.Telegram.WebApp;
+        
+        if (typeof webapp.sendData === 'function') {
+            try {
+                // ✅ ОТПРАВЛЯЕМ ДАННЫЕ
+                webapp.sendData(JSON.stringify(data));
+                console.log('✅ ДАННЫЕ ОТПРАВЛЕНЫ!');
                 
-                try {
-                    tg.sendData(JSON.stringify(data));
-                    console.log('✅ Данные отправлены в бота:', data);
-                } catch (e) {
-                    console.error('❌ Ошибка отправки:', e);
-                    tg.showAlert('❌ Ошибка отправки заказа. Попробуйте ещё раз.');
-                }
-            } else {
-                // Если не в Telegram — показываем для теста
-                const data = {
-                    action: 'checkout',
-                    items: cartData.map(item => ({
-                        id: item.id,
-                        name: item.name,
-                        icon: item.icon,
-                        price: item.price,
-                        game: item.game || 'Brawl Stars',
-                        quantity: item.quantity || 1
-                    })),
-                    total: calculateTotal()
-                };
-                console.log('🧾 ТЕСТОВЫЙ ЗАКАЗ:', data);
-                alert('🧾 Заказ оформлен!\n\n' + 
-                    cartData.map(item => `• ${item.icon} ${item.name} × ${item.quantity || 1} — ${item.price}`).join('\n') +
-                    `\n\n💎 Итого: ${calculateTotal()} ₽\n\n(Данные отправлены в бота)`);
+                // Очищаем корзину
+                saveCart([]);
+                renderCart();
+                updateCartCount();
+                
+                // Показываем успех
+                webapp.showAlert('✅ Заказ отправлен! Ожидайте подтверждение.');
+                
+            } catch (e) {
+                console.error('❌ Ошибка sendData:', e);
+                webapp.showAlert('❌ Ошибка: ' + e.message);
             }
+        } else {
+            console.error('❌ sendData НЕ ДОСТУПЕН!');
+            tg.showAlert('❌ Ошибка: sendData недоступен');
         }
+    } else {
+        console.warn('⚠️ Не в Telegram, тестовый режим');
+        alert('🧾 ТЕСТОВЫЙ РЕЖИМ\n\n' + 
+              cartData.map(item => `• ${item.icon} ${item.name} × ${item.quantity} — ${item.price}`).join('\n') +
+              `\n\n💎 Итого: ${calculateTotal()} ₽`);
+        
+        // Для теста очищаем
+        saveCart([]);
+        renderCart();
+        updateCartCount();
+    }
+}
 
         // ===== NAVIGATION =====
         const pages = {
