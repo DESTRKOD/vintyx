@@ -1,0 +1,8 @@
+meta:
+  environment: python
+  toolchain: pip
+  version: 3.11.6
+  build: python3 bot.py
+run:
+  command: python3 bot.py
+  containerPort: 80v
