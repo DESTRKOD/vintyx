@@ -948,17 +948,19 @@
     </nav>
 
     <script>
+        // ===== ИНИЦИАЛИЗАЦИЯ TELEGRAM =====
         const tg = window.Telegram?.WebApp;
         if (tg) {
             tg.ready();
             tg.expand();
             tg.setBackgroundColor('#0A0A0F');
             tg.setHeaderColor('#0A0A0F');
+            console.log('✅ Telegram WebApp инициализирован');
+        } else {
+            console.warn('⚠️ Telegram WebApp не найден');
         }
 
-        // ===== CART SYSTEM =====
-        let cart = [];
-
+        // ===== КОРЗИНА =====
         function getCart() {
             try {
                 return JSON.parse(localStorage.getItem('vintyx_cart')) || [];
@@ -970,30 +972,6 @@
         function saveCart(cartData) {
             localStorage.setItem('vintyx_cart', JSON.stringify(cartData));
             updateCartCount();
-        }
-
-        function addToCart(product) {
-            const cartData = getCart();
-            const existing = cartData.find(item => item.id === product.id);
-            if (existing) {
-                existing.quantity = (existing.quantity || 1) + 1;
-            } else {
-                cartData.push({ ...product, quantity: 1 });
-            }
-            saveCart(cartData);
-            if (tg && tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('light');
-            }
-            if (tg) {
-                tg.showAlert(`✅ ${product.name} добавлен в корзину`);
-            }
-        }
-
-        function removeFromCart(productId) {
-            let cartData = getCart();
-            cartData = cartData.filter(item => item.id !== productId);
-            saveCart(cartData);
-            renderCart();
         }
 
         function updateCartCount() {
@@ -1014,6 +992,29 @@
             }, 0);
         }
 
+        // ===== ДОБАВЛЕНИЕ В КОРЗИНУ (БЕЗ showAlert) =====
+        function addToCart(product) {
+            const cartData = getCart();
+            const existing = cartData.find(item => item.id === product.id);
+            if (existing) {
+                existing.quantity = (existing.quantity || 1) + 1;
+            } else {
+                cartData.push({ ...product, quantity: 1 });
+            }
+            saveCart(cartData);
+            console.log(`✅ ${product.name} добавлен в корзину`);
+            
+            // Простое уведомление через alert
+            alert(`✅ ${product.name} добавлен в корзину!`);
+        }
+
+        function removeFromCart(productId) {
+            let cartData = getCart();
+            cartData = cartData.filter(item => item.id !== productId);
+            saveCart(cartData);
+            renderCart();
+        }
+
         function renderCart() {
             const container = document.getElementById('cartItems');
             const totalContainer = document.getElementById('cartTotal');
@@ -1028,7 +1029,7 @@
                     </div>
                 `;
                 totalContainer.innerHTML = '';
-                checkoutBtn.disabled = true;
+                if (checkoutBtn) checkoutBtn.disabled = true;
                 return;
             }
 
@@ -1063,93 +1064,55 @@
                     <span class="total-price">${total} ₽</span>
                 </div>
             `;
-            checkoutBtn.disabled = false;
+            if (checkoutBtn) checkoutBtn.disabled = false;
         }
 
-       function checkout() {
-    const cartData = getCart();
-    
-    if (cartData.length === 0) {
-        if (tg && tg.showAlert) {
-            tg.showAlert('🛒 Корзина пуста!');
-        } else {
-            alert('🛒 Корзина пуста!');
-        }
-        return;
-    }
+        // ===== ОФОРМЛЕНИЕ ЗАКАЗА (БЕЗ showPopup) =====
+        function checkout() {
+            const cartData = getCart();
+            
+            if (cartData.length === 0) {
+                alert('🛒 Корзина пуста!');
+                return;
+            }
 
-    if (tg && tg.HapticFeedback) {
-        tg.HapticFeedback.impactOccurred('heavy');
-    }
-
-    const data = {
-        action: 'checkout',
-        items: cartData.map(item => ({
-            id: item.id,
-            name: item.name,
-            icon: item.icon,
-            price: item.price,
-            game: item.game || 'Brawl Stars',
-            quantity: item.quantity || 1
-        })),
-        total: calculateTotal()
-    };
-    
-    console.log('📤 ОТПРАВКА В БОТА:', JSON.stringify(data));
-    
-    // ПРОВЕРКА: есть ли Telegram WebApp
-    if (typeof window.Telegram !== 'undefined' && window.Telegram.WebApp) {
-        const webapp = window.Telegram.WebApp;
-        
-        if (typeof webapp.sendData === 'function') {
-            try {
-                // ✅ ОТПРАВЛЯЕМ ДАННЫЕ
-                webapp.sendData(JSON.stringify(data));
-                console.log('✅ ДАННЫЕ ОТПРАВЛЕНЫ!');
-                
-                // Очищаем корзину
-                saveCart([]);
-                renderCart();
-                updateCartCount();
-                
-                // Используем showAlert только если доступен
-                if (webapp.showAlert) {
-                    webapp.showAlert('✅ Заказ отправлен! Ожидайте подтверждение.');
-                } else {
-                    // Если showAlert не доступен, просто показываем сообщение через Telegram
-                    console.log('✅ Заказ отправлен! Ожидайте подтверждение.');
-                }
-                
-            } catch (e) {
-                console.error('❌ Ошибка sendData:', e);
-                if (webapp.showAlert) {
-                    webapp.showAlert('❌ Ошибка: ' + e.message);
-                } else {
+            const data = {
+                action: 'checkout',
+                items: cartData.map(item => ({
+                    id: item.id,
+                    name: item.name,
+                    icon: item.icon,
+                    price: item.price,
+                    game: item.game || 'Brawl Stars',
+                    quantity: item.quantity || 1
+                })),
+                total: calculateTotal()
+            };
+            
+            console.log('📤 ОТПРАВКА В БОТА:', JSON.stringify(data));
+            
+            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.sendData) {
+                try {
+                    window.Telegram.WebApp.sendData(JSON.stringify(data));
+                    console.log('✅ ДАННЫЕ ОТПРАВЛЕНЫ!');
+                    
+                    // Очищаем корзину
+                    saveCart([]);
+                    renderCart();
+                    updateCartCount();
+                    
+                    alert('✅ Заказ отправлен! Проверьте бота.');
+                    
+                } catch (e) {
+                    console.error('❌ Ошибка:', e);
                     alert('❌ Ошибка: ' + e.message);
                 }
-            }
-        } else {
-            console.error('❌ sendData НЕ ДОСТУПЕН!');
-            if (webapp.showAlert) {
-                webapp.showAlert('❌ Ошибка: sendData недоступен. Проверьте настройки бота.');
             } else {
-                alert('❌ Ошибка: sendData недоступен. Проверьте настройки бота.');
+                alert('❌ Ошибка: Telegram WebApp не доступен');
             }
         }
-    } else {
-        // Если не в Telegram - тестовый режим
-        console.warn('⚠️ Не в Telegram, тестовый режим');
-        alert('🧾 ТЕСТОВЫЙ РЕЖИМ\n\n' + 
-              cartData.map(item => `• ${item.icon} ${item.name} × ${item.quantity} — ${item.price}`).join('\n') +
-              `\n\n💎 Итого: ${calculateTotal()} ₽`);
-        
-        // Для теста очищаем
-        saveCart([]);
-        renderCart();
-        updateCartCount();
-    }
-}
-        // ===== NAVIGATION =====
+
+        // ===== НАВИГАЦИЯ =====
         const pages = {
             home: document.getElementById('pageHome'),
             profile: document.getElementById('pageProfile'),
@@ -1200,14 +1163,10 @@
 
             if (pageName === 'home') {
                 window.location.hash = '';
-                if (tg) tg.BackButton.hide();
+                if (tg && tg.BackButton) tg.BackButton.hide();
             } else {
                 window.location.hash = pageName;
-                if (tg) tg.BackButton.show();
-            }
-
-            if (tg && tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('light');
+                if (tg && tg.BackButton) tg.BackButton.show();
             }
         }
 
@@ -1217,10 +1176,7 @@
             });
             pages.cart.classList.add('active');
             renderCart();
-            if (tg) tg.BackButton.show();
-            if (tg && tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('light');
-            }
+            if (tg && tg.BackButton) tg.BackButton.show();
             window.location.hash = 'cart';
         }
 
@@ -1239,10 +1195,7 @@
 
             updateNavIcons('home');
             window.location.hash = '';
-            if (tg) tg.BackButton.hide();
-            if (tg && tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('light');
-            }
+            if (tg && tg.BackButton) tg.BackButton.hide();
         }
 
         function openGame(pageId) {
@@ -1252,15 +1205,11 @@
                 });
                 pages.brawl.classList.add('active');
 
-                if (tg) tg.BackButton.show();
+                if (tg && tg.BackButton) tg.BackButton.show();
                 
                 setTimeout(function() {
                     renderProducts('all');
                 }, 50);
-                
-                if (tg && tg.HapticFeedback) {
-                    tg.HapticFeedback.impactOccurred('medium');
-                }
             }
         }
 
@@ -1278,20 +1227,12 @@
             });
 
             updateNavIcons('home');
-
             window.location.hash = '';
-            if (tg) tg.BackButton.hide();
-
-            if (tg && tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('light');
-            }
+            if (tg && tg.BackButton) tg.BackButton.hide();
         }
 
         function showComingSoon(gameName) {
-            if (tg) {
-                tg.HapticFeedback?.impactOccurred('light');
-                tg.showAlert(`🎮 ${gameName}\nРаздел скоро появится!`);
-            }
+            alert(`🎮 ${gameName}\nРаздел скоро появится!`);
         }
 
         // ===== GAMES DATA =====
@@ -1385,10 +1326,6 @@
                         renderGames();
                     }, 100);
                 }
-            }
-
-            if (tg && tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('light');
             }
         }
 
@@ -1504,9 +1441,6 @@
                 document.querySelectorAll('#brawlCategories .category-btn').forEach(b => b.classList.remove('active'));
                 e.target.classList.add('active');
                 renderProducts(e.target.dataset.cat);
-                if (tg && tg.HapticFeedback) {
-                    tg.HapticFeedback.impactOccurred('light');
-                }
             }
         });
 
@@ -1531,7 +1465,7 @@
         window.addEventListener('hashchange', handleHash);
 
         // ===== TELEGRAM BACK BUTTON =====
-        if (tg) {
+        if (tg && tg.BackButton) {
             tg.BackButton.onClick(() => {
                 const currentPage = document.querySelector('.page.active');
                 if (currentPage) {
@@ -1560,7 +1494,6 @@
             }
         }, 100);
 
-        // ПРОВЕРКА: выводим в консоль, есть ли tg.sendData
         console.log('🔍 Telegram WebApp:', tg);
         console.log('🔍 sendData доступен?', tg && typeof tg.sendData === 'function');
     </script>
