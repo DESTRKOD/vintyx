@@ -1,8 +1,10 @@
 meta:
   environment: python
-  toolchain: pip
-  version: 3.11.6
-  build: python3 bot.py
+  toolchain:
+    name: pip
+    version: 3.11
+build:
+  requirementsPath: requirements.txt
 run:
-  command: python3 bot.py
-  containerPort: 80v
+  command: python bot.py
+  containerPort: 8080
