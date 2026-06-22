@@ -8,23 +8,17 @@ from telegram.ext import Application, CommandHandler, CallbackQueryHandler, Mess
 # Настройка логирования
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO
+    level=logging.DEBUG  # Включаем DEBUG для детального логирования
 )
 logger = logging.getLogger(__name__)
 
-# Получаем токен из переменных окружения
-BOT_TOKEN = "8916948269:AAFIV0p-ZOYXBy4QGvGLiJy6caDopofL2zQ"
-ADMIN_ID = "2112942356"
+BOT_TOKEN = os.environ.get('BOT_TOKEN')
+ADMIN_ID = int(os.environ.get('ADMIN_ID', 0))
 
-# Проверка наличия токена
 if not BOT_TOKEN:
-    logger.error("BOT_TOKEN не задан! Установите переменную окружения BOT_TOKEN")
+    logger.error("BOT_TOKEN не задан!")
     exit(1)
 
-if ADMIN_ID == 0:
-    logger.warning("ADMIN_ID не задан! Установите переменную окружения ADMIN_ID")
-
-# Файл для хранения заказов
 ORDERS_FILE = "orders.json"
 
 def load_orders():
@@ -60,25 +54,34 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logger.info(f"Пользователь {user.id} запустил бота")
 
 async def handle_webapp_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Обработка данных из WebApp"""
     try:
         user = update.effective_user
         user_id = user.id
         username = user.username or "без username"
         first_name = user.first_name or "Пользователь"
         
-        logger.info(f"📥 Данные от {user_id} (@{username})")
+        logger.info(f"📥 ПОЛУЧЕНЫ ДАННЫЕ ОТ {user_id} (@{username})")
         
+        # Проверяем наличие данных
+        if not update.message:
+            logger.error("Нет сообщения")
+            return
+            
         if not update.message.web_app_data:
-            await update.message.reply_text("❌ Ошибка: данные не получены")
+            logger.error("Нет web_app_data в сообщении")
+            logger.info(f"Тип сообщения: {update.message}")
             return
         
-        data = update.message.web_app_data.data
-        logger.info(f"📄 Данные: {data}")
+        # Получаем данные
+        raw_data = update.message.web_app_data.data
+        logger.info(f"📄 СЫРЫЕ ДАННЫЕ: {raw_data}")
         
-        order_data = json.loads(data)
+        order_data = json.loads(raw_data)
+        logger.info(f"📄 ПАРСИНГ УСПЕШЕН: {order_data}")
         
         if 'items' not in order_data:
-            await update.message.reply_text("❌ Ошибка: неверный формат данных")
+            logger.error("Нет поля 'items'")
             return
         
         order_id = f"ORD-{datetime.now().strftime('%Y%m%d%H%M%S')}-{user_id}"
@@ -101,8 +104,7 @@ async def handle_webapp_data(update: Update, context: ContextTypes.DEFAULT_TYPE)
             'items': order_data.get('items', []),
             'total': total,
             'status': 'pending',
-            'created_at': datetime.now().isoformat(),
-            'chat_id': update.effective_chat.id
+            'created_at': datetime.now().isoformat()
         }
         save_orders(orders)
         
@@ -123,7 +125,7 @@ async def handle_webapp_data(update: Update, context: ContextTypes.DEFAULT_TYPE)
             reply_markup=reply_markup
         )
         
-        logger.info(f"✅ Заказ {order_id} создан")
+        logger.info(f"✅ ЗАКАЗ {order_id} СОЗДАН")
         
         if ADMIN_ID != 0:
             await context.bot.send_message(
@@ -131,14 +133,14 @@ async def handle_webapp_data(update: Update, context: ContextTypes.DEFAULT_TYPE)
                 text=f"🔔 *НОВЫЙ ЗАКАЗ!*\n\n"
                      f"🆔 Заказ: `{order_id}`\n"
                      f"👤 Покупатель: {first_name}\n"
-                     f"💰 Сумма: {total} ₽\n"
-                     f"📅 {datetime.now().strftime('%d.%m.%Y %H:%M:%S')}",
+                     f"💰 Сумма: {total} ₽",
                 parse_mode='Markdown'
             )
         
     except Exception as e:
-        logger.error(f"❌ Ошибка: {e}")
-        await update.message.reply_text("❌ Произошла ошибка. Попробуйте позже.")
+        logger.error(f"❌ ОШИБКА: {e}")
+        if update and update.message:
+            await update.message.reply_text("❌ Произошла ошибка. Попробуйте позже.")
 
 async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -146,6 +148,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     data = query.data
     user_id = update.effective_user.id
+    logger.info(f"🔄 Нажата кнопка: {data}")
     
     if data.startswith('pay_'):
         order_id = data.replace('pay_', '')
@@ -170,20 +173,15 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.edit_message_text(
             f"✅ *ЗАКАЗ ОПЛАЧЕН!*\n\n"
             f"🆔 Заказ: `{order_id}`\n\n"
-            f"💎 Спасибо за покупку в Vintyx Store!\n"
-            f"Ваш заказ будет обработан в ближайшее время.\n\n"
-            f"📦 Статус: *Оплачен*",
+            f"💎 Спасибо за покупку!\n"
+            f"Заказ будет обработан в ближайшее время.",
             parse_mode='Markdown'
         )
         
         if ADMIN_ID != 0:
             await context.bot.send_message(
                 chat_id=ADMIN_ID,
-                text=f"✅ *ЗАКАЗ ОПЛАЧЕН!*\n\n"
-                     f"🆔 Заказ: `{order_id}`\n"
-                     f"👤 {order.get('first_name', 'Unknown')}\n"
-                     f"💰 {order.get('total', 0)} ₽\n"
-                     f"📅 {datetime.now().strftime('%d.%m.%Y %H:%M:%S')}",
+                text=f"✅ *ОПЛАЧЕН ЗАКАЗ*\n\n🆔 `{order_id}`\n👤 {order.get('first_name')}\n💰 {order.get('total')} ₽",
                 parse_mode='Markdown'
             )
         
@@ -205,7 +203,6 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         order['status'] = 'cancelled'
         save_orders(orders)
-        
         await query.edit_message_text(f"❌ *Заказ отменён*\n\n🆔 `{order_id}`", parse_mode='Markdown')
 
 async def my_orders(update: Update, context: ContextTypes.DEFAULT_TYPE):
