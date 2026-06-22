@@ -1,50 +1,45 @@
-
 import logging
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Application, CommandHandler, CallbackQueryHandler, MessageHandler, filters, ContextTypes
 import json
 import os
 from datetime import datetime
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import Application, CommandHandler, CallbackQueryHandler, MessageHandler, filters, ContextTypes
 
-# Настройка логирования
+# Настройка логирования для Amvera
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO
 )
 logger = logging.getLogger(__name__)
 
-# Токен бота (замени на свой!)
-BOT_TOKEN = "8613566197:AAFZSc9JBjTY7POUQJLfUaceZom4L_cUGFA"
+# Токен бота (через переменные окружения для Amvera)
+BOT_TOKEN = os.environ.get('BOT_TOKEN', "8613566197:AAFZSc9JBjTY7POUQJLfUaceZom4L_cUGFA")
+ADMIN_ID = int(os.environ.get('ADMIN_ID', 2112942356))  # Замени на свой ID
 
-# ID администратора (твой Telegram ID)
-ADMIN_ID = 2112942356  # Замени на свой ID
-
-# Хранилище заказов (в реальном проекте используй БД)
-orders = {}
-
-# Файл для сохранения заказов
+# Путь к файлу с заказами
 ORDERS_FILE = "orders.json"
 
 def load_orders():
-    """Загрузка заказов из файла"""
     if os.path.exists(ORDERS_FILE):
         try:
             with open(ORDERS_FILE, 'r', encoding='utf-8') as f:
                 return json.load(f)
-        except:
+        except Exception as e:
+            logger.error(f"Ошибка загрузки заказов: {e}")
             return {}
     return {}
 
-def save_orders():
-    """Сохранение заказов в файл"""
-    with open(ORDERS_FILE, 'w', encoding='utf-8') as f:
-        json.dump(orders, f, ensure_ascii=False, indent=2)
+def save_orders(orders):
+    try:
+        with open(ORDERS_FILE, 'w', encoding='utf-8') as f:
+            json.dump(orders, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        logger.error(f"Ошибка сохранения заказов: {e}")
 
 # Загружаем заказы
 orders = load_orders()
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Команда /start"""
     user = update.effective_user
     welcome_text = f"""
 🎮 *Vintyx Store Bot*
@@ -55,10 +50,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 Просто оформи заказ через наш магазин, и я помогу с оплатой.
 
 🛒 *Как это работает:*
-1. Добавь товары в корзину
-2. Нажми "Оплатить"
-3. Я пришлю кнопку для оплаты
-4. После оплаты заказ будет подтверждён
+1️⃣ Добавь товары в корзину
+2️⃣ Нажми "Оплатить"
+3️⃣ Я пришлю кнопку для оплаты
+4️⃣ После нажатия "Оплатить" заказ будет подтверждён
 
 💎 *Быстро, безопасно, надёжно!*
 """
@@ -67,26 +62,30 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         parse_mode='Markdown'
     )
 
-async def handle_order(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Обработка заказа от веб-приложения"""
+async def handle_webapp_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Обработка данных из WebApp"""
     try:
-        # Получаем данные от пользователя
-        data = update.message.text
+        # Получаем данные от WebApp
+        data = update.message.web_app_data.data
+        logger.info(f"Получены данные WebApp: {data}")
+        
         order_data = json.loads(data)
+        user = update.effective_user
+        user_id = user.id
+        username = user.username or "без username"
+        first_name = user.first_name or "Пользователь"
         
-        user_id = update.effective_user.id
-        username = update.effective_user.username or "без username"
-        first_name = update.effective_user.first_name or "Пользователь"
-        
-        # Формируем информацию о заказе
+        # Создаём ID заказа
         order_id = f"ORD-{datetime.now().strftime('%Y%m%d%H%M%S')}-{user_id}"
         
+        # Формируем список товаров
         items_text = ""
         total = 0
         
         for item in order_data.get('items', []):
             quantity = item.get('quantity', 1)
-            price = int(item.get('price', '0 ₽').replace(' ₽', '').replace(' ', ''))
+            price_str = item.get('price', '0 ₽')
+            price = int(price_str.replace(' ₽', '').replace(' ', ''))
             item_total = price * quantity
             total += item_total
             items_text += f"• {item.get('icon', '')} {item.get('name', '')} × {quantity} = {item_total} ₽\n"
@@ -102,9 +101,9 @@ async def handle_order(update: Update, context: ContextTypes.DEFAULT_TYPE):
             'created_at': datetime.now().isoformat(),
             'chat_id': update.effective_chat.id
         }
-        save_orders()
+        save_orders(orders)
         
-        # Кнопки для оплаты
+        # Создаём клавиатуру
         keyboard = [
             [InlineKeyboardButton("💳 Оплатить", callback_data=f"pay_{order_id}")],
             [InlineKeyboardButton("❌ Отменить", callback_data=f"cancel_{order_id}")]
@@ -121,8 +120,6 @@ async def handle_order(update: Update, context: ContextTypes.DEFAULT_TYPE):
 💰 *Итого:* {total} ₽
 
 👤 *Покупатель:* {first_name} (@{username})
-
-📦 *Статус:* Ожидает оплаты
 
 ━━━━━━━━━━━━━━
 Для оплаты заказа нажмите кнопку ниже 👇
@@ -155,20 +152,23 @@ async def handle_order(update: Update, context: ContextTypes.DEFAULT_TYPE):
             parse_mode='Markdown'
         )
         
-    except json.JSONDecodeError:
-        logger.error("Ошибка парсинга JSON")
+        logger.info(f"Заказ {order_id} создан успешно")
+        
+    except json.JSONDecodeError as e:
+        logger.error(f"Ошибка парсинга JSON: {e}")
         await update.message.reply_text("❌ Ошибка обработки заказа. Попробуйте ещё раз.")
     except Exception as e:
         logger.error(f"Ошибка: {e}")
-        await update.message.reply_text("❌ Произошла ошибка. Попробуйте позже.")
+        await update.message.reply_text(f"❌ Произошла ошибка: {str(e)}")
 
 async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Обработка нажатий на кнопки"""
     query = update.callback_query
     await query.answer()
     
     data = query.data
     user_id = update.effective_user.id
+    
+    logger.info(f"Нажата кнопка: {data} от пользователя {user_id}")
     
     if data.startswith('pay_'):
         order_id = data.replace('pay_', '')
@@ -189,9 +189,8 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         # Подтверждаем оплату
         order['status'] = 'paid'
         order['paid_at'] = datetime.now().isoformat()
-        save_orders()
+        save_orders(orders)
         
-        # Обновляем сообщение
         await query.edit_message_text(
             f"""
 ✅ *ЗАКАЗ ОПЛАЧЕН!*
@@ -209,7 +208,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             parse_mode='Markdown'
         )
         
-        # Уведомляем администратора об оплате
+        # Уведомляем администратора
         admin_message = f"""
 ✅ *ЗАКАЗ ОПЛАЧЕН!*
 
@@ -244,7 +243,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             return
         
         order['status'] = 'cancelled'
-        save_orders()
+        save_orders(orders)
         
         await query.edit_message_text(
             f"""
@@ -258,7 +257,6 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
 async def my_orders(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Команда /myorders - показать заказы пользователя"""
     user_id = update.effective_user.id
     user_orders = []
     
@@ -273,7 +271,7 @@ async def my_orders(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
     
     text = "📋 *Ваши заказы:*\n\n"
-    for order_id, order in reversed(user_orders[-5:]):  # Показываем последние 5
+    for order_id, order in reversed(user_orders[-5:]):
         status_emoji = {
             'pending': '⏳',
             'paid': '✅',
@@ -294,7 +292,6 @@ async def my_orders(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(text, parse_mode='Markdown')
 
 async def admin_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Команда /stats - статистика для админа"""
     if update.effective_user.id != ADMIN_ID:
         await update.message.reply_text("⛔ У вас нет доступа к этой команде")
         return
@@ -313,14 +310,11 @@ async def admin_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
 💎 Выручка: {total_revenue} ₽
 
 ━━━━━━━━━━━━━━
-Команды администратора:
 /orders - список всех заказов
-/stats - эта статистика
 """
     await update.message.reply_text(stats_text, parse_mode='Markdown')
 
 async def admin_orders(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Команда /orders - список всех заказов для админа"""
     if update.effective_user.id != ADMIN_ID:
         await update.message.reply_text("⛔ У вас нет доступа к этой команде")
         return
@@ -330,7 +324,7 @@ async def admin_orders(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
     
     text = "📋 *Все заказы:*\n\n"
-    for order_id, order in list(orders.items())[-10:]:  # Показываем последние 10
+    for order_id, order in list(orders.items())[-10:]:
         status_emoji = {
             'pending': '⏳',
             'paid': '✅',
@@ -345,102 +339,15 @@ async def admin_orders(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     await update.message.reply_text(text, parse_mode='Markdown')
 
-async def handle_webapp_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Обработка данных из WebApp"""
-    try:
-        # Получаем данные из WebApp
-        data = update.message.web_app_data.data
-        order_data = json.loads(data)
-        
-        user_id = update.effective_user.id
-        username = update.effective_user.username or "без username"
-        first_name = update.effective_user.first_name or "Пользователь"
-        
-        # Формируем заказ
-        order_id = f"ORD-{datetime.now().strftime('%Y%m%d%H%M%S')}-{user_id}"
-        
-        items_text = ""
-        total = 0
-        
-        for item in order_data.get('items', []):
-            quantity = item.get('quantity', 1)
-            price_str = item.get('price', '0 ₽')
-            price = int(price_str.replace(' ₽', '').replace(' ', ''))
-            item_total = price * quantity
-            total += item_total
-            items_text += f"• {item.get('icon', '')} {item.get('name', '')} × {quantity} = {item_total} ₽\n"
-        
-        # Сохраняем заказ
-        orders[order_id] = {
-            'user_id': user_id,
-            'username': username,
-            'first_name': first_name,
-            'items': order_data.get('items', []),
-            'total': total,
-            'status': 'pending',
-            'created_at': datetime.now().isoformat(),
-            'chat_id': update.effective_chat.id
-        }
-        save_orders()
-        
-        # Кнопки для оплаты
-        keyboard = [
-            [InlineKeyboardButton("💳 Оплатить", callback_data=f"pay_{order_id}")],
-            [InlineKeyboardButton("❌ Отменить", callback_data=f"cancel_{order_id}")]
-        ]
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        
-        # Отправляем сообщение
-        order_message = f"""
-🛒 *Новый заказ в Vintyx Store*
-
-📋 *Состав заказа:*
-{items_text}
-
-💰 *Итого:* {total} ₽
-
-👤 *Покупатель:* {first_name} (@{username})
-
-━━━━━━━━━━━━━━
-Для оплаты заказа нажмите кнопку ниже 👇
-"""
-        await update.message.reply_text(
-            order_message,
-            parse_mode='Markdown',
-            reply_markup=reply_markup
-        )
-        
-        # Уведомляем администратора
-        admin_message = f"""
-🔔 *НОВЫЙ ЗАКАЗ!*
-
-🆔 Заказ: `{order_id}`
-👤 Покупатель: {first_name}
-🆔 User ID: `{user_id}`
-👤 Username: @{username}
-
-📦 *Товары:*
-{items_text}
-
-💰 *Сумма:* {total} ₽
-
-📅 Время: {datetime.now().strftime('%d.%m.%Y %H:%M:%S')}
-"""
-        await context.bot.send_message(
-            chat_id=ADMIN_ID,
-            text=admin_message,
-            parse_mode='Markdown'
-        )
-        
-    except json.JSONDecodeError:
-        logger.error("Ошибка парсинга JSON в WebApp данных")
-        await update.message.reply_text("❌ Ошибка обработки заказа. Попробуйте ещё раз.")
-    except Exception as e:
-        logger.error(f"Ошибка: {e}")
-        await update.message.reply_text("❌ Произошла ошибка. Попробуйте позже.")
-
 def main():
     """Запуск бота"""
+    if not BOT_TOKEN or BOT_TOKEN == "ТВОЙ_ТОКЕН_БОТА":
+        logger.error("Не задан BOT_TOKEN! Установите переменную окружения BOT_TOKEN")
+        return
+    
+    logger.info(f"Запуск бота с токеном: {BOT_TOKEN[:10]}...")
+    logger.info(f"ID администратора: {ADMIN_ID}")
+    
     # Создаём приложение
     application = Application.builder().token(BOT_TOKEN).build()
     
@@ -460,10 +367,8 @@ def main():
     application.add_handler(CallbackQueryHandler(button_callback))
     
     # Запускаем бота
-    print("🤖 Бот запущен!")
-    print(f"👤 Админ ID: {ADMIN_ID}")
-    print("📦 Заказы сохраняются в orders.json")
+    logger.info("🤖 Бот запущен и готов к работе!")
     application.run_polling(allowed_updates=Update.ALL_TYPES)
 
 if __name__ == '__main__':
-    main()м
+    main()
