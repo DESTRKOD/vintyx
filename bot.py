@@ -13,7 +13,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Токен бота (через переменные окружения для Amvera)
-BOT_TOKEN = os.environ.get('BOT_TOKEN', "8613566197:AAFZSc9JBjTY7POUQJLfUaceZom4L_cUGFA")
+BOT_TOKEN = os.environ.get('BOT_TOKEN', "8916948269:AAFIV0p-ZOYXBy4QGvGLiJy6caDopofL2zQ")
 ADMIN_ID = int(os.environ.get('ADMIN_ID', 2112942356))  # Замени на свой ID
 
 # Путь к файлу с заказами
