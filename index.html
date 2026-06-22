@@ -1066,8 +1066,7 @@
             checkoutBtn.disabled = false;
         }
 
-        // ===== CHECKOUT =====
-        function checkout() {
+       function checkout() {
     const cartData = getCart();
     if (cartData.length === 0) {
         if (tg) tg.showAlert('🛒 Корзина пуста!');
@@ -1093,13 +1092,13 @@
     
     console.log('📤 ОТПРАВКА В БОТА:', JSON.stringify(data));
     
-    // ПРОВЕРКА: есть ли Telegram WebApp
+    // Проверяем наличие Telegram WebApp
     if (typeof window.Telegram !== 'undefined' && window.Telegram.WebApp) {
         const webapp = window.Telegram.WebApp;
         
         if (typeof webapp.sendData === 'function') {
             try {
-                // ✅ ОТПРАВЛЯЕМ ДАННЫЕ
+                // Отправляем данные в бот
                 webapp.sendData(JSON.stringify(data));
                 console.log('✅ ДАННЫЕ ОТПРАВЛЕНЫ!');
                 
@@ -1117,9 +1116,10 @@
             }
         } else {
             console.error('❌ sendData НЕ ДОСТУПЕН!');
-            tg.showAlert('❌ Ошибка: sendData недоступен');
+            webapp.showAlert('❌ Ошибка: sendData недоступен');
         }
     } else {
+        // Если не в Telegram - тестовый режим
         console.warn('⚠️ Не в Telegram, тестовый режим');
         alert('🧾 ТЕСТОВЫЙ РЕЖИМ\n\n' + 
               cartData.map(item => `• ${item.icon} ${item.name} × ${item.quantity} — ${item.price}`).join('\n') +
