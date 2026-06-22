@@ -12,8 +12,8 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-BOT_TOKEN = os.environ.get('BOT_TOKEN')
-ADMIN_ID = int(os.environ.get('ADMIN_ID', 0))
+BOT_TOKEN = "8916948269:AAFIV0p-ZOYXBy4QGvGLiJy6caDopofL2zQ"
+ADMIN_ID = "2112942356"
 
 if not BOT_TOKEN:
     logger.error("BOT_TOKEN не задан!")
