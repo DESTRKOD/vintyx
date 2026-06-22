@@ -16,7 +16,7 @@ GEM_ID = "5807465992363710697"
 
 # ====================== HANDLERS ======================
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logger.info(f"✅ Получена команда /start от {update.effective_user.id}")
+    logger.info(f"✅ /start от пользователя {update.effective_user.id}")
     text = (
         f'<tg-emoji emoji-id="{PIN_ID}">📌</tg-emoji> '
         "Добро пожаловать в Vintyx Shop!\n"
@@ -31,9 +31,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def handle_webapp_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logger.info("🔥 ПОЛУЧЕН WEB_APP_DATA")
     try:
-        raw = update.message.web_app_data.data
-        data = json.loads(raw)
-        
+        raw_data = update.message.web_app_data.data
+        logger.info(f"RAW: {raw_data[:300]}...")
+        data = json.loads(raw_data)
+
         if data.get('action') == 'checkout':
             items = data.get('items', [])
             total = data.get('total', 0)
@@ -50,9 +51,9 @@ async def handle_webapp_data(update: Update, context: ContextTypes.DEFAULT_TYPE)
             ])
 
             await update.message.reply_text(text=text, parse_mode="Markdown", reply_markup=keyboard)
-            logger.info(f"✅ Заказ обработан на сумму {total} ₽")
+            logger.info(f"✅ Заказ на {total} ₽ отправлен пользователю")
     except Exception as e:
-        logger.error(f"Ошибка обработки WebAppData: {e}")
+        logger.error(f"Ошибка обработки заказа: {e}")
 
 async def handle_payment(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -76,8 +77,7 @@ async def main():
 
     await app.initialize()
     await app.bot.delete_webhook(drop_pending_updates=True)
-
-    logger.info("✅ Webhook удалён, запускаем polling...")
+    logger.info("✅ Webhook удалён, запускаем polling")
 
     await app.run_polling(
         drop_pending_updates=True,
@@ -89,48 +89,6 @@ if __name__ == "__main__":
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        logger.info("⛔ Бот остановлен")
+        logger.info("⛔ Бот остановлен вручную")
     except Exception as e:
-        logger.critical(f"💥 Критическая ошибка: {e}")        total = data.get('total', 0)
-        text = "🧾 *Новый заказ:*\n\n"
-        for item in items:
-            qty = item.get('quantity', 1)
-            text += f"• {item.get('icon', '')} {item.get('name')} × {qty} — {item.get('price')}\n"
-        text += f"\n💎 *Итого: {total} ₽*"
-
-        keyboard = InlineKeyboardMarkup([
-            [InlineKeyboardButton("💳 Оплатить", callback_data=f"pay_{total}")],
-            [InlineKeyboardButton("✏️ Редактировать", web_app=WebAppInfo(url="https://destrkod.github.io/vintyx/#cart"))]
-        ])
-        await update.message.reply_text(text=text, parse_mode="Markdown", reply_markup=keyboard)
-    except Exception as e:
-        logger.error(f"Ошибка web_app_data: {e}")
-
-async def handle_payment(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    query = update.callback_query
-    await query.answer()
-    total = query.data.replace('pay_', '')
-    text = f"✅ *Оплата прошла успешно!*\n\n💎 Сумма: *{total} ₽*"
-    keyboard = InlineKeyboardMarkup([[
-        InlineKeyboardButton("🛒 Вернуться в магазин", web_app=WebAppInfo(url="https://destrkod.github.io/vintyx/"))
-    ]])
-    await query.edit_message_text(text=text, parse_mode="Markdown", reply_markup=keyboard)
-
-async def main():
-    app = Application.builder().token(BOT_TOKEN).build()
-
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(MessageHandler(filters.StatusUpdate.WEB_APP_DATA, handle_webapp_data))
-    app.add_handler(CallbackQueryHandler(handle_payment, pattern="^pay_"))
-
-    logger.info("🚀 Vintyx Bot запускается...")
-    await app.initialize()
-    await app.bot.delete_webhook(drop_pending_updates=True)
-
-    await app.run_polling(drop_pending_updates=True, allowed_updates=Update.ALL_TYPES)
-
-if __name__ == "__main__":
-    try:
-        asyncio.run(main())
-    except Exception as e:
-        logger.critical(f"Критическая ошибка: {e}")
+        logger.critical(f"💥 Критическая ошибка: {e}")
