@@ -8,7 +8,7 @@ from telegram.ext import Application, CommandHandler, CallbackQueryHandler, Mess
 # Настройка логирования
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.DEBUG  # Включаем DEBUG для детального логирования
+    level=logging.INFO
 )
 logger = logging.getLogger(__name__)
 
@@ -44,11 +44,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         f"🎮 *Vintyx Store Bot*\n\nПривет, {user.first_name}! 👋\n\n"
         "🛒 *Как сделать заказ:*\n"
-        "1️⃣ Открой магазин через кнопку меню\n"
+        "1️⃣ Нажми кнопку 'Открыть магазин' внизу\n"
         "2️⃣ Добавь товары в корзину\n"
-        "3️⃣ Нажми \"Оплатить\"\n"
-        "4️⃣ Я пришлю кнопку для оплаты\n\n"
+        "3️⃣ Нажми 'Оплатить'\n\n"
         "💎 *Быстро, безопасно, надёжно!*",
+        reply_markup=InlineKeyboardMarkup([
+            [InlineKeyboardButton("🛒 Открыть магазин", web_app={"url": "https://destrkod.github.io/vintyx"})]
+        ]),
         parse_mode='Markdown'
     )
     logger.info(f"Пользователь {user.id} запустил бота")
@@ -70,7 +72,8 @@ async def handle_webapp_data(update: Update, context: ContextTypes.DEFAULT_TYPE)
             
         if not update.message.web_app_data:
             logger.error("Нет web_app_data в сообщении")
-            logger.info(f"Тип сообщения: {update.message}")
+            logger.info(f"Тип сообщения: {type(update.message)}")
+            logger.info(f"Есть ли web_app_data: {hasattr(update.message, 'web_app_data')}")
             return
         
         # Получаем данные
@@ -137,10 +140,14 @@ async def handle_webapp_data(update: Update, context: ContextTypes.DEFAULT_TYPE)
                 parse_mode='Markdown'
             )
         
+    except json.JSONDecodeError as e:
+        logger.error(f"❌ ОШИБКА ПАРСИНГА JSON: {e}")
+        await update.message.reply_text("❌ Ошибка формата данных. Попробуйте ещё раз.")
     except Exception as e:
         logger.error(f"❌ ОШИБКА: {e}")
-        if update and update.message:
-            await update.message.reply_text("❌ Произошла ошибка. Попробуйте позже.")
+        import traceback
+        logger.error(traceback.format_exc())
+        await update.message.reply_text("❌ Произошла ошибка. Попробуйте позже.")
 
 async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
