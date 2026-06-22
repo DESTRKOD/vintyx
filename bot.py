@@ -5,7 +5,7 @@ import sys
 import asyncio
 import signal
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
-from telegram.ext import Application, CommandHandler, MessageHandler, filters, CallbackQueryHandler
+from telegram.ext import Application, CommandHandler, MessageHandler, filters, CallbackQueryHandler, ContextTypes
 import requests
 
 logging.basicConfig(
@@ -18,7 +18,6 @@ BOT_TOKEN = "8613566197:AAFZSc9JBjTY7POUQJLfUaceZom4L_cUGFA"
 PIN_ID = "5796440171364749940"
 GEM_ID = "5807465992363710697"
 
-# ====================== PID PROTECTION ======================
 PID_FILE = "/tmp/vintyx_bot.pid"
 
 def cleanup_pid():
@@ -55,12 +54,12 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def handle_webapp_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logger.info("🔥 ПОЛУЧЕН WEB_APP_DATA")
     if not update.message or not update.message.web_app_data:
-        logger.error("❌ Нет web_app_data в сообщении")
+        logger.error("❌ Нет web_app_data")
         return
 
     try:
         raw_data = update.message.web_app_data.data
-        logger.info(f"📦 RAW DATA: {raw_data}")
+        logger.info(f"📦 RAW: {raw_data[:500]}...")  # обрезаем если слишком длинный
         data = json.loads(raw_data)
 
         if data.get('action') == 'checkout':
@@ -75,20 +74,20 @@ async def handle_webapp_data(update: Update, context: ContextTypes.DEFAULT_TYPE)
 
             keyboard = InlineKeyboardMarkup([
                 [InlineKeyboardButton("💳 Оплатить", callback_data=f"pay_{total}")],
-                [InlineKeyboardButton("✏️ Редактировать", web_app=WebAppInfo(url="https://destrkod.github.io/vintyx/#cart"))]
+                [InlineKeyboardButton("✏️ Редактировать корзину", web_app=WebAppInfo(url="https://destrkod.github.io/vintyx/#cart"))]
             ])
 
             await update.message.reply_text(text=text, parse_mode="Markdown", reply_markup=keyboard)
-            logger.info(f"✅ Заказ на {total} ₽ успешно обработан")
+            logger.info(f"✅ Заказ на {total} ₽ обработан")
     except Exception as e:
-        logger.exception(f"Ошибка обработки web_app_data: {e}")
+        logger.exception(f"Ошибка обработки заказа: {e}")
 
 async def handle_payment(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
     total = query.data.replace('pay_', '')
     
-    text = f"✅ *Оплата прошла успешно!*\n\n💎 Сумма: *{total} ₽*\n📦 Статус: *Оплачено*"
+    text = f"✅ *Оплата прошла успешно!*\n\n💎 Сумма: *{total} ₽*\n📦 Статус: *Оплачено*\n\nОжидайте доставку в течение 5-15 минут."
     keyboard = InlineKeyboardMarkup([[
         InlineKeyboardButton("🛒 Вернуться в магазин", web_app=WebAppInfo(url="https://destrkod.github.io/vintyx/"))
     ]])
@@ -100,11 +99,12 @@ async def main():
     if is_already_running():
         sys.exit(1)
 
-    # Удаляем старый webhook
+    # Удаляем webhook
     try:
         requests.get(f"https://api.telegram.org/bot{BOT_TOKEN}/deleteWebhook?drop_pending_updates=True", timeout=10)
-    except:
-        pass
+        logger.info("🗑️ Webhook удалён")
+    except Exception as e:
+        logger.warning(f"Не удалось удалить webhook: {e}")
 
     app = Application.builder().token(BOT_TOKEN).build()
 
@@ -112,15 +112,18 @@ async def main():
     app.add_handler(MessageHandler(filters.StatusUpdate.WEB_APP_DATA, handle_webapp_data))
     app.add_handler(CallbackQueryHandler(handle_payment, pattern="^pay_"))
 
-    logger.info("🚀 Vintyx Bot запущен успешно (polling)")
+    logger.info("🚀 Vintyx Bot запущен успешно")
 
     try:
-        await app.run_polling(drop_pending_updates=True, allowed_updates=Update.ALL_TYPES)
+        await app.run_polling(
+            drop_pending_updates=True,
+            allowed_updates=Update.ALL_TYPES
+        )
     finally:
         cleanup_pid()
 
 def signal_handler(sig, frame):
-    logger.info("⛔ Получен сигнал завершения...")
+    logger.info("⛔ Бот завершается...")
     cleanup_pid()
     sys.exit(0)
 
