@@ -1068,8 +1068,13 @@
 
        function checkout() {
     const cartData = getCart();
+    
     if (cartData.length === 0) {
-        if (tg) tg.showAlert('🛒 Корзина пуста!');
+        if (tg && tg.showAlert) {
+            tg.showAlert('🛒 Корзина пуста!');
+        } else {
+            alert('🛒 Корзина пуста!');
+        }
         return;
     }
 
@@ -1092,13 +1097,13 @@
     
     console.log('📤 ОТПРАВКА В БОТА:', JSON.stringify(data));
     
-    // Проверяем наличие Telegram WebApp
+    // ПРОВЕРКА: есть ли Telegram WebApp
     if (typeof window.Telegram !== 'undefined' && window.Telegram.WebApp) {
         const webapp = window.Telegram.WebApp;
         
         if (typeof webapp.sendData === 'function') {
             try {
-                // Отправляем данные в бот
+                // ✅ ОТПРАВЛЯЕМ ДАННЫЕ
                 webapp.sendData(JSON.stringify(data));
                 console.log('✅ ДАННЫЕ ОТПРАВЛЕНЫ!');
                 
@@ -1107,16 +1112,29 @@
                 renderCart();
                 updateCartCount();
                 
-                // Показываем успех
-                webapp.showAlert('✅ Заказ отправлен! Ожидайте подтверждение.');
+                // Используем showAlert только если доступен
+                if (webapp.showAlert) {
+                    webapp.showAlert('✅ Заказ отправлен! Ожидайте подтверждение.');
+                } else {
+                    // Если showAlert не доступен, просто показываем сообщение через Telegram
+                    console.log('✅ Заказ отправлен! Ожидайте подтверждение.');
+                }
                 
             } catch (e) {
                 console.error('❌ Ошибка sendData:', e);
-                webapp.showAlert('❌ Ошибка: ' + e.message);
+                if (webapp.showAlert) {
+                    webapp.showAlert('❌ Ошибка: ' + e.message);
+                } else {
+                    alert('❌ Ошибка: ' + e.message);
+                }
             }
         } else {
             console.error('❌ sendData НЕ ДОСТУПЕН!');
-            webapp.showAlert('❌ Ошибка: sendData недоступен');
+            if (webapp.showAlert) {
+                webapp.showAlert('❌ Ошибка: sendData недоступен. Проверьте настройки бота.');
+            } else {
+                alert('❌ Ошибка: sendData недоступен. Проверьте настройки бота.');
+            }
         }
     } else {
         // Если не в Telegram - тестовый режим
@@ -1131,7 +1149,6 @@
         updateCartCount();
     }
 }
-
         // ===== NAVIGATION =====
         const pages = {
             home: document.getElementById('pageHome'),
