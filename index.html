@@ -52,7 +52,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ===== ПЛАВАЮЩИЕ ЭМОДЗИ ===== */
         .page .floating-bg {
             position: fixed;
             font-size: 3rem;
@@ -431,6 +430,7 @@
             letter-spacing: 0.2px;
         }
 
+        /* ===== CART PAGE ===== */
         .cart-page .cart-header {
             display: flex;
             align-items: center;
@@ -560,328 +560,798 @@
         }
 
         /* ===== PROFILE PAGE ===== */
-.profile-page .back-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: rgba(255, 255, 255, 0.4);
-    font-size: 0.85rem;
-    margin-bottom: 16px;
-    cursor: pointer;
-    background: none;
-    border: none;
-    font-family: inherit;
-    padding: 0;
-}
+        .profile-page .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: inherit;
+            padding: 0;
+        }
 
-.profile-page .back-btn:active {
-    opacity: 0.5;
-}
+        .profile-page .back-btn:active {
+            opacity: 0.5;
+        }
 
-/* Кнопка поддержки в правом верхнем углу */
-.profile-page .support-trigger {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: rgba(91, 140, 255, 0.15);
-    border: 1px solid rgba(91, 140, 255, 0.2);
-    color: #7DD8FF;
-    font-size: 1.5rem;
-    cursor: pointer;
-    transition: all 0.3s;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: inherit;
-    backdrop-filter: blur(10px);
-}
+        .profile-page .support-trigger {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(91, 140, 255, 0.15);
+            border: 1px solid rgba(91, 140, 255, 0.2);
+            color: #7DD8FF;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: inherit;
+            backdrop-filter: blur(10px);
+        }
 
-.profile-page .support-trigger:active {
-    transform: scale(0.9);
-}
+        .profile-page .support-trigger:active {
+            transform: scale(0.9);
+        }
 
-.profile-page .support-trigger .badge {
-    position: absolute;
-    top: -4px;
-    right: -4px;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: #00E676;
-    border: 2px solid #0A0A0F;
-    animation: pulse 2s infinite;
-}
+        .profile-page .support-trigger .badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #00E676;
+            border: 2px solid #0A0A0F;
+            animation: pulse 2s infinite;
+        }
 
-@keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-}
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
 
-.profile-page .profile-header {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 20px;
-    padding-top: 10px;
-}
+        .profile-page .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+            padding-top: 10px;
+        }
 
-.profile-page .profile-avatar {
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
-    border: 2px solid rgba(255, 255, 255, 0.15);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2.4rem;
-    flex-shrink: 0;
-}
+        .profile-page .profile-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.4rem;
+            flex-shrink: 0;
+        }
 
-.profile-page .profile-info .name {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: #FFFFFF;
-}
+        .profile-page .profile-info .name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
 
-.profile-page .profile-info .username {
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.4);
-}
+        .profile-page .profile-info .username {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
 
-.profile-page .profile-info .sub {
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.5);
-    margin-top: 2px;
-}
+        .profile-page .profile-info .sub {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 2px;
+        }
 
-.profile-page .balance-card {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 20px;
-    padding: 24px;
-    margin-bottom: 24px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-}
+        .profile-page .balance-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 24px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
 
-.profile-page .balance-card .label {
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.4);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-weight: 600;
-    margin-bottom: 4px;
-}
+        .profile-page .balance-card .label {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
 
-.profile-page .balance-card .amount {
-    font-size: 2.4rem;
-    font-weight: 700;
-    background: linear-gradient(135deg, #7DD8FF 0%, #6675FF 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
+        .profile-page .balance-card .amount {
+            font-size: 2.4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #7DD8FF 0%, #6675FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-.profile-page .balance-card .currency {
-    font-size: 1.2rem;
-    color: rgba(255, 255, 255, 0.5);
-    font-weight: 400;
-    margin-left: 4px;
-}
+        .profile-page .balance-card .currency {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 400;
+            margin-left: 4px;
+        }
 
-/* ===== КНОПКИ В ПРОФИЛЕ ===== */
-.profile-page .btn-primary {
-    background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
-    color: white;
-    border: none;
-    padding: 14px 24px;
-    border-radius: 16px;
-    font-size: 1rem;
-    font-weight: 600;
-    width: 100%;
-    cursor: pointer;
-    transition: all 0.2s;
-    box-shadow: 0 4px 20px rgba(91, 140, 255, 0.2);
-    font-family: inherit;
-}
+        .profile-page .btn-primary {
+            background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 20px rgba(91, 140, 255, 0.2);
+            font-family: inherit;
+        }
 
-.profile-page .btn-primary:active {
-    transform: scale(0.97);
-}
+        .profile-page .btn-primary:active {
+            transform: scale(0.97);
+        }
 
-/* ===== ПОПОЛНЕНИЕ ===== */
-.profile-page .recharge-section {
-    background: rgba(255, 255, 255, 0.04);
-    border-radius: 16px;
-    padding: 16px;
-    margin-bottom: 24px;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    display: none;
-}
+        /* ===== ПОПОЛНЕНИЕ ===== */
+        .profile-page .recharge-section {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            display: none;
+        }
 
-.profile-page .recharge-section.active {
-    display: block;
-    animation: fadeUp 0.3s ease;
-}
+        .profile-page .recharge-section.active {
+            display: block;
+            animation: fadeUp 0.3s ease;
+        }
 
-.profile-page .recharge-section .quick-amounts {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-bottom: 10px;
-}
+        .profile-page .recharge-section .quick-amounts {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
 
-.profile-page .recharge-section .quick-amounts .quick-btn {
-    flex: 1;
-    min-width: 55px;
-    padding: 6px 10px;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(255, 255, 255, 0.04);
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 0.75rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-family: inherit;
-    text-align: center;
-}
+        .profile-page .recharge-section .quick-amounts .quick-btn {
+            flex: 1;
+            min-width: 55px;
+            padding: 6px 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            text-align: center;
+        }
 
-.profile-page .recharge-section .quick-amounts .quick-btn:active {
-    transform: scale(0.95);
-    background: rgba(91, 140, 255, 0.15);
-    color: #7DD8FF;
-}
+        .profile-page .recharge-section .quick-amounts .quick-btn:active {
+            transform: scale(0.95);
+            background: rgba(91, 140, 255, 0.15);
+            color: #7DD8FF;
+        }
 
-.profile-page .recharge-section .quick-amounts .quick-btn.recent {
-    border-color: rgba(91, 140, 255, 0.2);
-    color: #7DD8FF;
-}
+        .profile-page .recharge-section .quick-amounts .quick-btn.recent {
+            border-color: rgba(91, 140, 255, 0.2);
+            color: #7DD8FF;
+        }
 
-.profile-page .recharge-section .input-group {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
+        .profile-page .recharge-section .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
 
-.profile-page .recharge-section .input-row {
-    display: flex;
-    gap: 10px;
-}
+        .profile-page .recharge-section .input-row {
+            display: flex;
+            gap: 10px;
+        }
 
-.profile-page .recharge-section input {
-    flex: 1;
-    padding: 12px 16px;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.06);
-    color: white;
-    font-size: 1rem;
-    font-family: inherit;
-    outline: none;
-    min-width: 0;
-}
+        .profile-page .recharge-section input {
+            flex: 1;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.06);
+            color: white;
+            font-size: 1rem;
+            font-family: inherit;
+            outline: none;
+            min-width: 0;
+        }
 
-.profile-page .recharge-section input:focus {
-    border-color: rgba(91, 140, 255, 0.4);
-}
+        .profile-page .recharge-section input:focus {
+            border-color: rgba(91, 140, 255, 0.4);
+        }
 
-.profile-page .recharge-section input::placeholder {
-    color: rgba(255, 255, 255, 0.2);
-}
+        .profile-page .recharge-section input::placeholder {
+            color: rgba(255, 255, 255, 0.2);
+        }
 
-.profile-page .recharge-section .btn-recharge {
-    width: 100%;
-    padding: 12px;
-    border-radius: 12px;
-    border: none;
-    background: linear-gradient(135deg, #00C853 0%, #00E676 100%);
-    color: white;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-family: inherit;
-}
+        .profile-page .recharge-section .btn-recharge {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(135deg, #00C853 0%, #00E676 100%);
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
 
-.profile-page .recharge-section .btn-recharge:active {
-    transform: scale(0.97);
-}
+        .profile-page .recharge-section .btn-recharge:active {
+            transform: scale(0.97);
+        }
 
-.profile-page .section {
-    margin-top: 24px;
-}
+        .profile-page .section {
+            margin-top: 24px;
+        }
 
-.profile-page .section .section-label {
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.3);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-weight: 600;
-    margin-bottom: 12px;
-}
+        .profile-page .section .section-label {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
 
-.profile-page .history-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 16px;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 12px;
-    margin-bottom: 6px;
-    border: 1px solid rgba(255, 255, 255, 0.04);
-}
+        .profile-page .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            margin-bottom: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
 
-.profile-page .history-item .h-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+        .profile-page .history-item .h-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-.profile-page .history-item .h-icon {
-    font-size: 1.2rem;
-}
+        .profile-page .history-item .h-icon {
+            font-size: 1.2rem;
+        }
 
-.profile-page .history-item .h-info .h-name {
-    font-weight: 500;
-    color: #FFFFFF;
-    font-size: 0.85rem;
-}
+        .profile-page .history-item .h-info .h-name {
+            font-weight: 500;
+            color: #FFFFFF;
+            font-size: 0.85rem;
+        }
 
-.profile-page .history-item .h-info .h-date {
-    font-size: 0.65rem;
-    color: rgba(255, 255, 255, 0.2);
-}
+        .profile-page .history-item .h-info .h-date {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.2);
+        }
 
-.profile-page .history-item .h-amount {
-    font-weight: 700;
-    font-size: 0.9rem;
-}
+        .profile-page .history-item .h-amount {
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
 
-.profile-page .history-item .h-amount.positive {
-    color: #00E676;
-}
+        .profile-page .history-item .h-amount.positive {
+            color: #00E676;
+        }
 
-.profile-page .history-item .h-amount.negative {
-    color: #FF3B6F;
-}
+        .profile-page .history-item .h-amount.negative {
+            color: #FF3B6F;
+        }
 
-.profile-page .history-empty {
-    text-align: center;
-    padding: 30px 20px;
-    color: rgba(255, 255, 255, 0.15);
-}
+        .profile-page .history-empty {
+            text-align: center;
+            padding: 30px 20px;
+            color: rgba(255, 255, 255, 0.15);
+        }
 
-.profile-page .history-empty .empty-icon {
-    font-size: 2rem;
-    margin-bottom: 8px;
-    opacity: 0.3;
-}
+        .profile-page .history-empty .empty-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+            opacity: 0.3;
+        }
 
+        /* ===== ORDER FLOW PAGE ===== */
+        .order-flow-page .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: inherit;
+            padding: 0;
+        }
+
+        .order-flow-page .back-btn:active {
+            opacity: 0.5;
+        }
+
+        .order-step {
+            display: none;
+            animation: fadeUp 0.4s ease;
+        }
+
+        .order-step.active {
+            display: block;
+        }
+
+        .order-header {
+            margin-bottom: 24px;
+        }
+
+        .order-header.text-center {
+            text-align: center;
+        }
+
+        .order-header .order-icon {
+            font-size: 3rem;
+            margin-bottom: 8px;
+        }
+
+        .order-header .order-icon.waiting-icon {
+            animation: pulse 1.5s infinite;
+        }
+
+        .order-header .order-icon.ready-icon {
+            animation: bounce 0.6s ease;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .order-header .order-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 4px;
+        }
+
+        .order-header .order-sub {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .order-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .order-input {
+            padding: 14px 16px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            color: white;
+            font-size: 1rem;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.2s;
+            width: 100%;
+        }
+
+        .order-input:focus {
+            border-color: rgba(91, 140, 255, 0.4);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .order-input::placeholder {
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .order-input.code-input {
+            text-align: center;
+            font-size: 1.4rem;
+            letter-spacing: 8px;
+            font-weight: 700;
+        }
+
+        .order-btn-primary {
+            padding: 14px 24px;
+            border-radius: 14px;
+            border: none;
+            background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            box-shadow: 0 4px 20px rgba(91, 140, 255, 0.2);
+        }
+
+        .order-btn-primary:active {
+            transform: scale(0.97);
+        }
+
+        .order-btn-small {
+            padding: 8px 16px;
+            border-radius: 10px;
+            border: none;
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+
+        .order-btn-small:active {
+            transform: scale(0.95);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .order-info {
+            margin-top: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 0.8rem;
+        }
+
+        .order-info .resend-link {
+            color: #7DD8FF;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .order-info .resend-link:active {
+            opacity: 0.5;
+        }
+
+        .waiting-animation {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 40px 0;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(91, 140, 255, 0.1);
+            border-top-color: #6675FF;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .waiting-text {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.9rem;
+        }
+
+        .waiting-progress {
+            width: 100%;
+            max-width: 300px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #6675FF, #7DD8FF);
+            border-radius: 4px;
+            transition: width 0.1s linear;
+        }
+
+        .ready-content {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .ready-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .ready-item:last-child {
+            border-bottom: none;
+        }
+
+        .ready-item .ready-label {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.85rem;
+        }
+
+        .ready-item .ready-value {
+            color: #FFFFFF;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .ready-checkmark {
+            text-align: center;
+            font-size: 3rem;
+            padding: 10px 0;
+        }
+
+        .ready-link-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .ready-link {
+            flex: 1;
+            color: #7DD8FF;
+            font-size: 0.8rem;
+            word-break: break-all;
+            background: rgba(91, 140, 255, 0.06);
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+
+        .ready-friend-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            gap: 10px;
+        }
+
+        .friend-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .friend-info .friend-icon {
+            font-size: 2rem;
+        }
+
+        .friend-info .friend-name {
+            color: #FFFFFF;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .friend-info .friend-id {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.75rem;
+        }
+
+        /* ===== SUPPORT POPUP ===== */
+        .support-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 200;
+            display: none;
+            animation: overlayIn 0.3s ease;
+        }
+
+        .support-overlay.active {
+            display: block;
+        }
+
+        @keyframes overlayIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .support-popup {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 380px;
+            max-width: calc(100% - 40px);
+            max-height: calc(100% - 120px);
+            background: rgba(20, 20, 40, 0.95);
+            backdrop-filter: blur(28px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            z-index: 201;
+            display: none;
+            overflow: hidden;
+            animation: popupIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-origin: top right;
+        }
+
+        .support-popup.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes popupIn {
+            0% {
+                transform: scale(0.7) translate(20px, -20px);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1) translate(0, 0);
+                opacity: 1;
+            }
+        }
+
+        .support-popup .popup-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            flex-shrink: 0;
+        }
+
+        .support-popup .popup-header .title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .support-popup .popup-header .close-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            border: none;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .support-popup .popup-header .close-btn:active {
+            transform: scale(0.9);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .support-popup .popup-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 20px;
+            max-height: 300px;
+        }
+
+        .support-popup .popup-messages::-webkit-scrollbar {
+            width: 3px;
+        }
+        .support-popup .popup-messages::-webkit-scrollbar-thumb {
+            background: rgba(91, 140, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        .support-popup .popup-messages .support-msg {
+            padding: 8px 14px;
+            border-radius: 12px;
+            margin-bottom: 6px;
+            max-width: 85%;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .support-popup .popup-messages .support-msg.user {
+            background: rgba(91, 140, 255, 0.15);
+            color: #FFFFFF;
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+
+        .support-popup .popup-messages .support-msg.support {
+            background: rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.7);
+            margin-right: auto;
+            border-bottom-left-radius: 4px;
+        }
+
+        .support-popup .popup-messages .support-msg .msg-time {
+            font-size: 0.55rem;
+            color: rgba(255, 255, 255, 0.2);
+            margin-top: 4px;
+            display: block;
+        }
+
+        .support-popup .popup-input {
+            display: flex;
+            gap: 10px;
+            padding: 12px 20px 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            flex-shrink: 0;
+        }
+
+        .support-popup .popup-input input {
+            flex: 1;
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            color: white;
+            font-size: 0.85rem;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .support-popup .popup-input input:focus {
+            border-color: rgba(91, 140, 255, 0.3);
+        }
+
+        .support-popup .popup-input input::placeholder {
+            color: rgba(255, 255, 255, 0.15);
+        }
+
+        .support-popup .popup-input .btn-send {
+            padding: 10px 18px;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
+            color: white;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .support-popup .popup-input .btn-send:active {
+            transform: scale(0.95);
+        }
+
+        /* ===== INFO PAGE ===== */
         .info-page .info-card {
             background: rgba(255, 255, 255, 0.04);
             border-radius: 28px;
@@ -926,6 +1396,7 @@
             margin-top: 4px;
         }
 
+        /* ===== NAVIGATION ===== */
         .bottom-nav {
             position: fixed;
             bottom: 24px;
@@ -1028,7 +1499,66 @@
             to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
 
-        @media (max-width: 400px) {
+        /* ===== МОБИЛЬНАЯ АДАПТАЦИЯ ===== */
+        @media (max-width: 500px) {
+            .support-popup {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                width: auto;
+                max-width: none;
+                max-height: calc(100% - 80px);
+                border-radius: 20px;
+            }
+            
+            .support-popup .popup-messages {
+                max-height: 250px;
+            }
+            
+            .profile-page .support-trigger {
+                top: 12px;
+                right: 12px;
+                width: 42px;
+                height: 42px;
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .support-popup {
+                top: 8px;
+                right: 8px;
+                left: 8px;
+                border-radius: 16px;
+                max-height: calc(100% - 60px);
+            }
+            
+            .support-popup .popup-messages {
+                max-height: 180px;
+                padding: 12px 14px;
+            }
+            
+            .support-popup .popup-header {
+                padding: 12px 14px;
+                font-size: 0.9rem;
+            }
+            
+            .support-popup .popup-input {
+                padding: 10px 14px 12px;
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .support-popup .popup-input input {
+                font-size: 0.8rem;
+                padding: 8px 12px;
+            }
+            
+            .support-popup .popup-input .btn-send {
+                padding: 8px 14px;
+                font-size: 0.8rem;
+            }
+
             .profile-page .recharge-section .input-row {
                 flex-direction: column;
             }
@@ -1048,13 +1578,6 @@
                 font-size: 0.65rem;
                 padding: 5px 6px;
             }
-
-            .support-popup {
-                top: 10px;
-                right: 10px;
-                width: calc(100% - 20px);
-                max-height: calc(100% - 80px);
-            }
         }
     </style>
 </head>
@@ -1070,7 +1593,7 @@
             <div class="main-header">
                 <div class="header-left">
                     <div class="store-name">Vintyx Store</div>
-                    <div class="greeting">👋 Привет, Vintyx</div>
+                    <div class="greeting" id="greetingText">👋 Привет, Vintyx</div>
                 </div>
                 <div class="header-right">
                     <button class="cart-btn" onclick="openCart()">
@@ -1106,7 +1629,7 @@
                 <button class="category-btn" data-cat="gems" data-game="brawl">Гемы</button>
                 <button class="category-btn" data-cat="pass" data-game="brawl">Brawl Pass</button>
                 <button class="category-btn" data-cat="store" data-game="brawl">Суперселл Стор</button>
-                <button class="category-btn" data-cat="skins" data-game="brawl">Матчерино</button>
+                <button class="category-btn" data-cat="skins" data-game="brawl">Скины</button>
             </div>
 
             <div class="products-grid" id="productsGrid"></div>
@@ -1138,7 +1661,6 @@
         <span class="floating-bg">⭐</span>
         <span class="floating-bg">✨</span>
 
-        <!-- Кнопка поддержки -->
         <button class="support-trigger" onclick="toggleSupport()">
             💬
             <span class="badge"></span>
@@ -1164,7 +1686,6 @@
                 </div>
             </div>
 
-            <!-- Пополнение -->
             <div class="recharge-section" id="rechargeSection">
                 <div class="quick-amounts" id="quickAmounts">
                     <button class="quick-btn" onclick="setAmount(100)">100 ₽</button>
@@ -1197,22 +1718,146 @@
         </div>
     </div>
 
-    <!-- ПОПАП ПОДДЕРЖКИ -->
-    <div class="support-overlay" id="supportOverlay" onclick="closeSupport()"></div>
-    <div class="support-popup" id="supportPopup">
-        <div class="popup-header">
-            <span class="title">💬 Поддержка <span style="font-size:0.65rem;color:#00E676;font-weight:400;">Online</span></span>
-            <button class="close-btn" onclick="closeSupport()">✕</button>
-        </div>
-        <div class="popup-messages" id="popupMessages">
-            <div class="support-msg support">
-                👋 Здравствуйте! Чем могу помочь?
-                <span class="msg-time">Только что</span>
+    <!-- PAGE: ORDER FLOW -->
+    <div id="pageOrderFlow" class="page order-flow-page">
+        <span class="floating-bg">📦</span>
+        <span class="floating-bg">⚡</span>
+        <span class="floating-bg">✨</span>
+
+        <div class="content">
+            <!-- Шаг 1: Ввод почты (только для типа "login") -->
+            <div id="orderStepEmail" class="order-step active">
+                <button class="back-btn" onclick="closeOrderFlow()">← Назад</button>
+                <div class="order-header">
+                    <div class="order-icon">📧</div>
+                    <div class="order-title">Вход в аккаунт</div>
+                    <div class="order-sub">Введите почту от вашего аккаунта Brawl Stars</div>
+                </div>
+                <div class="order-input-group">
+                    <input type="email" id="orderEmailInput" placeholder="example@mail.com" class="order-input">
+                    <button class="order-btn-primary" onclick="sendCode()">📤 Отправить код</button>
+                </div>
+                <div class="order-info">
+                    <span>🔒 Данные защищены и не передаются третьим лицам</span>
+                </div>
             </div>
-        </div>
-        <div class="popup-input">
-            <input type="text" id="popupInput" placeholder="Напишите сообщение..." onkeydown="if(event.key==='Enter') sendPopupMessage()">
-            <button class="btn-send" onclick="sendPopupMessage()">Отправить</button>
+
+            <!-- Шаг 2: Ввод кода (только для типа "login") -->
+            <div id="orderStepCode" class="order-step">
+                <button class="back-btn" onclick="goBackToEmail()">← Назад</button>
+                <div class="order-header">
+                    <div class="order-icon">🔑</div>
+                    <div class="order-title">Подтверждение</div>
+                    <div class="order-sub">Введите код из письма</div>
+                </div>
+                <div class="order-input-group">
+                    <input type="text" id="orderCodeInput" placeholder="XXXXXX" maxlength="6" class="order-input code-input">
+                    <button class="order-btn-primary" onclick="confirmCode()">✅ Подтвердить</button>
+                </div>
+                <div class="order-info">
+                    <span>📨 Код отправлен на вашу почту</span>
+                    <span class="resend-link" onclick="sendCode()">Отправить повторно</span>
+                </div>
+            </div>
+
+            <!-- Шаг 3: Ожидание -->
+            <div id="orderStepWaiting" class="order-step">
+                <div class="order-header text-center">
+                    <div class="order-icon waiting-icon">⏳</div>
+                    <div class="order-title">Обработка заказа</div>
+                    <div class="order-sub">Пожалуйста, подождите...</div>
+                </div>
+                <div class="waiting-animation">
+                    <div class="spinner"></div>
+                    <div class="waiting-text">Это займёт всего несколько секунд</div>
+                    <div class="waiting-progress">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Шаг 4: Готово (для типа "login") -->
+            <div id="orderStepReadyLogin" class="order-step">
+                <div class="order-header text-center">
+                    <div class="order-icon ready-icon">🎉</div>
+                    <div class="order-title">Заказ выполнен!</div>
+                    <div class="order-sub">Товар уже на вашем аккаунте</div>
+                </div>
+                <div class="ready-content">
+                    <div class="ready-item">
+                        <span class="ready-label">📦 Товар:</span>
+                        <span class="ready-value" id="readyProductName">80 Gems</span>
+                    </div>
+                    <div class="ready-item">
+                        <span class="ready-label">👤 Аккаунт:</span>
+                        <span class="ready-value" id="readyEmail">example@mail.com</span>
+                    </div>
+                    <div class="ready-item">
+                        <span class="ready-label">📅 Дата:</span>
+                        <span class="ready-value" id="readyDate">Сегодня, 12:34</span>
+                    </div>
+                    <div class="ready-checkmark">✅</div>
+                </div>
+                <button class="order-btn-primary" onclick="closeOrderFlow()">🏠 На главную</button>
+            </div>
+
+            <!-- Шаг 4: Готово с ссылкой (для типа "db1") -->
+            <div id="orderStepReadyDB1" class="order-step">
+                <div class="order-header text-center">
+                    <div class="order-icon ready-icon">📥</div>
+                    <div class="order-title">Заказ готов!</div>
+                    <div class="order-sub">Перейдите по ссылке, чтобы получить заказ</div>
+                </div>
+                <div class="ready-content">
+                    <div class="ready-item">
+                        <span class="ready-label">📦 Товар:</span>
+                        <span class="ready-value" id="readyProductNameDB1">360 Gems</span>
+                    </div>
+                    <div class="ready-link-box">
+                        <div class="ready-link" id="readyLink">https://brawlstars.com/claim/ABC123XYZ</div>
+                        <button class="order-btn-small" onclick="copyLink()">📋 Копировать</button>
+                    </div>
+                    <div class="ready-item">
+                        <span class="ready-label">📅 Дата:</span>
+                        <span class="ready-value" id="readyDateDB1">Сегодня, 12:34</span>
+                    </div>
+                </div>
+                <button class="order-btn-primary" onclick="closeOrderFlow()">🏠 На главную</button>
+            </div>
+
+            <!-- Шаг 4: Готово с добавлением в друзья (для типа "db2") -->
+            <div id="orderStepReadyDB2" class="order-step">
+                <div class="order-header text-center">
+                    <div class="order-icon ready-icon">👥</div>
+                    <div class="order-title">Добавьте продавца!</div>
+                    <div class="order-sub">Добавьте продавца в друзья для получения заказа</div>
+                </div>
+                <div class="ready-content">
+                    <div class="ready-item">
+                        <span class="ready-label">📦 Товар:</span>
+                        <span class="ready-value" id="readyProductNameDB2">950 Gems</span>
+                    </div>
+                    <div class="ready-friend-box">
+                        <div class="friend-info">
+                            <span class="friend-icon">👤</span>
+                            <div>
+                                <div class="friend-name">Vintyx_Shop</div>
+                                <div class="friend-id">#ABC123XYZ</div>
+                            </div>
+                        </div>
+                        <button class="order-btn-small" onclick="copyFriendId()">📋 Копировать ID</button>
+                    </div>
+                    <div class="ready-item">
+                        <span class="ready-label">⏳ Статус:</span>
+                        <span class="ready-value" style="color: #FFD54F;">В работе (24 часа)</span>
+                    </div>
+                    <div class="ready-item">
+                        <span class="ready-label">📅 Дата:</span>
+                        <span class="ready-value" id="readyDateDB2">Сегодня, 12:34</span>
+                    </div>
+                </div>
+                <button class="order-btn-primary" onclick="closeOrderFlow()">🏠 На главную</button>
+            </div>
         </div>
     </div>
 
@@ -1236,6 +1881,25 @@
                     <div class="team">Vintyx Team</div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- SUPPORT POPUP -->
+    <div class="support-overlay" id="supportOverlay" onclick="closeSupport()"></div>
+    <div class="support-popup" id="supportPopup">
+        <div class="popup-header">
+            <span class="title">💬 Поддержка <span style="font-size:0.65rem;color:#00E676;font-weight:400;">Online</span></span>
+            <button class="close-btn" onclick="closeSupport()">✕</button>
+        </div>
+        <div class="popup-messages" id="popupMessages">
+            <div class="support-msg support">
+                👋 Здравствуйте! Чем могу помочь?
+                <span class="msg-time">Только что</span>
+            </div>
+        </div>
+        <div class="popup-input">
+            <input type="text" id="popupInput" placeholder="Напишите сообщение..." onkeydown="if(event.key==='Enter') sendPopupMessage()">
+            <button class="btn-send" onclick="sendPopupMessage()">Отправить</button>
         </div>
     </div>
 
@@ -1264,6 +1928,29 @@
             console.log('✅ Telegram WebApp инициализирован');
         } else {
             console.warn('⚠️ Telegram WebApp не найден');
+        }
+
+        // ===== ЗАГРУЗКА ДАННЫХ ПОЛЬЗОВАТЕЛЯ =====
+        function loadTelegramUser() {
+            if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+                const user = tg.initDataUnsafe.user;
+                const firstName = user.first_name || 'Vintyx';
+                
+                const greeting = document.getElementById('greetingText');
+                if (greeting) {
+                    greeting.textContent = `👋 Привет, ${firstName}`;
+                }
+                
+                const profileName = document.getElementById('userName');
+                if (profileName) {
+                    profileName.textContent = firstName;
+                }
+                
+                const profileUsername = document.getElementById('userUsername');
+                if (profileUsername) {
+                    profileUsername.textContent = user.username ? '@' + user.username : '@vintyx_shop';
+                }
+            }
         }
 
         // ===== КОРЗИНА =====
@@ -1379,13 +2066,18 @@
                 return;
             }
 
+            // Проверяем тип товара (берём первый товар в корзине)
+            const firstItem = cartData[0];
+            const orderType = firstItem.type || 'login';
+
             // Добавляем покупки в историю
             cartData.forEach(item => {
                 const orders = JSON.parse(localStorage.getItem('vintyx_orders_history') || '[]');
                 orders.unshift({
                     name: item.name,
                     amount: parseInt(item.price.replace(/[^0-9]/g, '')),
-                    date: new Date().toISOString()
+                    date: new Date().toISOString(),
+                    status: 'completed'
                 });
                 if (orders.length > 50) orders.pop();
                 localStorage.setItem('vintyx_orders_history', JSON.stringify(orders));
@@ -1403,39 +2095,282 @@
             if (transactions.length > 50) transactions.pop();
             localStorage.setItem('vintyx_transactions', JSON.stringify(transactions));
 
-            const data = {
-                action: 'checkout',
-                items: cartData.map(item => ({
-                    id: item.id,
-                    name: item.name,
-                    icon: item.icon,
-                    price: item.price,
-                    game: item.game || 'Brawl Stars',
-                    quantity: item.quantity || 1
-                })),
-                total: total
-            };
+            // Сохраняем данные для страницы заказа
+            localStorage.setItem('vintyx_order_data', JSON.stringify({
+                items: cartData,
+                total: total,
+                type: orderType,
+                email: '',
+                date: new Date().toISOString()
+            }));
+
+            // Очищаем корзину
+            saveCart([]);
+            renderCart();
+            updateCartCount();
+
+            // Открываем страницу оформления заказа
+            openOrderFlow(orderType, cartData);
+        }
+
+        // ===== ОТКРЫТИЕ СТРАНИЦЫ ЗАКАЗА =====
+        let currentOrderType = 'login';
+        let currentProductName = '';
+
+        function openOrderFlow(type, items) {
+            currentOrderType = type;
+            currentProductName = items[0]?.name || 'Товар';
+
+            // Прячем все страницы
+            Object.keys(pages).forEach(key => {
+                if (pages[key]) pages[key].classList.remove('active');
+            });
             
-            console.log('📤 ОТПРАВКА В БОТА:', JSON.stringify(data));
-            
-            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.sendData) {
-                try {
-                    window.Telegram.WebApp.sendData(JSON.stringify(data));
-                    console.log('✅ ДАННЫЕ ОТПРАВЛЕНЫ!');
-                    
-                    saveCart([]);
-                    renderCart();
-                    updateCartCount();
-                    
-                    alert('✅ Заказ отправлен! Проверьте бота.');
-                    
-                } catch (e) {
-                    console.error('❌ Ошибка:', e);
-                    alert('❌ Ошибка: ' + e.message);
-                }
-            } else {
-                alert('❌ Ошибка: Telegram WebApp не доступен');
+            // Показываем страницу заказа
+            const orderPage = document.getElementById('pageOrderFlow');
+            orderPage.classList.add('active');
+
+            // Скрываем все шаги
+            document.querySelectorAll('.order-step').forEach(step => step.classList.remove('active'));
+
+            if (type === 'login') {
+                document.getElementById('orderStepEmail').classList.add('active');
+            } else if (type === 'db1') {
+                // Сразу показываем ожидание для db1
+                document.getElementById('orderStepWaiting').classList.add('active');
+                startWaiting(type);
+            } else if (type === 'db2') {
+                // Сразу показываем готово с друзьями для db2
+                showReadyDB2(items);
             }
+
+            if (tg && tg.BackButton) tg.BackButton.show();
+            window.location.hash = 'order';
+        }
+
+        function closeOrderFlow() {
+            document.getElementById('pageOrderFlow').classList.remove('active');
+            document.querySelectorAll('.order-step').forEach(step => step.classList.remove('active'));
+            
+            // Возвращаемся на главную
+            Object.keys(pages).forEach(key => {
+                if (pages[key]) pages[key].classList.remove('active');
+            });
+            pages.home.classList.add('active');
+
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.page === 'home') {
+                    item.classList.add('active');
+                }
+            });
+
+            updateNavIcons('home');
+            window.location.hash = '';
+            if (tg && tg.BackButton) tg.BackButton.hide();
+        }
+
+        // ===== ШАГ 1: ОТПРАВКА КОДА =====
+        function sendCode() {
+            const email = document.getElementById('orderEmailInput').value.trim();
+            if (!email) {
+                alert('📧 Введите почту');
+                return;
+            }
+
+            // Сохраняем почту
+            const orderData = JSON.parse(localStorage.getItem('vintyx_order_data') || '{}');
+            orderData.email = email;
+            localStorage.setItem('vintyx_order_data', JSON.stringify(orderData));
+
+            // Переход к шагу ввода кода
+            document.getElementById('orderStepEmail').classList.remove('active');
+            document.getElementById('orderStepCode').classList.add('active');
+            
+            // Фокус на поле ввода кода
+            setTimeout(() => {
+                document.getElementById('orderCodeInput').focus();
+            }, 300);
+
+            alert('📨 Код отправлен на ' + email);
+        }
+
+        function goBackToEmail() {
+            document.getElementById('orderStepCode').classList.remove('active');
+            document.getElementById('orderStepEmail').classList.add('active');
+        }
+
+        // ===== ШАГ 2: ПОДТВЕРЖДЕНИЕ КОДА =====
+        function confirmCode() {
+            const code = document.getElementById('orderCodeInput').value.trim();
+            if (!code || code.length < 4) {
+                alert('🔑 Введите код из письма');
+                return;
+            }
+
+            // Переход к ожиданию
+            document.getElementById('orderStepCode').classList.remove('active');
+            document.getElementById('orderStepWaiting').classList.add('active');
+            
+            startWaiting('login');
+        }
+
+        // ===== ШАГ 3: ОЖИДАНИЕ =====
+        let waitingTimer = null;
+        let progressInterval = null;
+
+        function startWaiting(type) {
+            const progressBar = document.getElementById('progressBar');
+            let progress = 0;
+            const duration = 5000; // 5 секунд
+            const interval = 50; // обновление каждые 50мс
+            const step = (interval / duration) * 100;
+
+            progressBar.style.width = '0%';
+
+            if (progressInterval) clearInterval(progressInterval);
+            if (waitingTimer) clearTimeout(waitingTimer);
+
+            progressInterval = setInterval(() => {
+                progress += step;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(progressInterval);
+                    progressInterval = null;
+                    
+                    // Завершаем ожидание
+                    if (type === 'login') {
+                        showReadyLogin();
+                    } else if (type === 'db1') {
+                        showReadyDB1();
+                    }
+                }
+                progressBar.style.width = progress + '%';
+            }, interval);
+
+            // Запасной таймер
+            waitingTimer = setTimeout(() => {
+                if (progressInterval) {
+                    clearInterval(progressInterval);
+                    progressInterval = null;
+                }
+                if (type === 'login') {
+                    showReadyLogin();
+                } else if (type === 'db1') {
+                    showReadyDB1();
+                }
+            }, duration + 200);
+        }
+
+        // ===== ШАГ 4: ГОТОВО (LOGIN) =====
+        function showReadyLogin() {
+            document.getElementById('orderStepWaiting').classList.remove('active');
+            
+            const orderData = JSON.parse(localStorage.getItem('vintyx_order_data') || '{}');
+            const items = orderData.items || [];
+            const productName = items[0]?.name || 'Товар';
+            const email = orderData.email || 'example@mail.com';
+            const date = new Date().toLocaleString('ru-RU', {
+                day: 'numeric',
+                month: 'long',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            document.getElementById('readyProductName').textContent = productName;
+            document.getElementById('readyEmail').textContent = email;
+            document.getElementById('readyDate').textContent = date;
+
+            document.getElementById('orderStepReadyLogin').classList.add('active');
+        }
+
+        // ===== ШАГ 4: ГОТОВО (DB1) =====
+        function showReadyDB1() {
+            document.getElementById('orderStepWaiting').classList.remove('active');
+            
+            const orderData = JSON.parse(localStorage.getItem('vintyx_order_data') || '{}');
+            const items = orderData.items || [];
+            const productName = items[0]?.name || 'Товар';
+            const date = new Date().toLocaleString('ru-RU', {
+                day: 'numeric',
+                month: 'long',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            // Генерируем случайную ссылку
+            const link = 'https://brawlstars.com/claim/' + Math.random().toString(36).substring(2, 10).toUpperCase();
+
+            document.getElementById('readyProductNameDB1').textContent = productName;
+            document.getElementById('readyLink').textContent = link;
+            document.getElementById('readyDateDB1').textContent = date;
+
+            document.getElementById('orderStepReadyDB1').classList.add('active');
+        }
+
+        // ===== ШАГ 4: ГОТОВО (DB2) =====
+        function showReadyDB2(items) {
+            const orderData = JSON.parse(localStorage.getItem('vintyx_order_data') || '{}');
+            const productName = items[0]?.name || 'Товар';
+            const date = new Date().toLocaleString('ru-RU', {
+                day: 'numeric',
+                month: 'long',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            // Генерируем случайный ID друга
+            const friendId = '#' + Math.random().toString(36).substring(2, 10).toUpperCase();
+
+            document.getElementById('readyProductNameDB2').textContent = productName;
+            document.getElementById('readyDateDB2').textContent = date;
+            document.querySelector('.friend-id').textContent = friendId;
+
+            document.getElementById('orderStepReadyDB2').classList.add('active');
+
+            // Добавляем в историю заказов со статусом "в работе"
+            const orders = JSON.parse(localStorage.getItem('vintyx_orders_history') || '[]');
+            orders.unshift({
+                name: productName,
+                amount: calculateTotal(),
+                date: new Date().toISOString(),
+                status: 'in_progress',
+                timer: 24 // часов
+            });
+            if (orders.length > 50) orders.pop();
+            localStorage.setItem('vintyx_orders_history', JSON.stringify(orders));
+        }
+
+        // ===== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ =====
+        function copyLink() {
+            const link = document.getElementById('readyLink').textContent;
+            navigator.clipboard?.writeText(link).then(() => {
+                alert('📋 Ссылка скопирована!');
+            }).catch(() => {
+                // Fallback
+                const textarea = document.createElement('textarea');
+                textarea.value = link;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('📋 Ссылка скопирована!');
+            });
+        }
+
+        function copyFriendId() {
+            const friendId = document.querySelector('.friend-id').textContent;
+            navigator.clipboard?.writeText(friendId).then(() => {
+                alert('📋 ID скопирован!');
+            }).catch(() => {
+                const textarea = document.createElement('textarea');
+                textarea.value = friendId;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('📋 ID скопирован!');
+            });
         }
 
         // ===== НАВИГАЦИЯ =====
@@ -1444,7 +2379,8 @@
             profile: document.getElementById('pageProfile'),
             info: document.getElementById('pageInfo'),
             brawl: document.getElementById('pageBrawl'),
-            cart: document.getElementById('pageCart')
+            cart: document.getElementById('pageCart'),
+            order: document.getElementById('pageOrderFlow')
         };
 
         const navItems = document.querySelectorAll('.nav-item');
@@ -1468,10 +2404,10 @@
         }
 
         function navigateTo(pageName) {
-            if (pageName === 'brawl' || pageName === 'cart') return;
+            if (pageName === 'brawl' || pageName === 'cart' || pageName === 'order') return;
 
             Object.keys(pages).forEach(key => {
-                pages[key].classList.remove('active');
+                if (pages[key]) pages[key].classList.remove('active');
             });
 
             if (pages[pageName]) {
@@ -1503,7 +2439,7 @@
 
         function openCart() {
             Object.keys(pages).forEach(key => {
-                pages[key].classList.remove('active');
+                if (pages[key]) pages[key].classList.remove('active');
             });
             pages.cart.classList.add('active');
             renderCart();
@@ -1513,7 +2449,7 @@
 
         function closeCart() {
             Object.keys(pages).forEach(key => {
-                pages[key].classList.remove('active');
+                if (pages[key]) pages[key].classList.remove('active');
             });
             pages.home.classList.add('active');
 
@@ -1532,7 +2468,7 @@
         function openGame(pageId) {
             if (pageId === 'pageBrawl') {
                 Object.keys(pages).forEach(key => {
-                    pages[key].classList.remove('active');
+                    if (pages[key]) pages[key].classList.remove('active');
                 });
                 pages.brawl.classList.add('active');
 
@@ -1546,7 +2482,7 @@
 
         function closeGame() {
             Object.keys(pages).forEach(key => {
-                pages[key].classList.remove('active');
+                if (pages[key]) pages[key].classList.remove('active');
             });
             pages.home.classList.add('active');
 
@@ -1593,6 +2529,30 @@
                 pageId: null
             }
         ];
+
+        // ===== BRAWL STARS DATA С ТИПАМИ =====
+        const productsData = {
+            gems: [
+                { id: 1, icon: '💎', name: '80 Gems', price: '99 ₽', game: 'Brawl Stars', type: 'login' },
+                { id: 2, icon: '💎', name: '170 Gems', price: '199 ₽', game: 'Brawl Stars', type: 'login' },
+                { id: 3, icon: '💎', name: '360 Gems', price: '399 ₽', game: 'Brawl Stars', type: 'db1' },
+                { id: 4, icon: '💎', name: '950 Gems', price: '999 ₽', game: 'Brawl Stars', type: 'db2' },
+            ],
+            pass: [
+                { id: 5, icon: '🎟️', name: 'Brawl Pass', price: '499 ₽', game: 'Brawl Stars', type: 'login' },
+                { id: 6, icon: '🎟️', name: 'Brawl Pass+', price: '799 ₽', game: 'Brawl Stars', type: 'db1' },
+            ],
+            store: [
+                { id: 7, icon: '🏪', name: 'Megabox', price: '149 ₽', game: 'Brawl Stars', type: 'db2' },
+                { id: 8, icon: '🏪', name: 'Hypercharge', price: '299 ₽', game: 'Brawl Stars', type: 'login' },
+                { id: 9, icon: '🏪', name: 'Exclusive Skin', price: '599 ₽', game: 'Brawl Stars', type: 'db1' },
+            ],
+            skins: [
+                { id: 10, icon: '🎨', name: 'Virus 8-Bit', price: '399 ₽', game: 'Brawl Stars', type: 'db2' },
+                { id: 11, icon: '🎨', name: 'Dark Angel Colt', price: '499 ₽', game: 'Brawl Stars', type: 'login' },
+                { id: 12, icon: '🎨', name: 'Pirate Poco', price: '299 ₽', game: 'Brawl Stars', type: 'db1' },
+            ]
+        };
 
         // ===== FAVORITES =====
         function getFavorites() {
@@ -1703,30 +2663,7 @@
             });
         }
 
-        // ===== BRAWL STARS DATA =====
-        const productsData = {
-            gems: [
-                { id: 1, icon: '💎', name: '80 Gems', price: '99 ₽', game: 'Brawl Stars' },
-                { id: 2, icon: '💎', name: '170 Gems', price: '199 ₽', game: 'Brawl Stars' },
-                { id: 3, icon: '💎', name: '360 Gems', price: '399 ₽', game: 'Brawl Stars' },
-                { id: 4, icon: '💎', name: '950 Gems', price: '999 ₽', game: 'Brawl Stars' },
-            ],
-            pass: [
-                { id: 5, icon: '🎟️', name: 'Brawl Pass', price: '499 ₽', game: 'Brawl Stars' },
-                { id: 6, icon: '🎟️', name: 'Brawl Pass+', price: '799 ₽', game: 'Brawl Stars' },
-            ],
-            store: [
-                { id: 7, icon: '🏪', name: 'Megabox', price: '149 ₽', game: 'Brawl Stars' },
-                { id: 8, icon: '🏪', name: 'Hypercharge', price: '299 ₽', game: 'Brawl Stars' },
-                { id: 9, icon: '🏪', name: 'Exclusive Skin', price: '599 ₽', game: 'Brawl Stars' },
-            ],
-            skins: [
-                { id: 10, icon: '🎨', name: 'Virus 8-Bit', price: '399 ₽', game: 'Brawl Stars' },
-                { id: 11, icon: '🎨', name: 'Dark Angel Colt', price: '499 ₽', game: 'Brawl Stars' },
-                { id: 12, icon: '🎨', name: 'Pirate Poco', price: '299 ₽', game: 'Brawl Stars' },
-            ]
-        };
-
+        // ===== RENDER PRODUCTS =====
         function renderProducts(category) {
             const grid = document.getElementById('productsGrid');
             if (!grid) return;
@@ -1757,7 +2694,7 @@
                     <div class="prod-icon">${item.icon}</div>
                     <div class="prod-name">${item.name}</div>
                     <div class="prod-sub">${item.game}</div>
-                    <button class="prod-btn" onclick="addToCart({id: ${item.id}, icon: '${item.icon}', name: '${item.name}', price: '${item.price}', game: '${item.game}'})">
+                    <button class="prod-btn" onclick="addToCart({id: ${item.id}, icon: '${item.icon}', name: '${item.name}', price: '${item.price}', game: '${item.game}', type: '${item.type}'})">
                         <span class="price">${item.price}</span>
                         <span class="cart-text">+ добавить в корзину</span>
                     </button>
@@ -1786,6 +2723,10 @@
                 openCart();
                 return;
             }
+            if (hash === 'order') {
+                // Если заказ уже открыт, ничего не делаем
+                return;
+            }
             if (hash && pages[hash]) {
                 navigateTo(hash);
             } else {
@@ -1807,6 +2748,8 @@
                         closeCart();
                     } else if (id === 'pageProfile') {
                         navigateTo('home');
+                    } else if (id === 'pageOrderFlow') {
+                        closeOrderFlow();
                     } else {
                         const hash = window.location.hash.replace('#', '');
                         if (hash && hash !== 'home' && hash !== '') {
@@ -1861,25 +2804,20 @@
             const defaultAmounts = [100, 250, 500, 1000, 2500];
 
             let buttons = [];
-            
-            // Добавляем последние суммы пользователя (с меткой "недавние")
+            let usedAmounts = new Set();
+
             recent.forEach(amount => {
-                if (!defaultAmounts.includes(amount)) {
+                if (!usedAmounts.has(amount) && buttons.length < 5) {
                     buttons.push({ amount: amount, recent: true });
+                    usedAmounts.add(amount);
                 }
             });
 
-            // Добавляем стандартные суммы
             defaultAmounts.forEach(amount => {
-                buttons.push({ amount: amount, recent: false });
-            });
-
-            // Убираем дубликаты, сохраняя порядок
-            const seen = new Set();
-            buttons = buttons.filter(b => {
-                if (seen.has(b.amount)) return false;
-                seen.add(b.amount);
-                return true;
+                if (!usedAmounts.has(amount) && buttons.length < 5) {
+                    buttons.push({ amount: amount, recent: false });
+                    usedAmounts.add(amount);
+                }
             });
 
             container.innerHTML = buttons.map(b => `
@@ -1906,7 +2844,6 @@
             balance += amount;
             updateBalanceDisplay();
 
-            // Сохраняем сумму для быстрого доступа
             saveRecentAmount(amount);
 
             const transactions = JSON.parse(localStorage.getItem('vintyx_transactions') || '[]');
@@ -1961,6 +2898,8 @@
             orders.forEach(item => {
                 const date = new Date(item.date);
                 const formattedDate = date.toLocaleDateString('ru-RU') + ' ' + date.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'});
+                const statusText = item.status === 'in_progress' ? '⏳ В работе' : '✅ Выполнен';
+                const statusColor = item.status === 'in_progress' ? '#FFD54F' : '#00E676';
                 html += `
                     <div class="history-item">
                         <div class="h-left">
@@ -1970,7 +2909,10 @@
                                 <div class="h-date">${formattedDate}</div>
                             </div>
                         </div>
-                        <span class="h-amount negative">-${item.amount} ₽</span>
+                        <div style="text-align:right;">
+                            <div class="h-amount negative">-${item.amount} ₽</div>
+                            <div style="font-size:0.6rem;color:${statusColor};">${statusText}</div>
+                        </div>
                     </div>
                 `;
             });
@@ -2022,7 +2964,7 @@
             renderTransactions();
         }
 
-        // ===== ПОДДЕРЖКА (ПОПАП) =====
+        // ===== ПОДДЕРЖКА =====
         function toggleSupport() {
             const overlay = document.getElementById('supportOverlay');
             const popup = document.getElementById('supportPopup');
@@ -2144,15 +3086,6 @@
             }, 2500);
         }
 
-        // ===== ТЕЛЕГРАМ ПОЛЬЗОВАТЕЛЬ =====
-        function loadTelegramUser() {
-            if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-                const user = tg.initDataUnsafe.user;
-                document.getElementById('userName').textContent = user.first_name || 'Vintyx';
-                document.getElementById('userUsername').textContent = user.username ? '@' + user.username : '@vintyx_shop';
-            }
-        }
-
         // ===== ИНИЦИАЛИЗАЦИЯ =====
         renderGames();
         handleHash();
@@ -2168,6 +3101,7 @@
         }, 100);
 
         console.log('✅ Vintyx Store загружен');
+        console.log('📦 Система заказов активна');
     </script>
 </body>
 </html>
