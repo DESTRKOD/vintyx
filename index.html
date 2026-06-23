@@ -562,49 +562,72 @@
         }
 
         /* ===== PROFILE PAGE ===== */
+        .profile-page .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: inherit;
+            padding: 0;
+        }
+
+        .profile-page .back-btn:active {
+            opacity: 0.5;
+        }
+
         .profile-page .profile-header {
             display: flex;
             align-items: center;
             gap: 16px;
-            margin-bottom: 12px;
+            margin-bottom: 20px;
+            padding-top: 10px;
         }
+
         .profile-page .profile-avatar {
-            width: 64px;
-            height: 64px;
+            width: 72px;
+            height: 72px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.1);
             border: 2px solid rgba(255, 255, 255, 0.15);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
-            color: white;
+            font-size: 2.4rem;
             flex-shrink: 0;
         }
+
         .profile-page .profile-info .name {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             font-weight: 700;
             color: #FFFFFF;
         }
+
         .profile-page .profile-info .username {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: rgba(255, 255, 255, 0.4);
         }
+
         .profile-page .profile-info .sub {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: rgba(255, 255, 255, 0.5);
-            margin-top: 4px;
+            margin-top: 2px;
         }
 
-        .profile-page .profile-balance {
+        .profile-page .balance-card {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.06);
         }
-        .profile-page .profile-balance .label {
+
+        .profile-page .balance-card .label {
             font-size: 0.75rem;
             color: rgba(255, 255, 255, 0.4);
             text-transform: uppercase;
@@ -612,26 +635,28 @@
             font-weight: 600;
             margin-bottom: 4px;
         }
-        .profile-page .profile-balance .amount {
-            font-size: 2rem;
+
+        .profile-page .balance-card .amount {
+            font-size: 2.4rem;
             font-weight: 700;
             background: linear-gradient(135deg, #7DD8FF 0%, #6675FF 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        .profile-page .profile-balance .currency {
-            font-size: 1rem;
+
+        .profile-page .balance-card .currency {
+            font-size: 1.2rem;
             color: rgba(255, 255, 255, 0.5);
             font-weight: 400;
             margin-left: 4px;
         }
 
-        .profile-page .profile-button {
+        .profile-page .btn-primary {
             background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
             color: white;
             border: none;
-            padding: 14px;
+            padding: 14px 24px;
             border-radius: 16px;
             font-size: 1rem;
             font-weight: 600;
@@ -639,15 +664,105 @@
             cursor: pointer;
             transition: all 0.2s;
             box-shadow: 0 4px 20px rgba(91, 140, 255, 0.2);
-            margin-bottom: 24px;
             font-family: inherit;
         }
-        .profile-page .profile-button:active { transform: scale(0.97); }
 
-        .profile-page .profile-section {
-            margin-top: 20px;
+        .profile-page .btn-primary:active {
+            transform: scale(0.97);
         }
-        .profile-page .profile-section .section-label {
+
+        .profile-page .recharge-section {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            display: none;
+        }
+
+        .profile-page .recharge-section.active {
+            display: block;
+            animation: fadeUp 0.3s ease;
+        }
+
+        .profile-page .recharge-section .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .profile-page .recharge-section input {
+            flex: 1;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.06);
+            color: white;
+            font-size: 1rem;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .profile-page .recharge-section input:focus {
+            border-color: rgba(91, 140, 255, 0.4);
+        }
+
+        .profile-page .recharge-section input::placeholder {
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .profile-page .recharge-section .btn-recharge {
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(135deg, #00C853 0%, #00E676 100%);
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+
+        .profile-page .recharge-section .btn-recharge:active {
+            transform: scale(0.95);
+        }
+
+        .profile-page .quick-amounts {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .profile-page .quick-amounts .quick-btn {
+            flex: 1;
+            min-width: 60px;
+            padding: 8px 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            text-align: center;
+        }
+
+        .profile-page .quick-amounts .quick-btn:active {
+            transform: scale(0.95);
+            background: rgba(91, 140, 255, 0.15);
+            color: #7DD8FF;
+        }
+
+        .profile-page .section {
+            margin-top: 24px;
+        }
+
+        .profile-page .section .section-label {
             font-size: 0.75rem;
             color: rgba(255, 255, 255, 0.3);
             text-transform: uppercase;
@@ -655,19 +770,183 @@
             font-weight: 600;
             margin-bottom: 12px;
         }
-        .profile-page .profile-empty {
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 16px;
-            padding: 28px 20px;
-            text-align: center;
-            border: 1px dashed rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(5px);
+
+        .profile-page .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            margin-bottom: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
         }
-        .profile-page .profile-empty .empty-icon { font-size: 2rem; margin-bottom: 8px; opacity: 0.3; }
-        .profile-page .profile-empty .empty-text {
-            color: rgba(255, 255, 255, 0.15);
+
+        .profile-page .history-item .h-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile-page .history-item .h-icon {
+            font-size: 1.2rem;
+        }
+
+        .profile-page .history-item .h-info .h-name {
+            font-weight: 500;
+            color: #FFFFFF;
             font-size: 0.85rem;
-            font-weight: 400;
+        }
+
+        .profile-page .history-item .h-info .h-date {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .profile-page .history-item .h-amount {
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .profile-page .history-item .h-amount.positive {
+            color: #00E676;
+        }
+
+        .profile-page .history-item .h-amount.negative {
+            color: #FF3B6F;
+        }
+
+        .profile-page .history-empty {
+            text-align: center;
+            padding: 30px 20px;
+            color: rgba(255, 255, 255, 0.15);
+        }
+
+        .profile-page .history-empty .empty-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+            opacity: 0.3;
+        }
+
+        .profile-page .support-section {
+            margin-top: 24px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .profile-page .support-section .support-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .profile-page .support-section .support-header .support-icon {
+            font-size: 1.5rem;
+        }
+
+        .profile-page .support-section .support-header .support-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #FFFFFF;
+        }
+
+        .profile-page .support-section .support-header .support-badge {
+            margin-left: auto;
+            font-size: 0.65rem;
+            padding: 2px 10px;
+            border-radius: 12px;
+            background: rgba(0, 200, 83, 0.15);
+            color: #00E676;
+        }
+
+        .profile-page .support-section .support-messages {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 12px;
+        }
+
+        .profile-page .support-section .support-messages::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .profile-page .support-section .support-messages::-webkit-scrollbar-thumb {
+            background: rgba(91, 140, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        .profile-page .support-msg {
+            padding: 8px 14px;
+            border-radius: 12px;
+            margin-bottom: 6px;
+            max-width: 85%;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .profile-page .support-msg.user {
+            background: rgba(91, 140, 255, 0.15);
+            color: #FFFFFF;
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+
+        .profile-page .support-msg.support {
+            background: rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.7);
+            margin-right: auto;
+            border-bottom-left-radius: 4px;
+        }
+
+        .profile-page .support-msg .msg-time {
+            font-size: 0.55rem;
+            color: rgba(255, 255, 255, 0.2);
+            margin-top: 4px;
+            display: block;
+        }
+
+        .profile-page .support-section .support-input {
+            display: flex;
+            gap: 10px;
+        }
+
+        .profile-page .support-section .support-input input {
+            flex: 1;
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            color: white;
+            font-size: 0.85rem;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .profile-page .support-section .support-input input:focus {
+            border-color: rgba(91, 140, 255, 0.3);
+        }
+
+        .profile-page .support-section .support-input input::placeholder {
+            color: rgba(255, 255, 255, 0.15);
+        }
+
+        .profile-page .support-section .support-input .btn-send {
+            padding: 10px 18px;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
+            color: white;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .profile-page .support-section .support-input .btn-send:active {
+            transform: scale(0.95);
         }
 
         /* ===== INFO PAGE ===== */
@@ -786,6 +1065,59 @@
             50% { transform: scale(1.15); }
             100% { transform: scale(1); }
         }
+
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(20, 20, 35, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 14px 24px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 0.9rem;
+            color: white;
+            z-index: 1000;
+            animation: toastIn 0.3s ease;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .toast.success {
+            border-color: rgba(0, 200, 83, 0.3);
+        }
+
+        .toast.error {
+            border-color: rgba(255, 59, 111, 0.3);
+        }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        @media (max-width: 400px) {
+            .profile-page .recharge-section .input-group {
+                flex-direction: column;
+            }
+
+            .profile-page .profile-avatar {
+                width: 56px;
+                height: 56px;
+                font-size: 1.8rem;
+            }
+
+            .profile-page .balance-card .amount {
+                font-size: 1.8rem;
+            }
+
+            .profile-page .quick-amounts .quick-btn {
+                min-width: 50px;
+                font-size: 0.7rem;
+                padding: 6px 8px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -869,40 +1201,69 @@
         <span class="floating-bg">✨</span>
 
         <div class="content">
+            <button class="back-btn" onclick="navigateTo('home')">← Назад</button>
+
             <div class="profile-header">
                 <div class="profile-avatar">👤</div>
                 <div class="profile-info">
-                    <div class="name">Vintyx</div>
-                    <div class="username">@vintyx_shop</div>
+                    <div class="name" id="userName">Vintyx</div>
+                    <div class="username" id="userUsername">@vintyx_shop</div>
                     <div class="sub">Игровой донат быстро и безопасно</div>
                 </div>
             </div>
 
-            <div class="profile-balance">
+            <div class="balance-card">
                 <div class="label">💰 Баланс</div>
                 <div>
-                    <span class="amount">1,250</span>
+                    <span class="amount" id="balanceAmount">1,250</span>
                     <span class="currency">₽</span>
                 </div>
             </div>
 
-            <button class="profile-button" onclick="if(tg)tg.showAlert('💳 Пополнение баланса скоро будет доступно')">
+            <button class="btn-primary" onclick="toggleRecharge()">
                 ➕ Пополнить баланс
             </button>
 
-            <div class="profile-section">
-                <div class="section-label">📦 История заказов</div>
-                <div class="profile-empty">
-                    <div class="empty-icon">📭</div>
-                    <div class="empty-text">У вас пока нет заказов</div>
+            <div class="recharge-section" id="rechargeSection">
+                <div class="quick-amounts" id="quickAmounts">
+                    <button class="quick-btn" onclick="setAmount(100)">100 ₽</button>
+                    <button class="quick-btn" onclick="setAmount(250)">250 ₽</button>
+                    <button class="quick-btn" onclick="setAmount(500)">500 ₽</button>
+                    <button class="quick-btn" onclick="setAmount(1000)">1,000 ₽</button>
+                    <button class="quick-btn" onclick="setAmount(2500)">2,500 ₽</button>
+                    <button class="quick-btn" onclick="setAmount(5000)">5,000 ₽</button>
+                </div>
+                <div class="input-group">
+                    <input type="number" id="rechargeInput" placeholder="Своя сумма" min="1">
+                    <button class="btn-recharge" onclick="recharge()">Пополнить</button>
                 </div>
             </div>
 
-            <div class="profile-section">
+            <div class="section">
+                <div class="section-label">📦 История покупок</div>
+                <div id="ordersHistory"></div>
+            </div>
+
+            <div class="section">
                 <div class="section-label">💳 Транзакции</div>
-                <div class="profile-empty">
-                    <div class="empty-icon">📊</div>
-                    <div class="empty-text">История транзакций пуста</div>
+                <div id="transactionsHistory"></div>
+            </div>
+
+            <div class="support-section">
+                <div class="support-header">
+                    <span class="support-icon">💬</span>
+                    <span class="support-title">Поддержка</span>
+                    <span class="support-badge">Online</span>
+                </div>
+                <div class="support-messages" id="supportMessages">
+                    <div class="support-msg support">
+                        👋 Здравствуйте! Чем могу помочь?
+                        <span class="msg-time">Только что</span>
+                    </div>
+                </div>
+                <div class="support-input">
+                    <input type="text" id="supportInput" placeholder="Напишите сообщение..." onkeydown="if(event.key==='Enter') sendSupportMessage()">
+                    <button class="btn-send" onclick="sendSupportMessage()">Отправить</button>
                 </div>
             </div>
         </div>
@@ -953,8 +1314,6 @@
         if (tg) {
             tg.ready();
             tg.expand();
-            tg.setBackgroundColor('#0A0A0F');
-            tg.setHeaderColor('#0A0A0F');
             console.log('✅ Telegram WebApp инициализирован');
         } else {
             console.warn('⚠️ Telegram WebApp не найден');
@@ -992,7 +1351,6 @@
             }, 0);
         }
 
-        // ===== ДОБАВЛЕНИЕ В КОРЗИНУ (БЕЗ showAlert) =====
         function addToCart(product) {
             const cartData = getCart();
             const existing = cartData.find(item => item.id === product.id);
@@ -1003,8 +1361,6 @@
             }
             saveCart(cartData);
             console.log(`✅ ${product.name} добавлен в корзину`);
-            
-            // Простое уведомление через alert
             alert(`✅ ${product.name} добавлен в корзину!`);
         }
 
@@ -1067,7 +1423,7 @@
             if (checkoutBtn) checkoutBtn.disabled = false;
         }
 
-        // ===== ОФОРМЛЕНИЕ ЗАКАЗА (БЕЗ showPopup) =====
+        // ===== ОФОРМЛЕНИЕ ЗАКАЗА =====
         function checkout() {
             const cartData = getCart();
             
@@ -1075,6 +1431,30 @@
                 alert('🛒 Корзина пуста!');
                 return;
             }
+
+            // Добавляем покупки в историю
+            cartData.forEach(item => {
+                const orders = JSON.parse(localStorage.getItem('vintyx_orders_history') || '[]');
+                orders.unshift({
+                    name: item.name,
+                    amount: parseInt(item.price.replace(/[^0-9]/g, '')),
+                    date: new Date().toISOString()
+                });
+                if (orders.length > 50) orders.pop();
+                localStorage.setItem('vintyx_orders_history', JSON.stringify(orders));
+            });
+
+            // Добавляем транзакцию
+            const total = calculateTotal();
+            const transactions = JSON.parse(localStorage.getItem('vintyx_transactions') || '[]');
+            transactions.unshift({
+                name: '🛒 Покупка в магазине',
+                amount: total,
+                type: 'negative',
+                date: new Date().toISOString()
+            });
+            if (transactions.length > 50) transactions.pop();
+            localStorage.setItem('vintyx_transactions', JSON.stringify(transactions));
 
             const data = {
                 action: 'checkout',
@@ -1086,7 +1466,7 @@
                     game: item.game || 'Brawl Stars',
                     quantity: item.quantity || 1
                 })),
-                total: calculateTotal()
+                total: total
             };
             
             console.log('📤 ОТПРАВКА В БОТА:', JSON.stringify(data));
@@ -1096,7 +1476,6 @@
                     window.Telegram.WebApp.sendData(JSON.stringify(data));
                     console.log('✅ ДАННЫЕ ОТПРАВЛЕНЫ!');
                     
-                    // Очищаем корзину
                     saveCart([]);
                     renderCart();
                     updateCartCount();
@@ -1167,6 +1546,11 @@
             } else {
                 window.location.hash = pageName;
                 if (tg && tg.BackButton) tg.BackButton.show();
+            }
+
+            // Если открыли профиль - обновляем данные
+            if (pageName === 'profile') {
+                updateProfileData();
             }
         }
 
@@ -1474,6 +1858,8 @@
                         closeGame();
                     } else if (id === 'pageCart') {
                         closeCart();
+                    } else if (id === 'pageProfile') {
+                        navigateTo('home');
                     } else {
                         const hash = window.location.hash.replace('#', '');
                         if (hash && hash !== 'home' && hash !== '') {
@@ -1484,10 +1870,275 @@
             });
         }
 
-        // ===== INIT =====
+        // ===== ПРОФИЛЬ =====
+        let balance = parseFloat(localStorage.getItem('vintyx_balance')) || 1250;
+
+        function updateBalanceDisplay() {
+            document.getElementById('balanceAmount').textContent = balance.toLocaleString('ru-RU');
+            localStorage.setItem('vintyx_balance', balance);
+        }
+
+        function toggleRecharge() {
+            const section = document.getElementById('rechargeSection');
+            section.classList.toggle('active');
+            if (section.classList.contains('active')) {
+                document.getElementById('rechargeInput').focus();
+            }
+        }
+
+        function setAmount(amount) {
+            document.getElementById('rechargeInput').value = amount;
+        }
+
+        function recharge() {
+            const input = document.getElementById('rechargeInput');
+            const amount = parseFloat(input.value);
+
+            if (!amount || amount <= 0) {
+                showToast('❌ Введите корректную сумму', 'error');
+                return;
+            }
+
+            if (amount > 100000) {
+                showToast('❌ Сумма слишком большая', 'error');
+                return;
+            }
+
+            balance += amount;
+            updateBalanceDisplay();
+
+            const transactions = JSON.parse(localStorage.getItem('vintyx_transactions') || '[]');
+            transactions.unshift({
+                name: '💰 Пополнение баланса',
+                amount: amount,
+                type: 'positive',
+                date: new Date().toISOString()
+            });
+            if (transactions.length > 50) transactions.pop();
+            localStorage.setItem('vintyx_transactions', JSON.stringify(transactions));
+
+            input.value = '';
+            document.getElementById('rechargeSection').classList.remove('active');
+
+            showToast(`✅ Баланс пополнен на ${amount} ₽`, 'success');
+            updateProfileData();
+        }
+
+        function getOrders() {
+            try {
+                return JSON.parse(localStorage.getItem('vintyx_orders_history')) || [];
+            } catch {
+                return [];
+            }
+        }
+
+        function getTransactions() {
+            try {
+                return JSON.parse(localStorage.getItem('vintyx_transactions')) || [];
+            } catch {
+                return [];
+            }
+        }
+
+        function renderOrders() {
+            const container = document.getElementById('ordersHistory');
+            const orders = getOrders();
+
+            if (orders.length === 0) {
+                container.innerHTML = `
+                    <div class="history-empty">
+                        <div class="empty-icon">📭</div>
+                        <div>У вас пока нет покупок</div>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            orders.forEach(item => {
+                const date = new Date(item.date);
+                const formattedDate = date.toLocaleDateString('ru-RU') + ' ' + date.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'});
+                html += `
+                    <div class="history-item">
+                        <div class="h-left">
+                            <span class="h-icon">🎮</span>
+                            <div class="h-info">
+                                <div class="h-name">${item.name}</div>
+                                <div class="h-date">${formattedDate}</div>
+                            </div>
+                        </div>
+                        <span class="h-amount negative">-${item.amount} ₽</span>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function renderTransactions() {
+            const container = document.getElementById('transactionsHistory');
+            const transactions = getTransactions();
+
+            if (transactions.length === 0) {
+                container.innerHTML = `
+                    <div class="history-empty">
+                        <div class="empty-icon">📊</div>
+                        <div>История транзакций пуста</div>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            transactions.forEach(item => {
+                const date = new Date(item.date);
+                const formattedDate = date.toLocaleDateString('ru-RU') + ' ' + date.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'});
+                const icon = item.type === 'positive' ? '💰' : '💸';
+                const amountClass = item.type === 'positive' ? 'positive' : 'negative';
+                const sign = item.type === 'positive' ? '+' : '-';
+                html += `
+                    <div class="history-item">
+                        <div class="h-left">
+                            <span class="h-icon">${icon}</span>
+                            <div class="h-info">
+                                <div class="h-name">${item.name}</div>
+                                <div class="h-date">${formattedDate}</div>
+                            </div>
+                        </div>
+                        <span class="h-amount ${amountClass}">${sign}${item.amount} ₽</span>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function updateProfileData() {
+            updateBalanceDisplay();
+            renderOrders();
+            renderTransactions();
+            renderSupportMessages();
+        }
+
+        // ===== ПОДДЕРЖКА =====
+        function getSupportMessages() {
+            try {
+                return JSON.parse(localStorage.getItem('vintyx_support_messages')) || [];
+            } catch {
+                return [];
+            }
+        }
+
+        function saveSupportMessages(messages) {
+            localStorage.setItem('vintyx_support_messages', JSON.stringify(messages));
+            renderSupportMessages();
+        }
+
+        function sendSupportMessage() {
+            const input = document.getElementById('supportInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const messages = getSupportMessages();
+            messages.push({
+                text: text,
+                from: 'user',
+                time: new Date().toISOString()
+            });
+
+            setTimeout(() => {
+                const response = getAutoReply(text);
+                if (response) {
+                    const msgs = getSupportMessages();
+                    msgs.push({
+                        text: response,
+                        from: 'support',
+                        time: new Date().toISOString()
+                    });
+                    saveSupportMessages(msgs);
+                }
+            }, 1000 + Math.random() * 1500);
+
+            saveSupportMessages(messages);
+            input.value = '';
+        }
+
+        function getAutoReply(text) {
+            const lower = text.toLowerCase();
+            if (lower.includes('привет') || lower.includes('здравствуй')) return '👋 Здравствуйте! Рады помочь!';
+            if (lower.includes('баланс') || lower.includes('пополнить')) return '💰 Нажмите кнопку "Пополнить баланс" выше.';
+            if (lower.includes('заказ') || lower.includes('товар')) return '📦 Заказ будет обработан в течение 5-15 минут.';
+            if (lower.includes('скидка') || lower.includes('акция')) return '🎁 Следите за акциями в нашем канале!';
+            if (lower.includes('помощь') || lower.includes('помоги')) return '🆘 Опишите вашу проблему подробнее.';
+            if (lower.includes('спасибо')) return '😊 Всегда рады помочь!';
+            return null;
+        }
+
+        function renderSupportMessages() {
+            const container = document.getElementById('supportMessages');
+            const messages = getSupportMessages();
+
+            if (messages.length === 0) {
+                container.innerHTML = `
+                    <div class="support-msg support">
+                        👋 Здравствуйте! Чем могу помочь?
+                        <span class="msg-time">Только что</span>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            messages.forEach(msg => {
+                const date = new Date(msg.time);
+                const formattedTime = date.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'});
+                const fromClass = msg.from === 'user' ? 'user' : 'support';
+                const icon = msg.from === 'user' ? '👤' : '🤖';
+                html += `
+                    <div class="support-msg ${fromClass}">
+                        ${icon} ${msg.text}
+                        <span class="msg-time">${formattedTime}</span>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // ===== TOAST =====
+        function showToast(message, type = 'info') {
+            const existing = document.querySelector('.toast');
+            if (existing) existing.remove();
+
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s';
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+
+        // ===== ТЕЛЕГРАМ ПОЛЬЗОВАТЕЛЬ =====
+        function loadTelegramUser() {
+            if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+                const user = tg.initDataUnsafe.user;
+                document.getElementById('userName').textContent = user.first_name || 'Vintyx';
+                document.getElementById('userUsername').textContent = user.username ? '@' + user.username : '@vintyx_shop';
+            }
+        }
+
+        // ===== ИНИЦИАЛИЗАЦИЯ =====
         renderGames();
         handleHash();
         updateCartCount();
+        updateProfileData();
+        loadTelegramUser();
+
         setTimeout(function() {
             if (document.getElementById('pageBrawl').classList.contains('active')) {
                 renderProducts('all');
@@ -1496,6 +2147,7 @@
 
         console.log('🔍 Telegram WebApp:', tg);
         console.log('🔍 sendData доступен?', tg && typeof tg.sendData === 'function');
+        console.log('✅ Vintyx Store загружен');
     </script>
 </body>
 </html>
