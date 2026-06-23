@@ -371,14 +371,13 @@
         .game-page .product-card {
             background: rgba(255, 255, 255, 0.04);
             border-radius: 18px;
-            padding: 12px 10px 10px;
+            padding: 12px 10px 12px;
             border: 1px solid rgba(255, 255, 255, 0.06);
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
             transition: all 0.2s;
-            cursor: pointer;
             backdrop-filter: blur(10px);
         }
         .game-page .product-card:active { transform: scale(0.96); }
@@ -404,33 +403,53 @@
             background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
             color: white;
             border: none;
-            padding: 6px 12px;
+            padding: 8px 12px;
             border-radius: 10px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.2s;
-            width: 100%;
             font-family: inherit;
             box-shadow: 0 2px 10px rgba(91, 140, 255, 0.15);
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             gap: 0px;
+            min-height: 48px;
+            text-align: center;
+            width: 100%;
         }
-        .game-page .product-card .prod-btn:active { transform: scale(0.95); }
+
+        .game-page .product-card .prod-btn:active { 
+            transform: scale(0.95); 
+        }
+
         .game-page .product-card .prod-btn .price {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 700;
         }
+
         .game-page .product-card .prod-btn .cart-text {
-            font-size: 0.45rem;
+            font-size: 0.4rem;
             font-weight: 400;
             opacity: 0.5;
             letter-spacing: 0.2px;
         }
 
-        /* ===== CART PAGE ===== */
+        .game-page .product-card .prod-btn .oneclick-text {
+            font-size: 0.55rem;
+            font-weight: 600;
+        }
+
+        .game-page .product-card .prod-type-label {
+            font-size: 0.5rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
         .cart-page .cart-header {
             display: flex;
             align-items: center;
@@ -559,7 +578,6 @@
             transform: none;
         }
 
-        /* ===== PROFILE PAGE ===== */
         .profile-page .back-btn {
             display: inline-flex;
             align-items: center;
@@ -711,7 +729,6 @@
             transform: scale(0.97);
         }
 
-        /* ===== ПОПОЛНЕНИЕ ===== */
         .profile-page .recharge-section {
             background: rgba(255, 255, 255, 0.04);
             border-radius: 16px;
@@ -880,7 +897,6 @@
             opacity: 0.3;
         }
 
-        /* ===== ORDER FLOW PAGE ===== */
         .order-flow-page .back-btn {
             display: inline-flex;
             align-items: center;
@@ -993,6 +1009,8 @@
             transition: all 0.2s;
             font-family: inherit;
             box-shadow: 0 4px 20px rgba(91, 140, 255, 0.2);
+            width: 100%;
+            text-align: center;
         }
 
         .order-btn-primary:active {
@@ -1165,7 +1183,6 @@
             font-size: 0.75rem;
         }
 
-        /* ===== SUPPORT POPUP ===== */
         .support-overlay {
             position: fixed;
             top: 0;
@@ -1351,7 +1368,6 @@
             transform: scale(0.95);
         }
 
-        /* ===== INFO PAGE ===== */
         .info-page .info-card {
             background: rgba(255, 255, 255, 0.04);
             border-radius: 28px;
@@ -1396,7 +1412,6 @@
             margin-top: 4px;
         }
 
-        /* ===== NAVIGATION ===== */
         .bottom-nav {
             position: fixed;
             bottom: 24px;
@@ -1499,7 +1514,6 @@
             to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
 
-        /* ===== МОБИЛЬНАЯ АДАПТАЦИЯ ===== */
         @media (max-width: 500px) {
             .support-popup {
                 top: 10px;
@@ -1521,6 +1535,11 @@
                 width: 42px;
                 height: 42px;
                 font-size: 1.2rem;
+            }
+
+            .game-page .products-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
             }
         }
 
@@ -1578,6 +1597,21 @@
                 font-size: 0.65rem;
                 padding: 5px 6px;
             }
+
+            .game-page .products-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 6px;
+            }
+
+            .game-page .product-card .prod-btn {
+                font-size: 0.65rem;
+                min-height: 40px;
+                padding: 6px 8px;
+            }
+
+            .game-page .product-card .prod-btn .price {
+                font-size: 0.65rem;
+            }
         }
     </style>
 </head>
@@ -1629,7 +1663,7 @@
                 <button class="category-btn" data-cat="gems" data-game="brawl">Гемы</button>
                 <button class="category-btn" data-cat="pass" data-game="brawl">Brawl Pass</button>
                 <button class="category-btn" data-cat="store" data-game="brawl">Суперселл Стор</button>
-                <button class="category-btn" data-cat="skins" data-game="brawl">Скины</button>
+                <button class="category-btn" data-cat="skins" data-game="brawl">Матчерино</button>
             </div>
 
             <div class="products-grid" id="productsGrid"></div>
@@ -1725,7 +1759,7 @@
         <span class="floating-bg">✨</span>
 
         <div class="content">
-            <!-- Шаг 1: Ввод почты (только для типа "login") -->
+            <!-- Шаг 1: Ввод почты (для типа "login") -->
             <div id="orderStepEmail" class="order-step active">
                 <button class="back-btn" onclick="closeOrderFlow()">← Назад</button>
                 <div class="order-header">
@@ -1742,7 +1776,7 @@
                 </div>
             </div>
 
-            <!-- Шаг 2: Ввод кода (только для типа "login") -->
+            <!-- Шаг 2: Ввод кода (для типа "login") -->
             <div id="orderStepCode" class="order-step">
                 <button class="back-btn" onclick="goBackToEmail()">← Назад</button>
                 <div class="order-header">
@@ -2057,6 +2091,44 @@
             if (checkoutBtn) checkoutBtn.disabled = false;
         }
 
+        // ===== ПРОВЕРКА ТИПОВ В КОРЗИНЕ =====
+        function checkCartTypes() {
+            const cartData = getCart();
+            if (cartData.length === 0) return null;
+            
+            const types = cartData.map(item => item.type);
+            const uniqueTypes = [...new Set(types)];
+            
+            if (uniqueTypes.length > 1) {
+                const typeLabels = {
+                    'login': '🔑 Вход (почта + код)',
+                    'db1': '📥 По ссылке (База данных 1)',
+                    'db2': '🎁 Подарком (добавить в друзья)'
+                };
+                return {
+                    error: true,
+                    types: uniqueTypes,
+                    message: '❌ В корзине товары разных типов!\n\n' +
+                             uniqueTypes.map(t => typeLabels[t] || t).join('\n') +
+                             '\n\nОформите заказы по отдельности!'
+                };
+            }
+            
+            return {
+                error: false,
+                type: uniqueTypes[0]
+            };
+        }
+
+        // ===== КУПИТЬ В 1 КЛИК =====
+        function buyNow(product) {
+            saveCart([]);
+            addToCart(product);
+            setTimeout(() => {
+                checkout();
+            }, 300);
+        }
+
         // ===== ОФОРМЛЕНИЕ ЗАКАЗА =====
         function checkout() {
             const cartData = getCart();
@@ -2066,24 +2138,26 @@
                 return;
             }
 
-            // Проверяем тип товара (берём первый товар в корзине)
-            const firstItem = cartData[0];
-            const orderType = firstItem.type || 'login';
+            const typeCheck = checkCartTypes();
+            if (typeCheck.error) {
+                alert(typeCheck.message);
+                return;
+            }
 
-            // Добавляем покупки в историю
+            const orderType = typeCheck.type;
+
             cartData.forEach(item => {
                 const orders = JSON.parse(localStorage.getItem('vintyx_orders_history') || '[]');
                 orders.unshift({
                     name: item.name,
                     amount: parseInt(item.price.replace(/[^0-9]/g, '')),
                     date: new Date().toISOString(),
-                    status: 'completed'
+                    status: orderType === 'db2' ? 'in_progress' : 'completed'
                 });
                 if (orders.length > 50) orders.pop();
                 localStorage.setItem('vintyx_orders_history', JSON.stringify(orders));
             });
 
-            // Добавляем транзакцию
             const total = calculateTotal();
             const transactions = JSON.parse(localStorage.getItem('vintyx_transactions') || '[]');
             transactions.unshift({
@@ -2095,7 +2169,6 @@
             if (transactions.length > 50) transactions.pop();
             localStorage.setItem('vintyx_transactions', JSON.stringify(transactions));
 
-            // Сохраняем данные для страницы заказа
             localStorage.setItem('vintyx_order_data', JSON.stringify({
                 items: cartData,
                 total: total,
@@ -2104,12 +2177,10 @@
                 date: new Date().toISOString()
             }));
 
-            // Очищаем корзину
             saveCart([]);
             renderCart();
             updateCartCount();
 
-            // Открываем страницу оформления заказа
             openOrderFlow(orderType, cartData);
         }
 
@@ -2121,26 +2192,21 @@
             currentOrderType = type;
             currentProductName = items[0]?.name || 'Товар';
 
-            // Прячем все страницы
             Object.keys(pages).forEach(key => {
                 if (pages[key]) pages[key].classList.remove('active');
             });
             
-            // Показываем страницу заказа
             const orderPage = document.getElementById('pageOrderFlow');
             orderPage.classList.add('active');
 
-            // Скрываем все шаги
             document.querySelectorAll('.order-step').forEach(step => step.classList.remove('active'));
 
             if (type === 'login') {
                 document.getElementById('orderStepEmail').classList.add('active');
             } else if (type === 'db1') {
-                // Сразу показываем ожидание для db1
                 document.getElementById('orderStepWaiting').classList.add('active');
                 startWaiting(type);
             } else if (type === 'db2') {
-                // Сразу показываем готово с друзьями для db2
                 showReadyDB2(items);
             }
 
@@ -2152,7 +2218,6 @@
             document.getElementById('pageOrderFlow').classList.remove('active');
             document.querySelectorAll('.order-step').forEach(step => step.classList.remove('active'));
             
-            // Возвращаемся на главную
             Object.keys(pages).forEach(key => {
                 if (pages[key]) pages[key].classList.remove('active');
             });
@@ -2178,16 +2243,13 @@
                 return;
             }
 
-            // Сохраняем почту
             const orderData = JSON.parse(localStorage.getItem('vintyx_order_data') || '{}');
             orderData.email = email;
             localStorage.setItem('vintyx_order_data', JSON.stringify(orderData));
 
-            // Переход к шагу ввода кода
             document.getElementById('orderStepEmail').classList.remove('active');
             document.getElementById('orderStepCode').classList.add('active');
             
-            // Фокус на поле ввода кода
             setTimeout(() => {
                 document.getElementById('orderCodeInput').focus();
             }, 300);
@@ -2208,7 +2270,6 @@
                 return;
             }
 
-            // Переход к ожиданию
             document.getElementById('orderStepCode').classList.remove('active');
             document.getElementById('orderStepWaiting').classList.add('active');
             
@@ -2222,8 +2283,8 @@
         function startWaiting(type) {
             const progressBar = document.getElementById('progressBar');
             let progress = 0;
-            const duration = 5000; // 5 секунд
-            const interval = 50; // обновление каждые 50мс
+            const duration = 5000;
+            const interval = 50;
             const step = (interval / duration) * 100;
 
             progressBar.style.width = '0%';
@@ -2238,7 +2299,6 @@
                     clearInterval(progressInterval);
                     progressInterval = null;
                     
-                    // Завершаем ожидание
                     if (type === 'login') {
                         showReadyLogin();
                     } else if (type === 'db1') {
@@ -2248,7 +2308,6 @@
                 progressBar.style.width = progress + '%';
             }, interval);
 
-            // Запасной таймер
             waitingTimer = setTimeout(() => {
                 if (progressInterval) {
                     clearInterval(progressInterval);
@@ -2298,7 +2357,6 @@
                 minute: '2-digit'
             });
 
-            // Генерируем случайную ссылку
             const link = 'https://brawlstars.com/claim/' + Math.random().toString(36).substring(2, 10).toUpperCase();
 
             document.getElementById('readyProductNameDB1').textContent = productName;
@@ -2319,7 +2377,6 @@
                 minute: '2-digit'
             });
 
-            // Генерируем случайный ID друга
             const friendId = '#' + Math.random().toString(36).substring(2, 10).toUpperCase();
 
             document.getElementById('readyProductNameDB2').textContent = productName;
@@ -2328,14 +2385,13 @@
 
             document.getElementById('orderStepReadyDB2').classList.add('active');
 
-            // Добавляем в историю заказов со статусом "в работе"
             const orders = JSON.parse(localStorage.getItem('vintyx_orders_history') || '[]');
             orders.unshift({
                 name: productName,
                 amount: calculateTotal(),
                 date: new Date().toISOString(),
                 status: 'in_progress',
-                timer: 24 // часов
+                timer: 24
             });
             if (orders.length > 50) orders.pop();
             localStorage.setItem('vintyx_orders_history', JSON.stringify(orders));
@@ -2347,7 +2403,6 @@
             navigator.clipboard?.writeText(link).then(() => {
                 alert('📋 Ссылка скопирована!');
             }).catch(() => {
-                // Fallback
                 const textarea = document.createElement('textarea');
                 textarea.value = link;
                 document.body.appendChild(textarea);
@@ -2530,27 +2585,27 @@
             }
         ];
 
-        // ===== BRAWL STARS DATA С ТИПАМИ =====
+        // ===== BRAWL STARS DATA С ТИПАМИ И МЕТКАМИ =====
         const productsData = {
             gems: [
-                { id: 1, icon: '💎', name: '80 Gems', price: '99 ₽', game: 'Brawl Stars', type: 'login' },
-                { id: 2, icon: '💎', name: '170 Gems', price: '199 ₽', game: 'Brawl Stars', type: 'login' },
-                { id: 3, icon: '💎', name: '360 Gems', price: '399 ₽', game: 'Brawl Stars', type: 'db1' },
-                { id: 4, icon: '💎', name: '950 Gems', price: '999 ₽', game: 'Brawl Stars', type: 'db2' },
+                { id: 1, icon: '💎', name: '80 Gems', price: '99 ₽', game: 'Brawl Stars', type: 'login', label: '🔑 Вход' },
+                { id: 2, icon: '💎', name: '170 Gems', price: '199 ₽', game: 'Brawl Stars', type: 'login', label: '🔑 Вход' },
+                { id: 3, icon: '💎', name: '360 Gems', price: '399 ₽', game: 'Brawl Stars', type: 'db1', label: '📥 База данных 1' },
+                { id: 4, icon: '💎', name: '950 Gems', price: '999 ₽', game: 'Brawl Stars', type: 'db2', label: '🎁 Подарком' },
             ],
             pass: [
-                { id: 5, icon: '🎟️', name: 'Brawl Pass', price: '499 ₽', game: 'Brawl Stars', type: 'login' },
-                { id: 6, icon: '🎟️', name: 'Brawl Pass+', price: '799 ₽', game: 'Brawl Stars', type: 'db1' },
+                { id: 5, icon: '🎟️', name: 'Brawl Pass', price: '499 ₽', game: 'Brawl Stars', type: 'login', label: '🔑 Вход' },
+                { id: 6, icon: '🎟️', name: 'Brawl Pass+', price: '799 ₽', game: 'Brawl Stars', type: 'db1', label: '📥 База данных 1' },
             ],
             store: [
-                { id: 7, icon: '🏪', name: 'Megabox', price: '149 ₽', game: 'Brawl Stars', type: 'db2' },
-                { id: 8, icon: '🏪', name: 'Hypercharge', price: '299 ₽', game: 'Brawl Stars', type: 'login' },
-                { id: 9, icon: '🏪', name: 'Exclusive Skin', price: '599 ₽', game: 'Brawl Stars', type: 'db1' },
+                { id: 7, icon: '🏪', name: 'Megabox', price: '149 ₽', game: 'Brawl Stars', type: 'db2', label: '🎁 Подарком' },
+                { id: 8, icon: '🏪', name: 'Hypercharge', price: '299 ₽', game: 'Brawl Stars', type: 'login', label: '🔑 Вход' },
+                { id: 9, icon: '🏪', name: 'Exclusive Skin', price: '599 ₽', game: 'Brawl Stars', type: 'db1', label: '📥 База данных 1' },
             ],
             skins: [
-                { id: 10, icon: '🎨', name: 'Virus 8-Bit', price: '399 ₽', game: 'Brawl Stars', type: 'db2' },
-                { id: 11, icon: '🎨', name: 'Dark Angel Colt', price: '499 ₽', game: 'Brawl Stars', type: 'login' },
-                { id: 12, icon: '🎨', name: 'Pirate Poco', price: '299 ₽', game: 'Brawl Stars', type: 'db1' },
+                { id: 10, icon: '🎨', name: 'Virus 8-Bit', price: '399 ₽', game: 'Brawl Stars', type: 'db2', label: '🎁 Подарком' },
+                { id: 11, icon: '🎨', name: 'Dark Angel Colt', price: '499 ₽', game: 'Brawl Stars', type: 'login', label: '🔑 Вход' },
+                { id: 12, icon: '🎨', name: 'Pirate Poco', price: '299 ₽', game: 'Brawl Stars', type: 'db1', label: '📥 База данных 1' },
             ]
         };
 
@@ -2673,8 +2728,16 @@
             let items = [];
             if (category === 'all') {
                 items = [...productsData.gems, ...productsData.pass, ...productsData.store, ...productsData.skins];
+            } else if (category === 'gems') {
+                items = productsData.gems;
+            } else if (category === 'pass') {
+                items = productsData.pass;
+            } else if (category === 'store') {
+                items = productsData.store;
+            } else if (category === 'skins') {
+                items = productsData.skins;
             } else {
-                items = productsData[category] || [];
+                items = [];
             }
 
             if (items.length === 0) {
@@ -2690,14 +2753,36 @@
             items.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'product-card';
+                
+                let labelColor = '';
+                let labelBg = '';
+                if (item.type === 'login') {
+                    labelColor = '#7DD8FF';
+                    labelBg = 'rgba(91, 140, 255, 0.12)';
+                } else if (item.type === 'db1') {
+                    labelColor = '#FFD54F';
+                    labelBg = 'rgba(255, 193, 7, 0.12)';
+                } else if (item.type === 'db2') {
+                    labelColor = '#00E676';
+                    labelBg = 'rgba(0, 200, 83, 0.12)';
+                }
+                
                 card.innerHTML = `
-                    <div class="prod-icon">${item.icon}</div>
+                    <div style="width:100%;display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                        <div class="prod-icon" style="margin-bottom:0;font-size:1.8rem;">${item.icon}</div>
+                        <span class="prod-type-label" style="background:${labelBg};color:${labelColor};">${item.label}</span>
+                    </div>
                     <div class="prod-name">${item.name}</div>
                     <div class="prod-sub">${item.game}</div>
-                    <button class="prod-btn" onclick="addToCart({id: ${item.id}, icon: '${item.icon}', name: '${item.name}', price: '${item.price}', game: '${item.game}', type: '${item.type}'})">
-                        <span class="price">${item.price}</span>
-                        <span class="cart-text">+ добавить в корзину</span>
-                    </button>
+                    <div style="display:flex;gap:6px;width:100%;margin-top:4px;">
+                        <button class="prod-btn" onclick="addToCart({id: ${item.id}, icon: '${item.icon}', name: '${item.name}', price: '${item.price}', game: '${item.game}', type: '${item.type}'})" style="flex:2;">
+                            <span class="price">${item.price}</span>
+                            <span class="cart-text">+ в корзину</span>
+                        </button>
+                        <button class="prod-btn" onclick="buyNow({id: ${item.id}, icon: '${item.icon}', name: '${item.name}', price: '${item.price}', game: '${item.game}', type: '${item.type}'})" style="flex:1;background:linear-gradient(135deg,#00C853 0%,#00E676 100%);min-height:48px;">
+                            <span class="oneclick-text">⚡1 клик</span>
+                        </button>
+                    </div>
                 `;
                 grid.appendChild(card);
             });
@@ -2724,7 +2809,6 @@
                 return;
             }
             if (hash === 'order') {
-                // Если заказ уже открыт, ничего не делаем
                 return;
             }
             if (hash && pages[hash]) {
