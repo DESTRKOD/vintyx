@@ -6,1121 +6,1223 @@
     <title>Vintyx Store</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    html, body {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        overflow: hidden;
-        font-family: -apple-system, 'Segoe UI', 'Roboto', system-ui, sans-serif;
-        color: #FFFFFF;
-    }
-
-    body {
-        background-image: url('https://i.imgur.com/UZwER9m.png');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-    }
-
-    body::before {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 0;
-        pointer-events: none;
-    }
-
-    .page {
-        position: relative;
-        z-index: 1;
-        height: 100%;
-        overflow-y: auto;
-        overflow-x: hidden;
-        -webkit-overflow-scrolling: touch;
-        padding: 16px 20px 100px;
-        background: transparent;
-        display: none;
-        animation: fadeUp 0.4s ease;
-    }
-
-    .page.active {
-        display: block;
-    }
-
-    .page .floating-bg {
-        display: none;
-    }
-
-    @keyframes fadeUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    .page .content {
-        max-width: 480px;
-        margin: 0 auto;
-        position: relative;
-        z-index: 1;
-    }
-
-    .main-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 20px;
-        padding-top: 4px;
-    }
-    .main-header .header-left .store-name {
-        font-size: 0.7rem;
-        color: rgba(255, 255, 255, 0.2);
-        font-weight: 500;
-        letter-spacing: 0.5px;
-        text-transform: uppercase;
-    }
-    .main-header .header-left .greeting {
-        font-size: 1.6rem;
-        font-weight: 700;
-        background: linear-gradient(135deg, #7DD8FF 0%, #6675FF 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        letter-spacing: -0.5px;
-    }
-    .main-header .header-right {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding-top: 4px;
-    }
-    .main-header .header-right .cart-btn {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        padding: 8px 16px;
-        border-radius: 16px;
-        background: rgba(255, 255, 255, 0.06);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        cursor: pointer;
-        transition: all 0.2s;
-        color: #FFFFFF;
-        font-family: inherit;
-        font-size: 0.85rem;
-        font-weight: 500;
-        position: relative;
-    }
-    .main-header .header-right .cart-btn:active {
-        transform: scale(0.92);
-        background: rgba(255, 255, 255, 0.1);
-    }
-    .main-header .header-right .cart-btn .cart-icon {
-        font-size: 1.2rem;
-    }
-    .main-header .header-right .cart-btn .cart-count {
-        background: #FF3B6F;
-        color: white;
-        border-radius: 50%;
-        min-width: 20px;
-        height: 20px;
-        font-size: 0.6rem;
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0 5px;
-    }
-
-    .section-title {
-        font-size: 1.1rem;
-        font-weight: 700;
-        color: #FFFFFF;
-        margin-bottom: 14px;
-        letter-spacing: -0.2px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-    .section-title .emoji { font-size: 1.2rem; }
-
-    .game-scroll {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        margin-bottom: 24px;
-        position: relative;
-    }
-
-    .game-card {
-        background: rgba(255, 255, 255, 0.04);
-        border-radius: 24px;
-        padding: 14px 18px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        cursor: pointer;
-        transition: all 0.2s ease;
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        backdrop-filter: blur(10px);
-        position: relative;
-        opacity: 1;
-        transform: translateY(0);
-        height: auto;
-        overflow: hidden;
-    }
-
-    .game-card.moving-up {
-        animation: slideUp 0.5s ease forwards;
-    }
-
-    .game-card.moving-down {
-        animation: slideDown 0.5s ease forwards;
-    }
-
-    @keyframes slideUp {
-        0% { transform: translateY(0); opacity: 1; }
-        100% { transform: translateY(-30px); opacity: 1; }
-    }
-
-    @keyframes slideDown {
-        0% { transform: translateY(0); opacity: 1; }
-        100% { transform: translateY(30px); opacity: 1; }
-    }
-
-    .game-card:active { transform: scale(0.98); }
-    .game-card .game-left {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        flex: 1;
-    }
-    .game-card .game-icon {
-        width: 44px;
-        height: 44px;
-        object-fit: contain;
-        border-radius: 10px;
-        flex-shrink: 0;
-    }
-    .game-card .game-name {
-        font-size: 1rem;
-        font-weight: 700;
-        color: #FFFFFF;
-    }
-    .game-card .game-tags {
-        display: flex;
-        gap: 6px;
-        margin-top: 4px;
-        flex-wrap: wrap;
-    }
-    .game-card .game-tag {
-        font-size: 0.6rem;
-        padding: 2px 10px;
-        border-radius: 12px;
-        background: rgba(91, 140, 255, 0.12);
-        color: #7DD8FF;
-        font-weight: 500;
-    }
-    .game-card .game-right {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        flex-shrink: 0;
-    }
-    .game-card .heart-btn {
-        font-size: 1.5rem;
-        background: none;
-        border: none;
-        cursor: pointer;
-        transition: all 0.25s;
-        color: rgba(255, 255, 255, 0.15);
-        padding: 4px;
-        line-height: 1;
-        font-family: inherit;
-        position: relative;
-    }
-    .game-card .heart-btn.active {
-        color: #FF3B6F;
-        animation: heartPop 0.3s ease;
-    }
-    @keyframes heartPop {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.3); }
-        100% { transform: scale(1); }
-    }
-    .game-card .heart-btn:active { transform: scale(1.2); }
-    .game-card .game-arrow {
-        font-size: 1.2rem;
-        color: rgba(255, 255, 255, 0.15);
-        transition: all 0.2s;
-    }
-    .game-card:hover .game-arrow {
-        color: #7DD8FF;
-        transform: translateX(4px);
-    }
-
-    .game-card.brawl {
-        background: linear-gradient(135deg, rgba(255, 193, 7, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
-        border-color: rgba(255, 193, 7, 0.08);
-    }
-    .game-card.brawl .game-tag { background: rgba(255, 193, 7, 0.12); color: #FFD54F; }
-
-    .game-card.clash {
-        background: linear-gradient(135deg, rgba(33, 150, 243, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
-        border-color: rgba(33, 150, 243, 0.08);
-    }
-    .game-card.clash .game-tag { background: rgba(33, 150, 243, 0.12); color: #64B5F6; }
-
-    .game-card.telegram {
-        background: linear-gradient(135deg, rgba(91, 140, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
-        border-color: rgba(91, 140, 255, 0.08);
-    }
-    .game-card.telegram .game-tag { background: rgba(91, 140, 255, 0.12); color: #7DD8FF; }
-
-    .game-page .game-header {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-bottom: 16px;
-        padding-top: 4px;
-    }
-    .game-page .game-header .back-btn {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.06);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.2rem;
-        cursor: pointer;
-        transition: all 0.2s;
-        color: #FFFFFF;
-        flex-shrink: 0;
-        font-family: inherit;
-    }
-    .game-page .game-header .back-btn:active { transform: scale(0.9); background: rgba(255, 255, 255, 0.1); }
-
-    .game-page .game-header .game-title {
-        font-size: 1.4rem;
-        font-weight: 700;
-        color: #FFFFFF;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-    .game-page .game-header .game-title .icon {
-        width: 36px;
-        height: 36px;
-        object-fit: contain;
-    }
-
-    .game-page .categories {
-        display: flex;
-        gap: 8px;
-        margin-bottom: 16px;
-        overflow-x: auto;
-        scrollbar-width: none;
-        -webkit-overflow-scrolling: touch;
-        padding: 2px 0;
-    }
-    .game-page .categories::-webkit-scrollbar { display: none; }
-
-    .game-page .category-btn {
-        padding: 6px 14px;
-        border-radius: 18px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        background: rgba(255, 255, 255, 0.04);
-        color: rgba(255, 255, 255, 0.5);
-        font-size: 0.75rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.25s;
-        white-space: nowrap;
-        font-family: inherit;
-        flex-shrink: 0;
-    }
-    .game-page .category-btn:active { transform: scale(0.95); }
-    .game-page .category-btn.active {
-        background: rgba(91, 140, 255, 0.15);
-        border-color: rgba(91, 140, 255, 0.3);
-        color: #7DD8FF;
-    }
-
-    .game-page .products-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin-bottom: 20px;
-    }
-
-    .game-page .product-card {
-        background: rgba(255, 255, 255, 0.04);
-        border-radius: 18px;
-        padding: 12px 10px 10px;
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        transition: all 0.2s;
-        cursor: pointer;
-        backdrop-filter: blur(10px);
-    }
-    .game-page .product-card:active { transform: scale(0.96); }
-
-    .game-page .product-card .prod-icon {
-        font-size: 2rem;
-        margin-bottom: 4px;
-    }
-    .game-page .product-card .prod-name {
-        font-size: 0.8rem;
-        font-weight: 600;
-        color: #FFFFFF;
-        margin-bottom: 1px;
-        line-height: 1.2;
-    }
-    .game-page .product-card .prod-sub {
-        font-size: 0.6rem;
-        color: rgba(255, 255, 255, 0.2);
-        margin-bottom: 6px;
-    }
-
-    .game-page .product-card .prod-btn {
-        background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
-        color: white;
-        border: none;
-        padding: 6px 12px;
-        border-radius: 10px;
-        font-size: 0.8rem;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.2s;
-        width: 100%;
-        font-family: inherit;
-        box-shadow: 0 2px 10px rgba(91, 140, 255, 0.15);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0px;
-    }
-    .game-page .product-card .prod-btn:active { transform: scale(0.95); }
-    .game-page .product-card .prod-btn .price {
-        font-size: 0.8rem;
-        font-weight: 700;
-    }
-    .game-page .product-card .prod-btn .cart-text {
-        font-size: 0.45rem;
-        font-weight: 400;
-        opacity: 0.5;
-        letter-spacing: 0.2px;
-    }
-
-    .cart-page .cart-header {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-bottom: 20px;
-        padding-top: 4px;
-    }
-    .cart-page .cart-header .back-btn {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.06);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.2rem;
-        cursor: pointer;
-        transition: all 0.2s;
-        color: #FFFFFF;
-        flex-shrink: 0;
-        font-family: inherit;
-    }
-    .cart-page .cart-header .back-btn:active { transform: scale(0.9); background: rgba(255, 255, 255, 0.1); }
-    .cart-page .cart-header .cart-title {
-        font-size: 1.4rem;
-        font-weight: 700;
-        color: #FFFFFF;
-    }
-
-    .cart-item {
-        background: rgba(255, 255, 255, 0.04);
-        border-radius: 16px;
-        padding: 12px 16px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        margin-bottom: 10px;
-        backdrop-filter: blur(10px);
-    }
-    .cart-item .item-left {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-    .cart-item .item-icon { font-size: 1.8rem; }
-    .cart-item .item-info .item-name {
-        font-size: 0.9rem;
-        font-weight: 600;
-        color: #FFFFFF;
-    }
-    .cart-item .item-info .item-game {
-        font-size: 0.65rem;
-        color: rgba(255, 255, 255, 0.2);
-    }
-    .cart-item .item-price {
-        font-size: 0.9rem;
-        font-weight: 700;
-        color: #7DD8FF;
-    }
-    .cart-item .remove-btn {
-        background: none;
-        border: none;
-        color: rgba(255, 255, 255, 0.15);
-        font-size: 1.2rem;
-        cursor: pointer;
-        transition: all 0.2s;
-        font-family: inherit;
-        padding: 4px;
-    }
-    .cart-item .remove-btn:active { transform: scale(0.8); color: #FF3B6F; }
-
-    .cart-empty {
-        text-align: center;
-        padding: 60px 20px;
-        color: rgba(255, 255, 255, 0.15);
-    }
-    .cart-empty .empty-icon { font-size: 3rem; margin-bottom: 12px; opacity: 0.3; }
-    .cart-empty .empty-text { font-size: 0.9rem; }
-
-    .cart-total {
-        background: rgba(255, 255, 255, 0.04);
-        border-radius: 16px;
-        padding: 16px 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        margin-top: 16px;
-        backdrop-filter: blur(10px);
-    }
-    .cart-total .total-label {
-        font-size: 0.85rem;
-        color: rgba(255, 255, 255, 0.4);
-    }
-    .cart-total .total-price {
-        font-size: 1.2rem;
-        font-weight: 700;
-        background: linear-gradient(135deg, #7DD8FF 0%, #6675FF 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    .checkout-btn {
-        background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
-        color: white;
-        border: none;
-        padding: 16px;
-        border-radius: 16px;
-        font-size: 1.1rem;
-        font-weight: 700;
-        width: 100%;
-        cursor: pointer;
-        transition: all 0.25s;
-        box-shadow: 0 4px 24px rgba(91, 140, 255, 0.2);
-        font-family: inherit;
-        margin-top: 16px;
-        letter-spacing: 0.5px;
-    }
-    .checkout-btn:active { transform: scale(0.97); }
-    .checkout-btn:disabled {
-        opacity: 0.3;
-        cursor: not-allowed;
-        transform: none;
-    }
-
-    .profile-page .back-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        color: rgba(255, 255, 255, 0.4);
-        font-size: 0.85rem;
-        margin-bottom: 16px;
-        cursor: pointer;
-        background: none;
-        border: none;
-        font-family: inherit;
-        padding: 0;
-    }
-
-    .profile-page .back-btn:active {
-        opacity: 0.5;
-    }
-
-    .profile-page .profile-header {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        margin-bottom: 20px;
-        padding-top: 10px;
-    }
-
-    .profile-page .profile-avatar {
-        width: 72px;
-        height: 72px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.1);
-        border: 2px solid rgba(255, 255, 255, 0.15);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 2.4rem;
-        flex-shrink: 0;
-    }
-
-    .profile-page .profile-info .name {
-        font-size: 1.4rem;
-        font-weight: 700;
-        color: #FFFFFF;
-    }
-
-    .profile-page .profile-info .username {
-        font-size: 0.9rem;
-        color: rgba(255, 255, 255, 0.4);
-    }
-
-    .profile-page .profile-info .sub {
-        font-size: 0.8rem;
-        color: rgba(255, 255, 255, 0.5);
-        margin-top: 2px;
-    }
-
-    .profile-page .balance-card {
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 20px;
-        padding: 24px;
-        margin-bottom: 24px;
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .profile-page .balance-card .label {
-        font-size: 0.75rem;
-        color: rgba(255, 255, 255, 0.4);
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        font-weight: 600;
-        margin-bottom: 4px;
-    }
-
-    .profile-page .balance-card .amount {
-        font-size: 2.4rem;
-        font-weight: 700;
-        background: linear-gradient(135deg, #7DD8FF 0%, #6675FF 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    .profile-page .balance-card .currency {
-        font-size: 1.2rem;
-        color: rgba(255, 255, 255, 0.5);
-        font-weight: 400;
-        margin-left: 4px;
-    }
-
-    .profile-page .btn-primary {
-        background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
-        color: white;
-        border: none;
-        padding: 14px 24px;
-        border-radius: 16px;
-        font-size: 1rem;
-        font-weight: 600;
-        width: 100%;
-        cursor: pointer;
-        transition: all 0.2s;
-        box-shadow: 0 4px 20px rgba(91, 140, 255, 0.2);
-        font-family: inherit;
-    }
-
-    .profile-page .btn-primary:active {
-        transform: scale(0.97);
-    }
-
-    .profile-page .recharge-section {
-        background: rgba(255, 255, 255, 0.04);
-        border-radius: 16px;
-        padding: 20px;
-        margin-top: 16px;
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        display: none;
-    }
-
-    .profile-page .recharge-section.active {
-        display: block;
-        animation: fadeUp 0.3s ease;
-    }
-
-    .profile-page .recharge-section .input-group {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 12px;
-    }
-
-    .profile-page .recharge-section input {
-        flex: 1;
-        padding: 12px 16px;
-        border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        background: rgba(255, 255, 255, 0.06);
-        color: white;
-        font-size: 1rem;
-        font-family: inherit;
-        outline: none;
-    }
-
-    .profile-page .recharge-section input:focus {
-        border-color: rgba(91, 140, 255, 0.4);
-    }
-
-    .profile-page .recharge-section input::placeholder {
-        color: rgba(255, 255, 255, 0.2);
-    }
-
-    .profile-page .recharge-section .btn-recharge {
-        padding: 12px 24px;
-        border-radius: 12px;
-        border: none;
-        background: linear-gradient(135deg, #00C853 0%, #00E676 100%);
-        color: white;
-        font-size: 1rem;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.2s;
-        font-family: inherit;
-        white-space: nowrap;
-    }
-
-    .profile-page .recharge-section .btn-recharge:active {
-        transform: scale(0.95);
-    }
-
-    .profile-page .quick-amounts {
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-        margin-bottom: 12px;
-    }
-
-    .profile-page .quick-amounts .quick-btn {
-        flex: 1;
-        min-width: 60px;
-        padding: 8px 12px;
-        border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        background: rgba(255, 255, 255, 0.04);
-        color: rgba(255, 255, 255, 0.6);
-        font-size: 0.8rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s;
-        font-family: inherit;
-        text-align: center;
-    }
-
-    .profile-page .quick-amounts .quick-btn:active {
-        transform: scale(0.95);
-        background: rgba(91, 140, 255, 0.15);
-        color: #7DD8FF;
-    }
-
-    .profile-page .section {
-        margin-top: 24px;
-    }
-
-    .profile-page .section .section-label {
-        font-size: 0.75rem;
-        color: rgba(255, 255, 255, 0.3);
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        font-weight: 600;
-        margin-bottom: 12px;
-    }
-
-    .profile-page .history-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 12px 16px;
-        background: rgba(255, 255, 255, 0.03);
-        border-radius: 12px;
-        margin-bottom: 6px;
-        border: 1px solid rgba(255, 255, 255, 0.04);
-    }
-
-    .profile-page .history-item .h-left {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .profile-page .history-item .h-icon {
-        font-size: 1.2rem;
-    }
-
-    .profile-page .history-item .h-info .h-name {
-        font-weight: 500;
-        color: #FFFFFF;
-        font-size: 0.85rem;
-    }
-
-    .profile-page .history-item .h-info .h-date {
-        font-size: 0.65rem;
-        color: rgba(255, 255, 255, 0.2);
-    }
-
-    .profile-page .history-item .h-amount {
-        font-weight: 700;
-        font-size: 0.9rem;
-    }
-
-    .profile-page .history-item .h-amount.positive {
-        color: #00E676;
-    }
-
-    .profile-page .history-item .h-amount.negative {
-        color: #FF3B6F;
-    }
-
-    .profile-page .history-empty {
-        text-align: center;
-        padding: 30px 20px;
-        color: rgba(255, 255, 255, 0.15);
-    }
-
-    .profile-page .history-empty .empty-icon {
-        font-size: 2rem;
-        margin-bottom: 8px;
-        opacity: 0.3;
-    }
-
-    .profile-page .support-section {
-        margin-top: 24px;
-        background: rgba(255, 255, 255, 0.04);
-        border-radius: 16px;
-        padding: 20px;
-        border: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .profile-page .support-section .support-header {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-bottom: 12px;
-    }
-
-    .profile-page .support-section .support-header .support-icon {
-        font-size: 1.5rem;
-    }
-
-    .profile-page .support-section .support-header .support-title {
-        font-size: 1rem;
-        font-weight: 600;
-        color: #FFFFFF;
-    }
-
-    .profile-page .support-section .support-header .support-badge {
-        margin-left: auto;
-        font-size: 0.65rem;
-        padding: 2px 10px;
-        border-radius: 12px;
-        background: rgba(0, 200, 83, 0.15);
-        color: #00E676;
-    }
-
-    .profile-page .support-section .support-messages {
-        max-height: 200px;
-        overflow-y: auto;
-        margin-bottom: 12px;
-    }
-
-    .profile-page .support-section .support-messages::-webkit-scrollbar {
-        width: 3px;
-    }
-
-    .profile-page .support-section .support-messages::-webkit-scrollbar-thumb {
-        background: rgba(91, 140, 255, 0.3);
-        border-radius: 10px;
-    }
-
-    .profile-page .support-msg {
-        padding: 8px 14px;
-        border-radius: 12px;
-        margin-bottom: 6px;
-        max-width: 85%;
-        font-size: 0.85rem;
-        line-height: 1.4;
-    }
-
-    .profile-page .support-msg.user {
-        background: rgba(91, 140, 255, 0.15);
-        color: #FFFFFF;
-        margin-left: auto;
-        border-bottom-right-radius: 4px;
-    }
-
-    .profile-page .support-msg.support {
-        background: rgba(255, 255, 255, 0.06);
-        color: rgba(255, 255, 255, 0.7);
-        margin-right: auto;
-        border-bottom-left-radius: 4px;
-    }
-
-    .profile-page .support-msg .msg-time {
-        font-size: 0.55rem;
-        color: rgba(255, 255, 255, 0.2);
-        margin-top: 4px;
-        display: block;
-    }
-
-    .profile-page .support-section .support-input {
-        display: flex;
-        gap: 10px;
-    }
-
-    .profile-page .support-section .support-input input {
-        flex: 1;
-        padding: 10px 14px;
-        border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        background: rgba(255, 255, 255, 0.04);
-        color: white;
-        font-size: 0.85rem;
-        font-family: inherit;
-        outline: none;
-    }
-
-    .profile-page .support-section .support-input input:focus {
-        border-color: rgba(91, 140, 255, 0.3);
-    }
-
-    .profile-page .support-section .support-input input::placeholder {
-        color: rgba(255, 255, 255, 0.15);
-    }
-
-    .profile-page .support-section .support-input .btn-send {
-        padding: 10px 18px;
-        border-radius: 12px;
-        border: none;
-        background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
-        color: white;
-        font-size: 0.85rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s;
-        font-family: inherit;
-    }
-
-    .profile-page .support-section .support-input .btn-send:active {
-        transform: scale(0.95);
-    }
-
-    .info-page .info-card {
-        background: rgba(255, 255, 255, 0.04);
-        border-radius: 28px;
-        padding: 40px 24px;
-        text-align: center;
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        backdrop-filter: blur(10px);
-    }
-    .info-page .info-card .info-icon { font-size: 3rem; margin-bottom: 12px; }
-    .info-page .info-card .info-title {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #FFFFFF;
-        margin-bottom: 4px;
-    }
-    .info-page .info-card .info-version {
-        font-size: 0.8rem;
-        color: rgba(255, 255, 255, 0.15);
-        margin-bottom: 16px;
-    }
-    .info-page .info-card .info-desc {
-        color: rgba(255, 255, 255, 0.3);
-        font-size: 0.9rem;
-        line-height: 1.6;
-        margin-bottom: 20px;
-    }
-    .info-page .info-card .info-footer {
-        padding: 16px;
-        background: rgba(91, 140, 255, 0.04);
-        border-radius: 16px;
-        border: 1px solid rgba(91, 140, 255, 0.06);
-    }
-    .info-page .info-card .info-footer .label {
-        font-size: 0.6rem;
-        color: rgba(255, 255, 255, 0.15);
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-    .info-page .info-card .info-footer .team {
-        font-size: 0.8rem;
-        color: rgba(255, 255, 255, 0.2);
-        margin-top: 4px;
-    }
-
-    .bottom-nav {
-        position: fixed;
-        bottom: 24px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(20, 20, 35, 0.85);
-        backdrop-filter: blur(28px);
-        -webkit-backdrop-filter: blur(28px);
-        border-radius: 32px;
-        padding: 8px 16px;
-        display: flex;
-        gap: 6px;
-        box-shadow: 0 8px 48px rgba(0, 0, 0, 0.5);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        z-index: 1000;
-        max-width: 360px;
-        width: calc(100% - 40px);
-        justify-content: space-around;
-    }
-
-    .nav-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 6px 12px;
-        border-radius: 20px;
-        cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        border: none;
-        background: transparent;
-        font-family: inherit;
-        gap: 0px;
-        min-width: 48px;
-        position: relative;
-    }
-
-    .nav-item .nav-icon {
-        width: 28px;
-        height: 28px;
-        object-fit: contain;
-        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        opacity: 0.3;
-    }
-
-    .nav-item .nav-label {
-        font-size: 0.5rem;
-        font-weight: 500;
-        color: #FFFFFF;
-        opacity: 0.3;
-        transition: all 0.3s;
-        margin-top: 1px;
-    }
-
-    .nav-item.active .nav-icon {
-        opacity: 1;
-        animation: navPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    .nav-item.active .nav-label {
-        opacity: 0.7;
-    }
-
-    .nav-item:active { transform: scale(0.88); }
-
-    @keyframes navPop {
-        0% { transform: scale(0.8); }
-        50% { transform: scale(1.15); }
-        100% { transform: scale(1); }
-    }
-
-    .toast {
-        position: fixed;
-        bottom: 100px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(20, 20, 35, 0.95);
-        backdrop-filter: blur(20px);
-        padding: 14px 24px;
-        border-radius: 16px;
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        font-size: 0.9rem;
-        color: white;
-        z-index: 1000;
-        animation: toastIn 0.3s ease;
-        max-width: 90%;
-        text-align: center;
-    }
-
-    .toast.success {
-        border-color: rgba(0, 200, 83, 0.3);
-    }
-
-    .toast.error {
-        border-color: rgba(255, 59, 111, 0.3);
-    }
-
-    @keyframes toastIn {
-        from { opacity: 0; transform: translateX(-50%) translateY(20px); }
-        to { opacity: 1; transform: translateX(-50%) translateY(0); }
-    }
-
-    @media (max-width: 400px) {
-        .profile-page .recharge-section .input-group {
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            background: #0A0A0F;
+            font-family: -apple-system, 'Segoe UI', 'Roboto', system-ui, sans-serif;
+            height: 100%;
+            overflow: hidden;
+            color: #FFFFFF;
+        }
+
+        .page {
+            display: none;
+            animation: fadeUp 0.4s ease;
+            background: linear-gradient(145deg, #0A0A1A 0%, #1A1A3E 30%, #2D1B69 70%, #1A1A3E 100%);
+            height: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            padding: 16px 20px 100px;
+            position: relative;
+        }
+
+        .page::-webkit-scrollbar {
+            width: 3px;
+        }
+        .page::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .page::-webkit-scrollbar-thumb {
+            background: rgba(91, 140, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== ПЛАВАЮЩИЕ ЭМОДЗИ ===== */
+        .page .floating-bg {
+            position: fixed;
+            font-size: 3rem;
+            opacity: 0.04;
+            pointer-events: none;
+            user-select: none;
+            animation: floatGem 8s ease-in-out infinite;
+            z-index: 0;
+        }
+        .page .floating-bg:nth-child(1) { top: 5%; right: 5%; font-size: 5rem; animation-delay: 0s; }
+        .page .floating-bg:nth-child(2) { bottom: 15%; left: 3%; font-size: 4rem; animation-delay: 2.5s; }
+        .page .floating-bg:nth-child(3) { top: 50%; right: 2%; font-size: 3rem; animation-delay: 5s; }
+        .page .floating-bg:nth-child(4) { bottom: 40%; left: 5%; font-size: 3.5rem; animation-delay: 1.5s; }
+
+        @keyframes floatGem {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(10deg); }
+        }
+
+        .page .content {
+            max-width: 480px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding-top: 4px;
+        }
+        .main-header .header-left .store-name {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.2);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .main-header .header-left .greeting {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #7DD8FF 0%, #6675FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+        .main-header .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-top: 4px;
+        }
+        .main-header .header-right .cart-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #FFFFFF;
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 500;
+            position: relative;
+        }
+        .main-header .header-right .cart-btn:active {
+            transform: scale(0.92);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .main-header .header-right .cart-btn .cart-icon {
+            font-size: 1.2rem;
+        }
+        .main-header .header-right .cart-btn .cart-count {
+            background: #FF3B6F;
+            color: white;
+            border-radius: 50%;
+            min-width: 20px;
+            height: 20px;
+            font-size: 0.6rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5px;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 14px;
+            letter-spacing: -0.2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-title .emoji { font-size: 1.2rem; }
+
+        .game-scroll {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .game-card {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 24px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(10px);
+            position: relative;
+            opacity: 1;
+            transform: translateY(0);
+            height: auto;
+            overflow: hidden;
+        }
+
+        .game-card.moving-up {
+            animation: slideUp 0.5s ease forwards;
+        }
+
+        .game-card.moving-down {
+            animation: slideDown 0.5s ease forwards;
+        }
+
+        @keyframes slideUp {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-30px); opacity: 1; }
+        }
+
+        @keyframes slideDown {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(30px); opacity: 1; }
+        }
+
+        .game-card:active { transform: scale(0.98); }
+        .game-card .game-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex: 1;
+        }
+        .game-card .game-icon {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+            border-radius: 10px;
+            flex-shrink: 0;
+        }
+        .game-card .game-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+        .game-card .game-tags {
+            display: flex;
+            gap: 6px;
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+        .game-card .game-tag {
+            font-size: 0.6rem;
+            padding: 2px 10px;
+            border-radius: 12px;
+            background: rgba(91, 140, 255, 0.12);
+            color: #7DD8FF;
+            font-weight: 500;
+        }
+        .game-card .game-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+        .game-card .heart-btn {
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s;
+            color: rgba(255, 255, 255, 0.15);
+            padding: 4px;
+            line-height: 1;
+            font-family: inherit;
+            position: relative;
+        }
+        .game-card .heart-btn.active {
+            color: #FF3B6F;
+            animation: heartPop 0.3s ease;
+        }
+        @keyframes heartPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        .game-card .heart-btn:active { transform: scale(1.2); }
+        .game-card .game-arrow {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.15);
+            transition: all 0.2s;
+        }
+        .game-card:hover .game-arrow {
+            color: #7DD8FF;
+            transform: translateX(4px);
+        }
+
+        .game-card.brawl {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border-color: rgba(255, 193, 7, 0.08);
+        }
+        .game-card.brawl .game-tag { background: rgba(255, 193, 7, 0.12); color: #FFD54F; }
+
+        .game-card.clash {
+            background: linear-gradient(135deg, rgba(33, 150, 243, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border-color: rgba(33, 150, 243, 0.08);
+        }
+        .game-card.clash .game-tag { background: rgba(33, 150, 243, 0.12); color: #64B5F6; }
+
+        .game-card.telegram {
+            background: linear-gradient(135deg, rgba(91, 140, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border-color: rgba(91, 140, 255, 0.08);
+        }
+        .game-card.telegram .game-tag { background: rgba(91, 140, 255, 0.12); color: #7DD8FF; }
+
+        .game-page .game-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-top: 4px;
+        }
+        .game-page .game-header .back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #FFFFFF;
+            flex-shrink: 0;
+            font-family: inherit;
+        }
+        .game-page .game-header .back-btn:active { transform: scale(0.9); background: rgba(255, 255, 255, 0.1); }
+
+        .game-page .game-header .game-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .game-page .game-header .game-title .icon {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+        }
+
+        .game-page .categories {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+            padding: 2px 0;
+        }
+        .game-page .categories::-webkit-scrollbar { display: none; }
+
+        .game-page .category-btn {
+            padding: 6px 14px;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.25s;
+            white-space: nowrap;
+            font-family: inherit;
+            flex-shrink: 0;
+        }
+        .game-page .category-btn:active { transform: scale(0.95); }
+        .game-page .category-btn.active {
+            background: rgba(91, 140, 255, 0.15);
+            border-color: rgba(91, 140, 255, 0.3);
+            color: #7DD8FF;
+        }
+
+        .game-page .products-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .game-page .product-card {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 18px;
+            padding: 12px 10px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: all 0.2s;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+        .game-page .product-card:active { transform: scale(0.96); }
+
+        .game-page .product-card .prod-icon {
+            font-size: 2rem;
+            margin-bottom: 4px;
+        }
+        .game-page .product-card .prod-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #FFFFFF;
+            margin-bottom: 1px;
+            line-height: 1.2;
+        }
+        .game-page .product-card .prod-sub {
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.2);
+            margin-bottom: 6px;
+        }
+
+        .game-page .product-card .prod-btn {
+            background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+            font-family: inherit;
+            box-shadow: 0 2px 10px rgba(91, 140, 255, 0.15);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0px;
+        }
+        .game-page .product-card .prod-btn:active { transform: scale(0.95); }
+        .game-page .product-card .prod-btn .price {
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+        .game-page .product-card .prod-btn .cart-text {
+            font-size: 0.45rem;
+            font-weight: 400;
+            opacity: 0.5;
+            letter-spacing: 0.2px;
+        }
+
+        .cart-page .cart-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-top: 4px;
+        }
+        .cart-page .cart-header .back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #FFFFFF;
+            flex-shrink: 0;
+            font-family: inherit;
+        }
+        .cart-page .cart-header .back-btn:active { transform: scale(0.9); background: rgba(255, 255, 255, 0.1); }
+        .cart-page .cart-header .cart-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+
+        .cart-item {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            margin-bottom: 10px;
+            backdrop-filter: blur(10px);
+        }
+        .cart-item .item-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .cart-item .item-icon { font-size: 1.8rem; }
+        .cart-item .item-info .item-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #FFFFFF;
+        }
+        .cart-item .item-info .item-game {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.2);
+        }
+        .cart-item .item-price {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #7DD8FF;
+        }
+        .cart-item .remove-btn {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.15);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            padding: 4px;
+        }
+        .cart-item .remove-btn:active { transform: scale(0.8); color: #FF3B6F; }
+
+        .cart-empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(255, 255, 255, 0.15);
+        }
+        .cart-empty .empty-icon { font-size: 3rem; margin-bottom: 12px; opacity: 0.3; }
+        .cart-empty .empty-text { font-size: 0.9rem; }
+
+        .cart-total {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            margin-top: 16px;
+            backdrop-filter: blur(10px);
+        }
+        .cart-total .total-label {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+        .cart-total .total-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #7DD8FF 0%, #6675FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .checkout-btn {
+            background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.25s;
+            box-shadow: 0 4px 24px rgba(91, 140, 255, 0.2);
+            font-family: inherit;
+            margin-top: 16px;
+            letter-spacing: 0.5px;
+        }
+        .checkout-btn:active { transform: scale(0.97); }
+        .checkout-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ===== PROFILE PAGE ===== */
+        .profile-page .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: inherit;
+            padding: 0;
+        }
+
+        .profile-page .back-btn:active {
+            opacity: 0.5;
+        }
+
+        /* Кнопка поддержки в правом верхнем углу */
+        .profile-page .support-trigger {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(91, 140, 255, 0.15);
+            border: 1px solid rgba(91, 140, 255, 0.2);
+            color: #7DD8FF;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: inherit;
+            backdrop-filter: blur(10px);
+        }
+
+        .profile-page .support-trigger:active {
+            transform: scale(0.9);
+        }
+
+        .profile-page .support-trigger .badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #00E676;
+            border: 2px solid #0A0A0F;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* ===== ПОПАП ПОДДЕРЖКИ ===== */
+        .support-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 200;
+            display: none;
+            animation: overlayIn 0.3s ease;
+        }
+
+        .support-overlay.active {
+            display: block;
+        }
+
+        @keyframes overlayIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .support-popup {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 380px;
+            max-width: calc(100% - 40px);
+            max-height: calc(100% - 120px);
+            background: rgba(20, 20, 40, 0.95);
+            backdrop-filter: blur(28px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            z-index: 201;
+            display: none;
+            overflow: hidden;
+            animation: popupIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-origin: top right;
+        }
+
+        .support-popup.active {
+            display: flex;
             flex-direction: column;
         }
 
+        @keyframes popupIn {
+            0% {
+                transform: scale(0.7) translate(20px, -20px);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1) translate(0, 0);
+                opacity: 1;
+            }
+        }
+
+        .support-popup .popup-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            flex-shrink: 0;
+        }
+
+        .support-popup .popup-header .title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .support-popup .popup-header .close-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            border: none;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .support-popup .popup-header .close-btn:active {
+            transform: scale(0.9);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .support-popup .popup-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 20px;
+            max-height: 300px;
+        }
+
+        .support-popup .popup-messages::-webkit-scrollbar {
+            width: 3px;
+        }
+        .support-popup .popup-messages::-webkit-scrollbar-thumb {
+            background: rgba(91, 140, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        .support-popup .popup-messages .support-msg {
+            padding: 8px 14px;
+            border-radius: 12px;
+            margin-bottom: 6px;
+            max-width: 85%;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .support-popup .popup-messages .support-msg.user {
+            background: rgba(91, 140, 255, 0.15);
+            color: #FFFFFF;
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+
+        .support-popup .popup-messages .support-msg.support {
+            background: rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.7);
+            margin-right: auto;
+            border-bottom-left-radius: 4px;
+        }
+
+        .support-popup .popup-messages .support-msg .msg-time {
+            font-size: 0.55rem;
+            color: rgba(255, 255, 255, 0.2);
+            margin-top: 4px;
+            display: block;
+        }
+
+        .support-popup .popup-input {
+            display: flex;
+            gap: 10px;
+            padding: 12px 20px 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            flex-shrink: 0;
+        }
+
+        .support-popup .popup-input input {
+            flex: 1;
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            color: white;
+            font-size: 0.85rem;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .support-popup .popup-input input:focus {
+            border-color: rgba(91, 140, 255, 0.3);
+        }
+
+        .support-popup .popup-input input::placeholder {
+            color: rgba(255, 255, 255, 0.15);
+        }
+
+        .support-popup .popup-input .btn-send {
+            padding: 10px 18px;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
+            color: white;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .support-popup .popup-input .btn-send:active {
+            transform: scale(0.95);
+        }
+
+        .profile-page .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+            padding-top: 10px;
+        }
+
         .profile-page .profile-avatar {
-            width: 56px;
-            height: 56px;
-            font-size: 1.8rem;
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.4rem;
+            flex-shrink: 0;
+        }
+
+        .profile-page .profile-info .name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+
+        .profile-page .profile-info .username {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .profile-page .profile-info .sub {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 2px;
+        }
+
+        .profile-page .balance-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 24px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .profile-page .balance-card .label {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-bottom: 4px;
         }
 
         .profile-page .balance-card .amount {
-            font-size: 1.8rem;
+            font-size: 2.4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #7DD8FF 0%, #6675FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .profile-page .quick-amounts .quick-btn {
-            min-width: 50px;
-            font-size: 0.7rem;
-            padding: 6px 8px;
+        .profile-page .balance-card .currency {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 400;
+            margin-left: 4px;
         }
-    }
 
-    /* Стиль для полосы прокрутки */
-    .page::-webkit-scrollbar {
-        width: 3px;
-    }
-    .page::-webkit-scrollbar-track {
-        background: transparent;
-    }
-    .page::-webkit-scrollbar-thumb {
-        background: rgba(91, 140, 255, 0.3);
-        border-radius: 10px;
-    }
-</style>
+        /* ===== ПОПОЛНЕНИЕ ===== */
+        .profile-page .recharge-section {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            display: none;
+        }
+
+        .profile-page .recharge-section.active {
+            display: block;
+            animation: fadeUp 0.3s ease;
+        }
+
+        .profile-page .recharge-section .quick-amounts {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .profile-page .recharge-section .quick-amounts .quick-btn {
+            flex: 1;
+            min-width: 55px;
+            padding: 6px 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            text-align: center;
+        }
+
+        .profile-page .recharge-section .quick-amounts .quick-btn:active {
+            transform: scale(0.95);
+            background: rgba(91, 140, 255, 0.15);
+            color: #7DD8FF;
+        }
+
+        .profile-page .recharge-section .quick-amounts .quick-btn.recent {
+            border-color: rgba(91, 140, 255, 0.2);
+            color: #7DD8FF;
+        }
+
+        .profile-page .recharge-section .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .profile-page .recharge-section .input-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .profile-page .recharge-section input {
+            flex: 1;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.06);
+            color: white;
+            font-size: 1rem;
+            font-family: inherit;
+            outline: none;
+            min-width: 0;
+        }
+
+        .profile-page .recharge-section input:focus {
+            border-color: rgba(91, 140, 255, 0.4);
+        }
+
+        .profile-page .recharge-section input::placeholder {
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .profile-page .recharge-section .btn-recharge {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(135deg, #00C853 0%, #00E676 100%);
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .profile-page .recharge-section .btn-recharge:active {
+            transform: scale(0.97);
+        }
+
+        .profile-page .section {
+            margin-top: 24px;
+        }
+
+        .profile-page .section .section-label {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .profile-page .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            margin-bottom: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .profile-page .history-item .h-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile-page .history-item .h-icon {
+            font-size: 1.2rem;
+        }
+
+        .profile-page .history-item .h-info .h-name {
+            font-weight: 500;
+            color: #FFFFFF;
+            font-size: 0.85rem;
+        }
+
+        .profile-page .history-item .h-info .h-date {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .profile-page .history-item .h-amount {
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .profile-page .history-item .h-amount.positive {
+            color: #00E676;
+        }
+
+        .profile-page .history-item .h-amount.negative {
+            color: #FF3B6F;
+        }
+
+        .profile-page .history-empty {
+            text-align: center;
+            padding: 30px 20px;
+            color: rgba(255, 255, 255, 0.15);
+        }
+
+        .profile-page .history-empty .empty-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+            opacity: 0.3;
+        }
+
+        .info-page .info-card {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 28px;
+            padding: 40px 24px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(10px);
+        }
+        .info-page .info-card .info-icon { font-size: 3rem; margin-bottom: 12px; }
+        .info-page .info-card .info-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 4px;
+        }
+        .info-page .info-card .info-version {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.15);
+            margin-bottom: 16px;
+        }
+        .info-page .info-card .info-desc {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .info-page .info-card .info-footer {
+            padding: 16px;
+            background: rgba(91, 140, 255, 0.04);
+            border-radius: 16px;
+            border: 1px solid rgba(91, 140, 255, 0.06);
+        }
+        .info-page .info-card .info-footer .label {
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.15);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .info-page .info-card .info-footer .team {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.2);
+            margin-top: 4px;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(20, 20, 35, 0.85);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border-radius: 32px;
+            padding: 8px 16px;
+            display: flex;
+            gap: 6px;
+            box-shadow: 0 8px 48px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 1000;
+            max-width: 360px;
+            width: calc(100% - 40px);
+            justify-content: space-around;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: none;
+            background: transparent;
+            font-family: inherit;
+            gap: 0px;
+            min-width: 48px;
+            position: relative;
+        }
+
+        .nav-item .nav-icon {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            opacity: 0.3;
+        }
+
+        .nav-item .nav-label {
+            font-size: 0.5rem;
+            font-weight: 500;
+            color: #FFFFFF;
+            opacity: 0.3;
+            transition: all 0.3s;
+            margin-top: 1px;
+        }
+
+        .nav-item.active .nav-icon {
+            opacity: 1;
+            animation: navPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .nav-item.active .nav-label {
+            opacity: 0.7;
+        }
+
+        .nav-item:active { transform: scale(0.88); }
+
+        @keyframes navPop {
+            0% { transform: scale(0.8); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(20, 20, 35, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 14px 24px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 0.9rem;
+            color: white;
+            z-index: 1000;
+            animation: toastIn 0.3s ease;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .toast.success {
+            border-color: rgba(0, 200, 83, 0.3);
+        }
+
+        .toast.error {
+            border-color: rgba(255, 59, 111, 0.3);
+        }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        @media (max-width: 400px) {
+            .profile-page .recharge-section .input-row {
+                flex-direction: column;
+            }
+
+            .profile-page .profile-avatar {
+                width: 56px;
+                height: 56px;
+                font-size: 1.8rem;
+            }
+
+            .profile-page .balance-card .amount {
+                font-size: 1.8rem;
+            }
+
+            .profile-page .recharge-section .quick-amounts .quick-btn {
+                min-width: 45px;
+                font-size: 0.65rem;
+                padding: 5px 6px;
+            }
+
+            .support-popup {
+                top: 10px;
+                right: 10px;
+                width: calc(100% - 20px);
+                max-height: calc(100% - 80px);
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- PAGE: HOME -->
@@ -1202,6 +1304,12 @@
         <span class="floating-bg">⭐</span>
         <span class="floating-bg">✨</span>
 
+        <!-- Кнопка поддержки -->
+        <button class="support-trigger" onclick="toggleSupport()">
+            💬
+            <span class="badge"></span>
+        </button>
+
         <div class="content">
             <button class="back-btn" onclick="navigateTo('home')">← Назад</button>
 
@@ -1222,10 +1330,7 @@
                 </div>
             </div>
 
-            <button class="btn-primary" onclick="toggleRecharge()">
-                ➕ Пополнить баланс
-            </button>
-
+            <!-- Пополнение -->
             <div class="recharge-section" id="rechargeSection">
                 <div class="quick-amounts" id="quickAmounts">
                     <button class="quick-btn" onclick="setAmount(100)">100 ₽</button>
@@ -1233,13 +1338,18 @@
                     <button class="quick-btn" onclick="setAmount(500)">500 ₽</button>
                     <button class="quick-btn" onclick="setAmount(1000)">1,000 ₽</button>
                     <button class="quick-btn" onclick="setAmount(2500)">2,500 ₽</button>
-                    <button class="quick-btn" onclick="setAmount(5000)">5,000 ₽</button>
                 </div>
                 <div class="input-group">
-                    <input type="number" id="rechargeInput" placeholder="Своя сумма" min="1">
-                    <button class="btn-recharge" onclick="recharge()">Пополнить</button>
+                    <div class="input-row">
+                        <input type="number" id="rechargeInput" placeholder="Введите сумму" min="1">
+                    </div>
+                    <button class="btn-recharge" onclick="recharge()">💰 Пополнить</button>
                 </div>
             </div>
+
+            <button class="btn-primary" onclick="toggleRecharge()">
+                ➕ Пополнить баланс
+            </button>
 
             <div class="section">
                 <div class="section-label">📦 История покупок</div>
@@ -1250,24 +1360,25 @@
                 <div class="section-label">💳 Транзакции</div>
                 <div id="transactionsHistory"></div>
             </div>
+        </div>
+    </div>
 
-            <div class="support-section">
-                <div class="support-header">
-                    <span class="support-icon">💬</span>
-                    <span class="support-title">Поддержка</span>
-                    <span class="support-badge">Online</span>
-                </div>
-                <div class="support-messages" id="supportMessages">
-                    <div class="support-msg support">
-                        👋 Здравствуйте! Чем могу помочь?
-                        <span class="msg-time">Только что</span>
-                    </div>
-                </div>
-                <div class="support-input">
-                    <input type="text" id="supportInput" placeholder="Напишите сообщение..." onkeydown="if(event.key==='Enter') sendSupportMessage()">
-                    <button class="btn-send" onclick="sendSupportMessage()">Отправить</button>
-                </div>
+    <!-- ПОПАП ПОДДЕРЖКИ -->
+    <div class="support-overlay" id="supportOverlay" onclick="closeSupport()"></div>
+    <div class="support-popup" id="supportPopup">
+        <div class="popup-header">
+            <span class="title">💬 Поддержка <span style="font-size:0.65rem;color:#00E676;font-weight:400;">Online</span></span>
+            <button class="close-btn" onclick="closeSupport()">✕</button>
+        </div>
+        <div class="popup-messages" id="popupMessages">
+            <div class="support-msg support">
+                👋 Здравствуйте! Чем могу помочь?
+                <span class="msg-time">Только что</span>
             </div>
+        </div>
+        <div class="popup-input">
+            <input type="text" id="popupInput" placeholder="Напишите сообщение..." onkeydown="if(event.key==='Enter') sendPopupMessage()">
+            <button class="btn-send" onclick="sendPopupMessage()">Отправить</button>
         </div>
     </div>
 
@@ -1550,9 +1661,9 @@
                 if (tg && tg.BackButton) tg.BackButton.show();
             }
 
-            // Если открыли профиль - обновляем данные
             if (pageName === 'profile') {
                 updateProfileData();
+                renderQuickAmounts();
             }
         }
 
@@ -1885,11 +1996,63 @@
             section.classList.toggle('active');
             if (section.classList.contains('active')) {
                 document.getElementById('rechargeInput').focus();
+                renderQuickAmounts();
             }
         }
 
         function setAmount(amount) {
             document.getElementById('rechargeInput').value = amount;
+        }
+
+        function getRecentAmounts() {
+            try {
+                return JSON.parse(localStorage.getItem('vintyx_recent_amounts')) || [];
+            } catch {
+                return [];
+            }
+        }
+
+        function saveRecentAmount(amount) {
+            let recent = getRecentAmounts();
+            recent = recent.filter(a => a !== amount);
+            recent.unshift(amount);
+            if (recent.length > 4) recent.pop();
+            localStorage.setItem('vintyx_recent_amounts', JSON.stringify(recent));
+            renderQuickAmounts();
+        }
+
+        function renderQuickAmounts() {
+            const container = document.getElementById('quickAmounts');
+            const recent = getRecentAmounts();
+            const defaultAmounts = [100, 250, 500, 1000, 2500];
+
+            let buttons = [];
+            
+            // Добавляем последние суммы пользователя (с меткой "недавние")
+            recent.forEach(amount => {
+                if (!defaultAmounts.includes(amount)) {
+                    buttons.push({ amount: amount, recent: true });
+                }
+            });
+
+            // Добавляем стандартные суммы
+            defaultAmounts.forEach(amount => {
+                buttons.push({ amount: amount, recent: false });
+            });
+
+            // Убираем дубликаты, сохраняя порядок
+            const seen = new Set();
+            buttons = buttons.filter(b => {
+                if (seen.has(b.amount)) return false;
+                seen.add(b.amount);
+                return true;
+            });
+
+            container.innerHTML = buttons.map(b => `
+                <button class="quick-btn ${b.recent ? 'recent' : ''}" onclick="setAmount(${b.amount})">
+                    ${b.amount.toLocaleString()} ₽${b.recent ? ' ★' : ''}
+                </button>
+            `).join('');
         }
 
         function recharge() {
@@ -1909,6 +2072,9 @@
             balance += amount;
             updateBalanceDisplay();
 
+            // Сохраняем сумму для быстрого доступа
+            saveRecentAmount(amount);
+
             const transactions = JSON.parse(localStorage.getItem('vintyx_transactions') || '[]');
             transactions.unshift({
                 name: '💰 Пополнение баланса',
@@ -1924,6 +2090,7 @@
 
             showToast(`✅ Баланс пополнен на ${amount} ₽`, 'success');
             updateProfileData();
+            renderQuickAmounts();
         }
 
         function getOrders() {
@@ -2019,10 +2186,28 @@
             updateBalanceDisplay();
             renderOrders();
             renderTransactions();
-            renderSupportMessages();
         }
 
-        // ===== ПОДДЕРЖКА =====
+        // ===== ПОДДЕРЖКА (ПОПАП) =====
+        function toggleSupport() {
+            const overlay = document.getElementById('supportOverlay');
+            const popup = document.getElementById('supportPopup');
+            
+            if (popup.classList.contains('active')) {
+                closeSupport();
+            } else {
+                overlay.classList.add('active');
+                popup.classList.add('active');
+                document.getElementById('popupInput').focus();
+                renderPopupMessages();
+            }
+        }
+
+        function closeSupport() {
+            document.getElementById('supportOverlay').classList.remove('active');
+            document.getElementById('supportPopup').classList.remove('active');
+        }
+
         function getSupportMessages() {
             try {
                 return JSON.parse(localStorage.getItem('vintyx_support_messages')) || [];
@@ -2033,11 +2218,11 @@
 
         function saveSupportMessages(messages) {
             localStorage.setItem('vintyx_support_messages', JSON.stringify(messages));
-            renderSupportMessages();
+            renderPopupMessages();
         }
 
-        function sendSupportMessage() {
-            const input = document.getElementById('supportInput');
+        function sendPopupMessage() {
+            const input = document.getElementById('popupInput');
             const text = input.value.trim();
             if (!text) return;
 
@@ -2076,8 +2261,8 @@
             return null;
         }
 
-        function renderSupportMessages() {
-            const container = document.getElementById('supportMessages');
+        function renderPopupMessages() {
+            const container = document.getElementById('popupMessages');
             const messages = getSupportMessages();
 
             if (messages.length === 0) {
@@ -2140,6 +2325,7 @@
         updateCartCount();
         updateProfileData();
         loadTelegramUser();
+        renderQuickAmounts();
 
         setTimeout(function() {
             if (document.getElementById('pageBrawl').classList.contains('active')) {
@@ -2147,8 +2333,6 @@
             }
         }, 100);
 
-        console.log('🔍 Telegram WebApp:', tg);
-        console.log('🔍 sendData доступен?', tg && typeof tg.sendData === 'function');
         console.log('✅ Vintyx Store загружен');
     </script>
 </body>
