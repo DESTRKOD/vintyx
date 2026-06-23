@@ -2001,6 +2001,38 @@
             updateCartCount();
         }
 
+        function closeOrderFlow() {
+    // Останавливаем таймеры
+    if (progressInterval) {
+        clearInterval(progressInterval);
+        progressInterval = null;
+    }
+    if (waitingTimer) {
+        clearTimeout(waitingTimer);
+        waitingTimer = null;
+    }
+    
+    document.getElementById('pageOrderFlow').classList.remove('active');
+    document.querySelectorAll('.order-step').forEach(step => step.classList.remove('active'));
+    
+    // Возвращаемся на главную
+    Object.keys(pages).forEach(key => {
+        if (pages[key]) pages[key].classList.remove('active');
+    });
+    pages.home.classList.add('active');
+
+    navItems.forEach(item => {
+        item.classList.remove('active');
+        if (item.dataset.page === 'home') {
+            item.classList.add('active');
+        }
+    });
+
+    updateNavIcons('home');
+    window.location.hash = '';
+    if (tg && tg.BackButton) tg.BackButton.hide();
+}
+
         function updateCartCount() {
             const cartData = getCart();
             const count = cartData.reduce((sum, item) => sum + (item.quantity || 1), 0);
@@ -2124,29 +2156,32 @@
 function buyNow(product) {
     const price = parseInt(product.price.replace(/[^0-9]/g, ''));
     
-    // Проверяем баланс
     if (balance < price) {
         alert(`❌ Недостаточно средств!\n\n💰 Ваш баланс: ${balance} ₽\n📦 Товар стоит: ${price} ₽\n\nПополните баланс в профиле.`);
         return;
     }
     
-    // Списываем деньги
     balance -= price;
     updateBalanceDisplay();
     
-    // Добавляем в историю покупок
+    // Проверяем, нет ли уже такого заказа (чтобы не дублировать)
     const orders = JSON.parse(localStorage.getItem('vintyx_orders_history') || '[]');
-    const status = product.type === 'db2' ? 'in_progress' : 'completed';
-    orders.unshift({
-        name: product.name,
-        amount: price,
-        date: new Date().toISOString(),
-        status: status
-    });
-    if (orders.length > 50) orders.pop();
-    localStorage.setItem('vintyx_orders_history', JSON.stringify(orders));
+    const existingOrder = orders.find(o => o.name === product.name && o.status === 'in_progress');
     
-    // Добавляем транзакцию
+    if (!existingOrder) {
+        const status = product.type === 'db2' ? 'in_progress' : 'completed';
+        const timer = product.type === 'db2' ? 24 : undefined;
+        orders.unshift({
+            name: product.name,
+            amount: price,
+            date: new Date().toISOString(),
+            status: status,
+            timer: timer
+        });
+        if (orders.length > 50) orders.pop();
+        localStorage.setItem('vintyx_orders_history', JSON.stringify(orders));
+    }
+    
     const transactions = JSON.parse(localStorage.getItem('vintyx_transactions') || '[]');
     transactions.unshift({
         name: `🛒 ${product.name}`,
@@ -2157,7 +2192,6 @@ function buyNow(product) {
     if (transactions.length > 50) transactions.pop();
     localStorage.setItem('vintyx_transactions', JSON.stringify(transactions));
     
-    // Сохраняем данные заказа
     localStorage.setItem('vintyx_order_data', JSON.stringify({
         items: [product],
         total: price,
@@ -2166,7 +2200,6 @@ function buyNow(product) {
         date: new Date().toISOString()
     }));
     
-    // Открываем оформление заказа
     openOrderFlow(product.type, [product]);
 }
         // ===== ОФОРМЛЕНИЕ ЗАКАЗА =====
@@ -2390,36 +2423,41 @@ function buyNow(product) {
             document.getElementById('orderStepReadyDB1').classList.add('active');
         }
 
-        // ===== ШАГ 4: ГОТОВО (DB2) =====
         function showReadyDB2(items) {
-            const orderData = JSON.parse(localStorage.getItem('vintyx_order_data') || '{}');
-            const productName = items[0]?.name || 'Товар';
-            const date = new Date().toLocaleString('ru-RU', {
-                day: 'numeric',
-                month: 'long',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
+    const orderData = JSON.parse(localStorage.getItem('vintyx_order_data') || '{}');
+    const productName = items[0]?.name || 'Товар';
+    const price = items[0]?.price ? parseInt(items[0].price.replace(/[^0-9]/g, '')) : 0;
+    const date = new Date().toLocaleString('ru-RU', {
+        day: 'numeric',
+        month: 'long',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
 
-            const friendId = '#' + Math.random().toString(36).substring(2, 10).toUpperCase();
+    const friendId = '#' + Math.random().toString(36).substring(2, 10).toUpperCase();
 
-            document.getElementById('readyProductNameDB2').textContent = productName;
-            document.getElementById('readyDateDB2').textContent = date;
-            document.querySelector('.friend-id').textContent = friendId;
+    document.getElementById('readyProductNameDB2').textContent = productName;
+    document.getElementById('readyDateDB2').textContent = date;
+    document.querySelector('.friend-id').textContent = friendId;
 
-            document.getElementById('orderStepReadyDB2').classList.add('active');
+    document.getElementById('orderStepReadyDB2').classList.add('active');
 
-            const orders = JSON.parse(localStorage.getItem('vintyx_orders_history') || '[]');
-            orders.unshift({
-                name: productName,
-                amount: calculateTotal(),
-                date: new Date().toISOString(),
-                status: 'in_progress',
-                timer: 24
-            });
-            if (orders.length > 50) orders.pop();
-            localStorage.setItem('vintyx_orders_history', JSON.stringify(orders));
-        }
+    // Добавляем в историю заказов со статусом "в работе" и таймером
+    const orders = JSON.parse(localStorage.getItem('vintyx_orders_history') || '[]');
+    // Проверяем, нет ли уже такого заказа
+    const existingOrder = orders.find(o => o.name === productName && o.status === 'in_progress');
+    if (!existingOrder) {
+        orders.unshift({
+            name: productName,
+            amount: price,
+            date: new Date().toISOString(),
+            status: 'in_progress',
+            timer: 24 // 24 часа
+        });
+        if (orders.length > 50) orders.pop();
+        localStorage.setItem('vintyx_orders_history', JSON.stringify(orders));
+    }
+}
 
         // ===== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ =====
         function copyLink() {
@@ -2986,45 +3024,59 @@ function buyNow(product) {
         }
 
         function renderOrders() {
-            const container = document.getElementById('ordersHistory');
-            const orders = getOrders();
+    const container = document.getElementById('ordersHistory');
+    const orders = getOrders();
 
-            if (orders.length === 0) {
-                container.innerHTML = `
-                    <div class="history-empty">
-                        <div class="empty-icon">📭</div>
-                        <div>У вас пока нет покупок</div>
-                    </div>
-                `;
-                return;
-            }
+    if (orders.length === 0) {
+        container.innerHTML = `
+            <div class="history-empty">
+                <div class="empty-icon">📭</div>
+                <div>У вас пока нет покупок</div>
+            </div>
+        `;
+        return;
+    }
 
-            let html = '';
-            orders.forEach(item => {
-                const date = new Date(item.date);
-                const formattedDate = date.toLocaleDateString('ru-RU') + ' ' + date.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'});
-                const statusText = item.status === 'in_progress' ? '⏳ В работе' : '✅ Выполнен';
-                const statusColor = item.status === 'in_progress' ? '#FFD54F' : '#00E676';
-                html += `
-                    <div class="history-item">
-                        <div class="h-left">
-                            <span class="h-icon">🎮</span>
-                            <div class="h-info">
-                                <div class="h-name">${item.name}</div>
-                                <div class="h-date">${formattedDate}</div>
-                            </div>
-                        </div>
-                        <div style="text-align:right;">
-                            <div class="h-amount negative">-${item.amount} ₽</div>
-                            <div style="font-size:0.6rem;color:${statusColor};">${statusText}</div>
-                        </div>
-                    </div>
-                `;
-            });
-
-            container.innerHTML = html;
+    let html = '';
+    orders.forEach((item, index) => {
+        const date = new Date(item.date);
+        const formattedDate = date.toLocaleDateString('ru-RU') + ' ' + date.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'});
+        
+        let statusText = '';
+        let statusColor = '';
+        
+        if (item.status === 'in_progress' && item.timer) {
+            // Показываем таймер для заказов "Подарком"
+            const hoursLeft = item.timer;
+            statusText = `⏳ ${hoursLeft} ч.`;
+            statusColor = '#FFD54F';
+        } else if (item.status === 'in_progress') {
+            statusText = '⏳ В работе';
+            statusColor = '#FFD54F';
+        } else {
+            statusText = '✅ Выполнен';
+            statusColor = '#00E676';
         }
+        
+        html += `
+            <div class="history-item">
+                <div class="h-left">
+                    <span class="h-icon">🎮</span>
+                    <div class="h-info">
+                        <div class="h-name">${item.name}</div>
+                        <div class="h-date">${formattedDate}</div>
+                    </div>
+                </div>
+                <div style="text-align:right;">
+                    <div class="h-amount negative">-${item.amount} ₽</div>
+                    <div style="font-size:0.6rem;color:${statusColor};">${statusText}</div>
+                </div>
+            </div>
+        `;
+    });
 
+    container.innerHTML = html;
+}
         function renderTransactions() {
             const container = document.getElementById('transactionsHistory');
             const transactions = getTransactions();
