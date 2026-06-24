@@ -1139,18 +1139,29 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 12px 0;
+            padding: 8px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .ready-link-box:last-child {
+            border-bottom: none;
         }
 
         .ready-link {
             flex: 1;
             color: #7DD8FF;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             word-break: break-all;
             background: rgba(91, 140, 255, 0.06);
-            padding: 8px 12px;
+            padding: 6px 10px;
             border-radius: 8px;
+        }
+
+        .ready-link-number {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.65rem;
+            min-width: 28px;
+            font-weight: 500;
         }
 
         .ready-friend-box {
@@ -1835,21 +1846,20 @@
                 <button class="order-btn-primary" onclick="closeOrderFlow()">🏠 На главную</button>
             </div>
 
-            <!-- Шаг 4: Готово с ссылкой (для типа "db1") -->
+            <!-- Шаг 4: Готово с ссылками (для типа "db1" - Матчерино) -->
             <div id="orderStepReadyDB1" class="order-step">
                 <div class="order-header text-center">
                     <div class="order-icon ready-icon">📥</div>
                     <div class="order-title">Заказ готов!</div>
-                    <div class="order-sub">Перейдите по ссылке, чтобы получить заказ</div>
+                    <div class="order-sub" id="readyDB1Sub">Перейдите по ссылке, чтобы получить заказ</div>
                 </div>
                 <div class="ready-content">
                     <div class="ready-item">
                         <span class="ready-label">📦 Товар:</span>
-                        <span class="ready-value" id="readyProductNameDB1">360 Gems</span>
+                        <span class="ready-value" id="readyProductNameDB1">Матчерино</span>
                     </div>
-                    <div class="ready-link-box">
-                        <div class="ready-link" id="readyLink">https://brawlstars.com/claim/ABC123XYZ</div>
-                        <button class="order-btn-small" onclick="copyLink()">📋 Копировать</button>
+                    <div id="readyLinksContainer" style="padding:4px 0;">
+                        <!-- Ссылки будут вставлены сюда -->
                     </div>
                     <div class="ready-item">
                         <span class="ready-label">📅 Дата:</span>
@@ -1859,7 +1869,7 @@
                 <button class="order-btn-primary" onclick="closeOrderFlow()">🏠 На главную</button>
             </div>
 
-            <!-- Шаг 4: Готово с добавлением в друзья (для типа "db2") -->
+            <!-- Шаг 4: Готово с добавлением в друзья (для типа "db2" - Подарком) -->
             <div id="orderStepReadyDB2" class="order-step">
                 <div class="order-header text-center">
                     <div class="order-icon ready-icon">👥</div>
@@ -1869,7 +1879,7 @@
                 <div class="ready-content">
                     <div class="ready-item">
                         <span class="ready-label">📦 Товар:</span>
-                        <span class="ready-value" id="readyProductNameDB2">950 Gems</span>
+                        <span class="ready-value" id="readyProductNameDB2">Подарок</span>
                     </div>
                     <div class="ready-friend-box">
                         <div class="friend-info">
@@ -2001,38 +2011,6 @@
             updateCartCount();
         }
 
-        function closeOrderFlow() {
-    // Останавливаем таймеры
-    if (progressInterval) {
-        clearInterval(progressInterval);
-        progressInterval = null;
-    }
-    if (waitingTimer) {
-        clearTimeout(waitingTimer);
-        waitingTimer = null;
-    }
-    
-    document.getElementById('pageOrderFlow').classList.remove('active');
-    document.querySelectorAll('.order-step').forEach(step => step.classList.remove('active'));
-    
-    // Возвращаемся на главную
-    Object.keys(pages).forEach(key => {
-        if (pages[key]) pages[key].classList.remove('active');
-    });
-    pages.home.classList.add('active');
-
-    navItems.forEach(item => {
-        item.classList.remove('active');
-        if (item.dataset.page === 'home') {
-            item.classList.add('active');
-        }
-    });
-
-    updateNavIcons('home');
-    window.location.hash = '';
-    if (tg && tg.BackButton) tg.BackButton.hide();
-}
-
         function updateCartCount() {
             const cartData = getCart();
             const count = cartData.reduce((sum, item) => sum + (item.quantity || 1), 0);
@@ -2134,7 +2112,7 @@
             if (uniqueTypes.length > 1) {
                 const typeLabels = {
                     'login': '🔑 Вход (почта + код)',
-                    'db1': '📥 По ссылке (База данных 1)',
+                    'db1': '📥 По ссылке (Матчерино)',
                     'db2': '🎁 Подарком (добавить в друзья)'
                 };
                 return {
@@ -2153,55 +2131,103 @@
         }
 
         // ===== КУПИТЬ В 1 КЛИК =====
-function buyNow(product) {
-    const price = parseInt(product.price.replace(/[^0-9]/g, ''));
-    
-    if (balance < price) {
-        alert(`❌ Недостаточно средств!\n\n💰 Ваш баланс: ${balance} ₽\n📦 Товар стоит: ${price} ₽\n\nПополните баланс в профиле.`);
-        return;
-    }
-    
-    balance -= price;
-    updateBalanceDisplay();
-    
-    // Проверяем, нет ли уже такого заказа (чтобы не дублировать)
-    const orders = JSON.parse(localStorage.getItem('vintyx_orders_history') || '[]');
-    const existingOrder = orders.find(o => o.name === product.name && o.status === 'in_progress');
-    
-    if (!existingOrder) {
-        const status = product.type === 'db2' ? 'in_progress' : 'completed';
-        const timer = product.type === 'db2' ? 24 : undefined;
-        orders.unshift({
-            name: product.name,
-            amount: price,
-            date: new Date().toISOString(),
-            status: status,
-            timer: timer
-        });
-        if (orders.length > 50) orders.pop();
-        localStorage.setItem('vintyx_orders_history', JSON.stringify(orders));
-    }
-    
-    const transactions = JSON.parse(localStorage.getItem('vintyx_transactions') || '[]');
-    transactions.unshift({
-        name: `🛒 ${product.name}`,
-        amount: price,
-        type: 'negative',
-        date: new Date().toISOString()
-    });
-    if (transactions.length > 50) transactions.pop();
-    localStorage.setItem('vintyx_transactions', JSON.stringify(transactions));
-    
-    localStorage.setItem('vintyx_order_data', JSON.stringify({
-        items: [product],
-        total: price,
-        type: product.type,
-        email: '',
-        date: new Date().toISOString()
-    }));
-    
-    openOrderFlow(product.type, [product]);
-}
+        let currentOrderType = 'login';
+        let currentProductName = '';
+        let currentQuantity = 1;
+
+        function buyNow(product) {
+            const price = parseInt(product.price.replace(/[^0-9]/g, ''));
+            
+            // Проверяем, сколько таких товаров уже в заказе (для db1 - каждая единица отдельно)
+            const orders = JSON.parse(localStorage.getItem('vintyx_orders_history') || '[]');
+            let quantity = 1;
+            
+            // Для db1 считаем количество уже купленных
+            if (product.type === 'db1') {
+                const existingOrders = orders.filter(o => o.name === product.name && o.status === 'in_progress');
+                quantity = existingOrders.length + 1;
+            } else {
+                // Для других типов - проверяем есть ли уже такой заказ
+                const existingOrder = orders.find(o => o.name === product.name && o.status === 'in_progress');
+                if (existingOrder) {
+                    quantity = (existingOrder.quantity || 1) + 1;
+                }
+            }
+            
+            const totalPrice = price * quantity;
+            
+            if (balance < totalPrice) {
+                alert(`❌ Недостаточно средств!\n\n💰 Ваш баланс: ${balance} ₽\n📦 ${quantity} × ${product.name} = ${totalPrice} ₽\n\nПополните баланс в профиле.`);
+                return;
+            }
+            
+            balance -= totalPrice;
+            updateBalanceDisplay();
+            
+            const status = product.type === 'db2' ? 'in_progress' : 'completed';
+            const timer = product.type === 'db2' ? 24 : undefined;
+            
+            // Для db1 (матчерино) добавляем отдельный заказ для каждой единицы
+            if (product.type === 'db1') {
+                for (let i = 0; i < quantity; i++) {
+                    orders.unshift({
+                        name: product.name,
+                        amount: price,
+                        quantity: 1,
+                        date: new Date().toISOString(),
+                        status: status,
+                        timer: timer,
+                        orderId: Date.now() + '_' + i
+                    });
+                }
+            } else {
+                // Для других типов - один заказ с количеством
+                // Проверяем, нет ли уже такого заказа
+                const existingIndex = orders.findIndex(o => o.name === product.name && o.status === 'in_progress');
+                if (existingIndex !== -1) {
+                    orders[existingIndex].quantity = quantity;
+                    orders[existingIndex].amount = totalPrice;
+                } else {
+                    orders.unshift({
+                        name: product.name,
+                        amount: totalPrice,
+                        quantity: quantity,
+                        date: new Date().toISOString(),
+                        status: status,
+                        timer: timer,
+                        orderId: Date.now()
+                    });
+                }
+            }
+            
+            if (orders.length > 50) orders.pop();
+            localStorage.setItem('vintyx_orders_history', JSON.stringify(orders));
+            
+            // Транзакция
+            const transactions = JSON.parse(localStorage.getItem('vintyx_transactions') || '[]');
+            transactions.unshift({
+                name: `🛒 ${quantity} × ${product.name}`,
+                amount: totalPrice,
+                type: 'negative',
+                date: new Date().toISOString()
+            });
+            if (transactions.length > 50) transactions.pop();
+            localStorage.setItem('vintyx_transactions', JSON.stringify(transactions));
+            
+            // Сохраняем данные заказа с количеством
+            localStorage.setItem('vintyx_order_data', JSON.stringify({
+                items: [product],
+                total: totalPrice,
+                type: product.type,
+                email: '',
+                date: new Date().toISOString(),
+                quantity: quantity
+            }));
+            
+            currentQuantity = quantity;
+            openOrderFlow(product.type, [product], quantity);
+        }
+
         // ===== ОФОРМЛЕНИЕ ЗАКАЗА =====
         function checkout() {
             const cartData = getCart();
@@ -2221,12 +2247,31 @@ function buyNow(product) {
 
             cartData.forEach(item => {
                 const orders = JSON.parse(localStorage.getItem('vintyx_orders_history') || '[]');
-                orders.unshift({
-                    name: item.name,
-                    amount: parseInt(item.price.replace(/[^0-9]/g, '')),
-                    date: new Date().toISOString(),
-                    status: orderType === 'db2' ? 'in_progress' : 'completed'
-                });
+                const quantity = item.quantity || 1;
+                const price = parseInt(item.price.replace(/[^0-9]/g, ''));
+                const totalPrice = price * quantity;
+                
+                if (orderType === 'db1') {
+                    // Для db1 - каждая единица отдельно
+                    for (let i = 0; i < quantity; i++) {
+                        orders.unshift({
+                            name: item.name,
+                            amount: price,
+                            quantity: 1,
+                            date: new Date().toISOString(),
+                            status: orderType === 'db2' ? 'in_progress' : 'completed',
+                            orderId: Date.now() + '_' + i
+                        });
+                    }
+                } else {
+                    orders.unshift({
+                        name: item.name,
+                        amount: totalPrice,
+                        quantity: quantity,
+                        date: new Date().toISOString(),
+                        status: orderType === 'db2' ? 'in_progress' : 'completed'
+                    });
+                }
                 if (orders.length > 50) orders.pop();
                 localStorage.setItem('vintyx_orders_history', JSON.stringify(orders));
             });
@@ -2247,7 +2292,8 @@ function buyNow(product) {
                 total: total,
                 type: orderType,
                 email: '',
-                date: new Date().toISOString()
+                date: new Date().toISOString(),
+                quantity: cartData.reduce((sum, item) => sum + (item.quantity || 1), 0)
             }));
 
             saveCart([]);
@@ -2258,40 +2304,65 @@ function buyNow(product) {
         }
 
         // ===== ОТКРЫТИЕ СТРАНИЦЫ ЗАКАЗА =====
-        let currentOrderType = 'login';
-        let currentProductName = '';
+        function openOrderFlow(type, items, quantity = 1) {
+            currentOrderType = type;
+            currentProductName = items[0]?.name || 'Товар';
+            currentQuantity = quantity || 1;
 
-        function openOrderFlow(type, items) {
-    currentOrderType = type;
-    currentProductName = items[0]?.name || 'Товар';
+            Object.keys(pages).forEach(key => {
+                if (pages[key]) pages[key].classList.remove('active');
+            });
+            
+            const orderPage = document.getElementById('pageOrderFlow');
+            orderPage.classList.add('active');
 
-    // Прячем все страницы
-    Object.keys(pages).forEach(key => {
-        if (pages[key]) pages[key].classList.remove('active');
-    });
-    
-    // Показываем страницу заказа
-    const orderPage = document.getElementById('pageOrderFlow');
-    orderPage.classList.add('active');
+            document.querySelectorAll('.order-step').forEach(step => step.classList.remove('active'));
 
-    // Скрываем все шаги
-    document.querySelectorAll('.order-step').forEach(step => step.classList.remove('active'));
+            if (type === 'login') {
+                document.getElementById('orderStepEmail').classList.add('active');
+            } else if (type === 'db1') {
+                document.getElementById('orderStepWaiting').classList.add('active');
+                startWaiting(type);
+            } else if (type === 'db2') {
+                showReadyDB2(items);
+            }
 
-    if (type === 'login') {
-        // Для входа - показываем ввод почты
-        document.getElementById('orderStepEmail').classList.add('active');
-    } else if (type === 'db1') {
-        // Для базы данных 1 - сразу ожидание
-        document.getElementById('orderStepWaiting').classList.add('active');
-        startWaiting(type);
-    } else if (type === 'db2') {
-        // Для подарком - сразу показываем добавление в друзья
-        showReadyDB2(items);
-    }
+            if (tg && tg.BackButton) tg.BackButton.show();
+            window.location.hash = 'order';
+        }
 
-    if (tg && tg.BackButton) tg.BackButton.show();
-    window.location.hash = 'order';
-}
+        function closeOrderFlow() {
+            // Останавливаем таймеры
+            if (progressInterval) {
+                clearInterval(progressInterval);
+                progressInterval = null;
+            }
+            if (waitingTimer) {
+                clearTimeout(waitingTimer);
+                waitingTimer = null;
+            }
+            
+            document.getElementById('pageOrderFlow').classList.remove('active');
+            document.querySelectorAll('.order-step').forEach(step => step.classList.remove('active'));
+            
+            // Возвращаемся на главную
+            Object.keys(pages).forEach(key => {
+                if (pages[key]) pages[key].classList.remove('active');
+            });
+            pages.home.classList.add('active');
+
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.page === 'home') {
+                    item.classList.add('active');
+                }
+            });
+
+            updateNavIcons('home');
+            window.location.hash = '';
+            if (tg && tg.BackButton) tg.BackButton.hide();
+        }
+
         // ===== ШАГ 1: ОТПРАВКА КОДА =====
         function sendCode() {
             const email = document.getElementById('orderEmailInput').value.trim();
@@ -2400,13 +2471,14 @@ function buyNow(product) {
             document.getElementById('orderStepReadyLogin').classList.add('active');
         }
 
-        // ===== ШАГ 4: ГОТОВО (DB1) =====
+        // ===== ШАГ 4: ГОТОВО (DB1 - МАТЧЕРИНО) =====
         function showReadyDB1() {
             document.getElementById('orderStepWaiting').classList.remove('active');
             
             const orderData = JSON.parse(localStorage.getItem('vintyx_order_data') || '{}');
             const items = orderData.items || [];
-            const productName = items[0]?.name || 'Товар';
+            const productName = items[0]?.name || 'Матчерино';
+            const quantity = orderData.quantity || 1;
             const date = new Date().toLocaleString('ru-RU', {
                 day: 'numeric',
                 month: 'long',
@@ -2414,54 +2486,71 @@ function buyNow(product) {
                 minute: '2-digit'
             });
 
-            const link = 'https://brawlstars.com/claim/' + Math.random().toString(36).substring(2, 10).toUpperCase();
+            // Обновляем подзаголовок в зависимости от количества
+            const subText = quantity > 1 ? `Перейдите по ссылкам (${quantity} шт.), чтобы получить заказ` : 'Перейдите по ссылке, чтобы получить заказ';
+            document.getElementById('readyDB1Sub').textContent = subText;
 
-            document.getElementById('readyProductNameDB1').textContent = productName;
-            document.getElementById('readyLink').textContent = link;
+            // Генерируем ссылки
+            let linksHtml = '';
+            for (let i = 0; i < quantity; i++) {
+                const link = 'https://brawlstars.com/claim/' + Math.random().toString(36).substring(2, 10).toUpperCase();
+                linksHtml += `
+                    <div class="ready-link-box">
+                        <span class="ready-link-number">#${i+1}</span>
+                        <div class="ready-link">${link}</div>
+                        <button class="order-btn-small" onclick="copyLinkText('${link}')" style="font-size:0.65rem;padding:4px 10px;">📋</button>
+                    </div>
+                `;
+            }
+
+            document.getElementById('readyProductNameDB1').textContent = productName + (quantity > 1 ? ` (${quantity} шт.)` : '');
+            document.getElementById('readyLinksContainer').innerHTML = linksHtml;
             document.getElementById('readyDateDB1').textContent = date;
 
             document.getElementById('orderStepReadyDB1').classList.add('active');
         }
 
+        // ===== ШАГ 4: ГОТОВО (DB2 - ПОДАРКОМ) =====
         function showReadyDB2(items) {
-    const orderData = JSON.parse(localStorage.getItem('vintyx_order_data') || '{}');
-    const productName = items[0]?.name || 'Товар';
-    const price = items[0]?.price ? parseInt(items[0].price.replace(/[^0-9]/g, '')) : 0;
-    const date = new Date().toLocaleString('ru-RU', {
-        day: 'numeric',
-        month: 'long',
-        hour: '2-digit',
-        minute: '2-digit'
-    });
+            const orderData = JSON.parse(localStorage.getItem('vintyx_order_data') || '{}');
+            const productName = items[0]?.name || 'Подарок';
+            const price = items[0]?.price ? parseInt(items[0].price.replace(/[^0-9]/g, '')) : 0;
+            const quantity = orderData.quantity || 1;
+            const date = new Date().toLocaleString('ru-RU', {
+                day: 'numeric',
+                month: 'long',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
 
-    const friendId = '#' + Math.random().toString(36).substring(2, 10).toUpperCase();
+            const friendId = '#' + Math.random().toString(36).substring(2, 10).toUpperCase();
 
-    document.getElementById('readyProductNameDB2').textContent = productName;
-    document.getElementById('readyDateDB2').textContent = date;
-    document.querySelector('.friend-id').textContent = friendId;
+            document.getElementById('readyProductNameDB2').textContent = productName + (quantity > 1 ? ` (${quantity} шт.)` : '');
+            document.getElementById('readyDateDB2').textContent = date;
+            document.querySelector('.friend-id').textContent = friendId;
 
-    document.getElementById('orderStepReadyDB2').classList.add('active');
+            document.getElementById('orderStepReadyDB2').classList.add('active');
 
-    // Добавляем в историю заказов со статусом "в работе" и таймером
-    const orders = JSON.parse(localStorage.getItem('vintyx_orders_history') || '[]');
-    // Проверяем, нет ли уже такого заказа
-    const existingOrder = orders.find(o => o.name === productName && o.status === 'in_progress');
-    if (!existingOrder) {
-        orders.unshift({
-            name: productName,
-            amount: price,
-            date: new Date().toISOString(),
-            status: 'in_progress',
-            timer: 24 // 24 часа
-        });
-        if (orders.length > 50) orders.pop();
-        localStorage.setItem('vintyx_orders_history', JSON.stringify(orders));
-    }
-}
+            // Добавляем в историю заказов со статусом "в работе" и таймером
+            const orders = JSON.parse(localStorage.getItem('vintyx_orders_history') || '[]');
+            // Проверяем, нет ли уже такого заказа
+            const existingOrder = orders.find(o => o.name === productName && o.status === 'in_progress');
+            if (!existingOrder) {
+                orders.unshift({
+                    name: productName + (quantity > 1 ? ` ×${quantity}` : ''),
+                    amount: price * quantity,
+                    quantity: quantity,
+                    date: new Date().toISOString(),
+                    status: 'in_progress',
+                    timer: 24
+                });
+                if (orders.length > 50) orders.pop();
+                localStorage.setItem('vintyx_orders_history', JSON.stringify(orders));
+            }
+        }
 
         // ===== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ =====
-        function copyLink() {
-            const link = document.getElementById('readyLink').textContent;
+        function copyLinkText(link) {
             navigator.clipboard?.writeText(link).then(() => {
                 alert('📋 Ссылка скопирована!');
             }).catch(() => {
@@ -2648,27 +2737,27 @@ function buyNow(product) {
         ];
 
         const productsData = {
-    gems: [
-        { id: 1, icon: '💎', name: '80 гемов', price: '99 ₽', game: 'Brawl Stars', type: 'login', label: '🔑 Вход' },
-        { id: 2, icon: '💎', name: '170 гемов', price: '199 ₽', game: 'Brawl Stars', type: 'login', label: '🔑 Вход' },
-        { id: 3, icon: '💎', name: 'Матчерино', price: '399 ₽', game: 'Brawl Stars', type: 'db1', label: 'Матчерино' },
-        { id: 4, icon: '💎', name: '950 Gems', price: '999 ₽', game: 'Brawl Stars', type: 'db2', label: '🎁 Подарком' },
-    ],
-    pass: [
-        { id: 5, icon: '🎟️', name: 'Brawl Pass', price: '499 ₽', game: 'Brawl Stars', type: 'login', label: '🔑 Вход' },
-        { id: 6, icon: '🎟️', name: 'Brawl Pass+', price: '799 ₽', game: 'Brawl Stars', type: 'db1', label: 'Матчерино' },
-    ],
-    store: [
-        { id: 7, icon: '🏪', name: 'бп+', price: '149 ₽', game: 'Brawl Stars', type: 'db2', label: '🎁 Подарком' },
-        { id: 8, icon: '🏪', name: 'хрень на палке', price: '299 ₽', game: 'Brawl Stars', type: 'login', label: '🔑 Вход' },
-        { id: 9, icon: '🏪', name: 'какашка Skin', price: '599 ₽', game: 'Brawl Stars', type: 'db1', label: 'Матчерино' },
-    ],
-    skins: [
-        { id: 10, icon: '🎨', name: 'кредит', price: '399 ₽', game: 'Brawl Stars', type: 'db2', label: '🎁 Подарком' },
-        { id: 11, icon: '🎨', name: 'пустота', price: '499 ₽', game: 'Brawl Stars', type: 'login', label: '🔑 Вход' },
-        { id: 12, icon: '🎨', name: 'долг', price: '299 ₽', game: 'Brawl Stars', type: 'db1', label: 'Матчерино' },
-    ]
-};
+            gems: [
+                { id: 1, icon: '💎', name: '80 гемов', price: '99 ₽', game: 'Brawl Stars', type: 'login', label: '🔑 Вход' },
+                { id: 2, icon: '💎', name: '170 гемов', price: '199 ₽', game: 'Brawl Stars', type: 'login', label: '🔑 Вход' },
+                { id: 3, icon: '💎', name: 'Матчерино', price: '399 ₽', game: 'Brawl Stars', type: 'db1', label: '📥 Матчерино' },
+                { id: 4, icon: '💎', name: '950 Gems', price: '999 ₽', game: 'Brawl Stars', type: 'db2', label: '🎁 Подарком' },
+            ],
+            pass: [
+                { id: 5, icon: '🎟️', name: 'Brawl Pass', price: '499 ₽', game: 'Brawl Stars', type: 'login', label: '🔑 Вход' },
+                { id: 6, icon: '🎟️', name: 'Brawl Pass+', price: '799 ₽', game: 'Brawl Stars', type: 'db1', label: '📥 Матчерино' },
+            ],
+            store: [
+                { id: 7, icon: '🏪', name: 'бп+', price: '149 ₽', game: 'Brawl Stars', type: 'db2', label: '🎁 Подарком' },
+                { id: 8, icon: '🏪', name: 'хрень на палке', price: '299 ₽', game: 'Brawl Stars', type: 'login', label: '🔑 Вход' },
+                { id: 9, icon: '🏪', name: 'какашка Skin', price: '599 ₽', game: 'Brawl Stars', type: 'db1', label: '📥 Матчерино' },
+            ],
+            skins: [
+                { id: 10, icon: '🎨', name: 'кредит', price: '399 ₽', game: 'Brawl Stars', type: 'db2', label: '🎁 Подарком' },
+                { id: 11, icon: '🎨', name: 'пустота', price: '499 ₽', game: 'Brawl Stars', type: 'login', label: '🔑 Вход' },
+                { id: 12, icon: '🎨', name: 'долг', price: '299 ₽', game: 'Brawl Stars', type: 'db1', label: '📥 Матчерино' },
+            ]
+        };
 
         // ===== FAVORITES =====
         function getFavorites() {
@@ -2779,74 +2868,75 @@ function buyNow(product) {
             });
         }
 
-       function renderProducts(category) {
-    const grid = document.getElementById('productsGrid');
-    if (!grid) return;
-    
-    grid.innerHTML = '';
+        function renderProducts(category) {
+            const grid = document.getElementById('productsGrid');
+            if (!grid) return;
+            
+            grid.innerHTML = '';
 
-    let items = [];
-    if (category === 'all') {
-        items = [...productsData.gems, ...productsData.pass, ...productsData.store, ...productsData.skins];
-    } else if (category === 'gems') {
-        items = productsData.gems;
-    } else if (category === 'pass') {
-        items = productsData.pass;
-    } else if (category === 'store') {
-        items = productsData.store;
-    } else if (category === 'skins') {
-        items = productsData.skins;
-    } else {
-        items = [];
-    }
+            let items = [];
+            if (category === 'all') {
+                items = [...productsData.gems, ...productsData.pass, ...productsData.store, ...productsData.skins];
+            } else if (category === 'gems') {
+                items = productsData.gems;
+            } else if (category === 'pass') {
+                items = productsData.pass;
+            } else if (category === 'store') {
+                items = productsData.store;
+            } else if (category === 'skins') {
+                items = productsData.skins;
+            } else {
+                items = [];
+            }
 
-    if (items.length === 0) {
-        grid.innerHTML = `
-            <div style="grid-column: 1/-1; text-align: center; padding: 40px 0; color: rgba(255,255,255,0.2);">
-                <div style="font-size: 2rem; margin-bottom: 8px;">📭</div>
-                <div>Товаров в этой категории пока нет</div>
-            </div>
-        `;
-        return;
-    }
+            if (items.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 40px 0; color: rgba(255,255,255,0.2);">
+                        <div style="font-size: 2rem; margin-bottom: 8px;">📭</div>
+                        <div>Товаров в этой категории пока нет</div>
+                    </div>
+                `;
+                return;
+            }
 
-    items.forEach(item => {
-        const card = document.createElement('div');
-        card.className = 'product-card';
-        
-        let labelColor = '';
-        let labelBg = '';
-        if (item.type === 'login') {
-            labelColor = '#7DD8FF';
-            labelBg = 'rgba(91, 140, 255, 0.12)';
-        } else if (item.type === 'db1') {
-            labelColor = '#FFD54F';
-            labelBg = 'rgba(255, 193, 7, 0.12)';
-        } else if (item.type === 'db2') {
-            labelColor = '#00E676';
-            labelBg = 'rgba(0, 200, 83, 0.12)';
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                
+                let labelColor = '';
+                let labelBg = '';
+                if (item.type === 'login') {
+                    labelColor = '#7DD8FF';
+                    labelBg = 'rgba(91, 140, 255, 0.12)';
+                } else if (item.type === 'db1') {
+                    labelColor = '#FFD54F';
+                    labelBg = 'rgba(255, 193, 7, 0.12)';
+                } else if (item.type === 'db2') {
+                    labelColor = '#00E676';
+                    labelBg = 'rgba(0, 200, 83, 0.12)';
+                }
+                
+                card.innerHTML = `
+                    <div style="width:100%;display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                        <div class="prod-icon" style="margin-bottom:0;font-size:1.8rem;">${item.icon}</div>
+                        <span class="prod-type-label" style="background:${labelBg};color:${labelColor};">${item.label}</span>
+                    </div>
+                    <div class="prod-name">${item.name}</div>
+                    <div class="prod-sub">${item.game}</div>
+                    <div style="display:flex;gap:6px;width:100%;margin-top:4px;">
+                        <button class="prod-btn" onclick="addToCart({id: ${item.id}, icon: '${item.icon}', name: '${item.name}', price: '${item.price}', game: '${item.game}', type: '${item.type}'})" style="flex:2;">
+                            <span class="price">${item.price}</span>
+                            <span class="cart-text">+ в корзину</span>
+                        </button>
+                        <button class="prod-btn" onclick="buyNow({id: ${item.id}, icon: '${item.icon}', name: '${item.name}', price: '${item.price}', game: '${item.game}', type: '${item.type}'})" style="flex:1;background:linear-gradient(135deg,#00C853 0%,#00E676 100%);min-height:48px;">
+                            <span class="oneclick-text">⚡1 клик</span>
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
         }
-        
-        card.innerHTML = `
-            <div style="width:100%;display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-                <div class="prod-icon" style="margin-bottom:0;font-size:1.8rem;">${item.icon}</div>
-                <span class="prod-type-label" style="background:${labelBg};color:${labelColor};">${item.label}</span>
-            </div>
-            <div class="prod-name">${item.name}</div>
-            <div class="prod-sub">${item.game}</div>
-            <div style="display:flex;gap:6px;width:100%;margin-top:4px;">
-                <button class="prod-btn" onclick="addToCart({id: ${item.id}, icon: '${item.icon}', name: '${item.name}', price: '${item.price}', game: '${item.game}', type: '${item.type}'})" style="flex:2;">
-                    <span class="price">${item.price}</span>
-                    <span class="cart-text">+ в корзину</span>
-                </button>
-                <button class="prod-btn" onclick="buyNow({id: ${item.id}, icon: '${item.icon}', name: '${item.name}', price: '${item.price}', game: '${item.game}', type: '${item.type}'})" style="flex:1;background:linear-gradient(135deg,#00C853 0%,#00E676 100%);min-height:48px;">
-                    <span class="oneclick-text">⚡1 клик</span>
-                </button>
-            </div>
-        `;
-        grid.appendChild(card);
-    });
-}
+
         // ===== CATEGORY FILTER =====
         document.addEventListener('click', function(e) {
             if (e.target.classList.contains('category-btn') && e.target.dataset.game === 'brawl') {
@@ -3024,59 +3114,60 @@ function buyNow(product) {
         }
 
         function renderOrders() {
-    const container = document.getElementById('ordersHistory');
-    const orders = getOrders();
+            const container = document.getElementById('ordersHistory');
+            const orders = getOrders();
 
-    if (orders.length === 0) {
-        container.innerHTML = `
-            <div class="history-empty">
-                <div class="empty-icon">📭</div>
-                <div>У вас пока нет покупок</div>
-            </div>
-        `;
-        return;
-    }
-
-    let html = '';
-    orders.forEach((item, index) => {
-        const date = new Date(item.date);
-        const formattedDate = date.toLocaleDateString('ru-RU') + ' ' + date.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'});
-        
-        let statusText = '';
-        let statusColor = '';
-        
-        if (item.status === 'in_progress' && item.timer) {
-            // Показываем таймер для заказов "Подарком"
-            const hoursLeft = item.timer;
-            statusText = `⏳ ${hoursLeft} ч.`;
-            statusColor = '#FFD54F';
-        } else if (item.status === 'in_progress') {
-            statusText = '⏳ В работе';
-            statusColor = '#FFD54F';
-        } else {
-            statusText = '✅ Выполнен';
-            statusColor = '#00E676';
-        }
-        
-        html += `
-            <div class="history-item">
-                <div class="h-left">
-                    <span class="h-icon">🎮</span>
-                    <div class="h-info">
-                        <div class="h-name">${item.name}</div>
-                        <div class="h-date">${formattedDate}</div>
+            if (orders.length === 0) {
+                container.innerHTML = `
+                    <div class="history-empty">
+                        <div class="empty-icon">📭</div>
+                        <div>У вас пока нет покупок</div>
                     </div>
-                </div>
-                <div style="text-align:right;">
-                    <div class="h-amount negative">-${item.amount} ₽</div>
-                    <div style="font-size:0.6rem;color:${statusColor};">${statusText}</div>
-                </div>
-            </div>
-        `;
-    });
+                `;
+                return;
+            }
 
-    container.innerHTML = html;
-}
+            let html = '';
+            orders.forEach((item) => {
+                const date = new Date(item.date);
+                const formattedDate = date.toLocaleDateString('ru-RU') + ' ' + date.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'});
+                
+                let statusText = '';
+                let statusColor = '';
+                
+                if (item.status === 'in_progress' && item.timer) {
+                    statusText = `⏳ ${item.timer} ч.`;
+                    statusColor = '#FFD54F';
+                } else if (item.status === 'in_progress') {
+                    statusText = '⏳ В работе';
+                    statusColor = '#FFD54F';
+                } else {
+                    statusText = '✅ Выполнен';
+                    statusColor = '#00E676';
+                }
+                
+                const quantityText = item.quantity && item.quantity > 1 ? ` ×${item.quantity}` : '';
+                
+                html += `
+                    <div class="history-item">
+                        <div class="h-left">
+                            <span class="h-icon">🎮</span>
+                            <div class="h-info">
+                                <div class="h-name">${item.name}${quantityText}</div>
+                                <div class="h-date">${formattedDate}</div>
+                            </div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div class="h-amount negative">-${item.amount} ₽</div>
+                            <div style="font-size:0.6rem;color:${statusColor};">${statusText}</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
         function renderTransactions() {
             const container = document.getElementById('transactionsHistory');
             const transactions = getTransactions();
