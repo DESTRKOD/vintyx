@@ -2137,33 +2137,32 @@
         let currentTotalPrice = 0;
         let currentOrderItems = [];
 
-        // ===== КУПИТЬ В 1 КЛИК =====
         function buyNow(product) {
-            const price = parseInt(product.price.replace(/[^0-9]/g, ''));
-            
-            // Проверяем баланс (НО НЕ СПИСЫВАЕМ)
-            if (balance < price) {
-                alert(`❌ Недостаточно средств!\n\n💰 Ваш баланс: ${balance} ₽\n📦 Товар стоит: ${price} ₽\n\nПополните баланс в профиле.`);
-                return;
-            }
-            
-            // Сохраняем данные для заказа
-            currentOrderItems = [product];
-            currentQuantity = 1;
-            currentTotalPrice = price;
-            
-            localStorage.setItem('vintyx_order_data', JSON.stringify({
-                items: [product],
-                total: price,
-                type: product.type,
-                email: '',
-                date: new Date().toISOString(),
-                quantity: 1
-            }));
-            
-            // Открываем оформление заказа (деньги ещё НЕ списаны!)
-            openOrderFlow(product.type, [product], 1);
-        }
+    const price = parseInt(product.price.replace(/[^0-9]/g, ''));
+    
+    // Проверяем баланс (НО НЕ СПИСЫВАЕМ)
+    if (balance < price) {
+        alert(`❌ Недостаточно средств!\n\n💰 Ваш баланс: ${balance} ₽\n📦 Товар стоит: ${price} ₽\n\nПополните баланс в профиле.`);
+        return;
+    }
+    
+    // Сохраняем данные для заказа
+    currentOrderItems = [product];
+    currentQuantity = 1;
+    currentTotalPrice = price;
+    
+    localStorage.setItem('vintyx_order_data', JSON.stringify({
+        items: [product],
+        total: price,
+        type: product.type,
+        email: '',
+        date: new Date().toISOString(),
+        quantity: 1
+    }));
+    
+    // Открываем оформление заказа (деньги ещё НЕ списаны!)
+    openOrderFlow(product.type, [product], 1);
+}
 
         // ===== ОФОРМЛЕНИЕ ЗАКАЗА ИЗ КОРЗИНЫ =====
         function checkout() {
@@ -2348,81 +2347,83 @@
             }, duration + 200);
         }
 
-        // ===== ЗАВЕРШЕНИЕ ЗАКАЗА (СПИСАНИЕ ДЕНЕГ) =====
-        function completeOrder(type) {
-            console.log('💰 completeOrder вызвана!');
-            console.log('💰 Текущий баланс ДО списания:', balance);
-            console.log('💰 Сумма к списанию:', currentTotalPrice);
-            
-            // Списываем деньги ТОЛЬКО здесь!
-            balance -= currentTotalPrice;
-            console.log('💰 Баланс ПОСЛЕ списания:', balance);
-            
-            updateBalanceDisplay();
-            
-            const orderData = JSON.parse(localStorage.getItem('vintyx_order_data') || '{}');
-            const items = orderData.items || [];
-            const email = orderData.email || '';
-            const date = new Date().toISOString();
-            
-            // Добавляем в историю покупок
-            const orders = JSON.parse(localStorage.getItem('vintyx_orders_history') || '[]');
-            
-            if (type === 'db1') {
-                for (let i = 0; i < currentQuantity; i++) {
-                    orders.unshift({
-                        name: items[0]?.name || 'Матчерино',
-                        amount: parseInt(items[0]?.price?.replace(/[^0-9]/g, '') || 0),
-                        quantity: 1,
-                        date: date,
-                        status: 'completed',
-                        orderId: Date.now() + '_' + i
-                    });
-                }
-            } else if (type === 'db2') {
-                orders.unshift({
-                    name: items[0]?.name || 'Подарок',
-                    amount: currentTotalPrice,
-                    quantity: currentQuantity,
-                    date: date,
-                    status: 'in_progress',
-                    timer: 24
-                });
-            } else {
-                const productName = items.length > 1 ? 'Заказ из корзины' : items[0]?.name || 'Товар';
-                orders.unshift({
-                    name: productName + (currentQuantity > 1 ? ` ×${currentQuantity}` : ''),
-                    amount: currentTotalPrice,
-                    quantity: currentQuantity,
-                    date: date,
-                    status: 'completed'
-                });
-            }
-            
-            if (orders.length > 50) orders.pop();
-            localStorage.setItem('vintyx_orders_history', JSON.stringify(orders));
-            
-            // Добавляем транзакцию
-            const transactions = JSON.parse(localStorage.getItem('vintyx_transactions') || '[]');
-            const productName = items.length > 1 ? 'Покупка в магазине' : items[0]?.name || 'Товар';
-            transactions.unshift({
-                name: `🛒 ${productName}${currentQuantity > 1 ? ` ×${currentQuantity}` : ''}`,
-                amount: currentTotalPrice,
-                type: 'negative',
-                date: date
+        /function completeOrder(type) {
+    console.log('💰 completeOrder вызвана!');
+    console.log('💰 Текущий баланс ДО списания:', balance);
+    console.log('💰 Сумма к списанию:', currentTotalPrice);
+    
+    // Списываем деньги ТОЛЬКО здесь!
+    balance -= currentTotalPrice;
+    console.log('💰 Баланс ПОСЛЕ списания:', balance);
+    
+    updateBalanceDisplay();
+    
+    const orderData = JSON.parse(localStorage.getItem('vintyx_order_data') || '{}');
+    const items = orderData.items || [];
+    const email = orderData.email || '';
+    const date = new Date().toISOString();
+    
+    // Добавляем в историю покупок ТОЛЬКО ЗДЕСЬ!
+    const orders = JSON.parse(localStorage.getItem('vintyx_orders_history') || '[]');
+    
+    if (type === 'db1') {
+        // Для Матчерино - каждая единица отдельно
+        for (let i = 0; i < currentQuantity; i++) {
+            orders.unshift({
+                name: items[0]?.name || 'Матчерино',
+                amount: parseInt(items[0]?.price?.replace(/[^0-9]/g, '') || 0),
+                quantity: 1,
+                date: date,
+                status: 'completed',
+                orderId: Date.now() + '_' + i
             });
-            if (transactions.length > 50) transactions.pop();
-            localStorage.setItem('vintyx_transactions', JSON.stringify(transactions));
-            
-            // Показываем экран готовности
-            if (type === 'login') {
-                showReadyLogin();
-            } else if (type === 'db1') {
-                showReadyDB1();
-            }
-            
-            console.log('✅ Заказ завершён, баланс обновлён:', balance);
         }
+    } else if (type === 'db2') {
+        // Для Подарком - один заказ с таймером
+        orders.unshift({
+            name: items[0]?.name || 'Подарок',
+            amount: currentTotalPrice,
+            quantity: currentQuantity,
+            date: date,
+            status: 'in_progress',
+            timer: 24
+        });
+    } else {
+        // Для Вход - один заказ
+        const productName = items.length > 1 ? 'Заказ из корзины' : items[0]?.name || 'Товар';
+        orders.unshift({
+            name: productName + (currentQuantity > 1 ? ` ×${currentQuantity}` : ''),
+            amount: currentTotalPrice,
+            quantity: currentQuantity,
+            date: date,
+            status: 'completed'
+        });
+    }
+    
+    if (orders.length > 50) orders.pop();
+    localStorage.setItem('vintyx_orders_history', JSON.stringify(orders));
+    
+    // Добавляем транзакцию
+    const transactions = JSON.parse(localStorage.getItem('vintyx_transactions') || '[]');
+    const productName = items.length > 1 ? 'Покупка в магазине' : items[0]?.name || 'Товар';
+    transactions.unshift({
+        name: `🛒 ${productName}${currentQuantity > 1 ? ` ×${currentQuantity}` : ''}`,
+        amount: currentTotalPrice,
+        type: 'negative',
+        date: date
+    });
+    if (transactions.length > 50) transactions.pop();
+    localStorage.setItem('vintyx_transactions', JSON.stringify(transactions));
+    
+    // Показываем экран готовности
+    if (type === 'login') {
+        showReadyLogin();
+    } else if (type === 'db1') {
+        showReadyDB1();
+    }
+    
+    console.log('✅ Заказ завершён, баланс обновлён:', balance);
+}
 
         // ===== ШАГ 4: ГОТОВО (LOGIN) =====
         function showReadyLogin() {
@@ -2483,66 +2484,70 @@
             document.getElementById('orderStepReadyDB1').classList.add('active');
         }
 
-        // ===== ШАГ 4: ГОТОВО (DB2 - ПОДАРКОМ) =====
         function showReadyDB2(items) {
-            console.log('💰 showReadyDB2 вызвана!');
-            console.log('💰 Баланс ДО списания:', balance);
-            console.log('💰 Сумма к списанию:', currentTotalPrice);
-            
-            // Проверяем баланс перед списанием
-            if (balance < currentTotalPrice) {
-                alert(`❌ Недостаточно средств!\n\n💰 Ваш баланс: ${balance} ₽\n📦 Сумма заказа: ${currentTotalPrice} ₽\n\nПополните баланс в профиле.`);
-                closeOrderFlow();
-                return;
-            }
-            
-            // Списываем деньги
-            balance -= currentTotalPrice;
-            updateBalanceDisplay();
-            console.log('💰 Баланс ПОСЛЕ списания:', balance);
-            
-            const orderData = JSON.parse(localStorage.getItem('vintyx_order_data') || '{}');
-            const productName = items[0]?.name || 'Подарок';
-            const price = items[0]?.price ? parseInt(items[0].price.replace(/[^0-9]/g, '')) : 0;
-            const quantity = currentQuantity || 1;
-            const date = new Date().toLocaleString('ru-RU', {
-                day: 'numeric',
-                month: 'long',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
+    console.log('💰 showReadyDB2 вызвана!');
+    console.log('💰 Баланс ДО списания:', balance);
+    console.log('💰 Сумма к списанию:', currentTotalPrice);
+    
+    // Проверяем баланс перед списанием
+    if (balance < currentTotalPrice) {
+        alert(`❌ Недостаточно средств!\n\n💰 Ваш баланс: ${balance} ₽\n📦 Сумма заказа: ${currentTotalPrice} ₽\n\nПополните баланс в профиле.`);
+        closeOrderFlow();
+        return;
+    }
+    
+    // Списываем деньги
+    balance -= currentTotalPrice;
+    updateBalanceDisplay();
+    console.log('💰 Баланс ПОСЛЕ списания:', balance);
+    
+    const orderData = JSON.parse(localStorage.getItem('vintyx_order_data') || '{}');
+    const productName = items[0]?.name || 'Подарок';
+    const price = items[0]?.price ? parseInt(items[0].price.replace(/[^0-9]/g, '')) : 0;
+    const quantity = currentQuantity || 1;
+    const date = new Date().toLocaleString('ru-RU', {
+        day: 'numeric',
+        month: 'long',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
 
-            const friendId = '#' + Math.random().toString(36).substring(2, 10).toUpperCase();
+    const friendId = '#' + Math.random().toString(36).substring(2, 10).toUpperCase();
 
-            document.getElementById('readyProductNameDB2').textContent = productName + (quantity > 1 ? ` (${quantity} шт.)` : '');
-            document.getElementById('readyDateDB2').textContent = date;
-            document.querySelector('.friend-id').textContent = friendId;
+    document.getElementById('readyProductNameDB2').textContent = productName + (quantity > 1 ? ` (${quantity} шт.)` : '');
+    document.getElementById('readyDateDB2').textContent = date;
+    document.querySelector('.friend-id').textContent = friendId;
 
-            document.getElementById('orderStepReadyDB2').classList.add('active');
+    document.getElementById('orderStepReadyDB2').classList.add('active');
 
-            const orders = JSON.parse(localStorage.getItem('vintyx_orders_history') || '[]');
-            orders.unshift({
-                name: productName + (quantity > 1 ? ` ×${quantity}` : ''),
-                amount: currentTotalPrice,
-                quantity: quantity,
-                date: new Date().toISOString(),
-                status: 'in_progress',
-                timer: 24
-            });
-            if (orders.length > 50) orders.pop();
-            localStorage.setItem('vintyx_orders_history', JSON.stringify(orders));
-            
-            const transactions = JSON.parse(localStorage.getItem('vintyx_transactions') || '[]');
-            transactions.unshift({
-                name: `🛒 ${productName}${quantity > 1 ? ` ×${quantity}` : ''}`,
-                amount: currentTotalPrice,
-                type: 'negative',
-                date: new Date().toISOString()
-            });
-            if (transactions.length > 50) transactions.pop();
-            localStorage.setItem('vintyx_transactions', JSON.stringify(transactions));
-        }
-
+    // Добавляем в историю заказов ТОЛЬКО ЗДЕСЬ (не дублируем)
+    const orders = JSON.parse(localStorage.getItem('vintyx_orders_history') || '[]');
+    // Проверяем, нет ли уже такого заказа
+    const existingOrder = orders.find(o => o.name === productName && o.status === 'in_progress');
+    if (!existingOrder) {
+        orders.unshift({
+            name: productName + (quantity > 1 ? ` ×${quantity}` : ''),
+            amount: currentTotalPrice,
+            quantity: quantity,
+            date: new Date().toISOString(),
+            status: 'in_progress',
+            timer: 24
+        });
+        if (orders.length > 50) orders.pop();
+        localStorage.setItem('vintyx_orders_history', JSON.stringify(orders));
+    }
+    
+    // Добавляем транзакцию
+    const transactions = JSON.parse(localStorage.getItem('vintyx_transactions') || '[]');
+    transactions.unshift({
+        name: `🛒 ${productName}${quantity > 1 ? ` ×${quantity}` : ''}`,
+        amount: currentTotalPrice,
+        type: 'negative',
+        date: new Date().toISOString()
+    });
+    if (transactions.length > 50) transactions.pop();
+    localStorage.setItem('vintyx_transactions', JSON.stringify(transactions));
+}
         // ===== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ =====
         function copyLinkText(link) {
             navigator.clipboard?.writeText(link).then(() => {
