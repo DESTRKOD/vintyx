@@ -2136,13 +2136,12 @@
         let currentQuantity = 1;
         let currentTotalPrice = 0;
         let currentOrderItems = [];
-        let orderDataForCompletion = null;
 
-        // ===== НОВАЯ ЛОГИКА: КУПИТЬ В 1 КЛИК =====
+        // ===== КУПИТЬ В 1 КЛИК =====
         function buyNow(product) {
             const price = parseInt(product.price.replace(/[^0-9]/g, ''));
             
-            // Проверяем баланс
+            // Проверяем баланс (НО НЕ СПИСЫВАЕМ)
             if (balance < price) {
                 alert(`❌ Недостаточно средств!\n\n💰 Ваш баланс: ${balance} ₽\n📦 Товар стоит: ${price} ₽\n\nПополните баланс в профиле.`);
                 return;
@@ -2153,7 +2152,6 @@
             currentQuantity = 1;
             currentTotalPrice = price;
             
-            // Сохраняем данные заказа
             localStorage.setItem('vintyx_order_data', JSON.stringify({
                 items: [product],
                 total: price,
@@ -2163,11 +2161,11 @@
                 quantity: 1
             }));
             
-            // Открываем оформление заказа (деньги ещё не списаны!)
+            // Открываем оформление заказа (деньги ещё НЕ списаны!)
             openOrderFlow(product.type, [product], 1);
         }
 
-        // ===== НОВАЯ ЛОГИКА: ОФОРМЛЕНИЕ ЗАКАЗА ИЗ КОРЗИНЫ =====
+        // ===== ОФОРМЛЕНИЕ ЗАКАЗА ИЗ КОРЗИНЫ =====
         function checkout() {
             const cartData = getCart();
             
@@ -2184,7 +2182,7 @@
 
             const total = calculateTotal();
             
-            // Проверяем баланс
+            // Проверяем баланс (НО НЕ СПИСЫВАЕМ)
             if (balance < total) {
                 alert(`❌ Недостаточно средств!\n\n💰 Ваш баланс: ${balance} ₽\n📦 Сумма заказа: ${total} ₽\n\nПополните баланс в профиле.`);
                 return;
@@ -2193,7 +2191,6 @@
             const orderType = typeCheck.type;
             const quantity = cartData.reduce((sum, item) => sum + (item.quantity || 1), 0);
             
-            // Сохраняем данные для заказа (деньги ещё не списаны)
             currentOrderItems = cartData;
             currentQuantity = quantity;
             currentTotalPrice = total;
@@ -2207,12 +2204,10 @@
                 quantity: quantity
             }));
 
-            // Очищаем корзину
             saveCart([]);
             renderCart();
             updateCartCount();
 
-            // Открываем оформление заказа (деньги ещё не списаны!)
             openOrderFlow(orderType, cartData, quantity);
         }
 
@@ -2222,7 +2217,6 @@
             currentProductName = items[0]?.name || 'Товар';
             currentQuantity = quantity || 1;
 
-            // Прячем все страницы
             Object.keys(pages).forEach(key => {
                 if (pages[key]) pages[key].classList.remove('active');
             });
@@ -2246,7 +2240,6 @@
         }
 
         function closeOrderFlow() {
-            // Останавливаем таймеры
             if (progressInterval) {
                 clearInterval(progressInterval);
                 progressInterval = null;
@@ -2259,7 +2252,6 @@
             document.getElementById('pageOrderFlow').classList.remove('active');
             document.querySelectorAll('.order-step').forEach(step => step.classList.remove('active'));
             
-            // Возвращаемся на главную
             Object.keys(pages).forEach(key => {
                 if (pages[key]) pages[key].classList.remove('active');
             });
@@ -2341,11 +2333,8 @@
                     clearInterval(progressInterval);
                     progressInterval = null;
                     
-                    if (type === 'login') {
-                        completeOrder('login');
-                    } else if (type === 'db1') {
-                        completeOrder('db1');
-                    }
+                    // ВЫЗЫВАЕМ completeOrder ВМЕСТО showReadyLogin/showReadyDB1
+                    completeOrder(type);
                 }
                 progressBar.style.width = progress + '%';
             }, interval);
@@ -2355,18 +2344,20 @@
                     clearInterval(progressInterval);
                     progressInterval = null;
                 }
-                if (type === 'login') {
-                    completeOrder('login');
-                } else if (type === 'db1') {
-                    completeOrder('db1');
-                }
+                completeOrder(type);
             }, duration + 200);
         }
 
-        // ===== НОВАЯ ФУНКЦИЯ: ЗАВЕРШЕНИЕ ЗАКАЗА (СПИСАНИЕ ДЕНЕГ) =====
+        // ===== ЗАВЕРШЕНИЕ ЗАКАЗА (СПИСАНИЕ ДЕНЕГ) =====
         function completeOrder(type) {
-            // Списываем деньги
+            console.log('💰 completeOrder вызвана!');
+            console.log('💰 Текущий баланс ДО списания:', balance);
+            console.log('💰 Сумма к списанию:', currentTotalPrice);
+            
+            // Списываем деньги ТОЛЬКО здесь!
             balance -= currentTotalPrice;
+            console.log('💰 Баланс ПОСЛЕ списания:', balance);
+            
             updateBalanceDisplay();
             
             const orderData = JSON.parse(localStorage.getItem('vintyx_order_data') || '{}');
@@ -2378,7 +2369,6 @@
             const orders = JSON.parse(localStorage.getItem('vintyx_orders_history') || '[]');
             
             if (type === 'db1') {
-                // Для Матчерино - каждая единица отдельно
                 for (let i = 0; i < currentQuantity; i++) {
                     orders.unshift({
                         name: items[0]?.name || 'Матчерино',
@@ -2390,7 +2380,6 @@
                     });
                 }
             } else if (type === 'db2') {
-                // Для Подарком - один заказ с таймером
                 orders.unshift({
                     name: items[0]?.name || 'Подарок',
                     amount: currentTotalPrice,
@@ -2400,7 +2389,6 @@
                     timer: 24
                 });
             } else {
-                // Для Вход - один заказ
                 const productName = items.length > 1 ? 'Заказ из корзины' : items[0]?.name || 'Товар';
                 orders.unshift({
                     name: productName + (currentQuantity > 1 ? ` ×${currentQuantity}` : ''),
@@ -2432,6 +2420,8 @@
             } else if (type === 'db1') {
                 showReadyDB1();
             }
+            
+            console.log('✅ Заказ завершён, баланс обновлён:', balance);
         }
 
         // ===== ШАГ 4: ГОТОВО (LOGIN) =====
@@ -2474,7 +2464,6 @@
             const subText = quantity > 1 ? `Перейдите по ссылкам (${quantity} шт.), чтобы получить заказ` : 'Перейдите по ссылке, чтобы получить заказ';
             document.getElementById('readyDB1Sub').textContent = subText;
 
-            // Генерируем ссылки
             let linksHtml = '';
             for (let i = 0; i < quantity; i++) {
                 const link = 'https://brawlstars.com/claim/' + Math.random().toString(36).substring(2, 10).toUpperCase();
@@ -2496,7 +2485,10 @@
 
         // ===== ШАГ 4: ГОТОВО (DB2 - ПОДАРКОМ) =====
         function showReadyDB2(items) {
-            // Для Подарком деньги списываются сразу (так как нет ввода почты)
+            console.log('💰 showReadyDB2 вызвана!');
+            console.log('💰 Баланс ДО списания:', balance);
+            console.log('💰 Сумма к списанию:', currentTotalPrice);
+            
             // Проверяем баланс перед списанием
             if (balance < currentTotalPrice) {
                 alert(`❌ Недостаточно средств!\n\n💰 Ваш баланс: ${balance} ₽\n📦 Сумма заказа: ${currentTotalPrice} ₽\n\nПополните баланс в профиле.`);
@@ -2504,9 +2496,10 @@
                 return;
             }
             
-            // Списываем деньги сразу для Подарком
+            // Списываем деньги
             balance -= currentTotalPrice;
             updateBalanceDisplay();
+            console.log('💰 Баланс ПОСЛЕ списания:', balance);
             
             const orderData = JSON.parse(localStorage.getItem('vintyx_order_data') || '{}');
             const productName = items[0]?.name || 'Подарок';
@@ -2527,7 +2520,6 @@
 
             document.getElementById('orderStepReadyDB2').classList.add('active');
 
-            // Добавляем в историю заказов
             const orders = JSON.parse(localStorage.getItem('vintyx_orders_history') || '[]');
             orders.unshift({
                 name: productName + (quantity > 1 ? ` ×${quantity}` : ''),
@@ -2540,7 +2532,6 @@
             if (orders.length > 50) orders.pop();
             localStorage.setItem('vintyx_orders_history', JSON.stringify(orders));
             
-            // Добавляем транзакцию
             const transactions = JSON.parse(localStorage.getItem('vintyx_transactions') || '[]');
             transactions.unshift({
                 name: `🛒 ${productName}${quantity > 1 ? ` ×${quantity}` : ''}`,
