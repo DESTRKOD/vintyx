@@ -743,6 +743,16 @@
             background: rgba(255, 255, 255, 0.1);
         }
 
+        .profile-page .btn-secondary.withdraw-btn {
+            border-color: rgba(255, 59, 111, 0.3);
+            color: #FF3B6F;
+            background: rgba(255, 59, 111, 0.06);
+        }
+
+        .profile-page .btn-secondary.withdraw-btn:active {
+            background: rgba(255, 59, 111, 0.12);
+        }
+
         .profile-page .btn-row {
             display: flex;
             gap: 10px;
@@ -851,59 +861,6 @@
             transform: scale(0.97);
         }
 
-        .profile-page .recharge-section .fee-info {
-            font-size: 0.7rem;
-            color: rgba(255, 255, 255, 0.3);
-            text-align: center;
-            margin-top: 4px;
-        }
-
-        .profile-page .withdraw-section {
-            background: rgba(255, 255, 255, 0.04);
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            display: none;
-        }
-
-        .profile-page .withdraw-section.active {
-            display: block;
-            animation: fadeUp 0.3s ease;
-        }
-
-        .profile-page .withdraw-section .withdraw-info {
-            background: rgba(255, 59, 111, 0.06);
-            border-radius: 10px;
-            padding: 10px 14px;
-            margin-bottom: 12px;
-            border: 1px solid rgba(255, 59, 111, 0.08);
-        }
-
-        .profile-page .withdraw-section .withdraw-info .info-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 2px 0;
-            font-size: 0.8rem;
-        }
-
-        .profile-page .withdraw-section .withdraw-info .info-row .label {
-            color: rgba(255, 255, 255, 0.4);
-        }
-
-        .profile-page .withdraw-section .withdraw-info .info-row .value {
-            color: #FFFFFF;
-            font-weight: 500;
-        }
-
-        .profile-page .withdraw-section .withdraw-info .info-row .value.fee {
-            color: #FF3B6F;
-        }
-
-        .profile-page .withdraw-section .withdraw-info .info-row .value.final {
-            color: #00E676;
-        }
-
         .profile-page .section {
             margin-top: 24px;
         }
@@ -972,6 +929,266 @@
             font-size: 2rem;
             margin-bottom: 8px;
             opacity: 0.3;
+        }
+
+        /* ===== WITHDRAW POPUP ===== */
+        .withdraw-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(12px);
+            z-index: 300;
+            display: none;
+            animation: overlayIn 0.3s ease;
+        }
+
+        .withdraw-overlay.active {
+            display: block;
+        }
+
+        @keyframes overlayIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .withdraw-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            max-width: calc(100% - 40px);
+            max-height: calc(100% - 60px);
+            background: linear-gradient(145deg, rgba(20, 20, 45, 0.98), rgba(30, 20, 60, 0.98));
+            backdrop-filter: blur(28px);
+            border-radius: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+            z-index: 301;
+            display: none;
+            overflow: hidden;
+            animation: withdrawPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            padding: 0;
+        }
+
+        .withdraw-popup.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes withdrawPop {
+            0% {
+                transform: translate(-50%, -50%) scale(0.8) translateY(20px);
+                opacity: 0;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .withdraw-popup .popup-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            flex-shrink: 0;
+        }
+
+        .withdraw-popup .popup-header .title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #FFFFFF;
+        }
+
+        .withdraw-popup .popup-header .title .icon {
+            font-size: 1.6rem;
+        }
+
+        .withdraw-popup .popup-header .close-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .withdraw-popup .popup-header .close-btn:active {
+            transform: scale(0.9);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .withdraw-popup .popup-body {
+            padding: 20px 24px 24px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .withdraw-popup .popup-body .balance-hint {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            margin-bottom: 20px;
+        }
+
+        .withdraw-popup .popup-body .balance-hint .label {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.85rem;
+        }
+
+        .withdraw-popup .popup-body .balance-hint .value {
+            font-weight: 700;
+            font-size: 1.1rem;
+            background: linear-gradient(135deg, #7DD8FF 0%, #6675FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .withdraw-popup .popup-body .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .withdraw-popup .popup-body .input-group .input-label {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.3);
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+
+        .withdraw-popup .popup-body .input-group .input-wrapper {
+            position: relative;
+        }
+
+        .withdraw-popup .popup-body .input-group .input-wrapper .currency-symbol {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.2);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .withdraw-popup .popup-body .input-group input {
+            width: 100%;
+            padding: 14px 16px 14px 40px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            color: white;
+            font-size: 1.1rem;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .withdraw-popup .popup-body .input-group input:focus {
+            border-color: rgba(91, 140, 255, 0.3);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .withdraw-popup .popup-body .input-group input::placeholder {
+            color: rgba(255, 255, 255, 0.15);
+        }
+
+        .withdraw-popup .popup-body .input-group input.card-input {
+            padding-left: 16px;
+            letter-spacing: 1px;
+            font-size: 0.95rem;
+        }
+
+        .withdraw-popup .popup-body .calc-info {
+            background: rgba(255, 59, 111, 0.04);
+            border-radius: 14px;
+            padding: 16px 18px;
+            border: 1px solid rgba(255, 59, 111, 0.06);
+            margin-top: 4px;
+        }
+
+        .withdraw-popup .popup-body .calc-info .calc-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            font-size: 0.85rem;
+        }
+
+        .withdraw-popup .popup-body .calc-info .calc-row .calc-label {
+            color: rgba(255, 255, 255, 0.35);
+        }
+
+        .withdraw-popup .popup-body .calc-info .calc-row .calc-value {
+            font-weight: 500;
+        }
+
+        .withdraw-popup .popup-body .calc-info .calc-row .calc-value.fee {
+            color: #FF3B6F;
+        }
+
+        .withdraw-popup .popup-body .calc-info .calc-row .calc-value.final {
+            color: #00E676;
+            font-size: 1.05rem;
+        }
+
+        .withdraw-popup .popup-body .calc-info .calc-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.04);
+            margin: 6px 0;
+        }
+
+        .withdraw-popup .popup-body .fee-note {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.15);
+            text-align: center;
+            margin-top: 8px;
+        }
+
+        .withdraw-popup .popup-body .btn-withdraw {
+            width: 100%;
+            padding: 16px;
+            border-radius: 14px;
+            border: none;
+            background: linear-gradient(135deg, #FF3B6F 0%, #FF6B8A 100%);
+            color: white;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            box-shadow: 0 4px 24px rgba(255, 59, 111, 0.2);
+            margin-top: 6px;
+        }
+
+        .withdraw-popup .popup-body .btn-withdraw:active {
+            transform: scale(0.97);
+        }
+
+        .withdraw-popup .popup-body .btn-withdraw:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none;
         }
 
         .order-flow-page .back-btn {
@@ -1288,11 +1505,6 @@
             display: block;
         }
 
-        @keyframes overlayIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
         .support-popup {
             position: fixed;
             top: 20px;
@@ -1577,7 +1789,6 @@
 
         .nav-item:active { transform: scale(0.88); }
 
-        /* Активная подсветка в стиле Dynamic Island */
         .nav-item.active::before {
             content: '';
             position: absolute;
@@ -1661,6 +1872,15 @@
             .profile-page .btn-row {
                 flex-direction: column;
             }
+
+            .withdraw-popup {
+                width: calc(100% - 24px);
+                border-radius: 24px;
+            }
+
+            .withdraw-popup .popup-body {
+                padding: 16px 18px 20px;
+            }
         }
 
         @media (max-width: 380px) {
@@ -1731,6 +1951,10 @@
 
             .game-page .product-card .prod-btn .price {
                 font-size: 0.65rem;
+            }
+
+            .withdraw-popup {
+                border-radius: 20px;
             }
         }
     </style>
@@ -1856,34 +2080,9 @@
                 </div>
             </div>
 
-            <div class="withdraw-section" id="withdrawSection">
-                <div class="withdraw-info" id="withdrawInfo">
-                    <div class="info-row">
-                        <span class="label">💰 Сумма вывода:</span>
-                        <span class="value" id="withdrawAmountDisplay">0 ₽</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label">💸 Комиссия (3%):</span>
-                        <span class="value fee" id="withdrawFeeDisplay">0 ₽</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label">💳 К получению:</span>
-                        <span class="value final" id="withdrawFinalDisplay">0 ₽</span>
-                    </div>
-                </div>
-                <div class="input-group">
-                    <div class="input-row">
-                        <input type="number" id="withdrawInput" placeholder="Введите сумму вывода" min="1" oninput="updateWithdrawInfo()">
-                    </div>
-                    <input type="text" id="withdrawCardInput" placeholder="Номер карты или СБП" class="order-input" style="padding:12px 16px;">
-                    <button class="btn-recharge" onclick="withdraw()" style="background:linear-gradient(135deg, #FF3B6F 0%, #FF6B8A 100%);">💸 Вывести</button>
-                </div>
-                <div class="fee-info">💡 Комиссия 3% от суммы вывода. Минимальная сумма 50 ₽</div>
-            </div>
-
             <div class="btn-row">
                 <button class="btn-primary" onclick="toggleRecharge()">➕ Пополнить</button>
-                <button class="btn-secondary" onclick="toggleWithdraw()">💸 Вывод</button>
+                <button class="btn-secondary withdraw-btn" onclick="openWithdrawPopup()">💸 Вывод</button>
             </div>
 
             <div class="section">
@@ -1895,6 +2094,57 @@
                 <div class="section-label">💳 Транзакции</div>
                 <div id="transactionsHistory"></div>
             </div>
+        </div>
+    </div>
+
+    <!-- WITHDRAW POPUP -->
+    <div class="withdraw-overlay" id="withdrawOverlay" onclick="closeWithdrawPopup()"></div>
+    <div class="withdraw-popup" id="withdrawPopup">
+        <div class="popup-header">
+            <span class="title">
+                <span class="icon">💸</span>
+                Вывод средств
+            </span>
+            <button class="close-btn" onclick="closeWithdrawPopup()">✕</button>
+        </div>
+        <div class="popup-body">
+            <div class="balance-hint">
+                <span class="label">💰 Доступно для вывода</span>
+                <span class="value" id="withdrawBalanceDisplay">1,250 ₽</span>
+            </div>
+
+            <div class="input-group">
+                <span class="input-label">Сумма вывода</span>
+                <div class="input-wrapper">
+                    <span class="currency-symbol">₽</span>
+                    <input type="number" id="withdrawInput" placeholder="0" min="50" step="1" oninput="updateWithdrawPopupInfo()">
+                </div>
+            </div>
+
+            <div class="input-group" style="margin-top:14px;">
+                <span class="input-label">Реквизиты (карта или СБП)</span>
+                <input type="text" id="withdrawCardInput" placeholder="0000 0000 0000 0000" class="card-input">
+            </div>
+
+            <div class="calc-info" id="withdrawCalcInfo">
+                <div class="calc-row">
+                    <span class="calc-label">💰 Сумма вывода</span>
+                    <span class="calc-value" id="calcAmount">0 ₽</span>
+                </div>
+                <div class="calc-row">
+                    <span class="calc-label">💸 Комиссия (3%)</span>
+                    <span class="calc-value fee" id="calcFee">0 ₽</span>
+                </div>
+                <div class="calc-divider"></div>
+                <div class="calc-row">
+                    <span class="calc-label">💳 К получению</span>
+                    <span class="calc-value final" id="calcFinal">0 ₽</span>
+                </div>
+            </div>
+
+            <div class="fee-note">💡 Минимальная сумма вывода — 50 ₽</div>
+
+            <button class="btn-withdraw" id="withdrawBtn" onclick="processWithdraw()">💸 Вывести</button>
         </div>
     </div>
 
@@ -2693,28 +2943,47 @@
             console.log('✅ Заказ завершён, баланс обновлён:', balance);
         }
 
-        // ===== ВЫВОД СРЕДСТВ =====
-        function toggleWithdraw() {
-            const section = document.getElementById('withdrawSection');
-            section.classList.toggle('active');
-            if (section.classList.contains('active')) {
-                document.getElementById('withdrawInput').focus();
-                updateWithdrawInfo();
-            }
+        // ===== ВЫВОД СРЕДСТВ (НОВЫЙ ПОПАП) =====
+        function openWithdrawPopup() {
+            document.getElementById('withdrawOverlay').classList.add('active');
+            document.getElementById('withdrawPopup').classList.add('active');
+            document.getElementById('withdrawBalanceDisplay').textContent = balance.toLocaleString() + ' ₽';
+            updateWithdrawPopupInfo();
+            document.getElementById('withdrawInput').focus();
         }
 
-        function updateWithdrawInfo() {
+        function closeWithdrawPopup() {
+            document.getElementById('withdrawOverlay').classList.remove('active');
+            document.getElementById('withdrawPopup').classList.remove('active');
+        }
+
+        function updateWithdrawPopupInfo() {
             const input = document.getElementById('withdrawInput');
             const amount = parseFloat(input.value) || 0;
             const fee = Math.round(amount * 0.03 * 100) / 100;
             const finalAmount = Math.round((amount - fee) * 100) / 100;
 
-            document.getElementById('withdrawAmountDisplay').textContent = amount > 0 ? amount.toLocaleString() + ' ₽' : '0 ₽';
-            document.getElementById('withdrawFeeDisplay').textContent = fee > 0 ? fee.toLocaleString() + ' ₽' : '0 ₽';
-            document.getElementById('withdrawFinalDisplay').textContent = finalAmount > 0 ? finalAmount.toLocaleString() + ' ₽' : '0 ₽';
+            document.getElementById('calcAmount').textContent = amount > 0 ? amount.toLocaleString() + ' ₽' : '0 ₽';
+            document.getElementById('calcFee').textContent = fee > 0 ? fee.toLocaleString() + ' ₽' : '0 ₽';
+            document.getElementById('calcFinal').textContent = finalAmount > 0 ? finalAmount.toLocaleString() + ' ₽' : '0 ₽';
+
+            const btn = document.getElementById('withdrawBtn');
+            if (amount < 50 && amount > 0) {
+                btn.disabled = true;
+                btn.textContent = '❌ Минимум 50 ₽';
+            } else if (amount > balance) {
+                btn.disabled = true;
+                btn.textContent = '❌ Недостаточно средств';
+            } else if (amount <= 0) {
+                btn.disabled = true;
+                btn.textContent = '💸 Вывести';
+            } else {
+                btn.disabled = false;
+                btn.textContent = '💸 Вывести ' + finalAmount.toLocaleString() + ' ₽';
+            }
         }
 
-        function withdraw() {
+        function processWithdraw() {
             const input = document.getElementById('withdrawInput');
             const amount = parseFloat(input.value);
             const card = document.getElementById('withdrawCardInput').value.trim();
@@ -2742,13 +3011,11 @@
             const fee = Math.round(amount * 0.03 * 100) / 100;
             const finalAmount = Math.round((amount - fee) * 100) / 100;
 
-            // Списываем баланс
             balance -= amount;
             updateBalanceDisplay();
 
             const date = new Date().toISOString();
 
-            // Добавляем в историю транзакций
             const transactions = JSON.parse(localStorage.getItem('vintyx_transactions') || '[]');
             transactions.unshift({
                 name: '💸 Вывод средств',
@@ -2763,10 +3030,9 @@
             if (transactions.length > 50) transactions.pop();
             localStorage.setItem('vintyx_transactions', JSON.stringify(transactions));
 
-            // Добавляем в историю покупок как вывод
             const orders = JSON.parse(localStorage.getItem('vintyx_orders_history') || '[]');
             orders.unshift({
-                name: `💸 Вывод средств (${card.slice(0,4)}****${card.slice(-4)})`,
+                name: `💸 Вывод (${card.slice(0,4)}****${card.slice(-4)})`,
                 amount: amount,
                 fee: fee,
                 finalAmount: finalAmount,
@@ -2777,17 +3043,15 @@
             if (orders.length > 50) orders.pop();
             localStorage.setItem('vintyx_orders_history', JSON.stringify(orders));
 
+            closeWithdrawPopup();
+
             showToast(`💸 Заявка на вывод ${amount} ₽ отправлена!`, 'success');
 
-            // Очищаем поля
             input.value = '';
             document.getElementById('withdrawCardInput').value = '';
-            document.getElementById('withdrawSection').classList.remove('active');
-            updateWithdrawInfo();
+            updateWithdrawPopupInfo();
 
-            // Симуляция обработки вывода через 5 секунд
             setTimeout(() => {
-                // Обновляем статус в транзакциях
                 const updatedTransactions = JSON.parse(localStorage.getItem('vintyx_transactions') || '[]');
                 const pendingIndex = updatedTransactions.findIndex(t => t.date === date && t.type === 'negative' && t.name === '💸 Вывод средств');
                 if (pendingIndex !== -1) {
@@ -2795,7 +3059,6 @@
                     localStorage.setItem('vintyx_transactions', JSON.stringify(updatedTransactions));
                 }
 
-                // Обновляем статус в истории покупок
                 const updatedOrders = JSON.parse(localStorage.getItem('vintyx_orders_history') || '[]');
                 const orderIndex = updatedOrders.findIndex(o => o.date === date && o.type === 'withdraw');
                 if (orderIndex !== -1) {
