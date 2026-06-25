@@ -2,26 +2,26 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Liquid Glass Telegram App</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
 
 *{
-    box-sizing:border-box;
     user-select:none;
+    -webkit-user-select:none;
+    -webkit-touch-callout:none;
+    touch-action:none;
 }
+
 
 body{
     margin:0;
     height:100vh;
-    background:linear-gradient(160deg,#111,#444);
+    background:#111;
     color:white;
     font-family:Arial;
-    overflow:hidden;
 }
 
 
@@ -31,107 +31,108 @@ h1{
 }
 
 
-/* нижний островок */
+
+/* Островок */
 
 .island{
 
     position:fixed;
-    bottom:35px;
+
+    bottom:30px;
     left:50%;
+
     transform:translateX(-50%);
 
+    width:340px;
+    height:80px;
+
+
     display:flex;
-    gap:12px;
+    align-items:center;
+    justify-content:space-around;
 
-    padding:12px 18px;
-
-    border-radius:50px;
 
     background:
     rgba(255,255,255,.15);
 
-    backdrop-filter:blur(25px);
 
-    box-shadow:
-    0 15px 50px rgba(0,0,0,.5);
+    backdrop-filter:
+    blur(25px);
+
+
+    border-radius:45px;
+
+
+    overflow:hidden;
+
 
 }
 
 
-/* кнопки */
+
 
 .item{
 
     width:65px;
     height:65px;
 
-    border-radius:50%;
-
     display:flex;
-    align-items:center;
-    justify-content:center;
     flex-direction:column;
 
-    font-size:25px;
+    align-items:center;
+    justify-content:center;
 
-    transition:.25s;
+    font-size:24px;
+
+    z-index:2;
 
 }
 
 
-.item small{
+small{
     font-size:9px;
 }
 
 
 
-.item.active{
+/* стеклянная лупа */
+
+
+.glass{
+
+
+    position:absolute;
+
+
+    width:65px;
+    height:65px;
+
+
+    border-radius:50%;
+
 
     background:
     rgba(255,255,255,.35);
 
-    transform:scale(1.15);
-
-}
-
-
-
-/* плавающая лупа */
-
-#glass{
-
-    position:absolute;
-
-    width:90px;
-    height:90px;
-
-    border-radius:50%;
-
-    display:none;
-
-    align-items:center;
-    justify-content:center;
-
-    text-align:center;
-
-
-    background:
-    rgba(255,255,255,.25);
-
 
     backdrop-filter:
-    blur(30px);
+    blur(15px);
 
 
     box-shadow:
-    0 20px 60px black;
+    0 5px 25px #0008;
 
 
-    pointer-events:none;
+    transition:.15s;
 
-    font-size:12px;
+
+    z-index:1;
+
 
 }
+
+
+
 
 </style>
 
@@ -146,7 +147,11 @@ h1{
 </h1>
 
 
-<div class="island">
+
+<div class="island" id="island">
+
+
+<div class="glass" id="glass"></div>
 
 
 <div class="item" data-name="Избранные">
@@ -173,72 +178,115 @@ h1{
 </div>
 
 
-<div class="item" data-name="Профиль">
-👤
-<small>Профиль</small>
 </div>
-
-
-</div>
-
-
-<div id="glass"></div>
 
 
 
 <script>
 
 
-// Telegram
-
-const tg = window.Telegram.WebApp;
-
-tg.expand();
+Telegram.WebApp.expand();
 
 
 
-let glass =
+const island =
+document.getElementById("island");
+
+
+const glass =
 document.getElementById("glass");
 
 
-let page =
+const items =
+document.querySelectorAll(".item");
+
+
+const page =
 document.getElementById("page");
 
 
-let selected=null;
-
-let timer;
 
 
 
-document.querySelectorAll(".item")
-.forEach(item=>{
+let current=0;
 
 
-item.addEventListener(
-"touchstart",
+
+function moveGlass(index){
+
+
+let item =
+items[index];
+
+
+glass.style.left =
+(
+item.offsetLeft
++
+(item.offsetWidth-65)/2
+)
++"px";
+
+
+glass.style.top =
+(
+item.offsetTop
++
+(item.offsetHeight-65)/2
+)
++"px";
+
+
+}
+
+
+
+moveGlass(0);
+
+
+
+
+
+island.addEventListener(
+"pointermove",
 e=>{
 
 
-timer=setTimeout(()=>{
-
-
-selected=item;
-
-
-glass.style.display="flex";
-
-glass.innerHTML=
-item.dataset.name;
-
-
-moveGlass(
-e.touches[0]
-);
+let rect =
+island.getBoundingClientRect();
 
 
 
-},300);
+let x =
+e.clientX-rect.left;
+
+
+
+items.forEach(
+(item,index)=>{
+
+
+let center =
+item.offsetLeft+
+item.offsetWidth/2;
+
+
+
+if(
+Math.abs(x-center)<40
+){
+
+
+current=index;
+
+
+moveGlass(index);
+
+
+}
+
+
+});
 
 
 });
@@ -247,139 +295,17 @@ e.touches[0]
 
 
 
-item.addEventListener(
-"touchmove",
-e=>{
-
-
-clearTimeout(timer);
-
-
-if(!selected)
-return;
-
-
-moveGlass(
-e.touches[0]
-);
-
-
-checkTarget(
-e.touches[0]
-);
-
-
-});
-
-
-
-
-
-
-item.addEventListener(
-"touchend",
+island.addEventListener(
+"pointerup",
 ()=>{
 
 
-clearTimeout(timer);
-
-
-
-if(selected){
-
-
-page.innerHTML=
+page.innerText =
 "Открыто: "+
-selected.dataset.name;
-
-
-}
-
-
-
-glass.style.display="none";
-
-
-document.querySelectorAll(".item")
-.forEach(x=>
-x.classList.remove("active")
-);
-
-
-selected=null;
+items[current].dataset.name;
 
 
 });
-
-
-
-});
-
-
-
-
-
-function moveGlass(touch){
-
-
-glass.style.left=
-touch.clientX-45+"px";
-
-
-glass.style.top=
-touch.clientY-45+"px";
-
-
-}
-
-
-
-
-
-function checkTarget(touch){
-
-
-document.querySelectorAll(".item")
-.forEach(item=>{
-
-
-let r=
-item.getBoundingClientRect();
-
-
-let x=
-r.left+r.width/2;
-
-
-let y=
-r.top+r.height/2;
-
-
-
-let distance=
-Math.sqrt(
-(touch.clientX-x)**2+
-(touch.clientY-y)**2
-);
-
-
-
-if(distance<60){
-
-item.classList.add("active");
-
-}else{
-
-item.classList.remove("active");
-
-}
-
-
-
-});
-
-
-}
 
 
 
