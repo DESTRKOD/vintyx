@@ -724,6 +724,35 @@
             transform: scale(0.97);
         }
 
+        .profile-page .btn-secondary {
+            background: rgba(255, 255, 255, 0.06);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 14px 24px;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .profile-page .btn-secondary:active {
+            transform: scale(0.97);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .profile-page .btn-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .profile-page .btn-row .btn-primary,
+        .profile-page .btn-row .btn-secondary {
+            flex: 1;
+        }
+
         .profile-page .recharge-section {
             background: rgba(255, 255, 255, 0.04);
             border-radius: 16px;
@@ -820,6 +849,59 @@
 
         .profile-page .recharge-section .btn-recharge:active {
             transform: scale(0.97);
+        }
+
+        .profile-page .recharge-section .fee-info {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.3);
+            text-align: center;
+            margin-top: 4px;
+        }
+
+        .profile-page .withdraw-section {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            display: none;
+        }
+
+        .profile-page .withdraw-section.active {
+            display: block;
+            animation: fadeUp 0.3s ease;
+        }
+
+        .profile-page .withdraw-section .withdraw-info {
+            background: rgba(255, 59, 111, 0.06);
+            border-radius: 10px;
+            padding: 10px 14px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255, 59, 111, 0.08);
+        }
+
+        .profile-page .withdraw-section .withdraw-info .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 2px 0;
+            font-size: 0.8rem;
+        }
+
+        .profile-page .withdraw-section .withdraw-info .info-row .label {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .profile-page .withdraw-section .withdraw-info .info-row .value {
+            color: #FFFFFF;
+            font-weight: 500;
+        }
+
+        .profile-page .withdraw-section .withdraw-info .info-row .value.fee {
+            color: #FF3B6F;
+        }
+
+        .profile-page .withdraw-section .withdraw-info .info-row .value.final {
+            color: #00E676;
         }
 
         .profile-page .section {
@@ -1418,6 +1500,7 @@
             margin-top: 4px;
         }
 
+        /* ===== NAVIGATION ISLAND ===== */
         .bottom-nav {
             position: fixed;
             bottom: 24px;
@@ -1450,43 +1533,70 @@
             border: none;
             background: transparent;
             font-family: inherit;
-            gap: 0px;
+            gap: 2px;
             min-width: 48px;
             position: relative;
         }
 
         .nav-item .nav-icon {
-            width: 28px;
-            height: 28px;
-            object-fit: contain;
+            width: 24px;
+            height: 24px;
+            color: #8A8A8A;
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            opacity: 0.3;
+        }
+
+        .nav-item .nav-icon svg {
+            width: 100%;
+            height: 100%;
+            stroke: #8A8A8A;
+            fill: none;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .nav-item .nav-label {
             font-size: 0.5rem;
             font-weight: 500;
-            color: #FFFFFF;
-            opacity: 0.3;
+            color: #8A8A8A;
             transition: all 0.3s;
             margin-top: 1px;
         }
 
-        .nav-item.active .nav-icon {
-            opacity: 1;
-            animation: navPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        .nav-item.active .nav-icon svg {
+            stroke: #FFFFFF;
+            filter: drop-shadow(0 0 8px rgba(91, 140, 255, 0.3));
         }
 
         .nav-item.active .nav-label {
-            opacity: 0.7;
+            color: #FFFFFF;
+        }
+
+        .nav-item.active .nav-icon {
+            transform: scale(1.1);
+            animation: navPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .nav-item:active { transform: scale(0.88); }
 
+        /* Активная подсветка в стиле Dynamic Island */
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            inset: -2px -4px;
+            border-radius: 20px;
+            background: rgba(91, 140, 255, 0.08);
+            z-index: -1;
+            animation: islandGlow 0.4s ease;
+        }
+
+        @keyframes islandGlow {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
         @keyframes navPop {
             0% { transform: scale(0.8); }
             50% { transform: scale(1.15); }
-            100% { transform: scale(1); }
+            100% { transform: scale(1.1); }
         }
 
         .toast {
@@ -1546,6 +1656,10 @@
             .game-page .products-grid {
                 grid-template-columns: 1fr 1fr;
                 gap: 8px;
+            }
+
+            .profile-page .btn-row {
+                flex-direction: column;
             }
         }
 
@@ -1742,9 +1856,35 @@
                 </div>
             </div>
 
-            <button class="btn-primary" onclick="toggleRecharge()">
-                ➕ Пополнить баланс
-            </button>
+            <div class="withdraw-section" id="withdrawSection">
+                <div class="withdraw-info" id="withdrawInfo">
+                    <div class="info-row">
+                        <span class="label">💰 Сумма вывода:</span>
+                        <span class="value" id="withdrawAmountDisplay">0 ₽</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">💸 Комиссия (3%):</span>
+                        <span class="value fee" id="withdrawFeeDisplay">0 ₽</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">💳 К получению:</span>
+                        <span class="value final" id="withdrawFinalDisplay">0 ₽</span>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <div class="input-row">
+                        <input type="number" id="withdrawInput" placeholder="Введите сумму вывода" min="1" oninput="updateWithdrawInfo()">
+                    </div>
+                    <input type="text" id="withdrawCardInput" placeholder="Номер карты или СБП" class="order-input" style="padding:12px 16px;">
+                    <button class="btn-recharge" onclick="withdraw()" style="background:linear-gradient(135deg, #FF3B6F 0%, #FF6B8A 100%);">💸 Вывести</button>
+                </div>
+                <div class="fee-info">💡 Комиссия 3% от суммы вывода. Минимальная сумма 50 ₽</div>
+            </div>
+
+            <div class="btn-row">
+                <button class="btn-primary" onclick="toggleRecharge()">➕ Пополнить</button>
+                <button class="btn-secondary" onclick="toggleWithdraw()">💸 Вывод</button>
+            </div>
 
             <div class="section">
                 <div class="section-label">📦 История покупок</div>
@@ -1945,15 +2085,32 @@
     <!-- NAVIGATION ISLAND -->
     <nav class="bottom-nav">
         <button class="nav-item" data-page="profile" onclick="navigateTo('profile')">
-            <img class="nav-icon" id="navProfile" src="https://i.imgur.com/qWqc3ry.jpeg" alt="Profile">
+            <span class="nav-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="8" r="4"/>
+                    <path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"/>
+                </svg>
+            </span>
             <span class="nav-label">Профиль</span>
         </button>
         <button class="nav-item active" data-page="home" onclick="navigateTo('home')">
-            <img class="nav-icon" id="navHome" src="https://i.imgur.com/8F5qFUB.jpeg" alt="Home">
+            <span class="nav-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 10.5L12 3l9 7.5"/>
+                    <path d="M5 9.5V21h14V9.5"/>
+                    <path d="M9 21v-6h6v6"/>
+                </svg>
+            </span>
             <span class="nav-label">Главная</span>
         </button>
         <button class="nav-item" data-page="info" onclick="navigateTo('info')">
-            <img class="nav-icon" id="navInfo" src="https://i.imgur.com/qWAHF0n.jpeg" alt="Info">
+            <span class="nav-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="9"/>
+                    <path d="M12 10v6"/>
+                    <circle cx="12" cy="7" r="0.8" fill="currentColor" stroke="none"/>
+                </svg>
+            </span>
             <span class="nav-label">Инфо</span>
         </button>
     </nav>
@@ -2131,7 +2288,7 @@
         let currentQuantity = 1;
         let currentTotalPrice = 0;
         let currentOrderItems = [];
-        let currentOrdersList = []; // для сохранения конкретных товаров
+        let currentOrdersList = [];
 
         // ===== ОФОРМЛЕНИЕ ЗАКАЗА ИЗ КОРЗИНЫ =====
         function checkout() {
@@ -2324,7 +2481,6 @@
             console.log('💰 Текущий баланс ДО списания:', balance);
             console.log('💰 Сумма к списанию:', currentTotalPrice);
             
-            // Списываем деньги ТОЛЬКО здесь!
             balance -= currentTotalPrice;
             console.log('💰 Баланс ПОСЛЕ списания:', balance);
             
@@ -2336,11 +2492,9 @@
             const date = new Date().toISOString();
             const ordersList = orderData.ordersList || [];
             
-            // Добавляем в историю покупок с конкретными товарами
             const orders = JSON.parse(localStorage.getItem('vintyx_orders_history') || '[]');
             
             if (type === 'db1') {
-                // Для Матчерино - каждая единица отдельно
                 for (let i = 0; i < currentQuantity; i++) {
                     const productName = items[0]?.name || 'Матчерино';
                     orders.unshift({
@@ -2353,7 +2507,6 @@
                     });
                 }
             } else if (type === 'db2') {
-                // Для Подарком - один заказ с таймером
                 const productName = items[0]?.name || 'Подарок';
                 orders.unshift({
                     name: productName + (currentQuantity > 1 ? ` ×${currentQuantity}` : ''),
@@ -2364,7 +2517,6 @@
                     timer: 24
                 });
             } else {
-                // Для Вход - добавляем каждый товар отдельно
                 if (ordersList && ordersList.length > 0) {
                     ordersList.forEach(item => {
                         orders.unshift({
@@ -2376,7 +2528,6 @@
                         });
                     });
                 } else {
-                    // Если почему-то нет списка, используем первый товар
                     const productName = items[0]?.name || 'Товар';
                     orders.unshift({
                         name: productName + (currentQuantity > 1 ? ` ×${currentQuantity}` : ''),
@@ -2391,7 +2542,6 @@
             if (orders.length > 50) orders.pop();
             localStorage.setItem('vintyx_orders_history', JSON.stringify(orders));
             
-            // Добавляем транзакцию - ВСЕГДА "Покупка в магазине"
             const transactions = JSON.parse(localStorage.getItem('vintyx_transactions') || '[]');
             transactions.unshift({
                 name: 'Покупка в магазине',
@@ -2402,7 +2552,6 @@
             if (transactions.length > 50) transactions.pop();
             localStorage.setItem('vintyx_transactions', JSON.stringify(transactions));
             
-            // Показываем экран готовности
             if (type === 'login') {
                 showReadyLogin();
             } else if (type === 'db1') {
@@ -2486,14 +2635,12 @@
             console.log('💰 Баланс ДО списания:', balance);
             console.log('💰 Сумма к списанию:', currentTotalPrice);
             
-            // Проверяем баланс перед списанием
             if (balance < currentTotalPrice) {
                 showToast(`❌ Недостаточно средств!\n💰 Баланс: ${balance} ₽\n📦 Сумма: ${currentTotalPrice} ₽`, 'error');
                 closeOrderFlow();
                 return;
             }
             
-            // Списываем деньги
             balance -= currentTotalPrice;
             updateBalanceDisplay();
             console.log('💰 Баланс ПОСЛЕ списания:', balance);
@@ -2518,7 +2665,6 @@
 
             document.getElementById('orderStepReadyDB2').classList.add('active');
 
-            // Добавляем в историю заказов с конкретным товаром
             const orders = JSON.parse(localStorage.getItem('vintyx_orders_history') || '[]');
             const existingOrder = orders.find(o => o.name === productName && o.status === 'in_progress');
             if (!existingOrder) {
@@ -2534,7 +2680,6 @@
                 localStorage.setItem('vintyx_orders_history', JSON.stringify(orders));
             }
             
-            // Добавляем транзакцию - ВСЕГДА "Покупка в магазине"
             const transactions = JSON.parse(localStorage.getItem('vintyx_transactions') || '[]');
             transactions.unshift({
                 name: 'Покупка в магазине',
@@ -2546,6 +2691,123 @@
             localStorage.setItem('vintyx_transactions', JSON.stringify(transactions));
             
             console.log('✅ Заказ завершён, баланс обновлён:', balance);
+        }
+
+        // ===== ВЫВОД СРЕДСТВ =====
+        function toggleWithdraw() {
+            const section = document.getElementById('withdrawSection');
+            section.classList.toggle('active');
+            if (section.classList.contains('active')) {
+                document.getElementById('withdrawInput').focus();
+                updateWithdrawInfo();
+            }
+        }
+
+        function updateWithdrawInfo() {
+            const input = document.getElementById('withdrawInput');
+            const amount = parseFloat(input.value) || 0;
+            const fee = Math.round(amount * 0.03 * 100) / 100;
+            const finalAmount = Math.round((amount - fee) * 100) / 100;
+
+            document.getElementById('withdrawAmountDisplay').textContent = amount > 0 ? amount.toLocaleString() + ' ₽' : '0 ₽';
+            document.getElementById('withdrawFeeDisplay').textContent = fee > 0 ? fee.toLocaleString() + ' ₽' : '0 ₽';
+            document.getElementById('withdrawFinalDisplay').textContent = finalAmount > 0 ? finalAmount.toLocaleString() + ' ₽' : '0 ₽';
+        }
+
+        function withdraw() {
+            const input = document.getElementById('withdrawInput');
+            const amount = parseFloat(input.value);
+            const card = document.getElementById('withdrawCardInput').value.trim();
+
+            if (!amount || amount <= 0) {
+                showToast('❌ Введите сумму вывода', 'error');
+                return;
+            }
+
+            if (amount < 50) {
+                showToast('❌ Минимальная сумма вывода 50 ₽', 'error');
+                return;
+            }
+
+            if (amount > balance) {
+                showToast(`❌ Недостаточно средств!\n💰 Баланс: ${balance} ₽`, 'error');
+                return;
+            }
+
+            if (!card || card.length < 4) {
+                showToast('💳 Введите номер карты или СБП', 'error');
+                return;
+            }
+
+            const fee = Math.round(amount * 0.03 * 100) / 100;
+            const finalAmount = Math.round((amount - fee) * 100) / 100;
+
+            // Списываем баланс
+            balance -= amount;
+            updateBalanceDisplay();
+
+            const date = new Date().toISOString();
+
+            // Добавляем в историю транзакций
+            const transactions = JSON.parse(localStorage.getItem('vintyx_transactions') || '[]');
+            transactions.unshift({
+                name: '💸 Вывод средств',
+                amount: amount,
+                fee: fee,
+                finalAmount: finalAmount,
+                card: card,
+                type: 'negative',
+                date: date,
+                status: 'pending'
+            });
+            if (transactions.length > 50) transactions.pop();
+            localStorage.setItem('vintyx_transactions', JSON.stringify(transactions));
+
+            // Добавляем в историю покупок как вывод
+            const orders = JSON.parse(localStorage.getItem('vintyx_orders_history') || '[]');
+            orders.unshift({
+                name: `💸 Вывод средств (${card.slice(0,4)}****${card.slice(-4)})`,
+                amount: amount,
+                fee: fee,
+                finalAmount: finalAmount,
+                date: date,
+                status: 'pending',
+                type: 'withdraw'
+            });
+            if (orders.length > 50) orders.pop();
+            localStorage.setItem('vintyx_orders_history', JSON.stringify(orders));
+
+            showToast(`💸 Заявка на вывод ${amount} ₽ отправлена!`, 'success');
+
+            // Очищаем поля
+            input.value = '';
+            document.getElementById('withdrawCardInput').value = '';
+            document.getElementById('withdrawSection').classList.remove('active');
+            updateWithdrawInfo();
+
+            // Симуляция обработки вывода через 5 секунд
+            setTimeout(() => {
+                // Обновляем статус в транзакциях
+                const updatedTransactions = JSON.parse(localStorage.getItem('vintyx_transactions') || '[]');
+                const pendingIndex = updatedTransactions.findIndex(t => t.date === date && t.type === 'negative' && t.name === '💸 Вывод средств');
+                if (pendingIndex !== -1) {
+                    updatedTransactions[pendingIndex].status = 'completed';
+                    localStorage.setItem('vintyx_transactions', JSON.stringify(updatedTransactions));
+                }
+
+                // Обновляем статус в истории покупок
+                const updatedOrders = JSON.parse(localStorage.getItem('vintyx_orders_history') || '[]');
+                const orderIndex = updatedOrders.findIndex(o => o.date === date && o.type === 'withdraw');
+                if (orderIndex !== -1) {
+                    updatedOrders[orderIndex].status = 'completed';
+                    localStorage.setItem('vintyx_orders_history', JSON.stringify(updatedOrders));
+                }
+
+                updateProfileData();
+                showToast('✅ Вывод средств выполнен!', 'success');
+            }, 5000);
+
+            updateProfileData();
         }
 
         // ===== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ =====
@@ -2591,21 +2853,12 @@
         const navItems = document.querySelectorAll('.nav-item');
 
         function updateNavIcons(activePage) {
-            const profileIcon = document.getElementById('navProfile');
-            const homeIcon = document.getElementById('navHome');
-            const infoIcon = document.getElementById('navInfo');
-
-            profileIcon.src = activePage === 'profile' 
-                ? 'https://i.imgur.com/mZsrrkM.jpeg' 
-                : 'https://i.imgur.com/qWqc3ry.jpeg';
-
-            homeIcon.src = activePage === 'home' 
-                ? 'https://i.imgur.com/inAWCTe.jpeg' 
-                : 'https://i.imgur.com/8F5qFUB.jpeg';
-
-            infoIcon.src = activePage === 'info' 
-                ? 'https://i.imgur.com/ZuBcUJK.jpeg' 
-                : 'https://i.imgur.com/qWAHF0n.jpeg';
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.page === activePage) {
+                    item.classList.add('active');
+                }
+            });
         }
 
         function navigateTo(pageName) {
@@ -2618,13 +2871,6 @@
             if (pages[pageName]) {
                 pages[pageName].classList.add('active');
             }
-
-            navItems.forEach(item => {
-                item.classList.remove('active');
-                if (item.dataset.page === pageName) {
-                    item.classList.add('active');
-                }
-            });
 
             updateNavIcons(pageName);
 
@@ -2657,14 +2903,6 @@
                 if (pages[key]) pages[key].classList.remove('active');
             });
             pages.home.classList.add('active');
-
-            navItems.forEach(item => {
-                item.classList.remove('active');
-                if (item.dataset.page === 'home') {
-                    item.classList.add('active');
-                }
-            });
-
             updateNavIcons('home');
             window.location.hash = '';
             if (tg && tg.BackButton) tg.BackButton.hide();
@@ -2690,14 +2928,6 @@
                 if (pages[key]) pages[key].classList.remove('active');
             });
             pages.home.classList.add('active');
-
-            navItems.forEach(item => {
-                item.classList.remove('active');
-                if (item.dataset.page === 'home') {
-                    item.classList.add('active');
-                }
-            });
-
             updateNavIcons('home');
             window.location.hash = '';
             if (tg && tg.BackButton) tg.BackButton.hide();
@@ -3129,7 +3359,10 @@
                 let statusText = '';
                 let statusColor = '';
                 
-                if (item.status === 'in_progress' && item.timer) {
+                if (item.status === 'pending') {
+                    statusText = '⏳ В обработке...';
+                    statusColor = '#FFD54F';
+                } else if (item.status === 'in_progress' && item.timer) {
                     statusText = `⏳ ${item.timer} ч.`;
                     statusColor = '#FFD54F';
                 } else if (item.status === 'in_progress') {
@@ -3140,17 +3373,22 @@
                     statusColor = '#00E676';
                 }
                 
+                const isWithdraw = item.type === 'withdraw';
+                const icon = isWithdraw ? '💸' : '🎮';
+                const amountClass = isWithdraw ? 'negative' : 'negative';
+                const feeText = item.fee ? ` (комиссия ${item.fee} ₽)` : '';
+                
                 html += `
                     <div class="history-item">
                         <div class="h-left">
-                            <span class="h-icon">🎮</span>
+                            <span class="h-icon">${icon}</span>
                             <div class="h-info">
                                 <div class="h-name">${item.name}</div>
-                                <div class="h-date">${formattedDate}</div>
+                                <div class="h-date">${formattedDate}${feeText}</div>
                             </div>
                         </div>
                         <div style="text-align:right;">
-                            <div class="h-amount negative">-${item.amount} ₽</div>
+                            <div class="h-amount ${amountClass}">-${item.amount} ₽</div>
                             <div style="font-size:0.6rem;color:${statusColor};">${statusText}</div>
                         </div>
                     </div>
@@ -3181,12 +3419,19 @@
                 const icon = item.type === 'positive' ? '💰' : '💸';
                 const amountClass = item.type === 'positive' ? 'positive' : 'negative';
                 const sign = item.type === 'positive' ? '+' : '-';
+                const statusText = item.status === 'pending' ? ' ⏳' : '';
+                
+                let displayName = item.name;
+                if (item.name === '💸 Вывод средств' && item.finalAmount) {
+                    displayName = `💸 Вывод (к получению: ${item.finalAmount} ₽)`;
+                }
+                
                 html += `
                     <div class="history-item">
                         <div class="h-left">
                             <span class="h-icon">${icon}</span>
                             <div class="h-info">
-                                <div class="h-name">${item.name}</div>
+                                <div class="h-name">${displayName}${statusText}</div>
                                 <div class="h-date">${formattedDate}</div>
                             </div>
                         </div>
@@ -3269,7 +3514,8 @@
         function getAutoReply(text) {
             const lower = text.toLowerCase();
             if (lower.includes('привет') || lower.includes('здравствуй')) return '👋 Здравствуйте! Рады помочь!';
-            if (lower.includes('баланс') || lower.includes('пополнить')) return '💰 Нажмите кнопку "Пополнить баланс" выше.';
+            if (lower.includes('баланс') || lower.includes('пополнить')) return '💰 Нажмите кнопку "Пополнить" выше.';
+            if (lower.includes('вывод') || lower.includes('вывести')) return '💸 Нажмите кнопку "Вывод" и следуйте инструкции. Комиссия 3%.';
             if (lower.includes('заказ') || lower.includes('товар')) return '📦 Заказ будет обработан в течение 5-15 минут.';
             if (lower.includes('скидка') || lower.includes('акция')) return '🎁 Следите за акциями в нашем канале!';
             if (lower.includes('помощь') || lower.includes('помоги')) return '🆘 Опишите вашу проблему подробнее.';
@@ -3342,6 +3588,7 @@
 
         console.log('✅ Vintyx Store загружен');
         console.log('📦 Система заказов активна');
+        console.log('💸 Система вывода средств активна (комиссия 3%)');
     </script>
 </body>
 </html>
