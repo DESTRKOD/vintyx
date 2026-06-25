@@ -78,6 +78,7 @@
             z-index: 1;
         }
 
+        /* ===== HEADER ===== */
         .main-header {
             display: flex;
             justify-content: space-between;
@@ -107,14 +108,6 @@
             background-clip: text;
             letter-spacing: -0.5px;
             white-space: nowrap;
-        }
-
-        .main-header .header-right {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding-top: 4px;
-            flex-shrink: 0;
         }
 
         .section-title {
@@ -545,6 +538,153 @@
             opacity: 0.3;
             cursor: not-allowed;
             transform: none;
+        }
+
+        /* ===== SUPPORT PAGE (красивый чат) ===== */
+        .support-page .support-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-top: 4px;
+        }
+        .support-page .support-header .back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #FFFFFF;
+            flex-shrink: 0;
+            font-family: inherit;
+        }
+        .support-page .support-header .back-btn:active { transform: scale(0.9); background: rgba(255, 255, 255, 0.1); }
+        .support-page .support-header .support-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .support-page .support-header .support-title .badge {
+            font-size: 0.6rem;
+            color: #00E676;
+            font-weight: 400;
+            background: rgba(0, 230, 118, 0.1);
+            padding: 2px 10px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 230, 118, 0.15);
+        }
+
+        .support-page .support-messages {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 16px;
+            padding: 16px;
+            height: calc(100vh - 260px);
+            min-height: 300px;
+            max-height: 500px;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .support-page .support-messages::-webkit-scrollbar {
+            width: 3px;
+        }
+        .support-page .support-messages::-webkit-scrollbar-thumb {
+            background: rgba(91, 140, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        .support-page .support-msg {
+            padding: 10px 14px;
+            border-radius: 14px;
+            margin-bottom: 6px;
+            max-width: 85%;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            animation: fadeUp 0.25s ease;
+            word-wrap: break-word;
+        }
+
+        .support-page .support-msg.user {
+            background: rgba(91, 140, 255, 0.18);
+            color: #FFFFFF;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .support-page .support-msg.support {
+            background: rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.75);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .support-page .support-msg .msg-time {
+            font-size: 0.5rem;
+            color: rgba(255, 255, 255, 0.2);
+            margin-top: 4px;
+            display: block;
+        }
+
+        .support-page .support-input-wrap {
+            display: flex;
+            gap: 10px;
+            padding: 4px 0;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 4px 4px 4px 16px;
+            backdrop-filter: blur(10px);
+        }
+
+        .support-page .support-input-wrap input {
+            flex: 1;
+            padding: 10px 0;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 0.9rem;
+            font-family: inherit;
+            outline: none;
+            min-width: 0;
+        }
+
+        .support-page .support-input-wrap input::placeholder {
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .support-page .support-input-wrap .btn-send {
+            padding: 8px 18px;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
+            color: white;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            flex-shrink: 0;
+        }
+
+        .support-page .support-input-wrap .btn-send:active {
+            transform: scale(0.95);
+        }
+
+        .support-page .support-input-wrap .btn-send:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
         }
 
         /* ===== PROFILE PAGE ===== */
@@ -1121,139 +1261,6 @@
             transform: none;
         }
 
-        /* ===== SUPPORT PAGE ===== */
-        .support-page .support-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 20px;
-            padding-top: 4px;
-        }
-        .support-page .support-header .back-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            color: #FFFFFF;
-            flex-shrink: 0;
-            font-family: inherit;
-        }
-        .support-page .support-header .back-btn:active { transform: scale(0.9); background: rgba(255, 255, 255, 0.1); }
-        .support-page .support-header .support-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #FFFFFF;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .support-page .support-header .support-title .badge {
-            font-size: 0.65rem;
-            color: #00E676;
-            font-weight: 400;
-        }
-
-        .support-page .support-messages {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 16px;
-            padding: 16px;
-            height: 400px;
-            overflow-y: auto;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            margin-bottom: 16px;
-        }
-
-        .support-page .support-messages::-webkit-scrollbar {
-            width: 3px;
-        }
-        .support-page .support-messages::-webkit-scrollbar-thumb {
-            background: rgba(91, 140, 255, 0.3);
-            border-radius: 10px;
-        }
-
-        .support-page .support-msg {
-            padding: 10px 14px;
-            border-radius: 12px;
-            margin-bottom: 8px;
-            max-width: 85%;
-            font-size: 0.85rem;
-            line-height: 1.4;
-            animation: fadeUp 0.3s ease;
-        }
-
-        .support-page .support-msg.user {
-            background: rgba(91, 140, 255, 0.15);
-            color: #FFFFFF;
-            margin-left: auto;
-            border-bottom-right-radius: 4px;
-        }
-
-        .support-page .support-msg.support {
-            background: rgba(255, 255, 255, 0.06);
-            color: rgba(255, 255, 255, 0.7);
-            margin-right: auto;
-            border-bottom-left-radius: 4px;
-        }
-
-        .support-page .support-msg .msg-time {
-            font-size: 0.55rem;
-            color: rgba(255, 255, 255, 0.2);
-            margin-top: 4px;
-            display: block;
-        }
-
-        .support-page .support-input {
-            display: flex;
-            gap: 10px;
-        }
-
-        .support-page .support-input input {
-            flex: 1;
-            padding: 12px 16px;
-            border-radius: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            background: rgba(255, 255, 255, 0.04);
-            color: white;
-            font-size: 0.9rem;
-            font-family: inherit;
-            outline: none;
-            transition: all 0.2s;
-        }
-
-        .support-page .support-input input:focus {
-            border-color: rgba(91, 140, 255, 0.3);
-            background: rgba(255, 255, 255, 0.06);
-        }
-
-        .support-page .support-input input::placeholder {
-            color: rgba(255, 255, 255, 0.15);
-        }
-
-        .support-page .support-input .btn-send {
-            padding: 12px 24px;
-            border-radius: 14px;
-            border: none;
-            background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
-            color: white;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: inherit;
-            flex-shrink: 0;
-        }
-
-        .support-page .support-input .btn-send:active {
-            transform: scale(0.95);
-        }
-
         /* ===== ORDER FLOW ===== */
         .order-flow-page .back-btn {
             display: inline-flex;
@@ -1607,7 +1614,7 @@
             backdrop-filter: blur(40px) saturate(1.4);
             -webkit-backdrop-filter: blur(40px) saturate(1.4);
             border-radius: 32px;
-            padding: 8px 12px;
+            padding: 8px 10px;
             display: flex;
             gap: 2px;
             box-shadow: 
@@ -1616,7 +1623,7 @@
                 0 0 80px rgba(91, 140, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.04);
             z-index: 1000;
-            max-width: 400px;
+            max-width: 440px;
             width: calc(100% - 40px);
             justify-content: space-around;
             transition: all 0.3s ease;
@@ -1640,7 +1647,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 6px 10px;
+            padding: 6px 8px;
             border-radius: 20px;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -1648,7 +1655,7 @@
             background: transparent;
             font-family: inherit;
             gap: 2px;
-            min-width: 40px;
+            min-width: 36px;
             position: relative;
         }
 
@@ -1668,11 +1675,12 @@
         }
 
         .nav-item .nav-label {
-            font-size: 0.45rem;
+            font-size: 0.4rem;
             font-weight: 500;
             color: rgba(255, 255, 255, 0.2);
             transition: all 0.3s;
             margin-top: 1px;
+            letter-spacing: 0.2px;
         }
 
         .nav-item.active .nav-icon svg {
@@ -1694,7 +1702,7 @@
         .nav-item .badge {
             position: absolute;
             top: 2px;
-            right: 4px;
+            right: 2px;
             width: 8px;
             height: 8px;
             border-radius: 50%;
@@ -1762,6 +1770,7 @@
             to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
 
+        /* ===== MEDIA QUERIES ===== */
         @media (max-width: 500px) {
             .game-page .products-grid {
                 grid-template-columns: 1fr 1fr;
@@ -1782,15 +1791,15 @@
             }
 
             .bottom-nav {
-                padding: 6px 8px;
+                padding: 6px 6px;
                 gap: 1px;
                 border-radius: 28px;
-                max-width: 360px;
+                max-width: 380px;
             }
 
             .nav-item {
-                padding: 4px 6px;
-                min-width: 34px;
+                padding: 4px 4px;
+                min-width: 30px;
             }
 
             .nav-item .nav-icon {
@@ -1799,11 +1808,35 @@
             }
 
             .nav-item .nav-label {
-                font-size: 0.4rem;
+                font-size: 0.35rem;
+            }
+
+            .nav-item .badge {
+                width: 6px;
+                height: 6px;
+                top: 1px;
+                right: 1px;
             }
 
             .support-page .support-messages {
-                height: 300px;
+                height: calc(100vh - 280px);
+                min-height: 200px;
+                max-height: 400px;
+                padding: 12px;
+            }
+
+            .support-page .support-input-wrap {
+                padding: 4px 4px 4px 12px;
+            }
+
+            .support-page .support-input-wrap input {
+                font-size: 0.85rem;
+                padding: 8px 0;
+            }
+
+            .support-page .support-input-wrap .btn-send {
+                padding: 6px 14px;
+                font-size: 0.8rem;
             }
         }
 
@@ -1848,15 +1881,15 @@
             }
 
             .bottom-nav {
-                padding: 4px 6px;
+                padding: 4px 4px;
                 gap: 0px;
                 border-radius: 24px;
-                max-width: 320px;
+                max-width: 340px;
             }
 
             .nav-item {
-                padding: 4px 4px;
-                min-width: 28px;
+                padding: 4px 3px;
+                min-width: 26px;
             }
 
             .nav-item .nav-icon {
@@ -1865,18 +1898,37 @@
             }
 
             .nav-item .nav-label {
-                font-size: 0.35rem;
+                font-size: 0.3rem;
             }
 
             .nav-item .badge {
-                width: 6px;
-                height: 6px;
-                top: 0px;
-                right: 2px;
+                width: 5px;
+                height: 5px;
             }
 
             .support-page .support-messages {
-                height: 250px;
+                height: calc(100vh - 260px);
+                min-height: 150px;
+                max-height: 320px;
+                padding: 10px;
+            }
+
+            .support-page .support-msg {
+                font-size: 0.8rem;
+                padding: 8px 12px;
+            }
+        }
+
+        /* iPhone safe area */
+        @supports (padding: max(0px)) {
+            .page {
+                padding-left: max(20px, env(safe-area-inset-left));
+                padding-right: max(20px, env(safe-area-inset-right));
+                padding-bottom: max(100px, env(safe-area-inset-bottom));
+            }
+
+            .bottom-nav {
+                bottom: max(24px, env(safe-area-inset-bottom));
             }
         }
     </style>
@@ -1969,9 +2021,9 @@
                 </div>
             </div>
 
-            <div class="support-input">
+            <div class="support-input-wrap">
                 <input type="text" id="supportInput" placeholder="Напишите сообщение..." onkeydown="if(event.key==='Enter') sendSupportMessage()">
-                <button class="btn-send" onclick="sendSupportMessage()">Отправить</button>
+                <button class="btn-send" onclick="sendSupportMessage()" id="supportSendBtn">Отправить</button>
             </div>
         </div>
     </div>
@@ -2246,6 +2298,15 @@
 
     <!-- NAVIGATION ISLAND -->
     <nav class="bottom-nav">
+        <button class="nav-item" data-page="support" onclick="navigateTo('support')">
+            <span class="nav-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+            </span>
+            <span class="nav-label">Поддержка</span>
+        </button>
+
         <button class="nav-item" data-page="profile" onclick="navigateTo('profile')">
             <span class="nav-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -2277,15 +2338,6 @@
             </span>
             <span class="nav-label">Корзина</span>
             <span class="badge hidden" id="navCartBadge"></span>
-        </button>
-
-        <button class="nav-item" data-page="support" onclick="navigateTo('support')">
-            <span class="nav-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                </svg>
-            </span>
-            <span class="nav-label">Поддержка</span>
         </button>
 
         <button class="nav-item" data-page="info" onclick="navigateTo('info')">
@@ -2352,11 +2404,6 @@
         function updateCartCount() {
             const cartData = getCart();
             const count = cartData.reduce((sum, item) => sum + (item.quantity || 1), 0);
-            const countEl = document.getElementById('cartCount');
-            if (countEl) {
-                countEl.textContent = count;
-                countEl.style.display = count > 0 ? 'flex' : 'none';
-            }
             updateNavCartBadge();
         }
 
@@ -3041,7 +3088,7 @@
             updateProfileData();
         }
 
-        // ===== ПОДДЕРЖКА (новая страница) =====
+        // ===== ПОДДЕРЖКА =====
         function getSupportMessages() {
             try {
                 return JSON.parse(localStorage.getItem('vintyx_support_messages')) || [];
@@ -3099,6 +3146,10 @@
                 time: new Date().toISOString()
             });
 
+            const btn = document.getElementById('supportSendBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳';
+
             setTimeout(() => {
                 const response = getAutoReply(text);
                 if (response) {
@@ -3110,6 +3161,8 @@
                     });
                     saveSupportMessages(msgs);
                 }
+                btn.disabled = false;
+                btn.textContent = 'Отправить';
             }, 1000 + Math.random() * 1500);
 
             saveSupportMessages(messages);
@@ -3212,7 +3265,9 @@
 
             if (pageName === 'support') {
                 renderSupportMessages();
-                document.getElementById('supportInput').focus();
+                setTimeout(() => {
+                    document.getElementById('supportInput')?.focus();
+                }, 300);
             }
 
             if (pageName === 'cart') {
@@ -3816,7 +3871,7 @@
         }, 100);
 
         console.log('✅ Vintyx Store загружен');
-        console.log('🧊 Навигация: Профиль → Домой → Корзина → Поддержка → Инфо');
+        console.log('🧊 Порядок навигации: Поддержка → Профиль → Домой → Корзина → Инфо');
     </script>
 </body>
 </html>
