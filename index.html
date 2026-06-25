@@ -541,182 +541,6 @@
             transform: none;
         }
 
-        /* ===== SUPPORT PAGE ===== */
-        .support-page {
-    padding: 0;
-    display: none; /* по умолчанию скрыта */
-    flex-direction: column;
-    height: 100%;
-    background: linear-gradient(145deg, #0A0A1A 0%, #1A1A3E 30%, #2D1B69 70%, #1A1A3E 100%);
-    overflow: hidden;
-}
-        .support-page.active {
-    display: flex !important; /* показываем только когда активна */
-}
-
-        .support-page .support-content {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            max-width: 480px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 12px 16px 16px;
-            position: relative;
-            z-index: 1;
-            flex: 1;
-            min-height: 0;
-        }
-
-        .support-page .support-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 8px 0 12px;
-            flex-shrink: 0;
-        }
-
-        .support-page .support-header .back-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            color: #FFFFFF;
-            flex-shrink: 0;
-            font-family: inherit;
-        }
-        .support-page .support-header .back-btn:active { transform: scale(0.9); background: rgba(255, 255, 255, 0.1); }
-
-        .support-page .support-header .support-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #FFFFFF;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .support-page .support-header .support-title .badge {
-            font-size: 0.6rem;
-            color: #00E676;
-            font-weight: 400;
-            background: rgba(0, 230, 118, 0.1);
-            padding: 2px 10px;
-            border-radius: 12px;
-            border: 1px solid rgba(0, 230, 118, 0.15);
-        }
-
-        .support-page .support-messages {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 16px;
-            padding: 16px;
-            overflow-y: auto;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            margin-bottom: 12px;
-            display: flex;
-            flex-direction: column;
-            min-height: 0;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .support-page .support-messages::-webkit-scrollbar {
-            width: 3px;
-        }
-        .support-page .support-messages::-webkit-scrollbar-thumb {
-            background: rgba(91, 140, 255, 0.3);
-            border-radius: 10px;
-        }
-
-        .support-page .support-msg {
-            padding: 10px 14px;
-            border-radius: 14px;
-            margin-bottom: 6px;
-            max-width: 85%;
-            font-size: 0.85rem;
-            line-height: 1.4;
-            animation: fadeUp 0.25s ease;
-            word-wrap: break-word;
-        }
-
-        .support-page .support-msg.user {
-            background: rgba(91, 140, 255, 0.18);
-            color: #FFFFFF;
-            align-self: flex-end;
-            border-bottom-right-radius: 4px;
-        }
-
-        .support-page .support-msg.support {
-            background: rgba(255, 255, 255, 0.06);
-            color: rgba(255, 255, 255, 0.75);
-            align-self: flex-start;
-            border-bottom-left-radius: 4px;
-        }
-
-        .support-page .support-msg .msg-time {
-            font-size: 0.5rem;
-            color: rgba(255, 255, 255, 0.2);
-            margin-top: 4px;
-            display: block;
-        }
-
-        .support-page .support-input-wrap {
-            display: flex;
-            gap: 10px;
-            padding: 4px 4px 4px 16px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(10px);
-            flex-shrink: 0;
-        }
-
-        .support-page .support-input-wrap input {
-            flex: 1;
-            padding: 10px 0;
-            background: transparent;
-            border: none;
-            color: white;
-            font-size: 0.9rem;
-            font-family: inherit;
-            outline: none;
-            min-width: 0;
-        }
-
-        .support-page .support-input-wrap input::placeholder {
-            color: rgba(255, 255, 255, 0.2);
-        }
-
-        .support-page .support-input-wrap .btn-send {
-            padding: 8px 18px;
-            border-radius: 12px;
-            border: none;
-            background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
-            color: white;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: inherit;
-            flex-shrink: 0;
-        }
-
-        .support-page .support-input-wrap .btn-send:active {
-            transform: scale(0.95);
-        }
-
-        .support-page .support-input-wrap .btn-send:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-
         /* ===== PROFILE PAGE ===== */
         .profile-page .back-btn {
             display: inline-flex;
@@ -962,6 +786,56 @@
 
         .profile-page .recharge-section .btn-recharge:active {
             transform: scale(0.97);
+        }
+
+        /* ===== CONTACT SECTION ===== */
+        .profile-page .contact-section {
+            margin-top: 24px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            text-align: center;
+        }
+
+        .profile-page .contact-section .contact-label {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .profile-page .contact-section .contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: #7DD8FF;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            background: rgba(91, 140, 255, 0.06);
+            border: 1px solid rgba(91, 140, 255, 0.1);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .profile-page .contact-section .contact-link:active {
+            transform: scale(0.95);
+            background: rgba(91, 140, 255, 0.12);
+        }
+
+        .profile-page .contact-section .contact-link .icon {
+            font-size: 1.4rem;
+        }
+
+        .profile-page .contact-section .contact-sub {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.2);
+            margin-top: 8px;
         }
 
         .profile-page .section {
@@ -1616,11 +1490,49 @@
             line-height: 1.6;
             margin-bottom: 20px;
         }
-        .info-page .info-card .info-footer {
+
+        .info-page .info-card .info-contact {
             padding: 16px;
             background: rgba(91, 140, 255, 0.04);
             border-radius: 16px;
             border: 1px solid rgba(91, 140, 255, 0.06);
+            margin-bottom: 16px;
+        }
+
+        .info-page .info-card .info-contact .contact-label {
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.15);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-page .info-card .info-contact .contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #7DD8FF;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            margin-top: 6px;
+            padding: 6px 16px;
+            border-radius: 10px;
+            background: rgba(91, 140, 255, 0.06);
+            border: 1px solid rgba(91, 140, 255, 0.08);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .info-page .info-card .info-contact .contact-link:active {
+            transform: scale(0.95);
+            background: rgba(91, 140, 255, 0.1);
+        }
+
+        .info-page .info-card .info-footer {
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
         }
         .info-page .info-card .info-footer .label {
             font-size: 0.6rem;
@@ -1653,7 +1565,7 @@
                 0 0 80px rgba(91, 140, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.04);
             z-index: 1000;
-            max-width: 440px;
+            max-width: 360px;
             width: calc(100% - 40px);
             justify-content: space-around;
             transition: all 0.3s ease;
@@ -1824,7 +1736,7 @@
                 padding: 6px 6px;
                 gap: 1px;
                 border-radius: 28px;
-                max-width: 380px;
+                max-width: 320px;
             }
 
             .nav-item {
@@ -1846,28 +1758,6 @@
                 height: 6px;
                 top: 1px;
                 right: 1px;
-            }
-
-            .support-page .support-content {
-                padding: 10px 12px 12px;
-            }
-
-            .support-page .support-messages {
-                padding: 12px;
-            }
-
-            .support-page .support-input-wrap {
-                padding: 4px 4px 4px 12px;
-            }
-
-            .support-page .support-input-wrap input {
-                font-size: 0.85rem;
-                padding: 8px 0;
-            }
-
-            .support-page .support-input-wrap .btn-send {
-                padding: 6px 14px;
-                font-size: 0.8rem;
             }
         }
 
@@ -1915,7 +1805,7 @@
                 padding: 4px 4px;
                 gap: 0px;
                 border-radius: 24px;
-                max-width: 340px;
+                max-width: 280px;
             }
 
             .nav-item {
@@ -1936,29 +1826,6 @@
                 width: 5px;
                 height: 5px;
             }
-
-            .support-page .support-content {
-                padding: 8px 10px 10px;
-            }
-
-            .support-page .support-messages {
-                padding: 10px;
-            }
-
-            .support-page .support-msg {
-                font-size: 0.8rem;
-                padding: 8px 12px;
-            }
-
-            .support-page .support-input-wrap input {
-                font-size: 0.8rem;
-                padding: 6px 0;
-            }
-
-            .support-page .support-input-wrap .btn-send {
-                padding: 5px 10px;
-                font-size: 0.75rem;
-            }
         }
 
         /* iPhone safe area */
@@ -1967,12 +1834,6 @@
                 padding-left: max(20px, env(safe-area-inset-left));
                 padding-right: max(20px, env(safe-area-inset-right));
                 padding-bottom: max(100px, env(safe-area-inset-bottom));
-            }
-
-            .support-page .support-content {
-                padding-left: max(16px, env(safe-area-inset-left));
-                padding-right: max(16px, env(safe-area-inset-right));
-                padding-bottom: max(16px, env(safe-area-inset-bottom));
             }
 
             .bottom-nav {
@@ -2047,35 +1908,6 @@
         </div>
     </div>
 
-    <!-- PAGE: SUPPORT -->
-    <div id="pageSupport" class="page support-page">
-        <span class="floating-bg">💬</span>
-        <span class="floating-bg">✨</span>
-        <span class="floating-bg">💎</span>
-
-        <div class="support-content">
-            <div class="support-header">
-                <button class="back-btn" onclick="closeSupportPage()">←</button>
-                <div class="support-title">
-                    💬 Поддержка
-                    <span class="badge">● Online</span>
-                </div>
-            </div>
-
-            <div class="support-messages" id="supportMessages">
-                <div class="support-msg support">
-                    👋 Здравствуйте! Чем могу помочь?
-                    <span class="msg-time">Только что</span>
-                </div>
-            </div>
-
-            <div class="support-input-wrap">
-                <input type="text" id="supportInput" placeholder="Напишите сообщение..." onkeydown="if(event.key==='Enter') sendSupportMessage()">
-                <button class="btn-send" onclick="sendSupportMessage()" id="supportSendBtn">Отправить</button>
-            </div>
-        </div>
-    </div>
-
     <!-- PAGE: PROFILE -->
     <div id="pageProfile" class="page profile-page">
         <span class="floating-bg">💎</span>
@@ -2122,6 +1954,16 @@
             <div class="btn-row">
                 <button class="btn-primary" onclick="toggleRecharge()">➕ Пополнить</button>
                 <button class="btn-secondary withdraw-btn" onclick="openWithdrawPopup()">💸 Вывод</button>
+            </div>
+
+            <!-- CONTACT SECTION -->
+            <div class="contact-section">
+                <div class="contact-label">👨‍💼 Связь с администратором</div>
+                <div class="contact-link" onclick="openAdminChat()">
+                    <span class="icon">✉️</span>
+                    @v2ntyx
+                </div>
+                <div class="contact-sub">По всем вопросам пишите в Telegram</div>
             </div>
 
             <div class="section">
@@ -2336,6 +2178,14 @@
                     Премиальный игровой магазин.<br>
                     Быстро. Безопасно. Надёжно.
                 </div>
+
+                <div class="info-contact">
+                    <div class="contact-label">👨‍💼 Администратор</div>
+                    <div class="contact-link" onclick="openAdminChat()">
+                        ✉️ @v2ntyx
+                    </div>
+                </div>
+
                 <div class="info-footer">
                     <div class="label">Разработано с ❤️</div>
                     <div class="team">Vintyx Team</div>
@@ -2346,15 +2196,6 @@
 
     <!-- NAVIGATION ISLAND -->
     <nav class="bottom-nav">
-        <button class="nav-item" data-page="support" onclick="navigateTo('support')">
-            <span class="nav-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                </svg>
-            </span>
-            <span class="nav-label">Поддержка</span>
-        </button>
-
         <button class="nav-item" data-page="profile" onclick="navigateTo('profile')">
             <span class="nav-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -2431,6 +2272,16 @@
                 if (profileUsername) {
                     profileUsername.textContent = user.username ? '@' + user.username : '@vintyx_shop';
                 }
+            }
+        }
+
+        // ===== ОТКРЫТИЕ ЧАТА С АДМИНОМ =====
+        function openAdminChat() {
+            const tg = window.Telegram?.WebApp;
+            if (tg) {
+                tg.openTelegramLink('https://t.me/v2ntyx');
+            } else {
+                window.open('https://t.me/v2ntyx', '_blank');
             }
         }
 
@@ -3136,103 +2987,6 @@
             updateProfileData();
         }
 
-        // ===== ПОДДЕРЖКА =====
-        function getSupportMessages() {
-            try {
-                return JSON.parse(localStorage.getItem('vintyx_support_messages')) || [];
-            } catch {
-                return [];
-            }
-        }
-
-        function saveSupportMessages(messages) {
-            localStorage.setItem('vintyx_support_messages', JSON.stringify(messages));
-            renderSupportMessages();
-        }
-
-        function renderSupportMessages() {
-            const container = document.getElementById('supportMessages');
-            const messages = getSupportMessages();
-
-            if (messages.length === 0) {
-                container.innerHTML = `
-                    <div class="support-msg support">
-                        👋 Здравствуйте! Чем могу помочь?
-                        <span class="msg-time">Только что</span>
-                    </div>
-                `;
-                return;
-            }
-
-            let html = '';
-            messages.forEach(msg => {
-                const date = new Date(msg.time);
-                const formattedTime = date.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'});
-                const fromClass = msg.from === 'user' ? 'user' : 'support';
-                const icon = msg.from === 'user' ? '👤' : '🤖';
-                html += `
-                    <div class="support-msg ${fromClass}">
-                        ${icon} ${msg.text}
-                        <span class="msg-time">${formattedTime}</span>
-                    </div>
-                `;
-            });
-
-            container.innerHTML = html;
-            container.scrollTop = container.scrollHeight;
-        }
-
-        function sendSupportMessage() {
-            const input = document.getElementById('supportInput');
-            const text = input.value.trim();
-            if (!text) return;
-
-            const messages = getSupportMessages();
-            messages.push({
-                text: text,
-                from: 'user',
-                time: new Date().toISOString()
-            });
-
-            const btn = document.getElementById('supportSendBtn');
-            btn.disabled = true;
-            btn.textContent = '⏳';
-
-            setTimeout(() => {
-                const response = getAutoReply(text);
-                if (response) {
-                    const msgs = getSupportMessages();
-                    msgs.push({
-                        text: response,
-                        from: 'support',
-                        time: new Date().toISOString()
-                    });
-                    saveSupportMessages(msgs);
-                }
-                btn.disabled = false;
-                btn.textContent = 'Отправить';
-            }, 1000 + Math.random() * 1500);
-
-            saveSupportMessages(messages);
-            input.value = '';
-        }
-
-        function getAutoReply(text) {
-            const lower = text.toLowerCase();
-            if (lower.includes('привет') || lower.includes('здравствуй')) return '👋 Здравствуйте! Рады помочь!';
-            if (lower.includes('баланс') || lower.includes('пополнить')) return '💰 Нажмите кнопку "Пополнить" в профиле.';
-            if (lower.includes('вывод') || lower.includes('вывести')) return '💸 Нажмите кнопку "Вывод" в профиле. Комиссия 3%.';
-            if (lower.includes('заказ') || lower.includes('товар')) return '📦 Заказ будет обработан в течение 5-15 минут.';
-            if (lower.includes('скидка') || lower.includes('акция')) return '🎁 Следите за акциями в нашем канале!';
-            if (lower.includes('помощь') || lower.includes('помоги')) return '🆘 Опишите вашу проблему подробнее.';
-            if (lower.includes('спасибо')) return '😊 Всегда рады помочь!';
-            return null;
-        }
-
-        function closeSupportPage() {
-            navigateTo('home');
-        }
-
         // ===== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ =====
         function copyLinkText(link) {
             navigator.clipboard?.writeText(link).then(() => {
@@ -3267,7 +3021,6 @@
         const pages = {
             home: document.getElementById('pageHome'),
             profile: document.getElementById('pageProfile'),
-            support: document.getElementById('pageSupport'),
             cart: document.getElementById('pageCart'),
             info: document.getElementById('pageInfo'),
             brawl: document.getElementById('pageBrawl'),
@@ -3309,13 +3062,6 @@
             if (pageName === 'profile') {
                 updateProfileData();
                 renderQuickAmounts();
-            }
-
-            if (pageName === 'support') {
-                renderSupportMessages();
-                setTimeout(() => {
-                    document.getElementById('supportInput')?.focus();
-                }, 300);
             }
 
             if (pageName === 'cart') {
@@ -3629,8 +3375,6 @@
                         closeGame();
                     } else if (id === 'pageCart') {
                         navigateTo('home');
-                    } else if (id === 'pageSupport') {
-                        navigateTo('home');
                     } else if (id === 'pageProfile') {
                         navigateTo('home');
                     } else if (id === 'pageOrderFlow') {
@@ -3908,10 +3652,6 @@
             restoreOrderState();
         }
 
-        if (document.getElementById('pageSupport').classList.contains('active')) {
-            renderSupportMessages();
-        }
-
         setTimeout(function() {
             if (document.getElementById('pageBrawl').classList.contains('active')) {
                 renderProducts('all');
@@ -3919,8 +3659,8 @@
         }, 100);
 
         console.log('✅ Vintyx Store загружен');
-        console.log('🧊 Порядок навигации: Поддержка → Профиль → Домой → Корзина → Инфо');
-        console.log('💬 Поддержка на весь экран, как в Telegram');
+        console.log('🧊 Навигация: Профиль → Домой → Корзина → Инфо');
+        console.log('👨‍💼 Контакты администратора: @v2ntyx');
     </script>
 </body>
 </html>
