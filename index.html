@@ -79,79 +79,42 @@
         }
 
         .main-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 20px;
-    padding-top: 4px;
-}
-
-.main-header .header-left {
-    flex: 0 0 auto; /* не растягивается */
-    max-width: 100%;
-}
-
-.main-header .header-left .store-name {
-    font-size: 0.7rem;
-    color: rgba(255, 255, 255, 0.2);
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-}
-
-.main-header .header-left .greeting {
-    font-size: 1.6rem;
-    font-weight: 700;
-    background: linear-gradient(135deg, #7DD8FF 0%, #6675FF 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: -0.5px;
-    white-space: nowrap; /* текст не переносится */
-}
-
-.main-header .header-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding-top: 4px;
-    flex-shrink: 0; /* не сжимается */
-}
-        .main-header .header-right .cart-btn {
             display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 8px 16px;
-            border-radius: 16px;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            cursor: pointer;
-            transition: all 0.2s;
-            color: #FFFFFF;
-            font-family: inherit;
-            font-size: 0.85rem;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding-top: 4px;
+        }
+
+        .main-header .header-left {
+            flex: 0 0 auto;
+        }
+
+        .main-header .header-left .store-name {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.2);
             font-weight: 500;
-            position: relative;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
-        .main-header .header-right .cart-btn:active {
-            transform: scale(0.92);
-            background: rgba(255, 255, 255, 0.1);
-        }
-        .main-header .header-right .cart-btn .cart-icon {
-            font-size: 1.2rem;
-        }
-        .main-header .header-right .cart-btn .cart-count {
-            background: #FF3B6F;
-            color: white;
-            border-radius: 50%;
-            min-width: 20px;
-            height: 20px;
-            font-size: 0.6rem;
+
+        .main-header .header-left .greeting {
+            font-size: 1.6rem;
             font-weight: 700;
+            background: linear-gradient(135deg, #7DD8FF 0%, #6675FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+            white-space: nowrap;
+        }
+
+        .main-header .header-right {
             display: flex;
             align-items: center;
-            justify-content: center;
-            padding: 0 5px;
+            gap: 12px;
+            padding-top: 4px;
+            flex-shrink: 0;
         }
 
         .section-title {
@@ -455,6 +418,7 @@
             white-space: nowrap;
         }
 
+        /* ===== CART PAGE ===== */
         .cart-page .cart-header {
             display: flex;
             align-items: center;
@@ -583,6 +547,7 @@
             transform: none;
         }
 
+        /* ===== PROFILE PAGE ===== */
         .profile-page .back-btn {
             display: inline-flex;
             align-items: center;
@@ -599,48 +564,6 @@
 
         .profile-page .back-btn:active {
             opacity: 0.5;
-        }
-
-        .profile-page .support-trigger {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: rgba(91, 140, 255, 0.15);
-            border: 1px solid rgba(91, 140, 255, 0.2);
-            color: #7DD8FF;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: inherit;
-            backdrop-filter: blur(10px);
-        }
-
-        .profile-page .support-trigger:active {
-            transform: scale(0.9);
-        }
-
-        .profile-page .support-trigger .badge {
-            position: absolute;
-            top: -4px;
-            right: -4px;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: #00E676;
-            border: 2px solid #0A0A0F;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
         }
 
         .profile-page .profile-header {
@@ -941,7 +864,7 @@
             opacity: 0.3;
         }
 
-        /* ===== WITHDRAW POPUP (премиум) ===== */
+        /* ===== WITHDRAW POPUP ===== */
         .withdraw-overlay {
             position: fixed;
             top: 0;
@@ -1198,6 +1121,140 @@
             transform: none;
         }
 
+        /* ===== SUPPORT PAGE ===== */
+        .support-page .support-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-top: 4px;
+        }
+        .support-page .support-header .back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #FFFFFF;
+            flex-shrink: 0;
+            font-family: inherit;
+        }
+        .support-page .support-header .back-btn:active { transform: scale(0.9); background: rgba(255, 255, 255, 0.1); }
+        .support-page .support-header .support-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .support-page .support-header .support-title .badge {
+            font-size: 0.65rem;
+            color: #00E676;
+            font-weight: 400;
+        }
+
+        .support-page .support-messages {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 16px;
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            margin-bottom: 16px;
+        }
+
+        .support-page .support-messages::-webkit-scrollbar {
+            width: 3px;
+        }
+        .support-page .support-messages::-webkit-scrollbar-thumb {
+            background: rgba(91, 140, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        .support-page .support-msg {
+            padding: 10px 14px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            max-width: 85%;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            animation: fadeUp 0.3s ease;
+        }
+
+        .support-page .support-msg.user {
+            background: rgba(91, 140, 255, 0.15);
+            color: #FFFFFF;
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+
+        .support-page .support-msg.support {
+            background: rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.7);
+            margin-right: auto;
+            border-bottom-left-radius: 4px;
+        }
+
+        .support-page .support-msg .msg-time {
+            font-size: 0.55rem;
+            color: rgba(255, 255, 255, 0.2);
+            margin-top: 4px;
+            display: block;
+        }
+
+        .support-page .support-input {
+            display: flex;
+            gap: 10px;
+        }
+
+        .support-page .support-input input {
+            flex: 1;
+            padding: 12px 16px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            color: white;
+            font-size: 0.9rem;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .support-page .support-input input:focus {
+            border-color: rgba(91, 140, 255, 0.3);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .support-page .support-input input::placeholder {
+            color: rgba(255, 255, 255, 0.15);
+        }
+
+        .support-page .support-input .btn-send {
+            padding: 12px 24px;
+            border-radius: 14px;
+            border: none;
+            background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            flex-shrink: 0;
+        }
+
+        .support-page .support-input .btn-send:active {
+            transform: scale(0.95);
+        }
+
+        /* ===== ORDER FLOW ===== */
         .order-flow-page .back-btn {
             display: inline-flex;
             align-items: center;
@@ -1495,186 +1552,7 @@
             font-size: 0.75rem;
         }
 
-        .support-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
-            z-index: 200;
-            display: none;
-            animation: overlayIn 0.3s ease;
-        }
-
-        .support-overlay.active {
-            display: block;
-        }
-
-        .support-popup {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 380px;
-            max-width: calc(100% - 40px);
-            max-height: calc(100% - 120px);
-            background: rgba(20, 20, 40, 0.95);
-            backdrop-filter: blur(28px);
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
-            z-index: 201;
-            display: none;
-            overflow: hidden;
-            animation: popupIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-            transform-origin: top right;
-        }
-
-        .support-popup.active {
-            display: flex;
-            flex-direction: column;
-        }
-
-        @keyframes popupIn {
-            0% {
-                transform: scale(0.7) translate(20px, -20px);
-                opacity: 0;
-            }
-            100% {
-                transform: scale(1) translate(0, 0);
-                opacity: 1;
-            }
-        }
-
-        .support-popup .popup-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 16px 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            flex-shrink: 0;
-        }
-
-        .support-popup .popup-header .title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        .support-popup .popup-header .close-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.06);
-            border: none;
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: inherit;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .support-popup .popup-header .close-btn:active {
-            transform: scale(0.9);
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .support-popup .popup-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px 20px;
-            max-height: 300px;
-        }
-
-        .support-popup .popup-messages::-webkit-scrollbar {
-            width: 3px;
-        }
-        .support-popup .popup-messages::-webkit-scrollbar-thumb {
-            background: rgba(91, 140, 255, 0.3);
-            border-radius: 10px;
-        }
-
-        .support-popup .popup-messages .support-msg {
-            padding: 8px 14px;
-            border-radius: 12px;
-            margin-bottom: 6px;
-            max-width: 85%;
-            font-size: 0.85rem;
-            line-height: 1.4;
-        }
-
-        .support-popup .popup-messages .support-msg.user {
-            background: rgba(91, 140, 255, 0.15);
-            color: #FFFFFF;
-            margin-left: auto;
-            border-bottom-right-radius: 4px;
-        }
-
-        .support-popup .popup-messages .support-msg.support {
-            background: rgba(255, 255, 255, 0.06);
-            color: rgba(255, 255, 255, 0.7);
-            margin-right: auto;
-            border-bottom-left-radius: 4px;
-        }
-
-        .support-popup .popup-messages .support-msg .msg-time {
-            font-size: 0.55rem;
-            color: rgba(255, 255, 255, 0.2);
-            margin-top: 4px;
-            display: block;
-        }
-
-        .support-popup .popup-input {
-            display: flex;
-            gap: 10px;
-            padding: 12px 20px 16px;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
-            flex-shrink: 0;
-        }
-
-        .support-popup .popup-input input {
-            flex: 1;
-            padding: 10px 14px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            background: rgba(255, 255, 255, 0.04);
-            color: white;
-            font-size: 0.85rem;
-            font-family: inherit;
-            outline: none;
-        }
-
-        .support-popup .popup-input input:focus {
-            border-color: rgba(91, 140, 255, 0.3);
-        }
-
-        .support-popup .popup-input input::placeholder {
-            color: rgba(255, 255, 255, 0.15);
-        }
-
-        .support-popup .popup-input .btn-send {
-            padding: 10px 18px;
-            border-radius: 12px;
-            border: none;
-            background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
-            color: white;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: inherit;
-        }
-
-        .support-popup .popup-input .btn-send:active {
-            transform: scale(0.95);
-        }
-
+        /* ===== INFO PAGE ===== */
         .info-page .info-card {
             background: rgba(255, 255, 255, 0.04);
             border-radius: 28px;
@@ -1719,7 +1597,7 @@
             margin-top: 4px;
         }
 
-        /* ===== NAVIGATION ISLAND (жидкое стекло) ===== */
+        /* ===== NAVIGATION ISLAND ===== */
         .bottom-nav {
             position: fixed;
             bottom: 24px;
@@ -1729,16 +1607,16 @@
             backdrop-filter: blur(40px) saturate(1.4);
             -webkit-backdrop-filter: blur(40px) saturate(1.4);
             border-radius: 32px;
-            padding: 8px 16px;
+            padding: 8px 12px;
             display: flex;
-            gap: 6px;
+            gap: 2px;
             box-shadow: 
                 0 8px 48px rgba(0, 0, 0, 0.5),
                 inset 0 1px 0 rgba(255, 255, 255, 0.04),
                 0 0 80px rgba(91, 140, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.04);
             z-index: 1000;
-            max-width: 360px;
+            max-width: 400px;
             width: calc(100% - 40px);
             justify-content: space-around;
             transition: all 0.3s ease;
@@ -1762,7 +1640,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 6px 12px;
+            padding: 6px 10px;
             border-radius: 20px;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -1770,13 +1648,13 @@
             background: transparent;
             font-family: inherit;
             gap: 2px;
-            min-width: 48px;
+            min-width: 40px;
             position: relative;
         }
 
         .nav-item .nav-icon {
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
             color: rgba(255, 255, 255, 0.3);
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
@@ -1790,7 +1668,7 @@
         }
 
         .nav-item .nav-label {
-            font-size: 0.5rem;
+            font-size: 0.45rem;
             font-weight: 500;
             color: rgba(255, 255, 255, 0.2);
             transition: all 0.3s;
@@ -1813,7 +1691,22 @@
 
         .nav-item:active { transform: scale(0.88); }
 
-        /* Активная подсветка как у Dynamic Island */
+        .nav-item .badge {
+            position: absolute;
+            top: 2px;
+            right: 4px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #FF3B6F;
+            border: 1.5px solid rgba(20, 20, 40, 0.8);
+            animation: pulse 2s infinite;
+        }
+
+        .nav-item .badge.hidden {
+            display: none;
+        }
+
         .nav-item.active::before {
             content: '';
             position: absolute;
@@ -1870,28 +1763,6 @@
         }
 
         @media (max-width: 500px) {
-            .support-popup {
-                top: 10px;
-                right: 10px;
-                left: 10px;
-                width: auto;
-                max-width: none;
-                max-height: calc(100% - 80px);
-                border-radius: 20px;
-            }
-            
-            .support-popup .popup-messages {
-                max-height: 250px;
-            }
-            
-            .profile-page .support-trigger {
-                top: 12px;
-                right: 12px;
-                width: 42px;
-                height: 42px;
-                font-size: 1.2rem;
-            }
-
             .game-page .products-grid {
                 grid-template-columns: 1fr 1fr;
                 gap: 8px;
@@ -1911,51 +1782,32 @@
             }
 
             .bottom-nav {
-                padding: 6px 12px;
-                gap: 4px;
+                padding: 6px 8px;
+                gap: 1px;
+                border-radius: 28px;
+                max-width: 360px;
             }
 
             .nav-item {
-                padding: 4px 10px;
-                min-width: 40px;
+                padding: 4px 6px;
+                min-width: 34px;
+            }
+
+            .nav-item .nav-icon {
+                width: 18px;
+                height: 18px;
+            }
+
+            .nav-item .nav-label {
+                font-size: 0.4rem;
+            }
+
+            .support-page .support-messages {
+                height: 300px;
             }
         }
 
         @media (max-width: 380px) {
-            .support-popup {
-                top: 8px;
-                right: 8px;
-                left: 8px;
-                border-radius: 16px;
-                max-height: calc(100% - 60px);
-            }
-            
-            .support-popup .popup-messages {
-                max-height: 180px;
-                padding: 12px 14px;
-            }
-            
-            .support-popup .popup-header {
-                padding: 12px 14px;
-                font-size: 0.9rem;
-            }
-            
-            .support-popup .popup-input {
-                padding: 10px 14px 12px;
-                flex-direction: column;
-                gap: 8px;
-            }
-            
-            .support-popup .popup-input input {
-                font-size: 0.8rem;
-                padding: 8px 12px;
-            }
-            
-            .support-popup .popup-input .btn-send {
-                padding: 8px 14px;
-                font-size: 0.8rem;
-            }
-
             .profile-page .recharge-section .input-row {
                 flex-direction: column;
             }
@@ -1996,19 +1848,35 @@
             }
 
             .bottom-nav {
-                padding: 4px 10px;
-                gap: 2px;
-                border-radius: 28px;
+                padding: 4px 6px;
+                gap: 0px;
+                border-radius: 24px;
+                max-width: 320px;
             }
 
             .nav-item {
-                padding: 4px 8px;
-                min-width: 36px;
+                padding: 4px 4px;
+                min-width: 28px;
             }
 
             .nav-item .nav-icon {
-                width: 20px;
-                height: 20px;
+                width: 16px;
+                height: 16px;
+            }
+
+            .nav-item .nav-label {
+                font-size: 0.35rem;
+            }
+
+            .nav-item .badge {
+                width: 6px;
+                height: 6px;
+                top: 0px;
+                right: 2px;
+            }
+
+            .support-page .support-messages {
+                height: 250px;
             }
         }
     </style>
@@ -2026,13 +1894,6 @@
                 <div class="header-left">
                     <div class="store-name">Vintyx Store</div>
                     <div class="greeting" id="greetingText">👋 Привет, Vintyx</div>
-                </div>
-                <div class="header-right">
-                    <button class="cart-btn" onclick="openCart()">
-                        <span class="cart-icon">🛒</span>
-                        <span>Корзина</span>
-                        <span class="cart-count" id="cartCount">0</span>
-                    </button>
                 </div>
             </div>
 
@@ -2086,6 +1947,35 @@
         </div>
     </div>
 
+    <!-- PAGE: SUPPORT -->
+    <div id="pageSupport" class="page support-page">
+        <span class="floating-bg">💬</span>
+        <span class="floating-bg">✨</span>
+        <span class="floating-bg">💎</span>
+
+        <div class="content">
+            <div class="support-header">
+                <button class="back-btn" onclick="closeSupportPage()">←</button>
+                <div class="support-title">
+                    💬 Поддержка
+                    <span class="badge">● Online</span>
+                </div>
+            </div>
+
+            <div class="support-messages" id="supportMessages">
+                <div class="support-msg support">
+                    👋 Здравствуйте! Чем могу помочь?
+                    <span class="msg-time">Только что</span>
+                </div>
+            </div>
+
+            <div class="support-input">
+                <input type="text" id="supportInput" placeholder="Напишите сообщение..." onkeydown="if(event.key==='Enter') sendSupportMessage()">
+                <button class="btn-send" onclick="sendSupportMessage()">Отправить</button>
+            </div>
+        </div>
+    </div>
+
     <!-- PAGE: PROFILE -->
     <div id="pageProfile" class="page profile-page">
         <span class="floating-bg">💎</span>
@@ -2093,13 +1983,8 @@
         <span class="floating-bg">⭐</span>
         <span class="floating-bg">✨</span>
 
-        <button class="support-trigger" onclick="toggleSupport()">
-            💬
-            <span class="badge"></span>
-        </button>
-
         <div class="content">
-            <button class="back-btn" onclick="navigateTo('home')">← Назад</button>
+            <button class="back-btn" onclick="closeProfile()">← Назад</button>
 
             <div class="profile-header">
                 <div class="profile-avatar">👤</div>
@@ -2151,7 +2036,7 @@
         </div>
     </div>
 
-    <!-- WITHDRAW POPUP (премиум) -->
+    <!-- WITHDRAW POPUP -->
     <div class="withdraw-overlay" id="withdrawOverlay" onclick="closeWithdrawPopup()"></div>
     <div class="withdraw-popup" id="withdrawPopup">
         <div class="popup-header">
@@ -2209,7 +2094,6 @@
         <span class="floating-bg">✨</span>
 
         <div class="content">
-            <!-- Шаг 1: Ввод почты (для типа "login") -->
             <div id="orderStepEmail" class="order-step active">
                 <button class="back-btn" onclick="closeOrderFlow()">← Назад</button>
                 <div class="order-header">
@@ -2226,7 +2110,6 @@
                 </div>
             </div>
 
-            <!-- Шаг 2: Ввод кода (для типа "login") -->
             <div id="orderStepCode" class="order-step">
                 <button class="back-btn" onclick="goBackToEmail()">← Назад</button>
                 <div class="order-header">
@@ -2244,7 +2127,6 @@
                 </div>
             </div>
 
-            <!-- Шаг 3: Ожидание -->
             <div id="orderStepWaiting" class="order-step">
                 <div class="order-header text-center">
                     <div class="order-icon waiting-icon">⏳</div>
@@ -2260,7 +2142,6 @@
                 </div>
             </div>
 
-            <!-- Шаг 4: Готово (для типа "login") -->
             <div id="orderStepReadyLogin" class="order-step">
                 <div class="order-header text-center">
                     <div class="order-icon ready-icon">🎉</div>
@@ -2285,7 +2166,6 @@
                 <button class="order-btn-primary" onclick="closeOrderFlow()">🏠 На главную</button>
             </div>
 
-            <!-- Шаг 4: Готово с ссылками (для типа "db1" - Матчерино) -->
             <div id="orderStepReadyDB1" class="order-step">
                 <div class="order-header text-center">
                     <div class="order-icon ready-icon">📥</div>
@@ -2297,9 +2177,7 @@
                         <span class="ready-label">📦 Товар:</span>
                         <span class="ready-value" id="readyProductNameDB1">Матчерино</span>
                     </div>
-                    <div id="readyLinksContainer" style="padding:4px 0;">
-                        <!-- Ссылки будут вставлены сюда -->
-                    </div>
+                    <div id="readyLinksContainer" style="padding:4px 0;"></div>
                     <div class="ready-item">
                         <span class="ready-label">📅 Дата:</span>
                         <span class="ready-value" id="readyDateDB1">Сегодня, 12:34</span>
@@ -2308,7 +2186,6 @@
                 <button class="order-btn-primary" onclick="closeOrderFlow()">🏠 На главную</button>
             </div>
 
-            <!-- Шаг 4: Готово с добавлением в друзья (для типа "db2" - Подарком) -->
             <div id="orderStepReadyDB2" class="order-step">
                 <div class="order-header text-center">
                     <div class="order-icon ready-icon">👥</div>
@@ -2367,26 +2244,7 @@
         </div>
     </div>
 
-    <!-- SUPPORT POPUP -->
-    <div class="support-overlay" id="supportOverlay" onclick="closeSupport()"></div>
-    <div class="support-popup" id="supportPopup">
-        <div class="popup-header">
-            <span class="title">💬 Поддержка <span style="font-size:0.65rem;color:#00E676;font-weight:400;">Online</span></span>
-            <button class="close-btn" onclick="closeSupport()">✕</button>
-        </div>
-        <div class="popup-messages" id="popupMessages">
-            <div class="support-msg support">
-                👋 Здравствуйте! Чем могу помочь?
-                <span class="msg-time">Только что</span>
-            </div>
-        </div>
-        <div class="popup-input">
-            <input type="text" id="popupInput" placeholder="Напишите сообщение..." onkeydown="if(event.key==='Enter') sendPopupMessage()">
-            <button class="btn-send" onclick="sendPopupMessage()">Отправить</button>
-        </div>
-    </div>
-
-    <!-- NAVIGATION ISLAND (жидкое стекло) -->
+    <!-- NAVIGATION ISLAND -->
     <nav class="bottom-nav">
         <button class="nav-item" data-page="profile" onclick="navigateTo('profile')">
             <span class="nav-icon">
@@ -2397,6 +2255,7 @@
             </span>
             <span class="nav-label">Профиль</span>
         </button>
+
         <button class="nav-item active" data-page="home" onclick="navigateTo('home')">
             <span class="nav-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -2407,6 +2266,28 @@
             </span>
             <span class="nav-label">Главная</span>
         </button>
+
+        <button class="nav-item" data-page="cart" onclick="navigateTo('cart')">
+            <span class="nav-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="9" cy="21" r="1"/>
+                    <circle cx="20" cy="21" r="1"/>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                </svg>
+            </span>
+            <span class="nav-label">Корзина</span>
+            <span class="badge hidden" id="navCartBadge"></span>
+        </button>
+
+        <button class="nav-item" data-page="support" onclick="navigateTo('support')">
+            <span class="nav-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+            </span>
+            <span class="nav-label">Поддержка</span>
+        </button>
+
         <button class="nav-item" data-page="info" onclick="navigateTo('info')">
             <span class="nav-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -2465,6 +2346,7 @@
         function saveCart(cartData) {
             localStorage.setItem('vintyx_cart', JSON.stringify(cartData));
             updateCartCount();
+            updateNavCartBadge();
         }
 
         function updateCartCount() {
@@ -2474,6 +2356,20 @@
             if (countEl) {
                 countEl.textContent = count;
                 countEl.style.display = count > 0 ? 'flex' : 'none';
+            }
+            updateNavCartBadge();
+        }
+
+        function updateNavCartBadge() {
+            const cartData = getCart();
+            const count = cartData.reduce((sum, item) => sum + (item.quantity || 1), 0);
+            const badge = document.getElementById('navCartBadge');
+            if (badge) {
+                if (count > 0) {
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
             }
         }
 
@@ -2586,7 +2482,7 @@
             };
         }
 
-        // ===== ПЕРЕМЕННЫЕ ДЛЯ ЗАКАЗА С СОХРАНЕНИЕМ СОСТОЯНИЯ =====
+        // ===== ПЕРЕМЕННЫЕ ДЛЯ ЗАКАЗА =====
         let currentOrderType = 'login';
         let currentProductName = '';
         let currentQuantity = 1;
@@ -2594,7 +2490,6 @@
         let currentOrderItems = [];
         let currentOrdersList = [];
 
-        // Сохраняем состояние заказа в localStorage
         function saveOrderState() {
             const state = {
                 type: currentOrderType,
@@ -2618,7 +2513,6 @@
                 const state = JSON.parse(saved);
                 const orderPage = document.getElementById('pageOrderFlow');
                 
-                // Проверяем, что мы на странице заказа
                 if (!orderPage.classList.contains('active')) return false;
                 
                 currentOrderType = state.type || 'login';
@@ -2635,7 +2529,6 @@
                     document.getElementById('orderCodeInput').value = state.code;
                 }
                 
-                // Показываем нужный шаг
                 document.querySelectorAll('.order-step').forEach(step => step.classList.remove('active'));
                 const targetStep = document.getElementById(state.step || 'orderStepEmail');
                 if (targetStep) targetStep.classList.add('active');
@@ -2650,7 +2543,7 @@
             localStorage.removeItem('vintyx_order_state');
         }
 
-        // ===== ОФОРМЛЕНИЕ ЗАКАЗА ИЗ КОРЗИНЫ =====
+        // ===== ОФОРМЛЕНИЕ ЗАКАЗА =====
         function checkout() {
             const cartData = getCart();
             
@@ -2701,7 +2594,6 @@
             openOrderFlow(orderType, cartData, quantity);
         }
 
-        // ===== ОТКРЫТИЕ СТРАНИЦЫ ЗАКАЗА =====
         function openOrderFlow(type, items, quantity = 1) {
             currentOrderType = type;
             currentProductName = items[0]?.name || 'Товар';
@@ -2751,19 +2643,12 @@
             });
             pages.home.classList.add('active');
 
-            navItems.forEach(item => {
-                item.classList.remove('active');
-                if (item.dataset.page === 'home') {
-                    item.classList.add('active');
-                }
-            });
-
             updateNavIcons('home');
             window.location.hash = '';
             if (tg && tg.BackButton) tg.BackButton.hide();
         }
 
-        // ===== ШАГ 1: ОТПРАВКА КОДА =====
+        // ===== ШАГИ ЗАКАЗА =====
         function sendCode() {
             const email = document.getElementById('orderEmailInput').value.trim();
             if (!email) {
@@ -2793,7 +2678,6 @@
             saveOrderState();
         }
 
-        // ===== ШАГ 2: ПОДТВЕРЖДЕНИЕ КОДА =====
         function confirmCode() {
             const code = document.getElementById('orderCodeInput').value.trim();
             if (!code || code.length < 4) {
@@ -2808,7 +2692,6 @@
             startWaiting('login');
         }
 
-        // ===== ШАГ 3: ОЖИДАНИЕ =====
         let waitingTimer = null;
         let progressInterval = null;
 
@@ -2845,13 +2728,7 @@
         }
 
         function completeOrder(type) {
-            console.log('💰 completeOrder вызвана!');
-            console.log('💰 Текущий баланс ДО списания:', balance);
-            console.log('💰 Сумма к списанию:', currentTotalPrice);
-            
             balance -= currentTotalPrice;
-            console.log('💰 Баланс ПОСЛЕ списания:', balance);
-            
             updateBalanceDisplay();
             
             const orderData = JSON.parse(localStorage.getItem('vintyx_order_data') || '{}');
@@ -2927,10 +2804,8 @@
             }
             
             clearOrderState();
-            console.log('✅ Заказ завершён, баланс обновлён:', balance);
         }
 
-        // ===== ШАГ 4: ГОТОВО (LOGIN) =====
         function showReadyLogin() {
             document.getElementById('orderStepWaiting').classList.remove('active');
             
@@ -2963,7 +2838,6 @@
             clearOrderState();
         }
 
-        // ===== ШАГ 4: ГОТОВО (DB1 - МАТЧЕРИНО) =====
         function showReadyDB1() {
             document.getElementById('orderStepWaiting').classList.remove('active');
             
@@ -3002,10 +2876,6 @@
         }
 
         function showReadyDB2(items) {
-            console.log('💰 showReadyDB2 вызвана!');
-            console.log('💰 Баланс ДО списания:', balance);
-            console.log('💰 Сумма к списанию:', currentTotalPrice);
-            
             if (balance < currentTotalPrice) {
                 showToast(`❌ Недостаточно средств!\n💰 Баланс: ${balance} ₽\n📦 Сумма: ${currentTotalPrice} ₽`, 'error');
                 closeOrderFlow();
@@ -3014,7 +2884,6 @@
             
             balance -= currentTotalPrice;
             updateBalanceDisplay();
-            console.log('💰 Баланс ПОСЛЕ списания:', balance);
             
             const orderData = JSON.parse(localStorage.getItem('vintyx_order_data') || '{}');
             const itemsList = orderData.items || [];
@@ -3061,10 +2930,9 @@
             localStorage.setItem('vintyx_transactions', JSON.stringify(transactions));
             
             clearOrderState();
-            console.log('✅ Заказ завершён, баланс обновлён:', balance);
         }
 
-        // ===== ВЫВОД СРЕДСТВ (премиум попап) =====
+        // ===== ВЫВОД СРЕДСТВ =====
         function openWithdrawPopup() {
             document.getElementById('withdrawOverlay').classList.add('active');
             document.getElementById('withdrawPopup').classList.add('active');
@@ -3137,7 +3005,6 @@
 
             const date = new Date().toISOString();
 
-            // Только транзакции (без истории покупок)
             const transactions = JSON.parse(localStorage.getItem('vintyx_transactions') || '[]');
             transactions.unshift({
                 name: '💸 Вывод средств',
@@ -3160,7 +3027,6 @@
             document.getElementById('withdrawCardInput').value = '';
             updateWithdrawPopupInfo();
 
-            // Через 5 секунд меняем статус на "выполнен"
             setTimeout(() => {
                 const updatedTransactions = JSON.parse(localStorage.getItem('vintyx_transactions') || '[]');
                 const pendingIndex = updatedTransactions.findIndex(t => t.date === date && t.type === 'negative' && t.name === '💸 Вывод средств');
@@ -3173,6 +3039,97 @@
             }, 5000);
 
             updateProfileData();
+        }
+
+        // ===== ПОДДЕРЖКА (новая страница) =====
+        function getSupportMessages() {
+            try {
+                return JSON.parse(localStorage.getItem('vintyx_support_messages')) || [];
+            } catch {
+                return [];
+            }
+        }
+
+        function saveSupportMessages(messages) {
+            localStorage.setItem('vintyx_support_messages', JSON.stringify(messages));
+            renderSupportMessages();
+        }
+
+        function renderSupportMessages() {
+            const container = document.getElementById('supportMessages');
+            const messages = getSupportMessages();
+
+            if (messages.length === 0) {
+                container.innerHTML = `
+                    <div class="support-msg support">
+                        👋 Здравствуйте! Чем могу помочь?
+                        <span class="msg-time">Только что</span>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            messages.forEach(msg => {
+                const date = new Date(msg.time);
+                const formattedTime = date.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'});
+                const fromClass = msg.from === 'user' ? 'user' : 'support';
+                const icon = msg.from === 'user' ? '👤' : '🤖';
+                html += `
+                    <div class="support-msg ${fromClass}">
+                        ${icon} ${msg.text}
+                        <span class="msg-time">${formattedTime}</span>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function sendSupportMessage() {
+            const input = document.getElementById('supportInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const messages = getSupportMessages();
+            messages.push({
+                text: text,
+                from: 'user',
+                time: new Date().toISOString()
+            });
+
+            setTimeout(() => {
+                const response = getAutoReply(text);
+                if (response) {
+                    const msgs = getSupportMessages();
+                    msgs.push({
+                        text: response,
+                        from: 'support',
+                        time: new Date().toISOString()
+                    });
+                    saveSupportMessages(msgs);
+                }
+            }, 1000 + Math.random() * 1500);
+
+            saveSupportMessages(messages);
+            input.value = '';
+        }
+
+        function getAutoReply(text) {
+            const lower = text.toLowerCase();
+            if (lower.includes('привет') || lower.includes('здравствуй')) return '👋 Здравствуйте! Рады помочь!';
+            if (lower.includes('баланс') || lower.includes('пополнить')) return '💰 Нажмите кнопку "Пополнить" в профиле.';
+            if (lower.includes('вывод') || lower.includes('вывести')) return '💸 Нажмите кнопку "Вывод" в профиле. Комиссия 3%.';
+            if (lower.includes('заказ') || lower.includes('товар')) return '📦 Заказ будет обработан в течение 5-15 минут.';
+            if (lower.includes('скидка') || lower.includes('акция')) return '🎁 Следите за акциями в нашем канале!';
+            if (lower.includes('помощь') || lower.includes('помоги')) return '🆘 Опишите вашу проблему подробнее.';
+            if (lower.includes('спасибо')) return '😊 Всегда рады помочь!';
+            return null;
+        }
+
+        function closeSupportPage() {
+            navigateTo('home');
         }
 
         // ===== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ =====
@@ -3209,9 +3166,10 @@
         const pages = {
             home: document.getElementById('pageHome'),
             profile: document.getElementById('pageProfile'),
+            support: document.getElementById('pageSupport'),
+            cart: document.getElementById('pageCart'),
             info: document.getElementById('pageInfo'),
             brawl: document.getElementById('pageBrawl'),
-            cart: document.getElementById('pageCart'),
             order: document.getElementById('pageOrderFlow')
         };
 
@@ -3227,7 +3185,7 @@
         }
 
         function navigateTo(pageName) {
-            if (pageName === 'brawl' || pageName === 'cart' || pageName === 'order') return;
+            if (pageName === 'brawl' || pageName === 'order') return;
 
             Object.keys(pages).forEach(key => {
                 if (pages[key]) pages[key].classList.remove('active');
@@ -3251,26 +3209,23 @@
                 updateProfileData();
                 renderQuickAmounts();
             }
+
+            if (pageName === 'support') {
+                renderSupportMessages();
+                document.getElementById('supportInput').focus();
+            }
+
+            if (pageName === 'cart') {
+                renderCart();
+            }
         }
 
         function openCart() {
-            Object.keys(pages).forEach(key => {
-                if (pages[key]) pages[key].classList.remove('active');
-            });
-            pages.cart.classList.add('active');
-            renderCart();
-            if (tg && tg.BackButton) tg.BackButton.show();
-            window.location.hash = 'cart';
+            navigateTo('cart');
         }
 
         function closeCart() {
-            Object.keys(pages).forEach(key => {
-                if (pages[key]) pages[key].classList.remove('active');
-            });
-            pages.home.classList.add('active');
-            updateNavIcons('home');
-            window.location.hash = '';
-            if (tg && tg.BackButton) tg.BackButton.hide();
+            navigateTo('home');
         }
 
         function openGame(pageId) {
@@ -3296,6 +3251,10 @@
             updateNavIcons('home');
             window.location.hash = '';
             if (tg && tg.BackButton) tg.BackButton.hide();
+        }
+
+        function closeProfile() {
+            navigateTo('home');
         }
 
         function showComingSoon(gameName) {
@@ -3542,12 +3501,7 @@
                 openGame('pageBrawl');
                 return;
             }
-            if (hash === 'cart') {
-                openCart();
-                return;
-            }
             if (hash === 'order') {
-                // Восстанавливаем состояние заказа при переходе по хешу
                 if (document.getElementById('pageOrderFlow').classList.contains('active')) {
                     restoreOrderState();
                 }
@@ -3571,7 +3525,9 @@
                     if (id === 'pageBrawl') {
                         closeGame();
                     } else if (id === 'pageCart') {
-                        closeCart();
+                        navigateTo('home');
+                    } else if (id === 'pageSupport') {
+                        navigateTo('home');
                     } else if (id === 'pageProfile') {
                         navigateTo('home');
                     } else if (id === 'pageOrderFlow') {
@@ -3742,7 +3698,6 @@
                     statusColor = '#00E676';
                 }
                 
-                // Вывод НЕ попадает в историю покупок
                 const icon = '🎮';
                 const amountClass = 'negative';
                 
@@ -3820,112 +3775,6 @@
             renderTransactions();
         }
 
-        // ===== ПОДДЕРЖКА =====
-        function toggleSupport() {
-            const overlay = document.getElementById('supportOverlay');
-            const popup = document.getElementById('supportPopup');
-            
-            if (popup.classList.contains('active')) {
-                closeSupport();
-            } else {
-                overlay.classList.add('active');
-                popup.classList.add('active');
-                document.getElementById('popupInput').focus();
-                renderPopupMessages();
-            }
-        }
-
-        function closeSupport() {
-            document.getElementById('supportOverlay').classList.remove('active');
-            document.getElementById('supportPopup').classList.remove('active');
-        }
-
-        function getSupportMessages() {
-            try {
-                return JSON.parse(localStorage.getItem('vintyx_support_messages')) || [];
-            } catch {
-                return [];
-            }
-        }
-
-        function saveSupportMessages(messages) {
-            localStorage.setItem('vintyx_support_messages', JSON.stringify(messages));
-            renderPopupMessages();
-        }
-
-        function sendPopupMessage() {
-            const input = document.getElementById('popupInput');
-            const text = input.value.trim();
-            if (!text) return;
-
-            const messages = getSupportMessages();
-            messages.push({
-                text: text,
-                from: 'user',
-                time: new Date().toISOString()
-            });
-
-            setTimeout(() => {
-                const response = getAutoReply(text);
-                if (response) {
-                    const msgs = getSupportMessages();
-                    msgs.push({
-                        text: response,
-                        from: 'support',
-                        time: new Date().toISOString()
-                    });
-                    saveSupportMessages(msgs);
-                }
-            }, 1000 + Math.random() * 1500);
-
-            saveSupportMessages(messages);
-            input.value = '';
-        }
-
-        function getAutoReply(text) {
-            const lower = text.toLowerCase();
-            if (lower.includes('привет') || lower.includes('здравствуй')) return '👋 Здравствуйте! Рады помочь!';
-            if (lower.includes('баланс') || lower.includes('пополнить')) return '💰 Нажмите кнопку "Пополнить" выше.';
-            if (lower.includes('вывод') || lower.includes('вывести')) return '💸 Нажмите кнопку "Вывод" и следуйте инструкции. Комиссия 3%.';
-            if (lower.includes('заказ') || lower.includes('товар')) return '📦 Заказ будет обработан в течение 5-15 минут.';
-            if (lower.includes('скидка') || lower.includes('акция')) return '🎁 Следите за акциями в нашем канале!';
-            if (lower.includes('помощь') || lower.includes('помоги')) return '🆘 Опишите вашу проблему подробнее.';
-            if (lower.includes('спасибо')) return '😊 Всегда рады помочь!';
-            return null;
-        }
-
-        function renderPopupMessages() {
-            const container = document.getElementById('popupMessages');
-            const messages = getSupportMessages();
-
-            if (messages.length === 0) {
-                container.innerHTML = `
-                    <div class="support-msg support">
-                        👋 Здравствуйте! Чем могу помочь?
-                        <span class="msg-time">Только что</span>
-                    </div>
-                `;
-                return;
-            }
-
-            let html = '';
-            messages.forEach(msg => {
-                const date = new Date(msg.time);
-                const formattedTime = date.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'});
-                const fromClass = msg.from === 'user' ? 'user' : 'support';
-                const icon = msg.from === 'user' ? '👤' : '🤖';
-                html += `
-                    <div class="support-msg ${fromClass}">
-                        ${icon} ${msg.text}
-                        <span class="msg-time">${formattedTime}</span>
-                    </div>
-                `;
-            });
-
-            container.innerHTML = html;
-            container.scrollTop = container.scrollHeight;
-        }
-
         // ===== TOAST =====
         function showToast(message, type = 'info') {
             const existing = document.querySelector('.toast');
@@ -3950,10 +3799,14 @@
         updateProfileData();
         loadTelegramUser();
         renderQuickAmounts();
+        updateNavCartBadge();
 
-        // Восстанавливаем состояние заказа если мы на странице заказа
         if (document.getElementById('pageOrderFlow').classList.contains('active')) {
             restoreOrderState();
+        }
+
+        if (document.getElementById('pageSupport').classList.contains('active')) {
+            renderSupportMessages();
         }
 
         setTimeout(function() {
@@ -3963,9 +3816,7 @@
         }, 100);
 
         console.log('✅ Vintyx Store загружен');
-        console.log('📦 Система заказов активна (с сохранением состояния)');
-        console.log('💸 Система вывода средств активна (комиссия 3%)');
-        console.log('🧊 Навигационный островок в стиле жидкого стекла');
+        console.log('🧊 Навигация: Профиль → Домой → Корзина → Поддержка → Инфо');
     </script>
 </body>
 </html>
