@@ -128,6 +128,259 @@ small{
 
     z-index:1;
 
+    /* Liquid Glass эффекты */
+    filter: blur(.2px);
+    transition: border-radius .3s;
+}
+
+.island:active .glass{
+    border-radius: 45% 55% 60% 40%;
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<h1 id="page">
+Главная
+</h1>
+
+
+
+<div class="island" id="island">
+
+
+<div class="glass" id="glass"></div>
+
+
+<div class="item" data-name="Избранные">
+⭐
+<small>Избранные</small>
+</div>
+
+
+<div class="item" data-name="Недавние">
+🕘
+<small>Недавние</small>
+</div>
+
+
+<div class="item" data-name="Контакты">
+👥
+<small>Контакты</small>
+</div>
+
+
+<div class="item" data-name="Клавиши">
+⌨️
+<small>Клавиши</small>
+</div>
+
+
+</div>
+
+
+
+<script>
+
+
+Telegram.WebApp.expand();
+
+
+
+const island = document.querySelector(".island");
+const glass = document.querySelector(".glass");
+const items = document.querySelectorAll(".item");
+const page = document.getElementById("page");
+
+let posX = 0;
+let targetX = 0;
+let current = 0;
+
+// Начальная позиция на первом элементе
+function getItemCenterX(index) {
+    const item = items[index];
+    return item.offsetLeft + (item.offsetWidth - 65) / 2;
+}
+
+posX = getItemCenterX(0);
+targetX = posX;
+glass.style.transform = `translateX(${posX}px) scale(1.05)`;
+
+/* движение пальца */
+island.addEventListener(
+"pointermove",
+(e)=>{
+
+let rect =
+island.getBoundingClientRect();
+
+
+targetX =
+e.clientX - rect.left - 32.5;
+
+
+
+// ограничение внутри островка
+targetX =
+Math.max(
+0,
+Math.min(
+island.clientWidth-65,
+targetX
+)
+);
+
+// Определяем ближайший элемент для обновления current
+items.forEach((item, index) => {
+    const center = item.offsetLeft + item.offsetWidth / 2;
+    if (Math.abs(e.clientX - rect.left - center) < 40) {
+        current = index;
+    }
+});
+
+});
+
+
+/* плавное течение */
+function animate(){
+
+
+posX +=
+(targetX-posX)*0.12;
+
+
+
+glass.style.transform =
+`
+translateX(${posX}px)
+scale(1.05)
+`;
+
+
+
+requestAnimationFrame(animate);
+
+
+}
+
+
+animate();
+
+// Обработка клика для открытия
+island.addEventListener(
+"pointerup",
+()=>{
+    if (items[current]) {
+        page.innerText =
+        "Открыто: "+
+        items[current].dataset.name;
+    }
+});
+
+</script>
+
+
+</body>
+</html>.island{
+
+    position:fixed;
+
+    bottom:30px;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    width:340px;
+    height:80px;
+
+
+    display:flex;
+    align-items:center;
+    justify-content:space-around;
+
+
+    background:
+    rgba(255,255,255,.15);
+
+
+    backdrop-filter:
+    blur(25px);
+
+
+    border-radius:45px;
+
+
+    overflow:hidden;
+
+
+}
+
+
+
+
+.item{
+
+    width:65px;
+    height:65px;
+
+    display:flex;
+    flex-direction:column;
+
+    align-items:center;
+    justify-content:center;
+
+    font-size:24px;
+
+    z-index:2;
+
+}
+
+
+small{
+    font-size:9px;
+}
+
+
+
+/* стеклянная лупа */
+
+
+.glass{
+
+
+    position:absolute;
+
+
+    width:65px;
+    height:65px;
+
+
+    border-radius:50%;
+
+
+    background:
+    rgba(255,255,255,.35);
+
+
+    backdrop-filter:
+    blur(15px);
+
+
+    box-shadow:
+    0 5px 25px #0008;
+
+
+    transition:.15s;
+
+
+    z-index:1;
+
 
 }
 
