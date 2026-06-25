@@ -15,26 +15,191 @@
     touch-action:none;
 }
 
-
 body{
     margin:0;
     height:100vh;
     background:#111;
     color:white;
     font-family:Arial;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 }
-
 
 h1{
     text-align:center;
-    margin-top:100px;
+    margin-top:-100px;
 }
 
-
-
 /* Островок */
-
 .island{
+    position:fixed;
+    bottom:30px;
+    left:50%;
+    transform:translateX(-50%);
+    width:340px;
+    height:80px;
+    display:flex;
+    align-items:center;
+    justify-content:space-around;
+    background:rgba(255,255,255,.15);
+    backdrop-filter:blur(25px);
+    border-radius:45px;
+    overflow:hidden;
+}
+
+.item{
+    width:65px;
+    height:65px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    z-index:2;
+    cursor:pointer;
+}
+
+small{
+    font-size:9px;
+}
+
+/* стеклянная лупа */
+.glass{
+    position:absolute;
+    width:65px;
+    height:65px;
+    border-radius:50%;
+    background:rgba(255,255,255,.35);
+    backdrop-filter:blur(15px);
+    box-shadow:0 5px 25px #0008;
+    z-index:1;
+    filter:blur(.2px);
+    transition:border-radius .3s;
+    will-change:transform;
+}
+
+.island:active .glass{
+    border-radius:45% 55% 60% 40%;
+}
+
+</style>
+
+</head>
+<body>
+
+<h1 id="page">Главная</h1>
+
+<div class="island" id="island">
+    <div class="glass" id="glass"></div>
+    <div class="item" data-name="Избранные">⭐<small>Избранные</small></div>
+    <div class="item" data-name="Недавние">🕘<small>Недавние</small></div>
+    <div class="item" data-name="Контакты">👥<small>Контакты</small></div>
+    <div class="item" data-name="Клавиши">⌨️<small>Клавиши</small></div>
+</div>
+
+<script>
+
+Telegram.WebApp.expand();
+
+const island = document.getElementById('island');
+const glass = document.getElementById('glass');
+const items = document.querySelectorAll('.item');
+const page = document.getElementById('page');
+
+let current = 0;
+let posX = 0;
+let targetX = 0;
+let isDragging = false;
+
+// Получить центр элемента
+function getItemCenter(index) {
+    const item = items[index];
+    return item.offsetLeft + (item.offsetWidth - 65) / 2;
+}
+
+// Установить начальную позицию
+posX = getItemCenter(0);
+targetX = posX;
+glass.style.transform = `translateX(${posX}px) scale(1.05)`;
+
+// Найти ближайший элемент
+function findNearestItem(clientX) {
+    const rect = island.getBoundingClientRect();
+    let nearest = 0;
+    let minDist = Infinity;
+    
+    items.forEach((item, index) => {
+        const center = item.offsetLeft + item.offsetWidth / 2;
+        const dist = Math.abs(clientX - rect.left - center);
+        if (dist < minDist) {
+            minDist = dist;
+            nearest = index;
+        }
+    });
+    
+    return nearest;
+}
+
+// Обработка движения
+island.addEventListener('pointerdown', (e) => {
+    isDragging = true;
+    const rect = island.getBoundingClientRect();
+    targetX = Math.max(0, Math.min(island.clientWidth - 65, e.clientX - rect.left - 32.5));
+});
+
+island.addEventListener('pointermove', (e) => {
+    if (!isDragging) return;
+    
+    const rect = island.getBoundingClientRect();
+    targetX = Math.max(0, Math.min(island.clientWidth - 65, e.clientX - rect.left - 32.5));
+    
+    // Обновляем current
+    current = findNearestItem(e.clientX);
+});
+
+island.addEventListener('pointerup', (e) => {
+    if (!isDragging) {
+        // Если это был клик, а не перетаскивание
+        current = findNearestItem(e.clientX);
+    }
+    isDragging = false;
+    
+    // Плавно доводим до центра ближайшего элемента
+    targetX = getItemCenter(current);
+    page.innerText = 'Открыто: ' + items[current].dataset.name;
+});
+
+island.addEventListener('pointerleave', () => {
+    if (isDragging) {
+        isDragging = false;
+        targetX = getItemCenter(current);
+    }
+});
+
+// Анимация
+function animate() {
+    posX += (targetX - posX) * 0.12;
+    glass.style.transform = `translateX(${posX}px) scale(1.05)`;
+    requestAnimationFrame(animate);
+}
+
+animate();
+
+// Клик по пунктам
+items.forEach((item, index) => {
+    item.addEventListener('click', (e) => {
+        e.stopPropagation();
+        current = index;
+        targetX = getItemCenter(index);
+        page.innerText = 'Открыто: ' + item.dataset.name;
+    });
+});
+
+</script>
+
+</body>
+</html>.island{
 
     position:fixed;
 
