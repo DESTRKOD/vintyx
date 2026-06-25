@@ -24,11 +24,14 @@ body{
     display:flex;
     align-items:center;
     justify-content:center;
+    overflow:hidden;
 }
 
 h1{
     text-align:center;
     margin-top:-100px;
+    font-size:24px;
+    text-shadow:0 0 20px rgba(255,255,255,0.1);
 }
 
 /* Островок */
@@ -42,10 +45,12 @@ h1{
     display:flex;
     align-items:center;
     justify-content:space-around;
-    background:rgba(255,255,255,.15);
+    background:rgba(255,255,255,.08);
     backdrop-filter:blur(25px);
     border-radius:45px;
-    overflow:hidden;
+    overflow:visible;
+    border:1px solid rgba(255,255,255,0.05);
+    box-shadow:0 10px 40px rgba(0,0,0,0.5);
 }
 
 .item{
@@ -58,29 +63,87 @@ h1{
     font-size:24px;
     z-index:2;
     cursor:pointer;
+    transition:transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border-radius:50%;
+}
+
+.item:hover{
+    transform:scale(1.1);
+}
+
+.item:active{
+    transform:scale(0.9);
 }
 
 small{
     font-size:9px;
+    margin-top:2px;
+    opacity:0.7;
 }
 
-/* стеклянная лупа */
+/* стеклянная лупа с эффектом жидкого стекла */
 .glass{
     position:absolute;
     width:65px;
     height:65px;
     border-radius:50%;
-    background:rgba(255,255,255,.35);
-    backdrop-filter:blur(15px);
-    box-shadow:0 5px 25px #0008;
+    background:radial-gradient(circle at 30% 30%, 
+        rgba(255,255,255,0.6),
+        rgba(255,255,255,0.1) 70%
+    );
+    backdrop-filter:blur(15px) saturate(1.4);
+    -webkit-backdrop-filter:blur(15px) saturate(1.4);
+    box-shadow:
+        0 5px 25px rgba(0,0,0,0.3),
+        inset 0 -2px 10px rgba(255,255,255,0.3),
+        inset 0 2px 20px rgba(255,255,255,0.5);
     z-index:1;
-    filter:blur(.2px);
-    transition:border-radius .3s;
-    will-change:transform;
+    will-change:transform, border-radius;
+    transition:border-radius 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border:1px solid rgba(255,255,255,0.2);
 }
 
-.island:active .glass{
-    border-radius:45% 55% 60% 40%;
+/* Эффект жидкого стекла при движении */
+.glass.liquid{
+    border-radius:45% 55% 60% 40% / 40% 50% 50% 60%;
+    background:radial-gradient(circle at 40% 40%, 
+        rgba(255,255,255,0.7),
+        rgba(255,255,255,0.1) 65%
+    );
+    box-shadow:
+        0 8px 30px rgba(0,0,0,0.4),
+        inset 0 -3px 15px rgba(255,255,255,0.3),
+        inset 0 3px 25px rgba(255,255,255,0.5);
+}
+
+/* Блик на стекле */
+.glass::before{
+    content:'';
+    position:absolute;
+    top:-10%;
+    left:-10%;
+    width:50%;
+    height:50%;
+    background:radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
+    border-radius:50%;
+    filter:blur(5px);
+    opacity:0.6;
+    pointer-events:none;
+}
+
+/* Эффект пузырьков */
+.glass::after{
+    content:'';
+    position:absolute;
+    bottom:10%;
+    right:10%;
+    width:20%;
+    height:20%;
+    background:radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+    border-radius:50%;
+    filter:blur(3px);
+    opacity:0.4;
+    pointer-events:none;
 }
 
 </style>
@@ -111,6 +174,8 @@ let current = 0;
 let posX = 0;
 let targetX = 0;
 let isDragging = false;
+let startX = 0;
+let currentOffset = 0;
 
 // Получить центр элемента
 function getItemCenter(index) {
@@ -119,9 +184,13 @@ function getItemCenter(index) {
 }
 
 // Установить начальную позицию
-posX = getItemCenter(0);
-targetX = posX;
-glass.style.transform = `translateX(${posX}px) scale(1.05)`;
+function setInitialPosition() {
+    posX = getItemCenter(0);
+    targetX = posX;
+    glass.style.transform = `translateX(${posX}px) scale(1.05)`;
+}
+
+setInitialPosition();
 
 // Найти ближайший элемент
 function findNearestItem(clientX) {
@@ -141,46 +210,94 @@ function findNearestItem(clientX) {
     return nearest;
 }
 
-// Обработка движения
+// Обновить эффект жидкого стекла
+function updateLiquidEffect(intensity) {
+    if (intensity > 0.3) {
+        glass.classList.add('liquid');
+    } else {
+        glass.classList.remove('liquid');
+    }
+}
+
 island.addEventListener('pointerdown', (e) => {
     isDragging = true;
     const rect = island.getBoundingClientRect();
-    targetX = Math.max(0, Math.min(island.clientWidth - 65, e.clientX - rect.left - 32.5));
+    const x = e.clientX - rect.left;
+    
+    // Начинаем с текущей позиции
+    startX = x;
+    currentOffset = posX;
+    
+    // Проверяем, нажат ли элемент
+    items.forEach((item, index) => {
+        const center = item.offsetLeft + item.offsetWidth / 2;
+        if (Math.abs(x - center) < 40) {
+            current = index;
+        }
+    });
 });
 
 island.addEventListener('pointermove', (e) => {
     if (!isDragging) return;
     
     const rect = island.getBoundingClientRect();
-    targetX = Math.max(0, Math.min(island.clientWidth - 65, e.clientX - rect.left - 32.5));
+    let x = e.clientX - rect.left;
+    
+    // Вычисляем новую позицию относительно начальной
+    let delta = x - startX;
+    let newPos = currentOffset + delta;
+    
+    // Ограничиваем
+    targetX = Math.max(0, Math.min(island.clientWidth - 65, newPos));
     
     // Обновляем current
     current = findNearestItem(e.clientX);
+    
+    // Эффект жидкого стекла (интенсивность от скорости)
+    const speed = Math.abs(delta) / 10;
+    updateLiquidEffect(speed);
 });
 
 island.addEventListener('pointerup', (e) => {
     if (!isDragging) {
-        // Если это был клик, а не перетаскивание
+        // Это был клик
         current = findNearestItem(e.clientX);
     }
     isDragging = false;
     
-    // Плавно доводим до центра ближайшего элемента
+    // Плавно доводим до центра
     targetX = getItemCenter(current);
     page.innerText = 'Открыто: ' + items[current].dataset.name;
+    
+    // Убираем эффект жидкого стекла
+    setTimeout(() => {
+        glass.classList.remove('liquid');
+    }, 300);
 });
 
 island.addEventListener('pointerleave', () => {
     if (isDragging) {
         isDragging = false;
         targetX = getItemCenter(current);
+        glass.classList.remove('liquid');
     }
 });
 
 // Анимация
 function animate() {
-    posX += (targetX - posX) * 0.12;
-    glass.style.transform = `translateX(${posX}px) scale(1.05)`;
+    const diff = targetX - posX;
+    posX += diff * 0.15;
+    
+    // Если разница маленькая, фиксируем точное значение
+    if (Math.abs(diff) < 0.1) {
+        posX = targetX;
+    }
+    
+    // Масштаб зависит от скорости
+    const speed = Math.abs(diff);
+    const scale = 1.05 + Math.min(speed / 200, 0.08);
+    
+    glass.style.transform = `translateX(${posX}px) scale(${scale})`;
     requestAnimationFrame(animate);
 }
 
@@ -193,8 +310,26 @@ items.forEach((item, index) => {
         current = index;
         targetX = getItemCenter(index);
         page.innerText = 'Открыто: ' + item.dataset.name;
+        
+        // Эффект жидкого стекла при клике
+        glass.classList.add('liquid');
+        setTimeout(() => {
+            glass.classList.remove('liquid');
+        }, 400);
     });
 });
+
+// Добавляем эффект при наведении мыши (для десктопа)
+if (!('ontouchstart' in window)) {
+    items.forEach((item) => {
+        item.addEventListener('mouseenter', () => {
+            glass.classList.add('liquid');
+        });
+        item.addEventListener('mouseleave', () => {
+            glass.classList.remove('liquid');
+        });
+    });
+}
 
 </script>
 
