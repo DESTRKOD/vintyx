@@ -256,6 +256,7 @@
         }
         .game-card.telegram .game-tag { background: rgba(91, 140, 255, 0.12); color: #7DD8FF; }
 
+        /* ===== GAME PAGE ===== */
         .game-page .game-header {
             display: flex;
             align-items: center;
@@ -540,14 +541,36 @@
             transform: none;
         }
 
-        /* ===== SUPPORT PAGE (красивый чат) ===== */
+        /* ===== SUPPORT PAGE (full screen) ===== */
+        .support-page {
+            padding: 0 !important;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background: linear-gradient(145deg, #0A0A1A 0%, #1A1A3E 30%, #2D1B69 70%, #1A1A3E 100%);
+        }
+
+        .support-page .support-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            max-width: 480px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 12px 16px 16px;
+            position: relative;
+            z-index: 1;
+            flex: 1;
+        }
+
         .support-page .support-header {
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 16px;
-            padding-top: 4px;
+            padding: 8px 0 12px;
+            flex-shrink: 0;
         }
+
         .support-page .support-header .back-btn {
             width: 40px;
             height: 40px;
@@ -565,6 +588,7 @@
             font-family: inherit;
         }
         .support-page .support-header .back-btn:active { transform: scale(0.9); background: rgba(255, 255, 255, 0.1); }
+
         .support-page .support-header .support-title {
             font-size: 1.4rem;
             font-weight: 700;
@@ -573,6 +597,7 @@
             align-items: center;
             gap: 10px;
         }
+
         .support-page .support-header .support-title .badge {
             font-size: 0.6rem;
             color: #00E676;
@@ -584,17 +609,16 @@
         }
 
         .support-page .support-messages {
+            flex: 1;
             background: rgba(255, 255, 255, 0.02);
             border-radius: 16px;
             padding: 16px;
-            height: calc(100vh - 260px);
-            min-height: 300px;
-            max-height: 500px;
             overflow-y: auto;
             border: 1px solid rgba(255, 255, 255, 0.04);
             margin-bottom: 12px;
             display: flex;
             flex-direction: column;
+            min-height: 0;
         }
 
         .support-page .support-messages::-webkit-scrollbar {
@@ -640,12 +664,12 @@
         .support-page .support-input-wrap {
             display: flex;
             gap: 10px;
-            padding: 4px 0;
+            padding: 4px 4px 4px 16px;
             background: rgba(255, 255, 255, 0.03);
             border-radius: 14px;
             border: 1px solid rgba(255, 255, 255, 0.04);
-            padding: 4px 4px 4px 16px;
             backdrop-filter: blur(10px);
+            flex-shrink: 0;
         }
 
         .support-page .support-input-wrap input {
@@ -1818,10 +1842,11 @@
                 right: 1px;
             }
 
+            .support-page .support-content {
+                padding: 10px 12px 12px;
+            }
+
             .support-page .support-messages {
-                height: calc(100vh - 280px);
-                min-height: 200px;
-                max-height: 400px;
                 padding: 12px;
             }
 
@@ -1906,10 +1931,11 @@
                 height: 5px;
             }
 
+            .support-page .support-content {
+                padding: 8px 10px 10px;
+            }
+
             .support-page .support-messages {
-                height: calc(100vh - 260px);
-                min-height: 150px;
-                max-height: 320px;
                 padding: 10px;
             }
 
@@ -1925,6 +1951,12 @@
                 padding-left: max(20px, env(safe-area-inset-left));
                 padding-right: max(20px, env(safe-area-inset-right));
                 padding-bottom: max(100px, env(safe-area-inset-bottom));
+            }
+
+            .support-page .support-content {
+                padding-left: max(16px, env(safe-area-inset-left));
+                padding-right: max(16px, env(safe-area-inset-right));
+                padding-bottom: max(16px, env(safe-area-inset-bottom));
             }
 
             .bottom-nav {
@@ -1999,13 +2031,13 @@
         </div>
     </div>
 
-    <!-- PAGE: SUPPORT -->
+    <!-- PAGE: SUPPORT (full screen) -->
     <div id="pageSupport" class="page support-page">
         <span class="floating-bg">💬</span>
         <span class="floating-bg">✨</span>
         <span class="floating-bg">💎</span>
 
-        <div class="content">
+        <div class="support-content">
             <div class="support-header">
                 <button class="back-btn" onclick="closeSupportPage()">←</button>
                 <div class="support-title">
@@ -3872,6 +3904,7 @@
 
         console.log('✅ Vintyx Store загружен');
         console.log('🧊 Порядок навигации: Поддержка → Профиль → Домой → Корзина → Инфо');
+        console.log('💬 Поддержка на весь экран');
     </script>
 </body>
 </html>
