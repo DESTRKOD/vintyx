@@ -541,13 +541,14 @@
             transform: none;
         }
 
-        /* ===== SUPPORT PAGE (full screen) ===== */
+        /* ===== SUPPORT PAGE (full screen, как Telegram) ===== */
         .support-page {
             padding: 0 !important;
-            display: flex;
+            display: flex !important;
             flex-direction: column;
             height: 100%;
             background: linear-gradient(145deg, #0A0A1A 0%, #1A1A3E 30%, #2D1B69 70%, #1A1A3E 100%);
+            overflow: hidden;
         }
 
         .support-page .support-content {
@@ -561,6 +562,7 @@
             position: relative;
             z-index: 1;
             flex: 1;
+            min-height: 0;
         }
 
         .support-page .support-header {
@@ -619,6 +621,7 @@
             display: flex;
             flex-direction: column;
             min-height: 0;
+            -webkit-overflow-scrolling: touch;
         }
 
         .support-page .support-messages::-webkit-scrollbar {
@@ -1943,6 +1946,16 @@
                 font-size: 0.8rem;
                 padding: 8px 12px;
             }
+
+            .support-page .support-input-wrap input {
+                font-size: 0.8rem;
+                padding: 6px 0;
+            }
+
+            .support-page .support-input-wrap .btn-send {
+                padding: 5px 10px;
+                font-size: 0.75rem;
+            }
         }
 
         /* iPhone safe area */
@@ -2031,7 +2044,7 @@
         </div>
     </div>
 
-    <!-- PAGE: SUPPORT (full screen) -->
+    <!-- PAGE: SUPPORT (full screen, как Telegram) -->
     <div id="pageSupport" class="page support-page">
         <span class="floating-bg">💬</span>
         <span class="floating-bg">✨</span>
@@ -3904,7 +3917,7 @@
 
         console.log('✅ Vintyx Store загружен');
         console.log('🧊 Порядок навигации: Поддержка → Профиль → Домой → Корзина → Инфо');
-        console.log('💬 Поддержка на весь экран');
+        console.log('💬 Поддержка на весь экран, как в Telegram');
     </script>
 </body>
 </html>
