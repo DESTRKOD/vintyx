@@ -79,34 +79,44 @@
         }
 
         .main-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 20px;
-            padding-top: 4px;
-        }
-        .main-header .header-left .store-name {
-            font-size: 0.7rem;
-            color: rgba(255, 255, 255, 0.2);
-            font-weight: 500;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-        .main-header .header-left .greeting {
-            font-size: 1.6rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #7DD8FF 0%, #6675FF 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -0.5px;
-        }
-        .main-header .header-right {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding-top: 4px;
-        }
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    padding-top: 4px;
+}
+
+.main-header .header-left {
+    flex: 0 0 auto; /* не растягивается */
+    max-width: 100%;
+}
+
+.main-header .header-left .store-name {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.2);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.main-header .header-left .greeting {
+    font-size: 1.6rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #7DD8FF 0%, #6675FF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+    white-space: nowrap; /* текст не переносится */
+}
+
+.main-header .header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 4px;
+    flex-shrink: 0; /* не сжимается */
+}
         .main-header .header-right .cart-btn {
             display: flex;
             align-items: center;
