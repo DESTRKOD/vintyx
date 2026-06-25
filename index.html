@@ -543,13 +543,16 @@
 
         /* ===== SUPPORT PAGE ===== */
         .support-page {
-            padding: 0 !important;
-            display: flex !important;
-            flex-direction: column;
-            height: 100%;
-            background: linear-gradient(145deg, #0A0A1A 0%, #1A1A3E 30%, #2D1B69 70%, #1A1A3E 100%);
-            overflow: hidden;
-        }
+    padding: 0;
+    display: none; /* по умолчанию скрыта */
+    flex-direction: column;
+    height: 100%;
+    background: linear-gradient(145deg, #0A0A1A 0%, #1A1A3E 30%, #2D1B69 70%, #1A1A3E 100%);
+    overflow: hidden;
+}
+        .support-page.active {
+    display: flex !important; /* показываем только когда активна */
+}
 
         .support-page .support-content {
             display: flex;
