@@ -931,7 +931,7 @@
             opacity: 0.3;
         }
 
-        /* ===== WITHDRAW POPUP ===== */
+        /* ===== WITHDRAW POPUP (премиум) ===== */
         .withdraw-overlay {
             position: fixed;
             top: 0;
@@ -949,11 +949,6 @@
             display: block;
         }
 
-        @keyframes overlayIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
         .withdraw-popup {
             position: fixed;
             top: 50%;
@@ -962,11 +957,12 @@
             width: 400px;
             max-width: calc(100% - 40px);
             max-height: calc(100% - 60px);
-            background: linear-gradient(145deg, rgba(20, 20, 45, 0.98), rgba(30, 20, 60, 0.98));
-            backdrop-filter: blur(28px);
+            background: linear-gradient(145deg, rgba(20, 20, 50, 0.98), rgba(35, 20, 70, 0.98));
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
             border-radius: 32px;
             border: 1px solid rgba(255, 255, 255, 0.06);
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.04);
             z-index: 301;
             display: none;
             overflow: hidden;
@@ -981,7 +977,7 @@
 
         @keyframes withdrawPop {
             0% {
-                transform: translate(-50%, -50%) scale(0.8) translateY(20px);
+                transform: translate(-50%, -50%) scale(0.85) translateY(30px);
                 opacity: 0;
             }
             100% {
@@ -994,7 +990,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 20px 24px 16px;
+            padding: 22px 24px 16px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.04);
             flex-shrink: 0;
         }
@@ -1067,14 +1063,14 @@
         .withdraw-popup .popup-body .input-group {
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 10px;
         }
 
         .withdraw-popup .popup-body .input-group .input-label {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: rgba(255, 255, 255, 0.3);
-            font-weight: 500;
-            letter-spacing: 0.3px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
             text-transform: uppercase;
         }
 
@@ -1096,8 +1092,8 @@
             width: 100%;
             padding: 14px 16px 14px 40px;
             border-radius: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.03);
             color: white;
             font-size: 1.1rem;
             font-family: inherit;
@@ -1106,12 +1102,13 @@
         }
 
         .withdraw-popup .popup-body .input-group input:focus {
-            border-color: rgba(91, 140, 255, 0.3);
-            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(91, 140, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 0 1px rgba(91, 140, 255, 0.05);
         }
 
         .withdraw-popup .popup-body .input-group input::placeholder {
-            color: rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.1);
         }
 
         .withdraw-popup .popup-body .input-group input.card-input {
@@ -1121,11 +1118,11 @@
         }
 
         .withdraw-popup .popup-body .calc-info {
-            background: rgba(255, 59, 111, 0.04);
+            background: rgba(255, 255, 255, 0.02);
             border-radius: 14px;
             padding: 16px 18px;
-            border: 1px solid rgba(255, 59, 111, 0.06);
-            margin-top: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            margin-top: 16px;
         }
 
         .withdraw-popup .popup-body .calc-info .calc-row {
@@ -1159,10 +1156,10 @@
         }
 
         .withdraw-popup .popup-body .fee-note {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             color: rgba(255, 255, 255, 0.15);
             text-align: center;
-            margin-top: 8px;
+            margin-top: 10px;
         }
 
         .withdraw-popup .popup-body .btn-withdraw {
@@ -1177,8 +1174,8 @@
             cursor: pointer;
             transition: all 0.2s;
             font-family: inherit;
-            box-shadow: 0 4px 24px rgba(255, 59, 111, 0.2);
-            margin-top: 6px;
+            box-shadow: 0 4px 24px rgba(255, 59, 111, 0.15);
+            margin-top: 16px;
         }
 
         .withdraw-popup .popup-body .btn-withdraw:active {
@@ -1712,25 +1709,42 @@
             margin-top: 4px;
         }
 
-        /* ===== NAVIGATION ISLAND ===== */
+        /* ===== NAVIGATION ISLAND (жидкое стекло) ===== */
         .bottom-nav {
             position: fixed;
             bottom: 24px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(20, 20, 35, 0.85);
-            backdrop-filter: blur(28px);
-            -webkit-backdrop-filter: blur(28px);
+            background: rgba(20, 20, 40, 0.35);
+            backdrop-filter: blur(40px) saturate(1.4);
+            -webkit-backdrop-filter: blur(40px) saturate(1.4);
             border-radius: 32px;
             padding: 8px 16px;
             display: flex;
             gap: 6px;
-            box-shadow: 0 8px 48px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 
+                0 8px 48px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.04),
+                0 0 80px rgba(91, 140, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.04);
             z-index: 1000;
             max-width: 360px;
             width: calc(100% - 40px);
             justify-content: space-around;
+            transition: all 0.3s ease;
+        }
+
+        .bottom-nav::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 32px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, transparent 50%, rgba(255, 255, 255, 0.02) 100%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
         }
 
         .nav-item {
@@ -1753,14 +1767,14 @@
         .nav-item .nav-icon {
             width: 24px;
             height: 24px;
-            color: #8A8A8A;
+            color: rgba(255, 255, 255, 0.3);
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .nav-item .nav-icon svg {
             width: 100%;
             height: 100%;
-            stroke: #8A8A8A;
+            stroke: rgba(255, 255, 255, 0.3);
             fill: none;
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
@@ -1768,18 +1782,18 @@
         .nav-item .nav-label {
             font-size: 0.5rem;
             font-weight: 500;
-            color: #8A8A8A;
+            color: rgba(255, 255, 255, 0.2);
             transition: all 0.3s;
             margin-top: 1px;
         }
 
         .nav-item.active .nav-icon svg {
             stroke: #FFFFFF;
-            filter: drop-shadow(0 0 8px rgba(91, 140, 255, 0.3));
+            filter: drop-shadow(0 0 12px rgba(91, 140, 255, 0.3));
         }
 
         .nav-item.active .nav-label {
-            color: #FFFFFF;
+            color: rgba(255, 255, 255, 0.7);
         }
 
         .nav-item.active .nav-icon {
@@ -1789,14 +1803,18 @@
 
         .nav-item:active { transform: scale(0.88); }
 
+        /* Активная подсветка как у Dynamic Island */
         .nav-item.active::before {
             content: '';
             position: absolute;
             inset: -2px -4px;
             border-radius: 20px;
-            background: rgba(91, 140, 255, 0.08);
+            background: rgba(91, 140, 255, 0.06);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             z-index: -1;
             animation: islandGlow 0.4s ease;
+            border: 1px solid rgba(91, 140, 255, 0.04);
         }
 
         @keyframes islandGlow {
@@ -1881,6 +1899,16 @@
             .withdraw-popup .popup-body {
                 padding: 16px 18px 20px;
             }
+
+            .bottom-nav {
+                padding: 6px 12px;
+                gap: 4px;
+            }
+
+            .nav-item {
+                padding: 4px 10px;
+                min-width: 40px;
+            }
         }
 
         @media (max-width: 380px) {
@@ -1955,6 +1983,22 @@
 
             .withdraw-popup {
                 border-radius: 20px;
+            }
+
+            .bottom-nav {
+                padding: 4px 10px;
+                gap: 2px;
+                border-radius: 28px;
+            }
+
+            .nav-item {
+                padding: 4px 8px;
+                min-width: 36px;
+            }
+
+            .nav-item .nav-icon {
+                width: 20px;
+                height: 20px;
             }
         }
     </style>
@@ -2097,7 +2141,7 @@
         </div>
     </div>
 
-    <!-- WITHDRAW POPUP -->
+    <!-- WITHDRAW POPUP (премиум) -->
     <div class="withdraw-overlay" id="withdrawOverlay" onclick="closeWithdrawPopup()"></div>
     <div class="withdraw-popup" id="withdrawPopup">
         <div class="popup-header">
@@ -2332,7 +2376,7 @@
         </div>
     </div>
 
-    <!-- NAVIGATION ISLAND -->
+    <!-- NAVIGATION ISLAND (жидкое стекло) -->
     <nav class="bottom-nav">
         <button class="nav-item" data-page="profile" onclick="navigateTo('profile')">
             <span class="nav-icon">
@@ -2532,13 +2576,69 @@
             };
         }
 
-        // ===== ПЕРЕМЕННЫЕ ДЛЯ ЗАКАЗА =====
+        // ===== ПЕРЕМЕННЫЕ ДЛЯ ЗАКАЗА С СОХРАНЕНИЕМ СОСТОЯНИЯ =====
         let currentOrderType = 'login';
         let currentProductName = '';
         let currentQuantity = 1;
         let currentTotalPrice = 0;
         let currentOrderItems = [];
         let currentOrdersList = [];
+
+        // Сохраняем состояние заказа в localStorage
+        function saveOrderState() {
+            const state = {
+                type: currentOrderType,
+                productName: currentProductName,
+                quantity: currentQuantity,
+                totalPrice: currentTotalPrice,
+                items: currentOrderItems,
+                ordersList: currentOrdersList,
+                step: document.querySelector('.order-step.active')?.id || 'orderStepEmail',
+                email: document.getElementById('orderEmailInput')?.value || '',
+                code: document.getElementById('orderCodeInput')?.value || ''
+            };
+            localStorage.setItem('vintyx_order_state', JSON.stringify(state));
+        }
+
+        function restoreOrderState() {
+            const saved = localStorage.getItem('vintyx_order_state');
+            if (!saved) return false;
+            
+            try {
+                const state = JSON.parse(saved);
+                const orderPage = document.getElementById('pageOrderFlow');
+                
+                // Проверяем, что мы на странице заказа
+                if (!orderPage.classList.contains('active')) return false;
+                
+                currentOrderType = state.type || 'login';
+                currentProductName = state.productName || '';
+                currentQuantity = state.quantity || 1;
+                currentTotalPrice = state.totalPrice || 0;
+                currentOrderItems = state.items || [];
+                currentOrdersList = state.ordersList || [];
+                
+                if (state.email) {
+                    document.getElementById('orderEmailInput').value = state.email;
+                }
+                if (state.code) {
+                    document.getElementById('orderCodeInput').value = state.code;
+                }
+                
+                // Показываем нужный шаг
+                document.querySelectorAll('.order-step').forEach(step => step.classList.remove('active'));
+                const targetStep = document.getElementById(state.step || 'orderStepEmail');
+                if (targetStep) targetStep.classList.add('active');
+                
+                return true;
+            } catch {
+                return false;
+            }
+        }
+
+        function clearOrderState() {
+            localStorage.removeItem('vintyx_order_state');
+        }
 
         // ===== ОФОРМЛЕНИЕ ЗАКАЗА ИЗ КОРЗИНЫ =====
         function checkout() {
@@ -2615,6 +2715,8 @@
                 showReadyDB2(items);
             }
 
+            saveOrderState();
+
             if (tg && tg.BackButton) tg.BackButton.show();
             window.location.hash = 'order';
         }
@@ -2628,6 +2730,8 @@
                 clearTimeout(waitingTimer);
                 waitingTimer = null;
             }
+            
+            clearOrderState();
             
             document.getElementById('pageOrderFlow').classList.remove('active');
             document.querySelectorAll('.order-step').forEach(step => step.classList.remove('active'));
@@ -2664,6 +2768,8 @@
             document.getElementById('orderStepEmail').classList.remove('active');
             document.getElementById('orderStepCode').classList.add('active');
             
+            saveOrderState();
+
             setTimeout(() => {
                 document.getElementById('orderCodeInput').focus();
             }, 300);
@@ -2674,6 +2780,7 @@
         function goBackToEmail() {
             document.getElementById('orderStepCode').classList.remove('active');
             document.getElementById('orderStepEmail').classList.add('active');
+            saveOrderState();
         }
 
         // ===== ШАГ 2: ПОДТВЕРЖДЕНИЕ КОДА =====
@@ -2687,6 +2794,7 @@
             document.getElementById('orderStepCode').classList.remove('active');
             document.getElementById('orderStepWaiting').classList.add('active');
             
+            saveOrderState();
             startWaiting('login');
         }
 
@@ -2808,6 +2916,7 @@
                 showReadyDB1();
             }
             
+            clearOrderState();
             console.log('✅ Заказ завершён, баланс обновлён:', balance);
         }
 
@@ -2841,6 +2950,7 @@
             document.getElementById('readyDate').textContent = date;
 
             document.getElementById('orderStepReadyLogin').classList.add('active');
+            clearOrderState();
         }
 
         // ===== ШАГ 4: ГОТОВО (DB1 - МАТЧЕРИНО) =====
@@ -2878,6 +2988,7 @@
             document.getElementById('readyDateDB1').textContent = date;
 
             document.getElementById('orderStepReadyDB1').classList.add('active');
+            clearOrderState();
         }
 
         function showReadyDB2(items) {
@@ -2897,7 +3008,6 @@
             
             const orderData = JSON.parse(localStorage.getItem('vintyx_order_data') || '{}');
             const itemsList = orderData.items || [];
-            const ordersList = orderData.ordersList || [];
             const productName = itemsList[0]?.name || 'Подарок';
             const date = new Date().toISOString();
             const quantity = currentQuantity || 1;
@@ -2940,10 +3050,11 @@
             if (transactions.length > 50) transactions.pop();
             localStorage.setItem('vintyx_transactions', JSON.stringify(transactions));
             
+            clearOrderState();
             console.log('✅ Заказ завершён, баланс обновлён:', balance);
         }
 
-        // ===== ВЫВОД СРЕДСТВ (НОВЫЙ ПОПАП) =====
+        // ===== ВЫВОД СРЕДСТВ (премиум попап) =====
         function openWithdrawPopup() {
             document.getElementById('withdrawOverlay').classList.add('active');
             document.getElementById('withdrawPopup').classList.add('active');
@@ -3016,32 +3127,20 @@
 
             const date = new Date().toISOString();
 
+            // Только транзакции (без истории покупок)
             const transactions = JSON.parse(localStorage.getItem('vintyx_transactions') || '[]');
             transactions.unshift({
                 name: '💸 Вывод средств',
                 amount: amount,
                 fee: fee,
                 finalAmount: finalAmount,
-                card: card,
+                card: card.slice(0,4) + '****' + card.slice(-4),
                 type: 'negative',
                 date: date,
                 status: 'pending'
             });
             if (transactions.length > 50) transactions.pop();
             localStorage.setItem('vintyx_transactions', JSON.stringify(transactions));
-
-            const orders = JSON.parse(localStorage.getItem('vintyx_orders_history') || '[]');
-            orders.unshift({
-                name: `💸 Вывод (${card.slice(0,4)}****${card.slice(-4)})`,
-                amount: amount,
-                fee: fee,
-                finalAmount: finalAmount,
-                date: date,
-                status: 'pending',
-                type: 'withdraw'
-            });
-            if (orders.length > 50) orders.pop();
-            localStorage.setItem('vintyx_orders_history', JSON.stringify(orders));
 
             closeWithdrawPopup();
 
@@ -3051,6 +3150,7 @@
             document.getElementById('withdrawCardInput').value = '';
             updateWithdrawPopupInfo();
 
+            // Через 5 секунд меняем статус на "выполнен"
             setTimeout(() => {
                 const updatedTransactions = JSON.parse(localStorage.getItem('vintyx_transactions') || '[]');
                 const pendingIndex = updatedTransactions.findIndex(t => t.date === date && t.type === 'negative' && t.name === '💸 Вывод средств');
@@ -3058,14 +3158,6 @@
                     updatedTransactions[pendingIndex].status = 'completed';
                     localStorage.setItem('vintyx_transactions', JSON.stringify(updatedTransactions));
                 }
-
-                const updatedOrders = JSON.parse(localStorage.getItem('vintyx_orders_history') || '[]');
-                const orderIndex = updatedOrders.findIndex(o => o.date === date && o.type === 'withdraw');
-                if (orderIndex !== -1) {
-                    updatedOrders[orderIndex].status = 'completed';
-                    localStorage.setItem('vintyx_orders_history', JSON.stringify(updatedOrders));
-                }
-
                 updateProfileData();
                 showToast('✅ Вывод средств выполнен!', 'success');
             }, 5000);
@@ -3445,6 +3537,10 @@
                 return;
             }
             if (hash === 'order') {
+                // Восстанавливаем состояние заказа при переходе по хешу
+                if (document.getElementById('pageOrderFlow').classList.contains('active')) {
+                    restoreOrderState();
+                }
                 return;
             }
             if (hash && pages[hash]) {
@@ -3636,10 +3732,9 @@
                     statusColor = '#00E676';
                 }
                 
-                const isWithdraw = item.type === 'withdraw';
-                const icon = isWithdraw ? '💸' : '🎮';
-                const amountClass = isWithdraw ? 'negative' : 'negative';
-                const feeText = item.fee ? ` (комиссия ${item.fee} ₽)` : '';
+                // Вывод НЕ попадает в историю покупок
+                const icon = '🎮';
+                const amountClass = 'negative';
                 
                 html += `
                     <div class="history-item">
@@ -3647,7 +3742,7 @@
                             <span class="h-icon">${icon}</span>
                             <div class="h-info">
                                 <div class="h-name">${item.name}</div>
-                                <div class="h-date">${formattedDate}${feeText}</div>
+                                <div class="h-date">${formattedDate}</div>
                             </div>
                         </div>
                         <div style="text-align:right;">
@@ -3686,7 +3781,10 @@
                 
                 let displayName = item.name;
                 if (item.name === '💸 Вывод средств' && item.finalAmount) {
-                    displayName = `💸 Вывод (к получению: ${item.finalAmount} ₽)`;
+                    displayName = `💸 Вывод (${item.card || '—'})`;
+                    if (item.status === 'pending') {
+                        displayName += ' ⏳';
+                    }
                 }
                 
                 html += `
@@ -3694,7 +3792,7 @@
                         <div class="h-left">
                             <span class="h-icon">${icon}</span>
                             <div class="h-info">
-                                <div class="h-name">${displayName}${statusText}</div>
+                                <div class="h-name">${displayName}</div>
                                 <div class="h-date">${formattedDate}</div>
                             </div>
                         </div>
@@ -3843,6 +3941,11 @@
         loadTelegramUser();
         renderQuickAmounts();
 
+        // Восстанавливаем состояние заказа если мы на странице заказа
+        if (document.getElementById('pageOrderFlow').classList.contains('active')) {
+            restoreOrderState();
+        }
+
         setTimeout(function() {
             if (document.getElementById('pageBrawl').classList.contains('active')) {
                 renderProducts('all');
@@ -3850,8 +3953,9 @@
         }, 100);
 
         console.log('✅ Vintyx Store загружен');
-        console.log('📦 Система заказов активна');
+        console.log('📦 Система заказов активна (с сохранением состояния)');
         console.log('💸 Система вывода средств активна (комиссия 3%)');
+        console.log('🧊 Навигационный островок в стиле жидкого стекла');
     </script>
 </body>
 </html>
