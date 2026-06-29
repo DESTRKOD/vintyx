@@ -6,12 +6,7 @@
     <title>Vintyx Store</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body {
             background: #0A0A0F;
             font-family: -apple-system, 'Segoe UI', 'Roboto', system-ui, sans-serif;
@@ -19,7 +14,6 @@
             overflow: hidden;
             color: #FFFFFF;
         }
-
         .page {
             display: none;
             animation: fadeUp 0.4s ease;
@@ -31,27 +25,14 @@
             padding: 16px 20px 100px;
             position: relative;
         }
-
-        .page::-webkit-scrollbar {
-            width: 3px;
-        }
-        .page::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        .page::-webkit-scrollbar-thumb {
-            background: rgba(91, 140, 255, 0.3);
-            border-radius: 10px;
-        }
-
-        .page.active {
-            display: block;
-        }
-
+        .page::-webkit-scrollbar { width: 3px; }
+        .page::-webkit-scrollbar-track { background: transparent; }
+        .page::-webkit-scrollbar-thumb { background: rgba(91, 140, 255, 0.3); border-radius: 10px; }
+        .page.active { display: block; }
         @keyframes fadeUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         .page .floating-bg {
             position: fixed;
             font-size: 3rem;
@@ -65,19 +46,16 @@
         .page .floating-bg:nth-child(2) { bottom: 15%; left: 3%; font-size: 4rem; animation-delay: 2.5s; }
         .page .floating-bg:nth-child(3) { top: 50%; right: 2%; font-size: 3rem; animation-delay: 5s; }
         .page .floating-bg:nth-child(4) { bottom: 40%; left: 5%; font-size: 3.5rem; animation-delay: 1.5s; }
-
         @keyframes floatGem {
             0%, 100% { transform: translateY(0px) rotate(0deg); }
             50% { transform: translateY(-15px) rotate(10deg); }
         }
-
         .page .content {
             max-width: 480px;
             margin: 0 auto;
             position: relative;
             z-index: 1;
         }
-
         .main-header {
             display: flex;
             justify-content: space-between;
@@ -85,7 +63,6 @@
             margin-bottom: 20px;
             padding-top: 4px;
         }
-
         .main-header .header-left .store-name {
             font-size: 0.7rem;
             color: rgba(255, 255, 255, 0.2);
@@ -93,7 +70,6 @@
             letter-spacing: 0.5px;
             text-transform: uppercase;
         }
-
         .main-header .header-left .greeting {
             font-size: 1.6rem;
             font-weight: 700;
@@ -103,7 +79,6 @@
             background-clip: text;
             letter-spacing: -0.5px;
         }
-
         .section-title {
             font-size: 1.1rem;
             font-weight: 700;
@@ -114,7 +89,6 @@
             gap: 8px;
         }
         .section-title .emoji { font-size: 1.2rem; }
-
         .game-scroll {
             display: flex;
             flex-direction: column;
@@ -122,7 +96,6 @@
             margin-bottom: 24px;
             position: relative;
         }
-
         .game-card {
             background: rgba(255, 255, 255, 0.04);
             border-radius: 24px;
@@ -137,7 +110,6 @@
             backdrop-filter: blur(10px);
             position: relative;
         }
-
         .game-card:active { transform: scale(0.98); }
         .game-card .game-left {
             display: flex;
@@ -203,25 +175,23 @@
             color: rgba(255, 255, 255, 0.15);
             transition: all 0.2s;
         }
-
         .game-card.brawl {
             background: linear-gradient(135deg, rgba(255, 193, 7, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
             border-color: rgba(255, 193, 7, 0.08);
         }
         .game-card.brawl .game-tag { background: rgba(255, 193, 7, 0.12); color: #FFD54F; }
-
         .game-card.clash {
             background: linear-gradient(135deg, rgba(33, 150, 243, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
             border-color: rgba(33, 150, 243, 0.08);
         }
         .game-card.clash .game-tag { background: rgba(33, 150, 243, 0.12); color: #64B5F6; }
-
         .game-card.telegram {
             background: linear-gradient(135deg, rgba(91, 140, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
             border-color: rgba(91, 140, 255, 0.08);
         }
         .game-card.telegram .game-tag { background: rgba(91, 140, 255, 0.12); color: #7DD8FF; }
 
+        /* Game Page */
         .game-page .game-header {
             display: flex;
             align-items: center;
@@ -246,7 +216,6 @@
             font-family: inherit;
         }
         .game-page .game-header .back-btn:active { transform: scale(0.9); }
-
         .game-page .game-header .game-title {
             font-size: 1.4rem;
             font-weight: 700;
@@ -260,7 +229,6 @@
             height: 36px;
             object-fit: contain;
         }
-
         .game-page .categories {
             display: flex;
             gap: 8px;
@@ -271,7 +239,6 @@
             padding: 2px 0;
         }
         .game-page .categories::-webkit-scrollbar { display: none; }
-
         .game-page .category-btn {
             padding: 6px 14px;
             border-radius: 18px;
@@ -292,14 +259,12 @@
             border-color: rgba(91, 140, 255, 0.3);
             color: #7DD8FF;
         }
-
         .game-page .products-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
             margin-bottom: 20px;
         }
-
         .game-page .product-card {
             background: rgba(255, 255, 255, 0.04);
             border-radius: 18px;
@@ -313,11 +278,7 @@
             backdrop-filter: blur(10px);
         }
         .game-page .product-card:active { transform: scale(0.96); }
-
-        .game-page .product-card .prod-icon {
-            font-size: 2rem;
-            margin-bottom: 4px;
-        }
+        .game-page .product-card .prod-icon { font-size: 2rem; margin-bottom: 4px; }
         .game-page .product-card .prod-name {
             font-size: 0.8rem;
             font-weight: 600;
@@ -330,7 +291,6 @@
             color: rgba(255, 255, 255, 0.2);
             margin-bottom: 6px;
         }
-
         .game-page .product-card .prod-btn {
             background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
             color: white;
@@ -351,19 +311,14 @@
             text-align: center;
             width: 100%;
         }
-
         .game-page .product-card .prod-btn:active { transform: scale(0.95); }
-        .game-page .product-card .prod-btn .price {
-            font-size: 0.75rem;
-            font-weight: 700;
-        }
+        .game-page .product-card .prod-btn .price { font-size: 0.75rem; font-weight: 700; }
         .game-page .product-card .prod-btn .cart-text {
             font-size: 0.4rem;
             font-weight: 400;
             opacity: 0.5;
             letter-spacing: 0.2px;
         }
-
         .game-page .product-card .prod-type-label {
             font-size: 0.5rem;
             padding: 2px 8px;
@@ -372,6 +327,7 @@
             white-space: nowrap;
         }
 
+        /* Cart */
         .cart-page .cart-header {
             display: flex;
             align-items: center;
@@ -401,7 +357,6 @@
             font-weight: 700;
             color: #FFFFFF;
         }
-
         .cart-item {
             background: rgba(255, 255, 255, 0.04);
             border-radius: 16px;
@@ -444,7 +399,6 @@
             padding: 4px;
         }
         .cart-item .remove-btn:active { transform: scale(0.8); color: #FF3B6F; }
-
         .cart-empty {
             text-align: center;
             padding: 60px 20px;
@@ -452,7 +406,6 @@
         }
         .cart-empty .empty-icon { font-size: 3rem; margin-bottom: 12px; opacity: 0.3; }
         .cart-empty .empty-text { font-size: 0.9rem; }
-
         .cart-total {
             background: rgba(255, 255, 255, 0.04);
             border-radius: 16px;
@@ -476,7 +429,6 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
         .checkout-btn {
             background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
             color: white;
@@ -500,6 +452,7 @@
             transform: none;
         }
 
+        /* Profile */
         .profile-page .back-btn {
             display: inline-flex;
             align-items: center;
@@ -514,7 +467,6 @@
             padding: 0;
         }
         .profile-page .back-btn:active { opacity: 0.5; }
-
         .profile-page .profile-header {
             display: flex;
             align-items: center;
@@ -522,7 +474,6 @@
             margin-bottom: 20px;
             padding-top: 10px;
         }
-
         .profile-page .profile-avatar {
             width: 72px;
             height: 72px;
@@ -535,7 +486,6 @@
             font-size: 2.4rem;
             flex-shrink: 0;
         }
-
         .profile-page .profile-info .name {
             font-size: 1.4rem;
             font-weight: 700;
@@ -550,7 +500,6 @@
             color: rgba(255, 255, 255, 0.5);
             margin-top: 2px;
         }
-
         .profile-page .balance-card {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 20px;
@@ -581,7 +530,6 @@
             font-weight: 400;
             margin-left: 4px;
         }
-
         .profile-page .btn-primary {
             background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
             color: white;
@@ -597,7 +545,6 @@
             font-family: inherit;
         }
         .profile-page .btn-primary:active { transform: scale(0.97); }
-
         .profile-page .btn-secondary {
             background: rgba(255, 255, 255, 0.06);
             color: white;
@@ -623,7 +570,6 @@
         .profile-page .btn-secondary.withdraw-btn:active {
             background: rgba(255, 59, 111, 0.12);
         }
-
         .profile-page .btn-row {
             display: flex;
             gap: 10px;
@@ -632,7 +578,6 @@
         .profile-page .btn-row .btn-secondary {
             flex: 1;
         }
-
         .profile-page .recharge-section {
             background: rgba(255, 255, 255, 0.04);
             border-radius: 16px;
@@ -645,7 +590,6 @@
             display: block;
             animation: fadeUp 0.3s ease;
         }
-
         .profile-page .recharge-section .quick-amounts {
             display: flex;
             gap: 8px;
@@ -672,11 +616,6 @@
             background: rgba(91, 140, 255, 0.15);
             color: #7DD8FF;
         }
-        .profile-page .recharge-section .quick-amounts .quick-btn.recent {
-            border-color: rgba(91, 140, 255, 0.2);
-            color: #7DD8FF;
-        }
-
         .profile-page .recharge-section .input-group {
             display: flex;
             flex-direction: column;
@@ -704,7 +643,6 @@
         .profile-page .recharge-section input::placeholder {
             color: rgba(255, 255, 255, 0.2);
         }
-
         .profile-page .recharge-section .btn-recharge {
             width: 100%;
             padding: 12px;
@@ -719,7 +657,6 @@
             font-family: inherit;
         }
         .profile-page .recharge-section .btn-recharge:active { transform: scale(0.97); }
-
         .profile-page .contact-section {
             margin-top: 16px;
             padding: 8px 16px;
@@ -754,7 +691,6 @@
             transform: scale(0.95);
             background: rgba(91, 140, 255, 0.12);
         }
-
         .profile-page .section {
             margin-top: 24px;
         }
@@ -766,7 +702,6 @@
             font-weight: 600;
             margin-bottom: 12px;
         }
-
         .profile-page .history-item {
             display: flex;
             justify-content: space-between;
@@ -782,9 +717,7 @@
             align-items: center;
             gap: 10px;
         }
-        .profile-page .history-item .h-icon {
-            font-size: 1.2rem;
-        }
+        .profile-page .history-item .h-icon { font-size: 1.2rem; }
         .profile-page .history-item .h-info .h-name {
             font-weight: 500;
             color: #FFFFFF;
@@ -798,13 +731,8 @@
             font-weight: 700;
             font-size: 0.9rem;
         }
-        .profile-page .history-item .h-amount.positive {
-            color: #00E676;
-        }
-        .profile-page .history-item .h-amount.negative {
-            color: #FF3B6F;
-        }
-
+        .profile-page .history-item .h-amount.positive { color: #00E676; }
+        .profile-page .history-item .h-amount.negative { color: #FF3B6F; }
         .profile-page .history-empty {
             text-align: center;
             padding: 30px 20px;
@@ -816,6 +744,7 @@
             opacity: 0.3;
         }
 
+        /* Withdraw */
         .withdraw-overlay {
             position: fixed;
             top: 0;
@@ -828,10 +757,7 @@
             display: none;
             animation: overlayIn 0.3s ease;
         }
-        .withdraw-overlay.active {
-            display: block;
-        }
-
+        .withdraw-overlay.active { display: block; }
         .withdraw-popup {
             position: fixed;
             top: 50%;
@@ -851,16 +777,11 @@
             animation: withdrawPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             padding: 0;
         }
-        .withdraw-popup.active {
-            display: flex;
-            flex-direction: column;
-        }
-
+        .withdraw-popup.active { display: flex; flex-direction: column; }
         @keyframes withdrawPop {
             0% { transform: translate(-50%, -50%) scale(0.85) translateY(30px); opacity: 0; }
             100% { transform: translate(-50%, -50%) scale(1) translateY(0); opacity: 1; }
         }
-
         .withdraw-popup .popup-header {
             display: flex;
             align-items: center;
@@ -877,9 +798,7 @@
             font-size: 1.2rem;
             color: #FFFFFF;
         }
-        .withdraw-popup .popup-header .title .icon {
-            font-size: 1.6rem;
-        }
+        .withdraw-popup .popup-header .title .icon { font-size: 1.6rem; }
         .withdraw-popup .popup-header .close-btn {
             width: 36px;
             height: 36px;
@@ -899,7 +818,6 @@
             transform: scale(0.9);
             background: rgba(255, 255, 255, 0.08);
         }
-
         .withdraw-popup .popup-body {
             padding: 20px 24px 24px;
             flex: 1;
@@ -927,7 +845,6 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
         .withdraw-popup .popup-body .input-group {
             display: flex;
             flex-direction: column;
@@ -977,7 +894,6 @@
             letter-spacing: 1px;
             font-size: 0.95rem;
         }
-
         .withdraw-popup .popup-body .calc-info {
             background: rgba(255, 255, 255, 0.02);
             border-radius: 14px;
@@ -994,12 +910,8 @@
         .withdraw-popup .popup-body .calc-info .calc-row .calc-label {
             color: rgba(255, 255, 255, 0.35);
         }
-        .withdraw-popup .popup-body .calc-info .calc-row .calc-value {
-            font-weight: 500;
-        }
-        .withdraw-popup .popup-body .calc-info .calc-row .calc-value.fee {
-            color: #FF3B6F;
-        }
+        .withdraw-popup .popup-body .calc-info .calc-row .calc-value { font-weight: 500; }
+        .withdraw-popup .popup-body .calc-info .calc-row .calc-value.fee { color: #FF3B6F; }
         .withdraw-popup .popup-body .calc-info .calc-row .calc-value.final {
             color: #00E676;
             font-size: 1.05rem;
@@ -1009,14 +921,12 @@
             background: rgba(255, 255, 255, 0.04);
             margin: 6px 0;
         }
-
         .withdraw-popup .popup-body .fee-note {
             font-size: 0.6rem;
             color: rgba(255, 255, 255, 0.15);
             text-align: center;
             margin-top: 10px;
         }
-
         .withdraw-popup .popup-body .btn-withdraw {
             width: 100%;
             padding: 16px;
@@ -1032,15 +942,14 @@
             box-shadow: 0 4px 24px rgba(255, 59, 111, 0.15);
             margin-top: 16px;
         }
-        .withdraw-popup .popup-body .btn-withdraw:active {
-            transform: scale(0.97);
-        }
+        .withdraw-popup .popup-body .btn-withdraw:active { transform: scale(0.97); }
         .withdraw-popup .popup-body .btn-withdraw:disabled {
             opacity: 0.3;
             cursor: not-allowed;
             transform: none;
         }
 
+        /* Order Flow */
         .order-flow-page .back-btn {
             display: inline-flex;
             align-items: center;
@@ -1055,32 +964,16 @@
             padding: 0;
         }
         .order-flow-page .back-btn:active { opacity: 0.5; }
-
         .order-step {
             display: none;
             animation: fadeUp 0.4s ease;
         }
-        .order-step.active {
-            display: block;
-        }
-
-        .order-header {
-            margin-bottom: 24px;
-        }
-        .order-header.text-center {
-            text-align: center;
-        }
-        .order-header .order-icon {
-            font-size: 3rem;
-            margin-bottom: 8px;
-        }
-        .order-header .order-icon.waiting-icon {
-            animation: pulse 1.5s infinite;
-        }
-        .order-header .order-icon.ready-icon {
-            animation: bounce 0.6s ease;
-        }
-
+        .order-step.active { display: block; }
+        .order-header { margin-bottom: 24px; }
+        .order-header.text-center { text-align: center; }
+        .order-header .order-icon { font-size: 3rem; margin-bottom: 8px; }
+        .order-header .order-icon.waiting-icon { animation: pulse 1.5s infinite; }
+        .order-header .order-icon.ready-icon { animation: bounce 0.6s ease; }
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.3; }
@@ -1089,7 +982,6 @@
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.2); }
         }
-
         .order-header .order-title {
             font-size: 1.4rem;
             font-weight: 700;
@@ -1100,7 +992,6 @@
             font-size: 0.9rem;
             color: rgba(255, 255, 255, 0.4);
         }
-
         .order-input-group {
             display: flex;
             flex-direction: column;
@@ -1131,7 +1022,6 @@
             letter-spacing: 8px;
             font-weight: 700;
         }
-
         .order-btn-primary {
             padding: 14px 24px;
             border-radius: 14px;
@@ -1148,7 +1038,6 @@
             text-align: center;
         }
         .order-btn-primary:active { transform: scale(0.97); }
-
         .order-btn-small {
             padding: 8px 16px;
             border-radius: 10px;
@@ -1166,7 +1055,6 @@
             transform: scale(0.95);
             background: rgba(255, 255, 255, 0.12);
         }
-
         .order-info {
             margin-top: 16px;
             display: flex;
@@ -1182,7 +1070,6 @@
             text-decoration: underline;
         }
         .order-info .resend-link:active { opacity: 0.5; }
-
         .waiting-animation {
             display: flex;
             flex-direction: column;
@@ -1198,9 +1085,7 @@
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
         .waiting-text {
             color: rgba(255, 255, 255, 0.3);
             font-size: 0.9rem;
@@ -1220,7 +1105,6 @@
             border-radius: 4px;
             transition: width 0.1s linear;
         }
-
         .ready-content {
             background: rgba(255, 255, 255, 0.04);
             border-radius: 16px;
@@ -1234,9 +1118,7 @@
             padding: 8px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.04);
         }
-        .ready-item:last-child {
-            border-bottom: none;
-        }
+        .ready-item:last-child { border-bottom: none; }
         .ready-item .ready-label {
             color: rgba(255, 255, 255, 0.4);
             font-size: 0.85rem;
@@ -1251,7 +1133,6 @@
             font-size: 3rem;
             padding: 10px 0;
         }
-
         .ready-link-box {
             display: flex;
             align-items: center;
@@ -1259,9 +1140,7 @@
             padding: 8px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.04);
         }
-        .ready-link-box:last-child {
-            border-bottom: none;
-        }
+        .ready-link-box:last-child { border-bottom: none; }
         .ready-link {
             flex: 1;
             color: #7DD8FF;
@@ -1277,7 +1156,6 @@
             min-width: 28px;
             font-weight: 500;
         }
-
         .ready-friend-box {
             display: flex;
             align-items: center;
@@ -1291,9 +1169,7 @@
             align-items: center;
             gap: 10px;
         }
-        .friend-info .friend-icon {
-            font-size: 2rem;
-        }
+        .friend-info .friend-icon { font-size: 2rem; }
         .friend-info .friend-name {
             color: #FFFFFF;
             font-weight: 600;
@@ -1304,6 +1180,7 @@
             font-size: 0.75rem;
         }
 
+        /* Info */
         .info-page .info-card {
             background: rgba(255, 255, 255, 0.04);
             border-radius: 28px;
@@ -1330,7 +1207,6 @@
             line-height: 1.6;
             margin-bottom: 20px;
         }
-
         .info-page .info-card .info-contact {
             padding: 12px 16px;
             background: rgba(91, 140, 255, 0.04);
@@ -1367,7 +1243,6 @@
             transform: scale(0.95);
             background: rgba(91, 140, 255, 0.1);
         }
-
         .info-page .info-card .info-footer {
             padding: 16px;
             background: rgba(255, 255, 255, 0.02);
@@ -1386,6 +1261,7 @@
             margin-top: 4px;
         }
 
+        /* Bottom Nav */
         .bottom-nav {
             position: fixed;
             bottom: 24px;
@@ -1406,7 +1282,6 @@
             justify-content: space-around;
             transition: all 0.3s ease;
         }
-
         .bottom-nav::before {
             content: '';
             position: absolute;
@@ -1419,7 +1294,6 @@
             mask-composite: exclude;
             pointer-events: none;
         }
-
         .nav-item {
             display: flex;
             flex-direction: column;
@@ -1469,7 +1343,6 @@
             animation: navPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .nav-item:active { transform: scale(0.88); }
-
         .nav-item .badge {
             position: absolute;
             top: 2px;
@@ -1481,10 +1354,7 @@
             border: 1.5px solid rgba(20, 20, 40, 0.8);
             animation: pulse 2s infinite;
         }
-        .nav-item .badge.hidden {
-            display: none;
-        }
-
+        .nav-item .badge.hidden { display: none; }
         .nav-item.active::before {
             content: '';
             position: absolute;
@@ -1496,7 +1366,6 @@
             animation: islandGlow 0.4s ease;
             border: 1px solid rgba(91, 140, 255, 0.04);
         }
-
         @keyframes islandGlow {
             0% { transform: scale(0.8); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
@@ -1507,6 +1376,7 @@
             100% { transform: scale(1.1); }
         }
 
+        /* Toast */
         .toast {
             position: fixed;
             bottom: 100px;
@@ -1524,113 +1394,47 @@
             max-width: 90%;
             text-align: center;
         }
-        .toast.success {
-            border-color: rgba(0, 200, 83, 0.3);
-        }
-        .toast.error {
-            border-color: rgba(255, 59, 111, 0.3);
-        }
-
+        .toast.success { border-color: rgba(0, 200, 83, 0.3); }
+        .toast.error { border-color: rgba(255, 59, 111, 0.3); }
         @keyframes toastIn {
             from { opacity: 0; transform: translateX(-50%) translateY(20px); }
             to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
 
         @media (max-width: 500px) {
-            .game-page .products-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 8px;
-            }
-            .profile-page .btn-row {
-                flex-direction: column;
-            }
-            .withdraw-popup {
-                width: calc(100% - 24px);
-                border-radius: 24px;
-            }
-            .withdraw-popup .popup-body {
-                padding: 16px 18px 20px;
-            }
-            .bottom-nav {
-                padding: 8px 10px;
-                gap: 2px;
-                border-radius: 30px;
-                max-width: 340px;
-            }
-            .nav-item {
-                padding: 4px 6px;
-                min-width: 36px;
-            }
-            .nav-item .nav-icon {
-                width: 22px;
-                height: 22px;
-            }
-            .nav-item .nav-label {
-                font-size: 0.5rem;
-            }
-            .nav-item .badge {
-                width: 6px;
-                height: 6px;
-                top: 1px;
-                right: 1px;
-            }
+            .game-page .products-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .profile-page .btn-row { flex-direction: column; }
+            .withdraw-popup { width: calc(100% - 24px); border-radius: 24px; }
+            .withdraw-popup .popup-body { padding: 16px 18px 20px; }
+            .bottom-nav { padding: 8px 10px; gap: 2px; border-radius: 30px; max-width: 340px; }
+            .nav-item { padding: 4px 6px; min-width: 36px; }
+            .nav-item .nav-icon { width: 22px; height: 22px; }
+            .nav-item .nav-label { font-size: 0.5rem; }
+            .nav-item .badge { width: 6px; height: 6px; top: 1px; right: 1px; }
         }
-
         @media (max-width: 380px) {
-            .profile-page .recharge-section .input-row {
-                flex-direction: column;
-            }
-            .profile-page .profile-avatar {
-                width: 56px;
-                height: 56px;
-                font-size: 1.8rem;
-            }
-            .profile-page .balance-card .amount {
-                font-size: 1.8rem;
-            }
+            .profile-page .recharge-section .input-row { flex-direction: column; }
+            .profile-page .profile-avatar { width: 56px; height: 56px; font-size: 1.8rem; }
+            .profile-page .balance-card .amount { font-size: 1.8rem; }
             .profile-page .recharge-section .quick-amounts .quick-btn {
                 min-width: 45px;
                 font-size: 0.65rem;
                 padding: 5px 6px;
             }
-            .game-page .products-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 6px;
-            }
+            .game-page .products-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
             .game-page .product-card .prod-btn {
                 font-size: 0.65rem;
                 min-height: 40px;
                 padding: 6px 8px;
             }
-            .game-page .product-card .prod-btn .price {
-                font-size: 0.65rem;
-            }
-            .withdraw-popup {
-                border-radius: 20px;
-            }
-            .bottom-nav {
-                padding: 6px 8px;
-                gap: 1px;
-                border-radius: 26px;
-                max-width: 300px;
-            }
-            .nav-item {
-                padding: 4px 4px;
-                min-width: 30px;
-            }
-            .nav-item .nav-icon {
-                width: 18px;
-                height: 18px;
-            }
-            .nav-item .nav-label {
-                font-size: 0.4rem;
-            }
-            .nav-item .badge {
-                width: 5px;
-                height: 5px;
-            }
+            .game-page .product-card .prod-btn .price { font-size: 0.65rem; }
+            .withdraw-popup { border-radius: 20px; }
+            .bottom-nav { padding: 6px 8px; gap: 1px; border-radius: 26px; max-width: 300px; }
+            .nav-item { padding: 4px 4px; min-width: 30px; }
+            .nav-item .nav-icon { width: 18px; height: 18px; }
+            .nav-item .nav-label { font-size: 0.4rem; }
+            .nav-item .badge { width: 5px; height: 5px; }
         }
-
         @supports (padding: max(0px)) {
             .page {
                 padding-left: max(20px, env(safe-area-inset-left));
@@ -1650,7 +1454,6 @@
         <span class="floating-bg">🎮</span>
         <span class="floating-bg">⭐</span>
         <span class="floating-bg">✨</span>
-
         <div class="content">
             <div class="main-header">
                 <div class="header-left">
@@ -1658,7 +1461,6 @@
                     <div class="greeting" id="greetingText">👋 Загрузка...</div>
                 </div>
             </div>
-
             <div class="section-title"><span class="emoji">🎮</span> Выберите раздел</div>
             <div class="game-scroll" id="gameList"></div>
         </div>
@@ -1669,7 +1471,6 @@
         <span class="floating-bg">💎</span>
         <span class="floating-bg">⚔️</span>
         <span class="floating-bg">🏆</span>
-
         <div class="content">
             <div class="game-header">
                 <button class="back-btn" onclick="closeGame()">←</button>
@@ -1678,15 +1479,12 @@
                     Brawl Stars
                 </div>
             </div>
-
             <div class="categories" id="brawlCategories">
                 <button class="category-btn active" data-cat="all" data-game="brawl">Все</button>
-                <button class="category-btn" data-cat="gems" data-game="brawl">Гемы</button>
-                <button class="category-btn" data-cat="pass" data-game="brawl">Brawl Pass</button>
-                <button class="category-btn" data-cat="store" data-game="brawl">Суперселл Стор</button>
-                <button class="category-btn" data-cat="skins" data-game="brawl">Матчерино</button>
+                <button class="category-btn" data-cat="login" data-game="brawl">По входу</button>
+                <button class="category-btn" data-cat="db1" data-game="brawl">Матчерино</button>
+                <button class="category-btn" data-cat="db2" data-game="brawl">Подарком</button>
             </div>
-
             <div class="products-grid" id="productsGrid"></div>
         </div>
     </div>
@@ -1696,13 +1494,11 @@
         <span class="floating-bg">🛒</span>
         <span class="floating-bg">💎</span>
         <span class="floating-bg">⭐</span>
-
         <div class="content">
             <div class="cart-header">
                 <button class="back-btn" onclick="closeCart()">←</button>
                 <div class="cart-title">🛒 Корзина</div>
             </div>
-
             <div id="cartItems"></div>
             <div id="cartTotal"></div>
             <button class="checkout-btn" id="checkoutBtn" onclick="checkout()">💳 Оплатить</button>
@@ -1715,10 +1511,8 @@
         <span class="floating-bg">🎮</span>
         <span class="floating-bg">⭐</span>
         <span class="floating-bg">✨</span>
-
         <div class="content">
             <button class="back-btn" onclick="closeProfile()">← Назад</button>
-
             <div class="profile-header">
                 <div class="profile-avatar">👤</div>
                 <div class="profile-info">
@@ -1727,7 +1521,6 @@
                     <div class="sub">Игровой донат быстро и безопасно</div>
                 </div>
             </div>
-
             <div class="balance-card">
                 <div class="label">💰 Баланс</div>
                 <div>
@@ -1735,9 +1528,8 @@
                     <span class="currency">₽</span>
                 </div>
             </div>
-
             <div class="recharge-section" id="rechargeSection">
-                <div class="quick-amounts" id="quickAmounts">
+                <div class="quick-amounts">
                     <button class="quick-btn" onclick="setAmount(100)">100 ₽</button>
                     <button class="quick-btn" onclick="setAmount(250)">250 ₽</button>
                     <button class="quick-btn" onclick="setAmount(500)">500 ₽</button>
@@ -1751,12 +1543,10 @@
                     <button class="btn-recharge" onclick="recharge()">💰 Пополнить</button>
                 </div>
             </div>
-
             <div class="btn-row">
                 <button class="btn-primary" onclick="toggleRecharge()">➕ Пополнить</button>
                 <button class="btn-secondary withdraw-btn" onclick="openWithdrawPopup()">💸 Вывод</button>
             </div>
-
             <div class="contact-section">
                 <span class="contact-label">👨‍💼 Администратор</span>
                 <div class="contact-link" onclick="openAdminChat()">
@@ -1764,12 +1554,10 @@
                     @v2ntyx
                 </div>
             </div>
-
             <div class="section">
                 <div class="section-label">📦 История покупок</div>
                 <div id="ordersHistory"></div>
             </div>
-
             <div class="section">
                 <div class="section-label">💳 Транзакции</div>
                 <div id="transactionsHistory"></div>
@@ -1792,7 +1580,6 @@
                 <span class="label">💰 Доступно для вывода</span>
                 <span class="value" id="withdrawBalanceDisplay">0 ₽</span>
             </div>
-
             <div class="input-group">
                 <span class="input-label">Сумма вывода</span>
                 <div class="input-wrapper">
@@ -1800,13 +1587,11 @@
                     <input type="number" id="withdrawInput" placeholder="0" min="50" step="1" oninput="updateWithdrawPopupInfo()">
                 </div>
             </div>
-
             <div class="input-group" style="margin-top:14px;">
                 <span class="input-label">Реквизиты (карта или СБП)</span>
                 <input type="text" id="withdrawCardInput" placeholder="0000 0000 0000 0000" class="card-input">
             </div>
-
-            <div class="calc-info" id="withdrawCalcInfo">
+            <div class="calc-info">
                 <div class="calc-row">
                     <span class="calc-label">💰 Сумма вывода</span>
                     <span class="calc-value" id="calcAmount">0 ₽</span>
@@ -1821,9 +1606,7 @@
                     <span class="calc-value final" id="calcFinal">0 ₽</span>
                 </div>
             </div>
-
             <div class="fee-note">💡 Минимальная сумма вывода — 50 ₽</div>
-
             <button class="btn-withdraw" id="withdrawBtn" onclick="processWithdraw()">💸 Вывести</button>
         </div>
     </div>
@@ -1833,7 +1616,6 @@
         <span class="floating-bg">📦</span>
         <span class="floating-bg">⚡</span>
         <span class="floating-bg">✨</span>
-
         <div class="content">
             <div id="orderStepEmail" class="order-step active">
                 <button class="back-btn" onclick="closeOrderFlow()">← Назад</button>
@@ -1844,13 +1626,12 @@
                 </div>
                 <div class="order-input-group">
                     <input type="email" id="orderEmailInput" placeholder="example@mail.com" class="order-input">
-                    <button class="order-btn-primary" onclick="sendCode()">📤 Отправить код</button>
+                    <button class="order-btn-primary" onclick="sendCode()">📤 Отправить</button>
                 </div>
                 <div class="order-info">
                     <span>🔒 Данные защищены и не передаются третьим лицам</span>
                 </div>
             </div>
-
             <div id="orderStepCode" class="order-step">
                 <button class="back-btn" onclick="goBackToEmail()">← Назад</button>
                 <div class="order-header">
@@ -1867,7 +1648,6 @@
                     <span class="resend-link" onclick="sendCode()">Отправить повторно</span>
                 </div>
             </div>
-
             <div id="orderStepWaiting" class="order-step">
                 <div class="order-header text-center">
                     <div class="order-icon waiting-icon">⏳</div>
@@ -1882,7 +1662,6 @@
                     </div>
                 </div>
             </div>
-
             <div id="orderStepReadyLogin" class="order-step">
                 <div class="order-header text-center">
                     <div class="order-icon ready-icon">🎉</div>
@@ -1892,7 +1671,7 @@
                 <div class="ready-content">
                     <div class="ready-item">
                         <span class="ready-label">📦 Товар:</span>
-                        <span class="ready-value" id="readyProductName">80 Gems</span>
+                        <span class="ready-value" id="readyProductName">Загрузка...</span>
                     </div>
                     <div class="ready-item">
                         <span class="ready-label">👤 Аккаунт:</span>
@@ -1900,13 +1679,12 @@
                     </div>
                     <div class="ready-item">
                         <span class="ready-label">📅 Дата:</span>
-                        <span class="ready-value" id="readyDate">Сегодня, 12:34</span>
+                        <span class="ready-value" id="readyDate">Сегодня</span>
                     </div>
                     <div class="ready-checkmark">✅</div>
                 </div>
                 <button class="order-btn-primary" onclick="closeOrderFlow()">🏠 На главную</button>
             </div>
-
             <div id="orderStepReadyDB1" class="order-step">
                 <div class="order-header text-center">
                     <div class="order-icon ready-icon">📥</div>
@@ -1918,15 +1696,14 @@
                         <span class="ready-label">📦 Товар:</span>
                         <span class="ready-value" id="readyProductNameDB1">Матчерино</span>
                     </div>
-                    <div id="readyLinksContainer" style="padding:4px 0;"></div>
+                    <div id="readyLinksContainer"></div>
                     <div class="ready-item">
                         <span class="ready-label">📅 Дата:</span>
-                        <span class="ready-value" id="readyDateDB1">Сегодня, 12:34</span>
+                        <span class="ready-value" id="readyDateDB1">Сегодня</span>
                     </div>
                 </div>
                 <button class="order-btn-primary" onclick="closeOrderFlow()">🏠 На главную</button>
             </div>
-
             <div id="orderStepReadyDB2" class="order-step">
                 <div class="order-header text-center">
                     <div class="order-icon ready-icon">👥</div>
@@ -1942,19 +1719,19 @@
                         <div class="friend-info">
                             <span class="friend-icon">👤</span>
                             <div>
-                                <div class="friend-name">Vintyx_Shop</div>
-                                <div class="friend-id">#ABC123XYZ</div>
+                                <div class="friend-name" id="friendName">Донор</div>
+                                <div class="friend-id" id="friendId">#Ссылка</div>
                             </div>
                         </div>
-                        <button class="order-btn-small" onclick="copyFriendId()">📋 Копировать ID</button>
+                        <button class="order-btn-small" onclick="copyFriendId()">📋 Копировать</button>
                     </div>
                     <div class="ready-item">
                         <span class="ready-label">⏳ Статус:</span>
-                        <span class="ready-value" style="color: #FFD54F;">В работе (24 часа)</span>
+                        <span class="ready-value" style="color: #FFD54F;" id="orderStatus">Ожидание</span>
                     </div>
                     <div class="ready-item">
                         <span class="ready-label">📅 Дата:</span>
-                        <span class="ready-value" id="readyDateDB2">Сегодня, 12:34</span>
+                        <span class="ready-value" id="readyDateDB2">Сегодня</span>
                     </div>
                 </div>
                 <button class="order-btn-primary" onclick="closeOrderFlow()">🏠 На главную</button>
@@ -1967,24 +1744,21 @@
         <span class="floating-bg">ℹ️</span>
         <span class="floating-bg">✨</span>
         <span class="floating-bg">💎</span>
-
         <div class="content">
             <div class="info-card">
                 <div class="info-icon">ℹ️</div>
                 <div class="info-title">Vintyx Store</div>
-                <div class="info-version">v2.0.0</div>
+                <div class="info-version">v3.0.0</div>
                 <div class="info-desc">
                     Премиальный игровой магазин.<br>
                     Быстро. Безопасно. Надёжно.
                 </div>
-
                 <div class="info-contact">
                     <span class="contact-label">👨‍💼 Администратор</span>
                     <div class="contact-link" onclick="openAdminChat()">
                         ✉️ @v2ntyx
                     </div>
                 </div>
-
                 <div class="info-footer">
                     <div class="label">Разработано с ❤️</div>
                     <div class="team">Vintyx Team</div>
@@ -1993,7 +1767,7 @@
         </div>
     </div>
 
-    <!-- NAVIGATION ISLAND -->
+    <!-- NAVIGATION -->
     <nav class="bottom-nav">
         <button class="nav-item" data-page="profile" onclick="navigateTo('profile')">
             <span class="nav-icon">
@@ -2004,7 +1778,6 @@
             </span>
             <span class="nav-label">Профиль</span>
         </button>
-
         <button class="nav-item active" data-page="home" onclick="navigateTo('home')">
             <span class="nav-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -2015,7 +1788,6 @@
             </span>
             <span class="nav-label">Главная</span>
         </button>
-
         <button class="nav-item" data-page="cart" onclick="navigateTo('cart')">
             <span class="nav-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -2027,7 +1799,6 @@
             <span class="nav-label">Корзина</span>
             <span class="badge hidden" id="navCartBadge"></span>
         </button>
-
         <button class="nav-item" data-page="info" onclick="navigateTo('info')">
             <span class="nav-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -2041,15 +1812,13 @@
     </nav>
 
     <script>
-        
-        // ===== КОНФИГУРАЦИЯ =====
-        const API_URL = 'https://vintyx-server-destr.waw0.amvera.tech'; 
-require('dotenv').config();
-const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
-        // ===== ИНИЦИАЛИЗАЦИЯ TELEGRAM =====
+       
+        const API_URL = 'https://vintyx-server-destr.waw0.amvera.tech';
+   
         const tg = window.Telegram?.WebApp;
         let currentUser = null;
         let cart = [];
+        let currentOrderData = null;
 
         if (tg) {
             tg.ready();
@@ -2057,7 +1826,9 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
             console.log('✅ Telegram WebApp инициализирован');
         }
 
-        // ===== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ =====
+        // ============================================================
+        // ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
+        // ============================================================
         function getInitData() {
             if (tg && tg.initData) {
                 return tg.initData;
@@ -2104,7 +1875,7 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
         }
 
         function copyFriendId() {
-            const friendId = document.querySelector('.friend-id')?.textContent || '';
+            const friendId = document.getElementById('friendId')?.textContent || '';
             navigator.clipboard?.writeText(friendId).then(() => {
                 showToast('📋 ID скопирован!', 'success');
             }).catch(() => {
@@ -2118,7 +1889,19 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
             });
         }
 
-        // ===== API ЗАПРОСЫ =====
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleString('ru-RU', {
+                day: 'numeric',
+                month: 'long',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // ============================================================
+        // API ЗАПРОСЫ
+        // ============================================================
         async function apiRequest(endpoint, method = 'GET', data = null) {
             const url = `${API_URL}${endpoint}`;
             const headers = {
@@ -2126,11 +1909,7 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
                 'X-Telegram-Init-Data': getInitData()
             };
 
-            const options = {
-                method,
-                headers,
-                credentials: 'include'
-            };
+            const options = { method, headers };
 
             if (data) {
                 options.body = JSON.stringify(data);
@@ -2138,11 +1917,12 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
 
             try {
                 const response = await fetch(url, options);
+                const result = await response.json();
+                
                 if (!response.ok) {
-                    const error = await response.json();
-                    throw new Error(error.error || 'Ошибка сервера');
+                    throw new Error(result.error || 'Ошибка сервера');
                 }
-                return await response.json();
+                return result;
             } catch (error) {
                 console.error('❌ API Error:', error);
                 showToast(error.message || 'Ошибка соединения с сервером', 'error');
@@ -2150,7 +1930,9 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
             }
         }
 
-        // ===== ЗАГРУЗКА ДАННЫХ ПОЛЬЗОВАТЕЛЯ =====
+        // ============================================================
+        // ЗАГРУЗКА ДАННЫХ ПОЛЬЗОВАТЕЛЯ
+        // ============================================================
         async function loadUserData() {
             try {
                 const user = await apiRequest('/api/auth/me');
@@ -2173,7 +1955,9 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
             }
         }
 
-        // ===== БАЛАНС =====
+        // ============================================================
+        // БАЛАНС
+        // ============================================================
         async function loadBalance() {
             try {
                 const data = await apiRequest('/api/balance');
@@ -2188,11 +1972,9 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
             }
         }
 
-        async function updateBalanceDisplay() {
-            await loadBalance();
-        }
-
-        // ===== ПОПОЛНЕНИЕ =====
+        // ============================================================
+        // ПОПОЛНЕНИЕ
+        // ============================================================
         function toggleRecharge() {
             const section = document.getElementById('rechargeSection');
             section.classList.toggle('active');
@@ -2224,8 +2006,8 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
 
                 showToast(`✅ Заявка на пополнение ${amount} ₽ отправлена!`, 'success');
 
-                if (tg && BOT_USERNAME) {
-                    tg.openTelegramLink(`https://t.me/${BOT_USERNAME}`);
+                if (tg) {
+                    tg.openTelegramLink('https://t.me/vintyx_store_bot');
                 }
 
                 input.value = '';
@@ -2238,7 +2020,9 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
             }
         }
 
-        // ===== ВЫВОД =====
+        // ============================================================
+        // ВЫВОД
+        // ============================================================
         function openWithdrawPopup() {
             loadBalance().then(balance => {
                 document.getElementById('withdrawBalanceDisplay').textContent = balance.toLocaleString() + ' ₽';
@@ -2323,7 +2107,9 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
             }
         }
 
-        // ===== ИСТОРИЯ =====
+        // ============================================================
+        // ИСТОРИЯ
+        // ============================================================
         async function loadOrders() {
             try {
                 const orders = await apiRequest('/api/orders');
@@ -2341,34 +2127,40 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
 
                 let html = '';
                 orders.slice(0, 20).forEach(item => {
-                    const date = new Date(item.created_at);
-                    const formattedDate = date.toLocaleDateString('ru-RU') + ' ' + 
-                        date.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'});
+                    const date = formatDate(item.created_at);
 
                     let statusText = '✅ Выполнен';
                     let statusColor = '#00E676';
-                    if (item.status === 'pending' || item.status === 'waiting_admin') {
-                        statusText = '⏳ В обработке';
-                        statusColor = '#FFD54F';
-                    } else if (item.status === 'waiting') {
-                        statusText = '⏳ Ожидание';
-                        statusColor = '#FFD54F';
-                    }
-
-                    const products = JSON.parse(item.products_json || '[]');
-                    const productNames = products.map(p => p.name).join(', ');
+                    const statusMap = {
+                        'pending': '⏳ В обработке',
+                        'friend_requested': '📨 Запрос отправлен',
+                        'friend_accepted': '⏱️ Ожидание (24ч)',
+                        'timeout': '⏰ Требуется подтверждение',
+                        'completed': '✅ Выполнен',
+                        'cancelled': '❌ Отменён'
+                    };
+                    const colorMap = {
+                        'pending': '#FFD54F',
+                        'friend_requested': '#FFD54F',
+                        'friend_accepted': '#FFD54F',
+                        'timeout': '#FF6B6B',
+                        'completed': '#00E676',
+                        'cancelled': '#FF3B6F'
+                    };
+                    statusText = statusMap[item.status] || item.status;
+                    statusColor = colorMap[item.status] || '#FFFFFF';
 
                     html += `
                         <div class="history-item">
                             <div class="h-left">
                                 <span class="h-icon">🎮</span>
                                 <div class="h-info">
-                                    <div class="h-name">${productNames || 'Товар'}</div>
-                                    <div class="h-date">${formattedDate}</div>
+                                    <div class="h-name">${item.product_name}</div>
+                                    <div class="h-date">${date}</div>
                                 </div>
                             </div>
                             <div style="text-align:right;">
-                                <div class="h-amount negative">-${item.total_price} ₽</div>
+                                <div class="h-amount negative">-${item.product_price} ₽</div>
                                 <div style="font-size:0.6rem;color:${statusColor};">${statusText}</div>
                             </div>
                         </div>
@@ -2404,26 +2196,21 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
 
                 let html = '';
                 transactions.slice(0, 20).forEach(item => {
-                    const date = new Date(item.created_at);
-                    const formattedDate = date.toLocaleDateString('ru-RU') + ' ' + 
-                        date.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'});
-
-                    const icon = item.type === 'deposit' || item.type === 'positive' ? '💰' : '💸';
-                    const amountClass = item.type === 'deposit' || item.type === 'positive' ? 'positive' : 'negative';
-                    const sign = item.type === 'deposit' || item.type === 'positive' ? '+' : '-';
-
-                    const statusText = item.status === 'pending' ? ' ⏳' : '';
+                    const date = formatDate(item.created_at);
+                    const icon = item.type === 'deposit' ? '💰' : '💸';
+                    const amountClass = item.type === 'deposit' ? 'positive' : 'negative';
+                    const sign = item.type === 'deposit' ? '+' : '-';
 
                     html += `
                         <div class="history-item">
                             <div class="h-left">
                                 <span class="h-icon">${icon}</span>
                                 <div class="h-info">
-                                    <div class="h-name">${item.description || item.type}${statusText}</div>
-                                    <div class="h-date">${formattedDate}</div>
+                                    <div class="h-name">${item.description || item.type}</div>
+                                    <div class="h-date">${date}</div>
                                 </div>
                             </div>
-                            <span class="h-amount ${amountClass}">${sign}${item.amount} ₽</span>
+                            <span class="h-amount ${amountClass}">${sign}${Math.abs(item.amount)} ₽</span>
                         </div>
                     `;
                 });
@@ -2440,59 +2227,21 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
             }
         }
 
-        // ===== ТОВАРЫ =====
-        let productsData = {
-            gems: [],
-            pass: [],
-            store: [],
-            skins: []
-        };
+        // ============================================================
+        // ТОВАРЫ
+        // ============================================================
+        let productsData = [];
 
         async function loadProducts() {
             try {
-                const products = await apiRequest('/api/products');
-                
-                productsData = {
-                    gems: products.filter(p => p.category === 'gems'),
-                    pass: products.filter(p => p.category === 'pass'),
-                    store: products.filter(p => p.category === 'store'),
-                    skins: products.filter(p => p.category === 'skins')
-                };
-                
+                productsData = await apiRequest('/api/products');
                 renderProducts('all');
-                return products;
+                return productsData;
             } catch (error) {
                 console.error('❌ Ошибка загрузки товаров:', error);
-                // Используем локальные данные как резерв
-                useLocalProducts();
+                productsData = [];
+                renderProducts('all');
             }
-        }
-
-        function useLocalProducts() {
-            // Локальные данные на случай если сервер недоступен
-            productsData = {
-                gems: [
-                    { id: 1, icon: '💎', name: '80 гемов', price: 99, game: 'Brawl Stars', type: 'login', label: '🔑 Вход' },
-                    { id: 2, icon: '💎', name: '170 гемов', price: 199, game: 'Brawl Stars', type: 'login', label: '🔑 Вход' },
-                    { id: 3, icon: '💎', name: 'Матчерино', price: 399, game: 'Brawl Stars', type: 'db1', label: '📥 Матчерино' },
-                    { id: 4, icon: '💎', name: '950 Gems', price: 999, game: 'Brawl Stars', type: 'db2', label: '🎁 Подарком' },
-                ],
-                pass: [
-                    { id: 5, icon: '🎟️', name: 'Brawl Pass', price: 499, game: 'Brawl Stars', type: 'login', label: '🔑 Вход' },
-                    { id: 6, icon: '🎟️', name: 'Brawl Pass+', price: 799, game: 'Brawl Stars', type: 'db1', label: '📥 Матчерино' },
-                ],
-                store: [
-                    { id: 7, icon: '🏪', name: 'бп+', price: 149, game: 'Brawl Stars', type: 'db2', label: '🎁 Подарком' },
-                    { id: 8, icon: '🏪', name: 'хрень на палке', price: 299, game: 'Brawl Stars', type: 'login', label: '🔑 Вход' },
-                    { id: 9, icon: '🏪', name: 'какашка Skin', price: 599, game: 'Brawl Stars', type: 'db1', label: '📥 Матчерино' },
-                ],
-                skins: [
-                    { id: 10, icon: '🎨', name: 'кредит', price: 399, game: 'Brawl Stars', type: 'db2', label: '🎁 Подарком' },
-                    { id: 11, icon: '🎨', name: 'пустота', price: 499, game: 'Brawl Stars', type: 'login', label: '🔑 Вход' },
-                    { id: 12, icon: '🎨', name: 'долг', price: 299, game: 'Brawl Stars', type: 'db1', label: '📥 Матчерино' },
-                ]
-            };
-            renderProducts('all');
         }
 
         function renderProducts(category) {
@@ -2503,9 +2252,9 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
 
             let items = [];
             if (category === 'all') {
-                items = [...productsData.gems, ...productsData.pass, ...productsData.store, ...productsData.skins];
-            } else if (productsData[category]) {
-                items = productsData[category];
+                items = productsData;
+            } else {
+                items = productsData.filter(p => p.category === category);
             }
 
             if (items.length === 0) {
@@ -2524,28 +2273,32 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
 
                 let labelColor = '';
                 let labelBg = '';
-                if (item.type === 'login') {
+                let labelText = '';
+                if (item.category === 'login') {
                     labelColor = '#7DD8FF';
                     labelBg = 'rgba(91, 140, 255, 0.12)';
-                } else if (item.type === 'db1') {
+                    labelText = '🔑 Вход';
+                } else if (item.category === 'db1') {
                     labelColor = '#FFD54F';
                     labelBg = 'rgba(255, 193, 7, 0.12)';
-                } else if (item.type === 'db2') {
+                    labelText = '📥 Матчерино';
+                } else if (item.category === 'db2') {
                     labelColor = '#00E676';
                     labelBg = 'rgba(0, 200, 83, 0.12)';
+                    labelText = '🎁 Подарком';
                 }
 
-                const priceText = typeof item.price === 'number' ? `${item.price} ₽` : item.price;
+                const icon = item.image || '💎';
 
                 card.innerHTML = `
                     <div style="width:100%;display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-                        <div class="prod-icon" style="margin-bottom:0;font-size:1.8rem;">${item.icon}</div>
-                        <span class="prod-type-label" style="background:${labelBg};color:${labelColor};">${item.label || item.type}</span>
+                        <div class="prod-icon" style="margin-bottom:0;font-size:1.8rem;">${icon}</div>
+                        <span class="prod-type-label" style="background:${labelBg};color:${labelColor};">${labelText}</span>
                     </div>
                     <div class="prod-name">${item.name}</div>
-                    <div class="prod-sub">${item.game || 'Brawl Stars'}</div>
-                    <button class="prod-btn" onclick="addToCart({id: ${item.id}, icon: '${item.icon}', name: '${item.name}', price: ${typeof item.price === 'number' ? item.price : 0}, game: '${item.game || 'Brawl Stars'}', type: '${item.type}'})" style="margin-top:4px;">
-                        <span class="price">${priceText}</span>
+                    <div class="prod-sub">Brawl Stars</div>
+                    <button class="prod-btn" onclick="addToCart({id: ${item.id}, icon: '${icon}', name: '${item.name.replace(/'/g, "\\'")}', price: ${item.price}, category: '${item.category}'})" style="margin-top:4px;">
+                        <span class="price">${item.price} ₽</span>
                         <span class="cart-text">+ в корзину</span>
                     </button>
                 `;
@@ -2553,7 +2306,9 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
             });
         }
 
-        // ===== КОРЗИНА =====
+        // ============================================================
+        // КОРЗИНА (ВСЁ НА СЕРВЕРЕ, НО ВРЕМЕННО НА КЛИЕНТЕ)
+        // ============================================================
         function getCart() {
             try {
                 return JSON.parse(localStorage.getItem('vintyx_cart')) || [];
@@ -2642,7 +2397,7 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
                             <span class="item-icon">${item.icon}</span>
                             <div class="item-info">
                                 <div class="item-name">${item.name}</div>
-                                <div class="item-game">${item.game || 'Brawl Stars'} × ${quantity}</div>
+                                <div class="item-game">Brawl Stars × ${quantity}</div>
                             </div>
                         </div>
                         <div>
@@ -2669,7 +2424,7 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
             const cartData = getCart();
             if (cartData.length === 0) return null;
 
-            const types = cartData.map(item => item.type);
+            const types = cartData.map(item => item.category);
             const uniqueTypes = [...new Set(types)];
 
             if (uniqueTypes.length > 1) {
@@ -2692,13 +2447,10 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
             };
         }
 
-        // ===== ОФОРМЛЕНИЕ ЗАКАЗА =====
+        // ============================================================
+        // ОФОРМЛЕНИЕ ЗАКАЗА
+        // ============================================================
         let currentOrderType = 'login';
-        let currentProductName = '';
-        let currentQuantity = 1;
-        let currentTotalPrice = 0;
-        let currentOrderItems = [];
-        let currentOrdersList = [];
         let waitingTimer = null;
         let progressInterval = null;
 
@@ -2717,50 +2469,56 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
             }
 
             const total = calculateTotal();
-            const balanceData = await apiRequest('/api/balance');
-
-            if (balanceData.balance < total) {
-                showToast(`❌ Недостаточно средств!\n💰 Баланс: ${balanceData.balance} ₽\n📦 Сумма: ${total} ₽`, 'error');
+            
+            try {
+                const balanceData = await apiRequest('/api/balance');
+                if (balanceData.balance < total) {
+                    showToast(`❌ Недостаточно средств!\n💰 Баланс: ${balanceData.balance} ₽\n📦 Сумма: ${total} ₽`, 'error');
+                    return;
+                }
+            } catch (error) {
+                showToast('❌ Ошибка проверки баланса', 'error');
                 return;
             }
 
             const orderType = typeCheck.type;
-            const quantity = cartData.reduce((sum, item) => sum + (item.quantity || 1), 0);
+            currentOrderType = orderType;
 
-            currentOrderItems = cartData;
-            currentQuantity = quantity;
-            currentTotalPrice = total;
-            currentOrdersList = cartData.map(item => ({
-                name: item.name,
-                quantity: item.quantity || 1,
-                price: item.price || 0
-            }));
+            // Для login нужна почта
+            if (orderType === 'login') {
+                openOrderFlow('login');
+                return;
+            }
 
-            // Отправляем заказ на сервер
+            // Для db1 и db2 сразу отправляем заказ
             try {
-                const email = document.getElementById('orderEmailInput')?.value || '';
-                const order = await apiRequest('/api/orders', 'POST', {
+                const result = await apiRequest('/api/orders', 'POST', {
                     items: cartData,
-                    total: total,
-                    email: email
+                    total: total
                 });
 
                 saveCart([]);
                 renderCart();
                 updateCartCount();
 
-                openOrderFlow(orderType, cartData, quantity);
+                if (orderType === 'db1') {
+                    currentOrderData = result.orders[0];
+                    openOrderFlow('db1');
+                } else if (orderType === 'db2') {
+                    currentOrderData = result.orders[0];
+                    openOrderFlow('db2');
+                }
+
+                await loadBalance();
+                await loadOrders();
+                await loadTransactions();
 
             } catch (error) {
                 showToast(error.message || '❌ Ошибка оформления заказа', 'error');
             }
         }
 
-        function openOrderFlow(type, items, quantity = 1) {
-            currentOrderType = type;
-            currentProductName = items[0]?.name || 'Товар';
-            currentQuantity = quantity || 1;
-
+        function openOrderFlow(type) {
             Object.keys(pages).forEach(key => {
                 if (pages[key]) pages[key].classList.remove('active');
             });
@@ -2774,9 +2532,10 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
                 document.getElementById('orderStepEmail').classList.add('active');
             } else if (type === 'db1') {
                 document.getElementById('orderStepWaiting').classList.add('active');
-                startWaiting(type);
+                startWaiting('db1');
             } else if (type === 'db2') {
-                showReadyDB2(items);
+                document.getElementById('orderStepWaiting').classList.add('active');
+                startWaiting('db2');
             }
 
             if (tg && tg.BackButton) tg.BackButton.show();
@@ -2806,21 +2565,42 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
             if (tg && tg.BackButton) tg.BackButton.hide();
         }
 
-        function sendCode() {
+        async function sendCode() {
             const email = document.getElementById('orderEmailInput').value.trim();
             if (!email) {
                 showToast('📧 Введите почту', 'error');
                 return;
             }
 
-            document.getElementById('orderStepEmail').classList.remove('active');
-            document.getElementById('orderStepCode').classList.add('active');
+            const cartData = getCart();
+            const total = calculateTotal();
 
-            setTimeout(() => {
-                document.getElementById('orderCodeInput').focus();
-            }, 300);
+            try {
+                // Сохраняем заказ с почтой
+                const result = await apiRequest('/api/orders', 'POST', {
+                    items: cartData,
+                    total: total,
+                    email: email
+                });
 
-            showToast('📨 Код отправлен на ' + email, 'success');
+                currentOrderData = result.orders[0];
+
+                saveCart([]);
+                renderCart();
+                updateCartCount();
+
+                document.getElementById('orderStepEmail').classList.remove('active');
+                document.getElementById('orderStepCode').classList.add('active');
+
+                setTimeout(() => {
+                    document.getElementById('orderCodeInput').focus();
+                }, 300);
+
+                showToast('📨 Запрос на код отправлен админу', 'success');
+
+            } catch (error) {
+                showToast(error.message || '❌ Ошибка отправки', 'error');
+            }
         }
 
         function goBackToEmail() {
@@ -2828,16 +2608,26 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
             document.getElementById('orderStepEmail').classList.add('active');
         }
 
-        function confirmCode() {
+        async function confirmCode() {
             const code = document.getElementById('orderCodeInput').value.trim();
             if (!code || code.length < 4) {
                 showToast('🔑 Введите код из письма', 'error');
                 return;
             }
 
-            document.getElementById('orderStepCode').classList.remove('active');
-            document.getElementById('orderStepWaiting').classList.add('active');
-            startWaiting('login');
+            // Отправляем код на сервер
+            try {
+                await apiRequest(`/api/orders/${currentOrderData?.id}/code`, 'POST', {
+                    code: code
+                });
+
+                document.getElementById('orderStepCode').classList.remove('active');
+                document.getElementById('orderStepWaiting').classList.add('active');
+                startWaiting('login');
+
+            } catch (error) {
+                showToast(error.message || '❌ Ошибка отправки кода', 'error');
+            }
         }
 
         function startWaiting(type) {
@@ -2880,7 +2670,7 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
             } else if (type === 'db1') {
                 showReadyDB1();
             } else if (type === 'db2') {
-                // Уже показано
+                showReadyDB2();
             }
 
             loadOrders();
@@ -2890,20 +2680,9 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
         function showReadyLogin() {
             document.getElementById('orderStepWaiting').classList.remove('active');
 
-            const orderData = JSON.parse(localStorage.getItem('vintyx_order_data') || '{}');
-            const items = orderData.items || [];
-            const ordersList = orderData.ordersList || [];
-
-            let productName = '';
-            if (ordersList && ordersList.length > 0) {
-                productName = ordersList.map(item =>
-                    item.name + (item.quantity > 1 ? ` ×${item.quantity}` : '')
-                ).join(', ');
-            } else {
-                productName = items[0]?.name || 'Товар';
-            }
-
-            const email = orderData.email || 'example@mail.com';
+            const order = currentOrderData || {};
+            const productName = order.product_name || 'Товар';
+            const email = document.getElementById('orderEmailInput').value || 'example@mail.com';
             const date = new Date().toLocaleString('ru-RU', {
                 day: 'numeric',
                 month: 'long',
@@ -2916,16 +2695,14 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
             document.getElementById('readyDate').textContent = date;
 
             document.getElementById('orderStepReadyLogin').classList.add('active');
-            localStorage.removeItem('vintyx_order_data');
         }
 
         function showReadyDB1() {
             document.getElementById('orderStepWaiting').classList.remove('active');
 
-            const orderData = JSON.parse(localStorage.getItem('vintyx_order_data') || '{}');
-            const items = orderData.items || [];
-            const productName = items[0]?.name || 'Матчерино';
-            const quantity = currentQuantity || 1;
+            const order = currentOrderData || {};
+            const productName = order.product_name || 'Матчерино';
+            const link = order.link || 'https://brawlstars.com/claim/example';
             const date = new Date().toLocaleString('ru-RU', {
                 day: 'numeric',
                 month: 'long',
@@ -2933,51 +2710,45 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
                 minute: '2-digit'
             });
 
-            const subText = quantity > 1 ? `Перейдите по ссылкам (${quantity} шт.), чтобы получить заказ` : 'Перейдите по ссылке, чтобы получить заказ';
-            document.getElementById('readyDB1Sub').textContent = subText;
-
-            let linksHtml = '';
-            for (let i = 0; i < quantity; i++) {
-                const link = 'https://brawlstars.com/claim/' + Math.random().toString(36).substring(2, 10).toUpperCase();
-                linksHtml += `
-                    <div class="ready-link-box">
-                        <span class="ready-link-number">#${i+1}</span>
-                        <div class="ready-link">${link}</div>
-                        <button class="order-btn-small" onclick="copyLinkText('${link}')" style="font-size:0.65rem;padding:4px 10px;">📋</button>
-                    </div>
-                `;
-            }
-
-            document.getElementById('readyProductNameDB1').textContent = productName + (quantity > 1 ? ` (${quantity} шт.)` : '');
-            document.getElementById('readyLinksContainer').innerHTML = linksHtml;
+            document.getElementById('readyProductNameDB1').textContent = productName;
+            document.getElementById('readyDB1Sub').textContent = 'Перейдите по ссылке, чтобы получить заказ';
+            document.getElementById('readyLinksContainer').innerHTML = `
+                <div class="ready-link-box">
+                    <span class="ready-link-number">#1</span>
+                    <div class="ready-link">${link}</div>
+                    <button class="order-btn-small" onclick="copyLinkText('${link}')" style="font-size:0.65rem;padding:4px 10px;">📋</button>
+                </div>
+            `;
             document.getElementById('readyDateDB1').textContent = date;
 
             document.getElementById('orderStepReadyDB1').classList.add('active');
-            localStorage.removeItem('vintyx_order_data');
         }
 
-        function showReadyDB2(items) {
-            const orderData = JSON.parse(localStorage.getItem('vintyx_order_data') || '{}');
-            const itemsList = orderData.items || [];
-            const productName = itemsList[0]?.name || 'Подарок';
-            const quantity = currentQuantity || 1;
+        function showReadyDB2() {
+            document.getElementById('orderStepWaiting').classList.remove('active');
 
-            const friendId = '#' + Math.random().toString(36).substring(2, 10).toUpperCase();
-
-            document.getElementById('readyProductNameDB2').textContent = productName + (quantity > 1 ? ` (${quantity} шт.)` : '');
-            document.getElementById('readyDateDB2').textContent = new Date().toLocaleString('ru-RU', {
+            const order = currentOrderData || {};
+            const productName = order.product_name || 'Подарок';
+            const link = order.link || 'https://brawlstars.com/invite/example';
+            const date = new Date().toLocaleString('ru-RU', {
                 day: 'numeric',
                 month: 'long',
                 hour: '2-digit',
                 minute: '2-digit'
             });
-            document.querySelector('.friend-id').textContent = friendId;
+
+            document.getElementById('readyProductNameDB2').textContent = productName;
+            document.getElementById('friendId').textContent = link;
+            document.getElementById('friendName').textContent = 'Донор';
+            document.getElementById('readyDateDB2').textContent = date;
+            document.getElementById('orderStatus').textContent = '⏳ Ожидание подарка (24ч)';
 
             document.getElementById('orderStepReadyDB2').classList.add('active');
-            localStorage.removeItem('vintyx_order_data');
         }
 
-        // ===== НАВИГАЦИЯ =====
+        // ============================================================
+        // НАВИГАЦИЯ
+        // ============================================================
         const pages = {
             home: document.getElementById('pageHome'),
             profile: document.getElementById('pageProfile'),
@@ -3067,7 +2838,9 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
             showToast(`🎮 ${gameName}\nРаздел скоро появится!`, 'info');
         }
 
-        // ===== GAMES DATA =====
+        // ============================================================
+        // GAMES DATA
+        // ============================================================
         const gamesData = [
             {
                 id: 'brawl',
@@ -3095,7 +2868,9 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
             }
         ];
 
-        // ===== FAVORITES =====
+        // ============================================================
+        // FAVORITES
+        // ============================================================
         function getFavorites() {
             try {
                 return JSON.parse(localStorage.getItem('vintyx_favorites')) || {};
@@ -3158,7 +2933,9 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
             });
         }
 
-        // ===== CATEGORY FILTER =====
+        // ============================================================
+        // CATEGORY FILTER
+        // ============================================================
         document.addEventListener('click', function(e) {
             if (e.target.classList.contains('category-btn') && e.target.dataset.game === 'brawl') {
                 document.querySelectorAll('#brawlCategories .category-btn').forEach(b => b.classList.remove('active'));
@@ -3167,7 +2944,9 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
             }
         });
 
-        // ===== HASH ROUTING =====
+        // ============================================================
+        // HASH ROUTING
+        // ============================================================
         function handleHash() {
             const hash = window.location.hash.replace('#', '');
             if (hash === 'brawl') {
@@ -3175,9 +2954,6 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
                 return;
             }
             if (hash === 'order') {
-                if (document.getElementById('pageOrderFlow').classList.contains('active')) {
-                    // Восстанавливаем состояние если нужно
-                }
                 return;
             }
             if (hash && pages[hash]) {
@@ -3189,7 +2965,9 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
 
         window.addEventListener('hashchange', handleHash);
 
-        // ===== TELEGRAM BACK BUTTON =====
+        // ============================================================
+        // TELEGRAM BACK BUTTON
+        // ============================================================
         if (tg && tg.BackButton) {
             tg.BackButton.onClick(() => {
                 const currentPage = document.querySelector('.page.active');
@@ -3211,9 +2989,11 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
             });
         }
 
-        // ===== ИНИЦИАЛИЗАЦИЯ =====
+        // ============================================================
+        // ИНИЦИАЛИЗАЦИЯ
+        // ============================================================
         async function init() {
-            console.log('🚀 Vintyx Store v2.0');
+            console.log('🚀 Vintyx Store v3.0');
 
             await loadUserData();
             await loadProducts();
@@ -3223,7 +3003,6 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
             updateCartCount();
             updateNavCartBadge();
 
-            // Если страница Brawl Stars активна - рендерим товары
             if (document.getElementById('pageBrawl').classList.contains('active')) {
                 renderProducts('all');
             }
@@ -3231,7 +3010,6 @@ const token = process.env.BOT_TOKEN; // ← БЕЗОПАСНО!
             console.log('✅ Vintyx Store загружен');
         }
 
-        // Запускаем
         init();
     </script>
 </body>
