@@ -1956,36 +1956,33 @@
         }
 
         async function recharge() {
-            if (!currentUser) {
-                showToast('❌ Пожалуйста, авторизуйтесь через Telegram', 'error');
-                return;
-            }
+    const ok = await ensureUser();
+    if (!ok) return;
 
-            const input = document.getElementById('rechargeInput');
-            const amount = parseInt(input.value);
+    const input = document.getElementById('rechargeInput');
+    const amount = parseInt(input.value);
 
-            if (!amount || amount <= 0) {
-                showToast('❌ Введите корректную сумму', 'error');
-                return;
-            }
+    if (!amount || amount <= 0) {
+        showToast('❌ Введите корректную сумму', 'error');
+        return;
+    }
 
-            if (amount > 100000) {
-                showToast('❌ Сумма слишком большая', 'error');
-                return;
-            }
+    if (amount > 100000) {
+        showToast('❌ Сумма слишком большая', 'error');
+        return;
+    }
 
-            try {
-                await apiRequest('/api/balance/deposit', 'POST', { amount });
-                showToast(`✅ Заявка на пополнение ${amount} ₽ отправлена!`, 'success');
-                if (tg) tg.openTelegramLink('https://t.me/vintyx_store_bot');
-                input.value = '';
-                document.getElementById('rechargeSection').classList.remove('active');
-                await loadBalance();
-            } catch (error) {
-                showToast(error.message || '❌ Ошибка пополнения', 'error');
-            }
-        }
-
+    try {
+        await apiRequest('/api/balance/deposit', 'POST', { amount });
+        showToast(`✅ Заявка на пополнение ${amount} ₽ отправлена!`, 'success');
+        if (tg) tg.openTelegramLink('https://t.me/vintyx_store_bot');
+        input.value = '';
+        document.getElementById('rechargeSection').classList.remove('active');
+        await loadBalance();
+    } catch (error) {
+        showToast(error.message || '❌ Ошибка пополнения', 'error');
+    }
+}
         function openWithdrawPopup() {
             if (!currentUser) {
                 showToast('❌ Пожалуйста, авторизуйтесь через Telegram', 'error');
@@ -2884,6 +2881,17 @@
                 }
             });
         }
+
+        async function ensureUser() {
+    if (!currentUser) {
+        await loadUserData();
+    }
+    if (!currentUser) {
+        showToast('❌ Пожалуйста, авторизуйтесь через Telegram', 'error');
+        return false;
+    }
+    return true;
+}
 
         async function init() {
             await loadUserData();
