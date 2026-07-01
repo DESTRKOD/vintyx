@@ -1903,35 +1903,35 @@
         }
 
         async function loadUserData() {
-            try {
-                const initData = getInitData();
-                if (!initData) {
-                    document.getElementById('greetingText').textContent = '👋 Привет, Гость';
-                    document.getElementById('userName').textContent = 'Гость';
-                    document.getElementById('userUsername').textContent = '@guest';
-                    return null;
-                }
-
-                const user = await apiRequest('/api/auth/me');
-                currentUser = user;
-
-                document.getElementById('greetingText').textContent = `👋 Привет, ${user.first_name || 'Игрок'}`;
-                document.getElementById('userName').textContent = user.first_name || 'Игрок';
-                document.getElementById('userUsername').textContent = user.username ? `@${user.username}` : '@user';
-
-                await loadBalance();
-                await loadOrders();
-                await loadTransactions();
-
-                return user;
-            } catch (error) {
-                document.getElementById('greetingText').textContent = '👋 Привет, Гость';
-                document.getElementById('userName').textContent = 'Гость';
-                document.getElementById('userUsername').textContent = '@guest';
-                return null;
-            }
+    try {
+        const initData = getInitData();
+        if (!initData) {
+            document.getElementById('greetingText').textContent = '👋 Привет, Гость';
+            document.getElementById('userName').textContent = 'Гость';
+            document.getElementById('userUsername').textContent = '@guest';
+            return null;
         }
 
+        const user = await apiRequest('/api/auth/me');
+        currentUser = user;
+
+        document.getElementById('greetingText').textContent = `👋 Привет, ${user.first_name || 'Игрок'}`;
+        document.getElementById('userName').textContent = user.first_name || 'Игрок';
+        document.getElementById('userUsername').textContent = user.username ? `@${user.username}` : '@user';
+
+        await loadBalance();
+        await loadOrders();
+        await loadTransactions();
+
+        return user;
+    } catch (error) {
+        console.error('❌ Ошибка загрузки пользователя:', error);
+        document.getElementById('greetingText').textContent = '👋 Привет, Гость';
+        document.getElementById('userName').textContent = 'Гость';
+        document.getElementById('userUsername').textContent = '@guest';
+        return null;
+    }
+}
         async function loadBalance() {
             try {
                 const data = await apiRequest('/api/balance');
