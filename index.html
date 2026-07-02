@@ -1339,14 +1339,21 @@
         .nav-item:active { transform: scale(0.88); }
         .nav-item .badge {
             position: absolute;
-            top: 4px;
-            right: 4px;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
+            top: 2px;
+            right: 2px;
             background: #FF3B6F;
+            color: white;
+            font-size: 0.55rem;
+            font-weight: 700;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             border: 2px solid rgba(20, 20, 40, 0.8);
             animation: pulse 2s infinite;
+            padding: 0 4px;
         }
         .nav-item .badge.hidden { display: none; }
         .nav-item.active::before {
@@ -1403,7 +1410,7 @@
             .nav-item { padding: 6px 10px; min-width: 44px; }
             .nav-item .nav-icon { width: 28px; height: 28px; }
             .nav-item .nav-label { font-size: 0.6rem; }
-            .nav-item .badge { width: 8px; height: 8px; top: 2px; right: 2px; }
+            .nav-item .badge { font-size: 0.5rem; min-width: 16px; height: 16px; top: 1px; right: 1px; }
         }
         @media (max-width: 380px) {
             .profile-page .recharge-section .input-row { flex-direction: column; }
@@ -1426,7 +1433,7 @@
             .nav-item { padding: 4px 6px; min-width: 36px; }
             .nav-item .nav-icon { width: 24px; height: 24px; }
             .nav-item .nav-label { font-size: 0.5rem; }
-            .nav-item .badge { width: 6px; height: 6px; top: 1px; right: 1px; }
+            .nav-item .badge { font-size: 0.45rem; min-width: 14px; height: 14px; top: 0px; right: 0px; }
         }
         @supports (padding: max(0px)) {
             .page {
@@ -1619,11 +1626,26 @@
                     <span>🔒 Данные защищены и не передаются третьим лицам</span>
                 </div>
             </div>
+            <div id="orderStepWaitingCode" class="order-step">
+                <div class="order-header text-center">
+                    <div class="order-icon waiting-icon">⏳</div>
+                    <div class="order-title">Запрос кода отправлен</div>
+                    <div class="order-sub">Ожидайте, пока админ запросит код</div>
+                </div>
+                <div class="waiting-animation">
+                    <div class="spinner"></div>
+                    <div class="waiting-text">Админ запрашивает код...</div>
+                    <div class="waiting-progress">
+                        <div class="progress-bar" id="progressBarCode"></div>
+                    </div>
+                </div>
+                <button class="order-btn-primary" onclick="checkOrderStatus()" style="margin-top:20px;">🔄 Проверить статус</button>
+            </div>
             <div id="orderStepCode" class="order-step">
                 <button class="back-btn" onclick="goBackToEmail()">← Назад</button>
                 <div class="order-header">
                     <div class="order-icon">🔑</div>
-                    <div class="order-title">Подтверждение</div>
+                    <div class="order-title">Введите код</div>
                     <div class="order-sub">Введите код из письма</div>
                 </div>
                 <div class="order-input-group">
@@ -1631,8 +1653,7 @@
                     <button class="order-btn-primary" onclick="confirmCode()">✅ Подтвердить</button>
                 </div>
                 <div class="order-info">
-                    <span>📨 Код отправлен на вашу почту</span>
-                    <span class="resend-link" onclick="sendCode()">Отправить повторно</span>
+                    <span>📨 Код запрошен админом</span>
                 </div>
             </div>
             <div id="orderStepWaiting" class="order-step">
@@ -1803,6 +1824,7 @@
         let currentUser = null;
         let cart = [];
         let currentOrderData = null;
+        let orderCheckInterval = null;
 
         if (tg) {
             tg.ready();
@@ -2282,8 +2304,12 @@
             const count = cartData.reduce((sum, item) => sum + (item.quantity || 1), 0);
             const badge = document.getElementById('navCartBadge');
             if (badge) {
-                if (count > 0) badge.classList.remove('hidden');
-                else badge.classList.add('hidden');
+                if (count > 0) {
+                    badge.classList.remove('hidden');
+                    badge.textContent = count > 9 ? '9+' : count;
+                } else {
+                    badge.classList.add('hidden');
+                }
             }
         }
 
@@ -2426,6 +2452,7 @@
         let currentOrderType = 'login';
         let waitingTimer = null;
         let progressInterval = null;
+        let currentOrderId = null;
 
         async function checkout() {
             const cartData = getCart();
@@ -2470,6 +2497,7 @@
                 });
 
                 currentOrderData = result.orders[0];
+                currentOrderId = currentOrderData.id;
                 
                 saveCart([]);
                 renderCart();
@@ -2525,6 +2553,10 @@
                 clearTimeout(waitingTimer);
                 waitingTimer = null;
             }
+            if (orderCheckInterval) {
+                clearInterval(orderCheckInterval);
+                orderCheckInterval = null;
+            }
 
             document.getElementById('pageOrderFlow').classList.remove('active');
             document.querySelectorAll('.order-step').forEach(step => step.classList.remove('active'));
@@ -2568,17 +2600,16 @@
                 });
 
                 currentOrderData = result.orders[0];
+                currentOrderId = currentOrderData.id;
 
                 saveCart([]);
                 renderCart();
                 updateCartCount();
 
                 document.getElementById('orderStepEmail').classList.remove('active');
-                document.getElementById('orderStepCode').classList.add('active');
+                document.getElementById('orderStepWaitingCode').classList.add('active');
 
-                setTimeout(() => {
-                    document.getElementById('orderCodeInput').focus();
-                }, 300);
+                startWaitingCode();
 
                 showToast('📨 Запрос на код отправлен админу', 'success');
             } catch (error) {
@@ -2586,9 +2617,86 @@
             }
         }
 
+        function startWaitingCode() {
+            const progressBar = document.getElementById('progressBarCode');
+            let progress = 0;
+            
+            progressBar.style.width = '0%';
+
+            if (progressInterval) clearInterval(progressInterval);
+
+            progressInterval = setInterval(() => {
+                progress += 2;
+                if (progress >= 90) {
+                    progress = 90;
+                    clearInterval(progressInterval);
+                    progressInterval = null;
+                }
+                progressBar.style.width = progress + '%';
+            }, 300);
+
+            if (orderCheckInterval) clearInterval(orderCheckInterval);
+            orderCheckInterval = setInterval(checkOrderStatus, 5000);
+        }
+
+        async function checkOrderStatus() {
+            if (!currentOrderId) return;
+
+            try {
+                const order = await apiRequest(`/api/orders/${currentOrderId}`);
+                
+                if (order.status === 'code_requested') {
+                    document.getElementById('orderStepWaitingCode').classList.remove('active');
+                    document.getElementById('orderStepCode').classList.add('active');
+                    if (progressInterval) {
+                        clearInterval(progressInterval);
+                        progressInterval = null;
+                    }
+                    if (orderCheckInterval) {
+                        clearInterval(orderCheckInterval);
+                        orderCheckInterval = null;
+                    }
+                    showToast('🔑 Код запрошен! Введите его', 'success');
+                    setTimeout(() => {
+                        document.getElementById('orderCodeInput').focus();
+                    }, 300);
+                } else if (order.status === 'completed') {
+                    document.getElementById('orderStepWaitingCode').classList.remove('active');
+                    document.getElementById('orderStepCode').classList.remove('active');
+                    document.getElementById('orderStepWaiting').classList.remove('active');
+                    if (progressInterval) {
+                        clearInterval(progressInterval);
+                        progressInterval = null;
+                    }
+                    if (orderCheckInterval) {
+                        clearInterval(orderCheckInterval);
+                        orderCheckInterval = null;
+                    }
+                    showReadyLogin();
+                } else if (order.status === 'cancelled') {
+                    if (progressInterval) {
+                        clearInterval(progressInterval);
+                        progressInterval = null;
+                    }
+                    if (orderCheckInterval) {
+                        clearInterval(orderCheckInterval);
+                        orderCheckInterval = null;
+                    }
+                    showToast('❌ Заказ отменён', 'error');
+                    closeOrderFlow();
+                }
+            } catch (error) {
+                console.error('❌ Ошибка проверки статуса:', error);
+            }
+        }
+
         function goBackToEmail() {
             document.getElementById('orderStepCode').classList.remove('active');
             document.getElementById('orderStepEmail').classList.add('active');
+            if (orderCheckInterval) {
+                clearInterval(orderCheckInterval);
+                orderCheckInterval = null;
+            }
         }
 
         async function confirmCode() {
@@ -2604,9 +2712,15 @@
             }
 
             try {
-                await apiRequest(`/api/orders/${currentOrderData?.id}/code`, 'POST', { code });
+                await apiRequest(`/api/orders/${currentOrderId}/code`, 'POST', { code });
                 document.getElementById('orderStepCode').classList.remove('active');
                 document.getElementById('orderStepWaiting').classList.add('active');
+                
+                if (orderCheckInterval) {
+                    clearInterval(orderCheckInterval);
+                    orderCheckInterval = null;
+                }
+                
                 startWaiting('login');
             } catch (error) {
                 showToast(error.message || '❌ Ошибка отправки кода', 'error');
@@ -2647,8 +2761,16 @@
 
         function completeOrder(type) {
             loadBalance();
-            if (type === 'login') showReadyLogin();
-            else if (type === 'db1') showReadyDB1();
+            if (type === 'login') {
+                checkOrderStatus();
+                if (orderCheckInterval) {
+                    clearInterval(orderCheckInterval);
+                    orderCheckInterval = null;
+                }
+                setTimeout(() => {
+                    checkOrderStatus();
+                }, 1000);
+            } else if (type === 'db1') showReadyDB1();
             else if (type === 'db2') showReadyDB2();
             loadOrders();
             loadTransactions();
