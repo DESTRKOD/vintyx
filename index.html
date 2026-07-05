@@ -3235,25 +3235,28 @@
         return;
     }
 
-    // БЕРЁМ КОРЗИНУ ДО ОЧИСТКИ
-    const cartData = getCart();
-
-    if (cartData.length === 0) {
+    // БЕРЁМ ДАННЫЕ ИЗ КОРЗИНЫ ДО ОЧИСТКИ
+    const cartItems = getCart();
+    
+    if (cartItems.length === 0) {
         showToast('🛒 Корзина пуста!', 'error');
         return;
     }
 
     const total = calculateTotal();
 
+    // ПОДГОТАВЛИВАЕМ ДАННЫЕ ДЛЯ ОТПРАВКИ
+    const orderItems = cartItems.map(item => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        category: item.category,
+        quantity: item.quantity || 1
+    }));
+
     try {
         const result = await apiRequest('/api/orders', 'POST', {
-            items: cartData.map(item => ({
-                id: item.id,
-                name: item.name,
-                price: item.price,
-                category: item.category,
-                quantity: item.quantity || 1
-            })),
+            items: orderItems,
             total: total,
             email: email
         });
@@ -3265,7 +3268,7 @@
             throw new Error('Заказ не создан');
         }
 
-        // ОЧИЩАЕМ КОРЗИНУ ПОСЛЕ СОЗДАНИЯ ЗАКАЗА
+        // ТОЛЬКО ПОСЛЕ УСПЕШНОГО СОЗДАНИЯ ЗАКАЗА ОЧИЩАЕМ КОРЗИНУ
         saveCart([]);
         renderCart();
         updateCartCount();
@@ -3277,6 +3280,7 @@
 
         showToast('📨 Запрос на код отправлен админу', 'success');
     } catch (error) {
+        console.error('❌ Ошибка:', error);
         showToast(error.message || '❌ Ошибка отправки', 'error');
     }
 }
