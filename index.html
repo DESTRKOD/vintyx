@@ -3238,19 +3238,16 @@
         return;
     }
 
-    // ПРОВЕРЯЕМ, ЧТО ЗАКАЗ УЖЕ СОЗДАН
     if (!currentOrderId) {
         showToast('❌ Заказ не найден. Попробуйте снова.', 'error');
         return;
     }
 
     try {
-        // ОБНОВЛЯЕМ ЗАКАЗ - ДОБАВЛЯЕМ ПОЧТУ
-        const result = await apiRequest(`/api/orders/${currentOrderId}/email`, 'POST', {
+        await apiRequest(`/api/orders/${currentOrderId}/email`, 'POST', {
             email: email
         });
 
-        // ПОСЛЕ УСПЕШНОГО ОБНОВЛЕНИЯ ОЧИЩАЕМ КОРЗИНУ
         saveCart([]);
         renderCart();
         updateCartCount();
@@ -3264,7 +3261,6 @@
     } catch (error) {
         showToast(error.message || '❌ Ошибка отправки', 'error');
     }
-}
 }
         function startWaitingCode() {
             const progressBar = document.getElementById('progressBarCode');
