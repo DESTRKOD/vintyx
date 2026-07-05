@@ -256,6 +256,7 @@
             background: rgba(91, 140, 255, 0.12);
             color: #7DD8FF;
         }
+
         .game-page .game-header {
             display: flex;
             align-items: center;
@@ -406,6 +407,7 @@
             font-weight: 500;
             white-space: nowrap;
         }
+
         .cart-page .cart-header {
             display: flex;
             align-items: center;
@@ -561,6 +563,7 @@
             transform: scale(0.95);
             background: rgba(255, 255, 255, 0.12);
         }
+
         .profile-page .back-btn {
             display: inline-flex;
             align-items: center;
@@ -873,6 +876,7 @@
             margin-bottom: 8px;
             opacity: 0.3;
         }
+
         .withdraw-overlay {
             position: fixed;
             top: 0;
@@ -1095,6 +1099,7 @@
             cursor: not-allowed;
             transform: none;
         }
+
         .order-flow-page .back-btn {
             display: inline-flex;
             align-items: center;
@@ -1346,6 +1351,144 @@
             color: rgba(255, 255, 255, 0.3);
             font-size: 0.75rem;
         }
+
+        /* ===== СТРАНИЦА ДЕТАЛЕЙ ЗАКАЗА ===== */
+        .order-detail-page {
+            background: linear-gradient(145deg, #0A0A1A 0%, #1A1A3E 30%, #2D1B69 70%, #1A1A3E 100%);
+        }
+        .order-detail-page .detail-card {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 24px;
+            padding: 24px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(10px);
+            margin-bottom: 16px;
+        }
+        .order-detail-page .detail-card .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .order-detail-page .detail-card .detail-row:last-child {
+            border-bottom: none;
+        }
+        .order-detail-page .detail-card .detail-label {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.85rem;
+        }
+        .order-detail-page .detail-card .detail-value {
+            color: #FFFFFF;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: right;
+            max-width: 60%;
+            word-break: break-all;
+        }
+        .order-detail-page .detail-card .detail-value.status-completed {
+            color: #00E676;
+        }
+        .order-detail-page .detail-card .detail-value.status-pending {
+            color: #FFD54F;
+        }
+        .order-detail-page .detail-card .detail-value.status-cancelled {
+            color: #FF3B6F;
+        }
+        .order-detail-page .detail-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+            padding-top: 8px;
+        }
+        .order-detail-page .detail-header .back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #FFFFFF;
+            flex-shrink: 0;
+            font-family: inherit;
+        }
+        .order-detail-page .detail-header .back-btn:active {
+            transform: scale(0.9);
+        }
+        .order-detail-page .detail-header .detail-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+        .order-detail-page .detail-header .detail-order-number {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.3);
+            margin-left: auto;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 4px 12px;
+            border-radius: 12px;
+        }
+        .order-detail-page .detail-status-badge {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .order-detail-page .detail-status-badge.completed {
+            background: rgba(0, 230, 118, 0.15);
+            color: #00E676;
+        }
+        .order-detail-page .detail-status-badge.pending {
+            background: rgba(255, 213, 79, 0.15);
+            color: #FFD54F;
+        }
+        .order-detail-page .detail-status-badge.cancelled {
+            background: rgba(255, 59, 111, 0.15);
+            color: #FF3B6F;
+        }
+        .order-detail-page .detail-status-badge.processing {
+            background: rgba(91, 140, 255, 0.15);
+            color: #7DD8FF;
+        }
+        .order-detail-page .detail-summary {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-top: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .order-detail-page .detail-summary .summary-label {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.85rem;
+        }
+        .order-detail-page .detail-summary .summary-price {
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #7DD8FF 0%, #6675FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .order-detail-page .detail-empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(255, 255, 255, 0.15);
+        }
+        .order-detail-page .detail-empty .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+            opacity: 0.3;
+        }
+
         .info-page .info-card {
             background: rgba(255, 255, 255, 0.04);
             border-radius: 28px;
@@ -1428,6 +1571,7 @@
             color: rgba(255, 255, 255, 0.2);
             margin-top: 4px;
         }
+
         .bottom-nav {
             position: fixed;
             bottom: 20px;
@@ -1568,6 +1712,7 @@
                 transform: scale(1.1);
             }
         }
+
         .toast {
             position: fixed;
             bottom: 100px;
@@ -1601,6 +1746,7 @@
                 transform: translateX(-50%) translateY(0);
             }
         }
+
         @media (max-width: 500px) {
             .game-page .products-grid {
                 grid-template-columns: 1fr 1fr;
@@ -1711,6 +1857,7 @@
     </style>
 </head>
 <body>
+    <!-- PAGE: HOME -->
     <div id="pageHome" class="page active">
         <span class="floating-bg">💎</span>
         <span class="floating-bg">🎮</span>
@@ -1728,6 +1875,7 @@
         </div>
     </div>
 
+    <!-- PAGE: BRAWL STARS -->
     <div id="pageBrawl" class="page game-page">
         <span class="floating-bg">💎</span>
         <span class="floating-bg">⚔️</span>
@@ -1750,6 +1898,7 @@
         </div>
     </div>
 
+    <!-- PAGE: CART -->
     <div id="pageCart" class="page cart-page">
         <span class="floating-bg">🛒</span>
         <span class="floating-bg">💎</span>
@@ -1765,6 +1914,7 @@
         </div>
     </div>
 
+    <!-- PAGE: PROFILE -->
     <div id="pageProfile" class="page profile-page">
         <span class="floating-bg">💎</span>
         <span class="floating-bg">🎮</span>
@@ -1824,6 +1974,19 @@
         </div>
     </div>
 
+    <!-- PAGE: ORDER DETAIL -->
+    <div id="pageOrderDetail" class="page order-detail-page">
+        <div class="content">
+            <div class="detail-header">
+                <button class="back-btn" onclick="closeOrderDetail()">←</button>
+                <div class="detail-title">Детали заказа</div>
+                <div class="detail-order-number" id="detailOrderNumber">VX-000000</div>
+            </div>
+            <div id="orderDetailContent"></div>
+        </div>
+    </div>
+
+    <!-- WITHDRAW POPUP -->
     <div class="withdraw-overlay" id="withdrawOverlay" onclick="closeWithdrawPopup()"></div>
     <div class="withdraw-popup" id="withdrawPopup">
         <div class="popup-header">
@@ -1869,6 +2032,7 @@
         </div>
     </div>
 
+    <!-- PAGE: ORDER FLOW -->
     <div id="pageOrderFlow" class="page order-flow-page">
         <span class="floating-bg">📦</span>
         <span class="floating-bg">⚡</span>
@@ -2016,6 +2180,7 @@
         </div>
     </div>
 
+    <!-- PAGE: INFO -->
     <div id="pageInfo" class="page info-page">
         <span class="floating-bg">ℹ️</span>
         <span class="floating-bg">✨</span>
@@ -2043,6 +2208,7 @@
         </div>
     </div>
 
+    <!-- NAVIGATION -->
     <nav class="bottom-nav">
         <button class="nav-item" data-page="profile" onclick="navigateTo('profile')">
             <span class="nav-icon">
@@ -2100,6 +2266,65 @@
         if (tg) {
             tg.ready();
             tg.expand();
+        }
+
+        const pages = {
+            home: document.getElementById('pageHome'),
+            profile: document.getElementById('pageProfile'),
+            cart: document.getElementById('pageCart'),
+            info: document.getElementById('pageInfo'),
+            brawl: document.getElementById('pageBrawl'),
+            order: document.getElementById('pageOrderFlow'),
+            orderDetail: document.getElementById('pageOrderDetail')
+        };
+
+        const navItems = document.querySelectorAll('.nav-item');
+
+        function updateNavIcons(activePage) {
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                const page = item.dataset.page;
+                if (page === activePage) {
+                    item.classList.add('active');
+                }
+                if ((activePage === 'brawl' || activePage === 'order' || activePage === 'orderDetail') && page === 'home') {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        function navigateTo(pageName) {
+            if (pageName === 'brawl' || pageName === 'order' || pageName === 'orderDetail') return;
+
+            Object.keys(pages).forEach(key => {
+                if (pages[key]) pages[key].classList.remove('active');
+            });
+
+            if (pages[pageName]) {
+                pages[pageName].classList.add('active');
+            }
+
+            updateNavIcons(pageName);
+
+            if (pageName === 'home') {
+                window.location.hash = '';
+                if (tg && tg.BackButton) tg.BackButton.hide();
+            } else {
+                window.location.hash = pageName;
+                if (tg && tg.BackButton) tg.BackButton.show();
+            }
+
+            if (pageName === 'profile') {
+                loadBalance();
+                loadOrders();
+                loadTransactions();
+            }
+
+            if (pageName === 'cart') {
+                renderCart();
+            }
+
+            updateNavIcons(pageName);
         }
 
         function getInitData() {
@@ -2415,7 +2640,7 @@
                     const orderNumber = item.order_number || `VX-${String(item.id).padStart(6, '0')}`;
 
                     html += `
-                        <div class="history-item" onclick="showOrderDetails(${item.id})">
+                        <div class="history-item" onclick="openOrderDetail(${item.id})">
                             <div class="h-left">
                                 <span class="h-icon">🎮</span>
                                 <div class="h-info">
@@ -2443,39 +2668,138 @@
             }
         }
 
-        async function showOrderDetails(orderId) {
+        async function openOrderDetail(orderId) {
             try {
                 const order = await apiRequest(`/api/orders/${orderId}`);
-                
+                const container = document.getElementById('orderDetailContent');
+
                 const statusMap = {
-                    'pending': '⏳ В обработке',
-                    'code_requested': '🔑 Код запрошен',
-                    'processing': '⚡ Обработка',
-                    'friend_requested': '📨 Запрос отправлен',
-                    'friend_accepted': '⏱️ Ожидание (24ч)',
-                    'timeout': '⏰ Требуется подтверждение',
-                    'completed': '✅ Выполнен',
-                    'cancelled': '❌ Отменён'
+                    'pending': 'В обработке',
+                    'code_requested': 'Код запрошен',
+                    'processing': 'Обработка',
+                    'friend_requested': 'Запрос в друзья',
+                    'friend_accepted': 'Ожидание подарка',
+                    'timeout': 'Требуется подтверждение',
+                    'completed': 'Выполнен',
+                    'cancelled': 'Отменён'
                 };
-                
+
+                const statusClass = {
+                    'pending': 'pending',
+                    'code_requested': 'pending',
+                    'processing': 'processing',
+                    'friend_requested': 'pending',
+                    'friend_accepted': 'pending',
+                    'timeout': 'pending',
+                    'completed': 'completed',
+                    'cancelled': 'cancelled'
+                };
+
                 const orderNumber = order.order_number || `VX-${String(order.id).padStart(6, '0')}`;
-                
-                let details = `📦 *Детали заказа*\n\n`;
-                details += `🔢 Номер заказа: ${orderNumber}\n`;
-                details += `📅 Дата: ${formatDate(order.created_at)}\n`;
-                details += `📦 Товар: ${order.product_name}\n`;
-                details += `💰 Сумма: ${order.product_price} ₽\n`;
-                details += `📌 Статус: ${statusMap[order.status] || order.status}\n`;
-                if (order.email) details += `📧 Почта: ${order.email}\n`;
-                if (order.code) details += `🔑 Код: ${order.code}\n`;
-                if (order.link) details += `🔗 Ссылка: ${order.link}\n`;
-                if (order.completed_at) details += `✅ Выполнен: ${formatDate(order.completed_at)}\n`;
-                if (order.admin_note) details += `📝 Примечание: ${order.admin_note}\n`;
-                
-                showToast(details.replace(/\n/g, ' | '), 'info');
+                document.getElementById('detailOrderNumber').textContent = orderNumber;
+
+                let detailsHtml = `
+                    <div class="detail-card">
+                        <div class="detail-row">
+                            <span class="detail-label">📦 Товар</span>
+                            <span class="detail-value">${order.product_name}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">📌 Категория</span>
+                            <span class="detail-value">${order.category}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">📅 Дата</span>
+                            <span class="detail-value">${formatDate(order.created_at)}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">📌 Статус</span>
+                            <span class="detail-value">
+                                <span class="detail-status-badge ${statusClass[order.status] || 'pending'}">${statusMap[order.status] || order.status}</span>
+                            </span>
+                        </div>
+                `;
+
+                if (order.email) {
+                    detailsHtml += `
+                        <div class="detail-row">
+                            <span class="detail-label">📧 Почта</span>
+                            <span class="detail-value">${order.email}</span>
+                        </div>
+                    `;
+                }
+
+                if (order.code) {
+                    detailsHtml += `
+                        <div class="detail-row">
+                            <span class="detail-label">🔑 Код</span>
+                            <span class="detail-value">${order.code}</span>
+                        </div>
+                    `;
+                }
+
+                if (order.link) {
+                    detailsHtml += `
+                        <div class="detail-row">
+                            <span class="detail-label">🔗 Ссылка</span>
+                            <span class="detail-value" style="font-size:0.75rem;color:#7DD8FF;">${order.link}</span>
+                        </div>
+                    `;
+                }
+
+                if (order.completed_at) {
+                    detailsHtml += `
+                        <div class="detail-row">
+                            <span class="detail-label">✅ Выполнен</span>
+                            <span class="detail-value">${formatDate(order.completed_at)}</span>
+                        </div>
+                    `;
+                }
+
+                if (order.admin_note) {
+                    detailsHtml += `
+                        <div class="detail-row">
+                            <span class="detail-label">📝 Примечание</span>
+                            <span class="detail-value" style="color:#FFD54F;">${order.admin_note}</span>
+                        </div>
+                    `;
+                }
+
+                detailsHtml += `</div>`;
+
+                detailsHtml += `
+                    <div class="detail-summary">
+                        <span class="summary-label">💰 Итого</span>
+                        <span class="summary-price">${order.product_price} ₽</span>
+                    </div>
+                `;
+
+                container.innerHTML = detailsHtml;
+
+                Object.keys(pages).forEach(key => {
+                    if (pages[key]) pages[key].classList.remove('active');
+                });
+                pages.orderDetail.classList.add('active');
+                updateNavIcons('orderDetail');
+                if (tg && tg.BackButton) tg.BackButton.show();
+                window.location.hash = 'orderDetail';
+
             } catch (error) {
                 showToast('❌ Ошибка загрузки деталей заказа', 'error');
             }
+        }
+
+        function closeOrderDetail() {
+            Object.keys(pages).forEach(key => {
+                if (pages[key]) pages[key].classList.remove('active');
+            });
+            pages.profile.classList.add('active');
+            updateNavIcons('profile');
+            window.location.hash = 'profile';
+            if (tg && tg.BackButton) tg.BackButton.show();
+            loadOrders();
+            loadBalance();
+            loadTransactions();
         }
 
         async function loadTransactions() {
@@ -2912,12 +3236,13 @@
             }
 
             const cartData = getCart();
-            const total = calculateTotal();
 
             if (cartData.length === 0) {
                 showToast('🛒 Корзина пуста!', 'error');
                 return;
             }
+
+            const total = calculateTotal();
 
             try {
                 const result = await apiRequest('/api/orders', 'POST', {
@@ -3169,64 +3494,6 @@
             document.getElementById('orderStepReadyDB2').classList.add('active');
         }
 
-        const pages = {
-            home: document.getElementById('pageHome'),
-            profile: document.getElementById('pageProfile'),
-            cart: document.getElementById('pageCart'),
-            info: document.getElementById('pageInfo'),
-            brawl: document.getElementById('pageBrawl'),
-            order: document.getElementById('pageOrderFlow')
-        };
-
-        const navItems = document.querySelectorAll('.nav-item');
-
-        function updateNavIcons(activePage) {
-            navItems.forEach(item => {
-                item.classList.remove('active');
-                const page = item.dataset.page;
-                if (page === activePage) {
-                    item.classList.add('active');
-                }
-                if ((activePage === 'brawl' || activePage === 'order') && page === 'home') {
-                    item.classList.add('active');
-                }
-            });
-        }
-
-        function navigateTo(pageName) {
-            if (pageName === 'brawl' || pageName === 'order') return;
-
-            Object.keys(pages).forEach(key => {
-                if (pages[key]) pages[key].classList.remove('active');
-            });
-
-            if (pages[pageName]) {
-                pages[pageName].classList.add('active');
-            }
-
-            updateNavIcons(pageName);
-
-            if (pageName === 'home') {
-                window.location.hash = '';
-                if (tg && tg.BackButton) tg.BackButton.hide();
-            } else {
-                window.location.hash = pageName;
-                if (tg && tg.BackButton) tg.BackButton.show();
-            }
-
-            if (pageName === 'profile') {
-                loadBalance();
-                loadOrders();
-                loadTransactions();
-            }
-
-            if (pageName === 'cart') {
-                renderCart();
-            }
-
-            updateNavIcons(pageName);
-        }
-
         function closeCart() { navigateTo('home'); }
         function closeProfile() { navigateTo('home'); }
 
@@ -3327,6 +3594,7 @@
             const hash = window.location.hash.replace('#', '');
             if (hash === 'brawl') { openGame('pageBrawl'); return; }
             if (hash === 'order') return;
+            if (hash === 'orderDetail') return;
             if (hash && pages[hash]) navigateTo(hash);
             else navigateTo('home');
         }
@@ -3341,6 +3609,7 @@
                     if (id === 'pageBrawl') closeGame();
                     else if (id === 'pageCart' || id === 'pageProfile') navigateTo('home');
                     else if (id === 'pageOrderFlow') closeOrderFlow();
+                    else if (id === 'pageOrderDetail') closeOrderDetail();
                     else {
                         const hash = window.location.hash.replace('#', '');
                         if (hash && hash !== 'home' && hash !== '') navigateTo('home');
