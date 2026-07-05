@@ -3094,83 +3094,86 @@
         let progressInterval = null;
 
         async function checkout() {
-            if (isProcessing) {
-                showToast('⏳ Заказ уже обрабатывается', 'info');
-                return;
-            }
+    if (isProcessing) {
+        showToast('⏳ Заказ уже обрабатывается', 'info');
+        return;
+    }
 
-            const cartData = getCart();
+    const cartData = getCart();
 
-            if (cartData.length === 0) {
-                showToast('🛒 Корзина пуста!', 'error');
-                return;
-            }
+    if (cartData.length === 0) {
+        showToast('🛒 Корзина пуста!', 'error');
+        return;
+    }
 
-            const typeCheck = checkCartTypes();
-            if (typeCheck.error) {
-                showToast(typeCheck.message, 'error');
-                return;
-            }
+    const typeCheck = checkCartTypes();
+    if (typeCheck.error) {
+        showToast(typeCheck.message, 'error');
+        return;
+    }
 
-            const total = calculateTotal();
-            
-            try {
-                const balanceData = await apiRequest('/api/balance');
-                if (balanceData.balance < total) {
-                    showToast(`❌ Недостаточно средств!\n💰 Баланс: ${balanceData.balance} ₽\n📦 Сумма: ${total} ₽`, 'error');
-                    return;
-                }
-            } catch (error) {
-                showToast('❌ Ошибка проверки баланса', 'error');
-                return;
-            }
-
-            isProcessing = true;
-            document.getElementById('checkoutBtn').disabled = true;
-            document.getElementById('checkoutBtn').textContent = '⏳ Обработка...';
-
-            const orderType = typeCheck.type;
-            currentOrderType = orderType;
-
-            try {
-                const result = await apiRequest('/api/orders', 'POST', {
-                    items: cartData.map(item => ({
-                        id: item.id,
-                        name: item.name,
-                        price: item.price,
-                        category: item.category,
-                        quantity: item.quantity || 1
-                    })),
-                    total: total
-                });
-
-                currentOrderData = result.orders[0];
-                currentOrderId = currentOrderData.id;
-                
-                saveCart([]);
-                renderCart();
-                updateCartCount();
-
-                if (orderType === 'login') {
-                    openOrderFlow('login');
-                } else if (orderType === 'db1') {
-                    openOrderFlow('db1');
-                } else if (orderType === 'db2') {
-                    openOrderFlow('db2');
-                }
-
-                await loadBalance();
-                await loadOrders();
-                await loadTransactions();
-
-            } catch (error) {
-                showToast(error.message || '❌ Ошибка оформления заказа', 'error');
-            } finally {
-                isProcessing = false;
-                document.getElementById('checkoutBtn').disabled = false;
-                document.getElementById('checkoutBtn').textContent = '💳 Оплатить';
-            }
+    const total = calculateTotal();
+    
+    try {
+        const balanceData = await apiRequest('/api/balance');
+        if (balanceData.balance < total) {
+            showToast(`❌ Недостаточно средств!\n💰 Баланс: ${balanceData.balance} ₽\n📦 Сумма: ${total} ₽`, 'error');
+            return;
         }
+    } catch (error) {
+        showToast('❌ Ошибка проверки баланса', 'error');
+        return;
+    }
+
+    isProcessing = true;
+    document.getElementById('checkoutBtn').disabled = true;
+    document.getElementById('checkoutBtn').textContent = '⏳ Обработка...';
+
+    const orderType = typeCheck.type;
+    currentOrderType = orderType;
+
+    try {
+        // СОЗДАЁМ ЗАКАЗ С ТОВАРАМИ, НО БЕЗ ПОЧТЫ
+        const result = await apiRequest('/api/orders', 'POST', {
+            items: cartData.map(item => ({
+                id: item.id,
+                name: item.name,
+                price: item.price,
+                category: item.category,
+                quantity: item.quantity || 1
+            })),
+            total: total
+        });
+
+        currentOrderData = result.orders[0];
+        currentOrderId = currentOrderData.id;
+        
+        // КОРЗИНУ НЕ ОЧИЩАЕМ! ОНА БУДЕТ ОЧИЩЕНА ПОСЛЕ ВВОДА ПОЧТЫ
+        // saveCart([]); // <-- УБИРАЕМ ЭТУ СТРОКУ
+        
+        renderCart();
+        updateCartCount();
+
+        if (orderType === 'login') {
+            openOrderFlow('login');
+        } else if (orderType === 'db1') {
+            openOrderFlow('db1');
+        } else if (orderType === 'db2') {
+            openOrderFlow('db2');
+        }
+
+        await loadBalance();
+        await loadOrders();
+        await loadTransactions();
+
+    } catch (error) {
+        showToast(error.message || '❌ Ошибка оформления заказа', 'error');
+    } finally {
+        isProcessing = false;
+        document.getElementById('checkoutBtn').disabled = false;
+        document.getElementById('checkoutBtn').textContent = '💳 Оплатить';
+    }
+}
 
         function openOrderFlow(type) {
             Object.keys(pages).forEach(key => {
@@ -3235,40 +3238,19 @@
         return;
     }
 
-    // БЕРЁМ ДАННЫЕ ИЗ КОРЗИНЫ ДО ОЧИСТКИ
-    const cartItems = getCart();
-    
-    if (cartItems.length === 0) {
-        showToast('🛒 Корзина пуста!', 'error');
+    // ПРОВЕРЯЕМ, ЧТО ЗАКАЗ УЖЕ СОЗДАН
+    if (!currentOrderId) {
+        showToast('❌ Заказ не найден. Попробуйте снова.', 'error');
         return;
     }
 
-    const total = calculateTotal();
-
-    // ПОДГОТАВЛИВАЕМ ДАННЫЕ ДЛЯ ОТПРАВКИ
-    const orderItems = cartItems.map(item => ({
-        id: item.id,
-        name: item.name,
-        price: item.price,
-        category: item.category,
-        quantity: item.quantity || 1
-    }));
-
     try {
-        const result = await apiRequest('/api/orders', 'POST', {
-            items: orderItems,
-            total: total,
+        // ОБНОВЛЯЕМ ЗАКАЗ - ДОБАВЛЯЕМ ПОЧТУ
+        const result = await apiRequest(`/api/orders/${currentOrderId}/email`, 'POST', {
             email: email
         });
 
-        if (result.orders && result.orders.length > 0) {
-            currentOrderData = result.orders[0];
-            currentOrderId = currentOrderData.id;
-        } else {
-            throw new Error('Заказ не создан');
-        }
-
-        // ТОЛЬКО ПОСЛЕ УСПЕШНОГО СОЗДАНИЯ ЗАКАЗА ОЧИЩАЕМ КОРЗИНУ
+        // ПОСЛЕ УСПЕШНОГО ОБНОВЛЕНИЯ ОЧИЩАЕМ КОРЗИНУ
         saveCart([]);
         renderCart();
         updateCartCount();
@@ -3280,9 +3262,9 @@
 
         showToast('📨 Запрос на код отправлен админу', 'success');
     } catch (error) {
-        console.error('❌ Ошибка:', error);
         showToast(error.message || '❌ Ошибка отправки', 'error');
     }
+}
 }
         function startWaitingCode() {
             const progressBar = document.getElementById('progressBarCode');
