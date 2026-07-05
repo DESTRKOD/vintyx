@@ -1433,15 +1433,15 @@
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(20, 20, 40, 0.35);
-            backdrop-filter: blur(30px) saturate(1.4);
-            -webkit-backdrop-filter: blur(30px) saturate(1.4);
-            border-radius: 28px;
-            padding: 8px 12px;
+            background: rgba(20, 20, 50, 0.5);
+            backdrop-filter: blur(40px) saturate(1.6);
+            -webkit-backdrop-filter: blur(40px) saturate(1.6);
+            border-radius: 50px;
+            padding: 8px 16px;
             display: flex;
-            gap: 2px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.03);
+            gap: 6px;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 0 60px rgba(91, 140, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             z-index: 1000;
             max-width: 340px;
             width: calc(100% - 32px);
@@ -1452,9 +1452,9 @@
             content: '';
             position: absolute;
             inset: -1px;
-            border-radius: 28px;
+            border-radius: 50px;
             padding: 1px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, transparent 50%, rgba(255, 255, 255, 0.02) 100%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%, rgba(91, 140, 255, 0.08) 100%);
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
@@ -1465,63 +1465,88 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 4px 10px;
-            border-radius: 20px;
+            padding: 6px 12px;
+            border-radius: 22px;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             border: none;
             background: transparent;
             font-family: inherit;
-            gap: 1px;
-            min-width: 44px;
+            gap: 2px;
+            min-width: 48px;
             position: relative;
         }
         .nav-item .nav-icon {
-            width: 24px;
-            height: 24px;
+            width: 26px;
+            height: 26px;
             color: rgba(255, 255, 255, 0.3);
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .nav-item .nav-icon svg {
             width: 100%;
             height: 100%;
-            stroke: rgba(255, 255, 255, 0.4);
+            stroke: rgba(255, 255, 255, 0.35);
             stroke-width: 2;
             fill: none;
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .nav-item .nav-label {
-            font-size: 0.55rem;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.25);
+            font-size: 0.6rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.3);
             transition: all 0.3s;
             margin-top: 1px;
-            letter-spacing: 0.2px;
+            letter-spacing: 0.3px;
         }
         .nav-item.active .nav-icon svg {
-    stroke: #FFFFFF;
-    filter: drop-shadow(0 0 24px rgba(91, 140, 255, 0.8));
-}
-.nav-item.active .nav-label {
-    color: #FFFFFF;
-    text-shadow: 0 0 20px rgba(91, 140, 255, 0.6);
-}
-.nav-item.active .nav-icon {
-    transform: scale(1.1);
-    animation: navPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.nav-item.active::before {
-    content: '';
-    position: absolute;
-    inset: -2px -6px;
-    border-radius: 22px;
-    background: rgba(91, 140, 255, 0.2);
-    backdrop-filter: blur(12px);
-    z-index: -1;
-    animation: islandGlow 0.3s ease;
-    border: 1px solid rgba(91, 140, 255, 0.2);
-    box-shadow: 0 0 50px rgba(91, 140, 255, 0.15);
-}
+            stroke: #FFFFFF;
+            filter: drop-shadow(0 0 24px rgba(91, 140, 255, 0.8));
+        }
+        .nav-item.active .nav-label {
+            color: #FFFFFF;
+            text-shadow: 0 0 20px rgba(91, 140, 255, 0.6);
+        }
+        .nav-item.active .nav-icon {
+            transform: scale(1.1);
+            animation: navPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .nav-item:active {
+            transform: scale(0.88);
+        }
+        .nav-item .badge {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            background: #FF3B6F;
+            color: white;
+            font-size: 0.5rem;
+            font-weight: 700;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(20, 20, 50, 0.9);
+            animation: pulse 2s infinite;
+            padding: 0 4px;
+            box-shadow: 0 0 20px rgba(255, 59, 111, 0.3);
+        }
+        .nav-item .badge.hidden {
+            display: none;
+        }
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            inset: -2px -6px;
+            border-radius: 22px;
+            background: rgba(91, 140, 255, 0.2);
+            backdrop-filter: blur(12px);
+            z-index: -1;
+            animation: islandGlow 0.3s ease;
+            border: 1px solid rgba(91, 140, 255, 0.2);
+            box-shadow: 0 0 50px rgba(91, 140, 255, 0.15);
+        }
         @keyframes islandGlow {
             0% {
                 transform: scale(0.8);
@@ -1537,10 +1562,10 @@
                 transform: scale(0.8);
             }
             50% {
-                transform: scale(1.1);
+                transform: scale(1.15);
             }
             100% {
-                transform: scale(1.05);
+                transform: scale(1.1);
             }
         }
         .toast {
@@ -1592,26 +1617,26 @@
                 padding: 16px 18px 20px;
             }
             .bottom-nav {
-                padding: 6px 10px;
-                gap: 2px;
-                border-radius: 24px;
+                padding: 6px 12px;
+                gap: 4px;
                 max-width: 300px;
+                border-radius: 40px;
             }
             .nav-item {
-                padding: 4px 6px;
-                min-width: 36px;
+                padding: 4px 8px;
+                min-width: 40px;
             }
             .nav-item .nav-icon {
-                width: 20px;
-                height: 20px;
+                width: 22px;
+                height: 22px;
             }
             .nav-item .nav-label {
                 font-size: 0.5rem;
             }
             .nav-item .badge {
                 font-size: 0.4rem;
-                min-width: 14px;
-                height: 14px;
+                min-width: 16px;
+                height: 16px;
                 top: 0px;
                 right: 0px;
             }
@@ -1650,13 +1675,13 @@
             }
             .bottom-nav {
                 padding: 4px 8px;
-                gap: 1px;
-                border-radius: 20px;
+                gap: 2px;
                 max-width: 260px;
+                border-radius: 30px;
             }
             .nav-item {
-                padding: 4px 4px;
-                min-width: 30px;
+                padding: 4px 6px;
+                min-width: 32px;
             }
             .nav-item .nav-icon {
                 width: 18px;
@@ -1667,8 +1692,8 @@
             }
             .nav-item .badge {
                 font-size: 0.35rem;
-                min-width: 12px;
-                height: 12px;
+                min-width: 14px;
+                height: 14px;
                 top: 0px;
                 right: 0px;
             }
@@ -1849,7 +1874,6 @@
         <span class="floating-bg">⚡</span>
         <span class="floating-bg">✨</span>
         <div class="content">
-            <!-- Шаг 1: Ввод почты -->
             <div id="orderStepEmail" class="order-step active">
                 <button class="back-btn" onclick="closeOrderFlow()">← Назад</button>
                 <div class="order-header">
@@ -1866,7 +1890,6 @@
                 </div>
             </div>
 
-            <!-- Шаг 2: Ожидание запроса кода -->
             <div id="orderStepWaitingCode" class="order-step">
                 <div class="order-header text-center">
                     <div class="order-icon waiting-icon">⏳</div>
@@ -1883,7 +1906,6 @@
                 <button class="order-btn-primary" onclick="checkOrderStatus()" style="margin-top:20px;">🔄 Проверить статус</button>
             </div>
 
-            <!-- Шаг 3: Ввод кода -->
             <div id="orderStepCode" class="order-step">
                 <button class="back-btn" onclick="goBackToEmail()">← Назад</button>
                 <div class="order-header">
@@ -1900,7 +1922,6 @@
                 </div>
             </div>
 
-            <!-- Шаг 4: Обработка заказа -->
             <div id="orderStepWaiting" class="order-step">
                 <div class="order-header text-center">
                     <div class="order-icon waiting-icon">⏳</div>
@@ -1916,7 +1937,6 @@
                 </div>
             </div>
 
-            <!-- Шаг 5: Готово (login) -->
             <div id="orderStepReadyLogin" class="order-step">
                 <div class="order-header text-center">
                     <div class="order-icon ready-icon">🎉</div>
@@ -1941,7 +1961,6 @@
                 <button class="order-btn-primary" onclick="closeOrderFlow()">🏠 На главную</button>
             </div>
 
-            <!-- Шаг 5: Готово (db1) -->
             <div id="orderStepReadyDB1" class="order-step">
                 <div class="order-header text-center">
                     <div class="order-icon ready-icon">📥</div>
@@ -1962,7 +1981,6 @@
                 <button class="order-btn-primary" onclick="closeOrderFlow()">🏠 На главную</button>
             </div>
 
-            <!-- Шаг 5: Готово (db2) -->
             <div id="orderStepReadyDB2" class="order-step">
                 <div class="order-header text-center">
                     <div class="order-icon ready-icon">👥</div>
@@ -2895,6 +2913,11 @@
 
             const cartData = getCart();
             const total = calculateTotal();
+
+            if (cartData.length === 0) {
+                showToast('🛒 Корзина пуста!', 'error');
+                return;
+            }
 
             try {
                 const result = await apiRequest('/api/orders', 'POST', {
