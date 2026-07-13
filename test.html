@@ -3,17 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apple Emoji Test</title>
+    <title>Apple Emoji SVG Test</title>
     <style>
-        /* Подключаем шрифт Apple Color Emoji из интернета */
-        @font-face {
-            font-family: 'Apple Emoji';
-            src: url('https://cdn.jsdelivr.net/gh/mgao/OpenMoji-Apple-Color/fonts/AppleColorEmoji.woff2') format('woff2');
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -26,7 +17,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: 'Apple Emoji', -apple-system, 'Segoe UI', system-ui, sans-serif;
+            font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
             color: #FFFFFF;
             padding: 20px;
         }
@@ -56,20 +47,69 @@
             font-size: 0.9rem;
             color: rgba(255, 255, 255, 0.3);
             margin-bottom: 30px;
-            font-family: -apple-system, 'Segoe UI', sans-serif;
+        }
+
+        .floating-bg {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 48px;
+            margin: 4px;
+            animation: floatGem 6s ease-in-out infinite;
+        }
+
+        .floating-bg:nth-child(2) { animation-delay: 1.5s; }
+        .floating-bg:nth-child(3) { animation-delay: 3s; }
+        .floating-bg:nth-child(4) { animation-delay: 4.5s; }
+
+        @keyframes floatGem {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(5deg); }
+        }
+
+        .floating-bg svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .floating-bg svg path,
+        .floating-bg svg circle,
+        .floating-bg svg rect,
+        .floating-bg svg ellipse {
+            animation: pulseGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        .floating-row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            margin-bottom: 20px;
+        }
+
+        .floating-row.big svg {
+            width: 56px;
+            height: 56px;
         }
 
         .emoji-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 16px;
-            margin-bottom: 30px;
+            margin: 20px 0 30px;
         }
 
         .emoji-item {
             background: rgba(255, 255, 255, 0.04);
             border-radius: 16px;
-            padding: 20px 10px;
+            padding: 16px 10px;
             border: 1px solid rgba(255, 255, 255, 0.04);
             transition: all 0.3s ease;
         }
@@ -80,43 +120,16 @@
             border-color: rgba(91, 140, 255, 0.2);
         }
 
-        .emoji-item .emoji {
-            font-size: 3.5rem;
+        .emoji-item svg {
+            width: 40px;
+            height: 40px;
             display: block;
-            margin-bottom: 6px;
-            font-family: 'Apple Emoji', sans-serif;
+            margin: 0 auto 6px;
         }
 
         .emoji-item .label {
             font-size: 0.7rem;
             color: rgba(255, 255, 255, 0.3);
-            font-family: -apple-system, 'Segoe UI', sans-serif;
-        }
-
-        .emoji-row {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            padding: 20px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.04);
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .emoji-row .big-emoji {
-            font-size: 3rem;
-            font-family: 'Apple Emoji', sans-serif;
-        }
-
-        .emoji-text {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.6);
-            font-family: 'Apple Emoji', -apple-system, 'Segoe UI', sans-serif;
-            line-height: 1.8;
-        }
-
-        .emoji-text span {
-            font-family: 'Apple Emoji', sans-serif;
         }
 
         .note {
@@ -127,7 +140,6 @@
             border: 1px solid rgba(255, 255, 255, 0.04);
             font-size: 0.75rem;
             color: rgba(255, 255, 255, 0.2);
-            font-family: -apple-system, 'Segoe UI', sans-serif;
         }
 
         .note code {
@@ -138,16 +150,29 @@
             color: rgba(255, 255, 255, 0.4);
         }
 
+        .section-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: rgba(255, 255, 255, 0.2);
+            margin: 20px 0 10px;
+        }
+
         @media (max-width: 500px) {
             .emoji-grid {
                 grid-template-columns: repeat(4, 1fr);
                 gap: 10px;
             }
-            .emoji-item .emoji {
-                font-size: 2.8rem;
+            .emoji-item svg {
+                width: 32px;
+                height: 32px;
             }
             .container {
                 padding: 24px 16px;
+            }
+            .floating-row.big svg {
+                width: 44px;
+                height: 44px;
             }
         }
     </style>
@@ -155,73 +180,197 @@
 <body>
 
 <div class="container">
-    <div class="title">🍎 Apple Emoji</div>
-    <div class="subtitle">Тест шрифта Apple Color Emoji</div>
+    <div class="title">🍎 Apple Emoji SVG</div>
+    <div class="subtitle">Фоновые иконки в стиле Apple — одинаково на всех устройствах</div>
 
-    <!-- Основные эмодзи -->
+    <!-- ============================================================ -->
+    <!-- ФОНОВЫЕ ИКОНКИ С АНИМАЦИЕЙ -->
+    <!-- ============================================================ -->
+
+    <div class="section-title">✨ Фоновые иконки (с анимацией)</div>
+
+    <div class="floating-row">
+        <!-- 💎 Бриллиант -->
+        <span class="floating-bg">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#7DD8FF" opacity="0.15"/>
+                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#7DD8FF" stroke-width="1.2" opacity="0.4"/>
+                <path d="M2 12L12 17L22 12" stroke="#7DD8FF" stroke-width="1.2" opacity="0.4"/>
+                <path d="M2 17L12 22L22 17" stroke="#7DD8FF" stroke-width="1.2" opacity="0.4"/>
+                <path d="M2 7L2 12L2 17" stroke="#7DD8FF" stroke-width="1" opacity="0.2"/>
+                <path d="M22 7L22 12L22 17" stroke="#7DD8FF" stroke-width="1" opacity="0.2"/>
+                <path d="M12 2L12 12L12 22" stroke="#7DD8FF" stroke-width="0.8" opacity="0.3"/>
+                <path d="M2 7L12 12L2 17" stroke="#7DD8FF" stroke-width="0.8" opacity="0.15"/>
+                <path d="M22 7L12 12L22 17" stroke="#7DD8FF" stroke-width="0.8" opacity="0.15"/>
+                <ellipse cx="12" cy="12" rx="2" ry="1.5" fill="#7DD8FF" opacity="0.3"/>
+            </svg>
+        </span>
+
+        <!-- 🎮 Геймпад -->
+        <span class="floating-bg">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="6" width="20" height="14" rx="4" fill="#6675FF" opacity="0.12"/>
+                <rect x="2" y="6" width="20" height="14" rx="4" stroke="#6675FF" stroke-width="1.2" opacity="0.35"/>
+                <path d="M8 10V14M6 12H10" stroke="#6675FF" stroke-width="1.2" opacity="0.4"/>
+                <circle cx="17" cy="10" r="1.5" fill="#6675FF" opacity="0.3"/>
+                <circle cx="17" cy="10" r="1.5" stroke="#6675FF" stroke-width="0.8" opacity="0.4"/>
+                <circle cx="20" cy="13" r="1" fill="#6675FF" opacity="0.25"/>
+                <circle cx="20" cy="13" r="1" stroke="#6675FF" stroke-width="0.8" opacity="0.35"/>
+                <path d="M5 14L5 16M5 15L7 15" stroke="#6675FF" stroke-width="0.8" opacity="0.2"/>
+            </svg>
+        </span>
+
+        <!-- ⭐ Звезда -->
+        <span class="floating-bg">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L14.5 9.5L22 9.5L16 14.5L18.5 22L12 17L5.5 22L8 14.5L2 9.5L9.5 9.5L12 2Z" fill="#FFD54F" opacity="0.12"/>
+                <path d="M12 2L14.5 9.5L22 9.5L16 14.5L18.5 22L12 17L5.5 22L8 14.5L2 9.5L9.5 9.5L12 2Z" stroke="#FFD54F" stroke-width="1" opacity="0.35"/>
+                <path d="M12 5L13.5 9.5L18.5 9.5L14.5 13L16 17.5L12 14.5L8 17.5L9.5 13L5.5 9.5L10.5 9.5L12 5Z" stroke="#FFD54F" stroke-width="0.8" opacity="0.2"/>
+                <circle cx="12" cy="12" r="1.5" fill="#FFD54F" opacity="0.15"/>
+            </svg>
+        </span>
+
+        <!-- ✨ Искры -->
+        <span class="floating-bg">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 4L6.8 7.2L10 8L6.8 8.8L6 12L5.2 8.8L2 8L5.2 7.2L6 4Z" fill="#FFFFFF" opacity="0.12"/>
+                <path d="M6 4L6.8 7.2L10 8L6.8 8.8L6 12L5.2 8.8L2 8L5.2 7.2L6 4Z" stroke="#FFFFFF" stroke-width="0.8" opacity="0.2"/>
+                <path d="M16 12L16.5 13.5L18 14L16.5 14.5L16 16L15.5 14.5L14 14L15.5 13.5L16 12Z" fill="#FFFFFF" opacity="0.12"/>
+                <path d="M16 12L16.5 13.5L18 14L16.5 14.5L16 16L15.5 14.5L14 14L15.5 13.5L16 12Z" stroke="#FFFFFF" stroke-width="0.8" opacity="0.25"/>
+                <circle cx="13" cy="8" r="1" fill="#FFFFFF" opacity="0.1"/>
+                <circle cx="13" cy="8" r="1" stroke="#FFFFFF" stroke-width="0.6" opacity="0.2"/>
+                <circle cx="9" cy="14" r="0.6" fill="#FFFFFF" opacity="0.08"/>
+                <circle cx="9" cy="14" r="0.6" stroke="#FFFFFF" stroke-width="0.5" opacity="0.15"/>
+                <circle cx="11" cy="17" r="0.4" fill="#FFFFFF" opacity="0.06"/>
+                <circle cx="18" cy="9" r="0.4" fill="#FFFFFF" opacity="0.06"/>
+                <circle cx="7" cy="18" r="0.3" fill="#FFFFFF" opacity="0.04"/>
+            </svg>
+        </span>
+    </div>
+
+    <!-- Большие версии -->
+    <div class="section-title">📏 Увеличенные фоновые иконки</div>
+
+    <div class="floating-row big">
+        <span class="floating-bg">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#7DD8FF" opacity="0.15"/>
+                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#7DD8FF" stroke-width="1.2" opacity="0.4"/>
+                <path d="M2 12L12 17L22 12" stroke="#7DD8FF" stroke-width="1.2" opacity="0.4"/>
+                <path d="M2 17L12 22L22 17" stroke="#7DD8FF" stroke-width="1.2" opacity="0.4"/>
+                <path d="M2 7L2 12L2 17" stroke="#7DD8FF" stroke-width="1" opacity="0.2"/>
+                <path d="M22 7L22 12L22 17" stroke="#7DD8FF" stroke-width="1" opacity="0.2"/>
+                <path d="M12 2L12 12L12 22" stroke="#7DD8FF" stroke-width="0.8" opacity="0.3"/>
+                <path d="M2 7L12 12L2 17" stroke="#7DD8FF" stroke-width="0.8" opacity="0.15"/>
+                <path d="M22 7L12 12L22 17" stroke="#7DD8FF" stroke-width="0.8" opacity="0.15"/>
+                <ellipse cx="12" cy="12" rx="2" ry="1.5" fill="#7DD8FF" opacity="0.3"/>
+            </svg>
+        </span>
+        <span class="floating-bg">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="6" width="20" height="14" rx="4" fill="#6675FF" opacity="0.12"/>
+                <rect x="2" y="6" width="20" height="14" rx="4" stroke="#6675FF" stroke-width="1.2" opacity="0.35"/>
+                <path d="M8 10V14M6 12H10" stroke="#6675FF" stroke-width="1.2" opacity="0.4"/>
+                <circle cx="17" cy="10" r="1.5" fill="#6675FF" opacity="0.3"/>
+                <circle cx="17" cy="10" r="1.5" stroke="#6675FF" stroke-width="0.8" opacity="0.4"/>
+                <circle cx="20" cy="13" r="1" fill="#6675FF" opacity="0.25"/>
+                <circle cx="20" cy="13" r="1" stroke="#6675FF" stroke-width="0.8" opacity="0.35"/>
+                <path d="M5 14L5 16M5 15L7 15" stroke="#6675FF" stroke-width="0.8" opacity="0.2"/>
+            </svg>
+        </span>
+        <span class="floating-bg">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L14.5 9.5L22 9.5L16 14.5L18.5 22L12 17L5.5 22L8 14.5L2 9.5L9.5 9.5L12 2Z" fill="#FFD54F" opacity="0.12"/>
+                <path d="M12 2L14.5 9.5L22 9.5L16 14.5L18.5 22L12 17L5.5 22L8 14.5L2 9.5L9.5 9.5L12 2Z" stroke="#FFD54F" stroke-width="1" opacity="0.35"/>
+                <path d="M12 5L13.5 9.5L18.5 9.5L14.5 13L16 17.5L12 14.5L8 17.5L9.5 13L5.5 9.5L10.5 9.5L12 5Z" stroke="#FFD54F" stroke-width="0.8" opacity="0.2"/>
+                <circle cx="12" cy="12" r="1.5" fill="#FFD54F" opacity="0.15"/>
+            </svg>
+        </span>
+        <span class="floating-bg">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 4L6.8 7.2L10 8L6.8 8.8L6 12L5.2 8.8L2 8L5.2 7.2L6 4Z" fill="#FFFFFF" opacity="0.12"/>
+                <path d="M6 4L6.8 7.2L10 8L6.8 8.8L6 12L5.2 8.8L2 8L5.2 7.2L6 4Z" stroke="#FFFFFF" stroke-width="0.8" opacity="0.2"/>
+                <path d="M16 12L16.5 13.5L18 14L16.5 14.5L16 16L15.5 14.5L14 14L15.5 13.5L16 12Z" fill="#FFFFFF" opacity="0.12"/>
+                <path d="M16 12L16.5 13.5L18 14L16.5 14.5L16 16L15.5 14.5L14 14L15.5 13.5L16 12Z" stroke="#FFFFFF" stroke-width="0.8" opacity="0.25"/>
+                <circle cx="13" cy="8" r="1" fill="#FFFFFF" opacity="0.1"/>
+                <circle cx="13" cy="8" r="1" stroke="#FFFFFF" stroke-width="0.6" opacity="0.2"/>
+                <circle cx="9" cy="14" r="0.6" fill="#FFFFFF" opacity="0.08"/>
+                <circle cx="9" cy="14" r="0.6" stroke="#FFFFFF" stroke-width="0.5" opacity="0.15"/>
+                <circle cx="11" cy="17" r="0.4" fill="#FFFFFF" opacity="0.06"/>
+                <circle cx="18" cy="9" r="0.4" fill="#FFFFFF" opacity="0.06"/>
+                <circle cx="7" cy="18" r="0.3" fill="#FFFFFF" opacity="0.04"/>
+            </svg>
+        </span>
+    </div>
+
+    <!-- Сетка с названиями -->
+    <div class="section-title">🏷️ Иконки с названиями</div>
+
     <div class="emoji-grid">
         <div class="emoji-item">
-            <span class="emoji">💎</span>
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#7DD8FF" opacity="0.15"/>
+                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#7DD8FF" stroke-width="1.2" opacity="0.4"/>
+                <path d="M2 12L12 17L22 12" stroke="#7DD8FF" stroke-width="1.2" opacity="0.4"/>
+                <path d="M2 17L12 22L22 17" stroke="#7DD8FF" stroke-width="1.2" opacity="0.4"/>
+                <path d="M2 7L2 12L2 17" stroke="#7DD8FF" stroke-width="1" opacity="0.2"/>
+                <path d="M22 7L22 12L22 17" stroke="#7DD8FF" stroke-width="1" opacity="0.2"/>
+                <path d="M12 2L12 12L12 22" stroke="#7DD8FF" stroke-width="0.8" opacity="0.3"/>
+                <path d="M2 7L12 12L2 17" stroke="#7DD8FF" stroke-width="0.8" opacity="0.15"/>
+                <path d="M22 7L12 12L22 17" stroke="#7DD8FF" stroke-width="0.8" opacity="0.15"/>
+                <ellipse cx="12" cy="12" rx="2" ry="1.5" fill="#7DD8FF" opacity="0.3"/>
+            </svg>
             <span class="label">💎 Бриллиант</span>
         </div>
+
         <div class="emoji-item">
-            <span class="emoji">🎮</span>
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="6" width="20" height="14" rx="4" fill="#6675FF" opacity="0.12"/>
+                <rect x="2" y="6" width="20" height="14" rx="4" stroke="#6675FF" stroke-width="1.2" opacity="0.35"/>
+                <path d="M8 10V14M6 12H10" stroke="#6675FF" stroke-width="1.2" opacity="0.4"/>
+                <circle cx="17" cy="10" r="1.5" fill="#6675FF" opacity="0.3"/>
+                <circle cx="17" cy="10" r="1.5" stroke="#6675FF" stroke-width="0.8" opacity="0.4"/>
+                <circle cx="20" cy="13" r="1" fill="#6675FF" opacity="0.25"/>
+                <circle cx="20" cy="13" r="1" stroke="#6675FF" stroke-width="0.8" opacity="0.35"/>
+                <path d="M5 14L5 16M5 15L7 15" stroke="#6675FF" stroke-width="0.8" opacity="0.2"/>
+            </svg>
             <span class="label">🎮 Геймпад</span>
         </div>
+
         <div class="emoji-item">
-            <span class="emoji">⭐</span>
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L14.5 9.5L22 9.5L16 14.5L18.5 22L12 17L5.5 22L8 14.5L2 9.5L9.5 9.5L12 2Z" fill="#FFD54F" opacity="0.12"/>
+                <path d="M12 2L14.5 9.5L22 9.5L16 14.5L18.5 22L12 17L5.5 22L8 14.5L2 9.5L9.5 9.5L12 2Z" stroke="#FFD54F" stroke-width="1" opacity="0.35"/>
+                <path d="M12 5L13.5 9.5L18.5 9.5L14.5 13L16 17.5L12 14.5L8 17.5L9.5 13L5.5 9.5L10.5 9.5L12 5Z" stroke="#FFD54F" stroke-width="0.8" opacity="0.2"/>
+                <circle cx="12" cy="12" r="1.5" fill="#FFD54F" opacity="0.15"/>
+            </svg>
             <span class="label">⭐ Звезда</span>
         </div>
+
         <div class="emoji-item">
-            <span class="emoji">✨</span>
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 4L6.8 7.2L10 8L6.8 8.8L6 12L5.2 8.8L2 8L5.2 7.2L6 4Z" fill="#FFFFFF" opacity="0.12"/>
+                <path d="M6 4L6.8 7.2L10 8L6.8 8.8L6 12L5.2 8.8L2 8L5.2 7.2L6 4Z" stroke="#FFFFFF" stroke-width="0.8" opacity="0.2"/>
+                <path d="M16 12L16.5 13.5L18 14L16.5 14.5L16 16L15.5 14.5L14 14L15.5 13.5L16 12Z" fill="#FFFFFF" opacity="0.12"/>
+                <path d="M16 12L16.5 13.5L18 14L16.5 14.5L16 16L15.5 14.5L14 14L15.5 13.5L16 12Z" stroke="#FFFFFF" stroke-width="0.8" opacity="0.25"/>
+                <circle cx="13" cy="8" r="1" fill="#FFFFFF" opacity="0.1"/>
+                <circle cx="13" cy="8" r="1" stroke="#FFFFFF" stroke-width="0.6" opacity="0.2"/>
+                <circle cx="9" cy="14" r="0.6" fill="#FFFFFF" opacity="0.08"/>
+                <circle cx="9" cy="14" r="0.6" stroke="#FFFFFF" stroke-width="0.5" opacity="0.15"/>
+                <circle cx="11" cy="17" r="0.4" fill="#FFFFFF" opacity="0.06"/>
+                <circle cx="18" cy="9" r="0.4" fill="#FFFFFF" opacity="0.06"/>
+                <circle cx="7" cy="18" r="0.3" fill="#FFFFFF" opacity="0.04"/>
+            </svg>
             <span class="label">✨ Искры</span>
         </div>
     </div>
 
-    <!-- Дополнительные эмодзи -->
-    <div class="emoji-grid">
-        <div class="emoji-item">
-            <span class="emoji">🛒</span>
-            <span class="label">🛒 Корзина</span>
-        </div>
-        <div class="emoji-item">
-            <span class="emoji">💰</span>
-            <span class="label">💰 Деньги</span>
-        </div>
-        <div class="emoji-item">
-            <span class="emoji">👤</span>
-            <span class="label">👤 Профиль</span>
-        </div>
-        <div class="emoji-item">
-            <span class="emoji">🎉</span>
-            <span class="label">🎉 Праздник</span>
-        </div>
-    </div>
-
-    <!-- Большой набор эмодзи -->
-    <div class="emoji-row">
-        <span class="big-emoji">💎</span>
-        <span class="big-emoji">🎮</span>
-        <span class="big-emoji">⭐</span>
-        <span class="big-emoji">✨</span>
-        <span class="big-emoji">🛒</span>
-        <span class="big-emoji">💰</span>
-        <span class="big-emoji">👤</span>
-        <span class="big-emoji">🎉</span>
-        <span class="big-emoji">📦</span>
-        <span class="big-emoji">💳</span>
-    </div>
-
-    <!-- Текст с эмодзи -->
-    <div class="emoji-text">
-        <span>💎</span> Vintyx Store <span>⭐</span><br>
-        <span>🎮</span> Игровой донат <span>✨</span>
-    </div>
-
     <div class="note">
-        Шрифт: <code>Apple Color Emoji</code><br>
-        Подключён через <code>@font-face</code> из интернета.
+        ✅ Все иконки — SVG. Выглядят одинаково на <strong>всех</strong> устройствах.<br>
+        ⚡ Анимация плавания и пульсации.<br>
+        🎨 Цвета: <code>#7DD8FF</code> (голубой), <code>#6675FF</code> (фиолетовый), <code>#FFD54F</code> (золотой), <code>#FFFFFF</code> (белый).
     </div>
+
 </div>
 
 </body>
