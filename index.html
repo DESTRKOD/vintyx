@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Vintyx Store</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.9.14/dist/dotlottie-wc.js" type="module"></script>
     <style>
         * {
             margin: 0;
@@ -22,7 +23,11 @@
         .page {
             display: none;
             animation: fadeUp 0.4s ease;
-            background: linear-gradient(145deg, #0A0A1A 0%, #1A1A3E 30%, #2D1B69 70%, #1A1A3E 100%);
+            background: radial-gradient(ellipse at 20% 50%, rgba(91, 140, 255, 0.12) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(125, 216, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 100%, rgba(102, 117, 255, 0.08) 0%, transparent 40%),
+                linear-gradient(145deg, #0A0A1A 0%, #1A1A3E 30%, #2D1B69 70%, #1A1A3E 100%);
+            background-attachment: fixed;
             height: 100%;
             overflow-y: auto;
             overflow-x: hidden;
@@ -53,54 +58,13 @@
                 transform: translateY(0);
             }
         }
-        .page .floating-bg {
-            position: fixed;
-            font-size: 3rem;
-            opacity: 0.04;
-            pointer-events: none;
-            user-select: none;
-            animation: floatGem 8s ease-in-out infinite;
-            z-index: 0;
-        }
-        .page .floating-bg:nth-child(1) {
-            top: 5%;
-            right: 5%;
-            font-size: 5rem;
-            animation-delay: 0s;
-        }
-        .page .floating-bg:nth-child(2) {
-            bottom: 15%;
-            left: 3%;
-            font-size: 4rem;
-            animation-delay: 2.5s;
-        }
-        .page .floating-bg:nth-child(3) {
-            top: 50%;
-            right: 2%;
-            font-size: 3rem;
-            animation-delay: 5s;
-        }
-        .page .floating-bg:nth-child(4) {
-            bottom: 40%;
-            left: 5%;
-            font-size: 3.5rem;
-            animation-delay: 1.5s;
-        }
-        @keyframes floatGem {
-            0%,
-            100% {
-                transform: translateY(0px) rotate(0deg);
-            }
-            50% {
-                transform: translateY(-15px) rotate(10deg);
-            }
-        }
         .page .content {
             max-width: 480px;
             margin: 0 auto;
             position: relative;
             z-index: 1;
         }
+
         .main-header {
             display: flex;
             justify-content: space-between;
@@ -129,12 +93,6 @@
             font-weight: 700;
             color: #FFFFFF;
             margin-bottom: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .section-title .emoji {
-            font-size: 1.2rem;
         }
         .game-scroll {
             display: flex;
@@ -233,20 +191,20 @@
             transition: all 0.2s;
         }
         .game-card.brawl {
-            background: linear-gradient(135deg, rgba(255, 193, 7, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
-            border-color: rgba(255, 193, 7, 0.08);
+            background: linear-gradient(135deg, rgba(91, 140, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border-color: rgba(91, 140, 255, 0.08);
         }
         .game-card.brawl .game-tag {
-            background: rgba(255, 193, 7, 0.12);
-            color: #FFD54F;
+            background: rgba(91, 140, 255, 0.12);
+            color: #7DD8FF;
         }
         .game-card.clash {
-            background: linear-gradient(135deg, rgba(33, 150, 243, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
-            border-color: rgba(33, 150, 243, 0.08);
+            background: linear-gradient(135deg, rgba(91, 140, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border-color: rgba(91, 140, 255, 0.08);
         }
         .game-card.clash .game-tag {
-            background: rgba(33, 150, 243, 0.12);
-            color: #64B5F6;
+            background: rgba(91, 140, 255, 0.12);
+            color: #7DD8FF;
         }
         .game-card.telegram {
             background: linear-gradient(135deg, rgba(91, 140, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
@@ -401,11 +359,7 @@
             letter-spacing: 0.2px;
         }
         .game-page .product-card .prod-type-label {
-            font-size: 0.5rem;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-weight: 500;
-            white-space: nowrap;
+            display: none;
         }
 
         .cart-page .cart-header {
@@ -488,13 +442,13 @@
         }
         .cart-empty {
             text-align: center;
-            padding: 60px 20px;
+            padding: 40px 20px 20px;
             color: rgba(255, 255, 255, 0.15);
         }
         .cart-empty .empty-icon {
-            font-size: 3rem;
-            margin-bottom: 12px;
-            opacity: 0.3;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 12px;
         }
         .cart-empty .empty-text {
             font-size: 0.9rem;
@@ -598,6 +552,23 @@
             justify-content: center;
             font-size: 2.4rem;
             flex-shrink: 0;
+            overflow: hidden;
+        }
+        .profile-page .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .profile-page .profile-avatar .fallback {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6675FF, #7DD8FF);
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF;
         }
         .profile-page .profile-info .name {
             font-size: 1.4rem;
@@ -607,11 +578,6 @@
         .profile-page .profile-info .username {
             font-size: 0.9rem;
             color: rgba(255, 255, 255, 0.4);
-        }
-        .profile-page .profile-info .sub {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.5);
-            margin-top: 2px;
         }
         .profile-page .balance-card {
             background: rgba(255, 255, 255, 0.05);
@@ -656,9 +622,20 @@
             transition: all 0.2s;
             box-shadow: 0 4px 20px rgba(91, 140, 255, 0.2);
             font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
         .profile-page .btn-primary:active {
             transform: scale(0.97);
+        }
+        .profile-page .btn-primary svg {
+            width: 20px;
+            height: 20px;
+            stroke: #FFFFFF;
+            stroke-width: 2;
+            fill: none;
         }
         .profile-page .btn-secondary {
             background: rgba(255, 255, 255, 0.06);
@@ -672,6 +649,10 @@
             cursor: pointer;
             transition: all 0.2s;
             font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
         .profile-page .btn-secondary:active {
             transform: scale(0.97);
@@ -681,6 +662,13 @@
             border-color: rgba(255, 59, 111, 0.3);
             color: #FF3B6F;
             background: rgba(255, 59, 111, 0.06);
+        }
+        .profile-page .btn-secondary.withdraw-btn svg {
+            stroke: #FF3B6F;
+            stroke-width: 2;
+            fill: none;
+            width: 20px;
+            height: 20px;
         }
         .profile-page .btn-secondary.withdraw-btn:active {
             background: rgba(255, 59, 111, 0.12);
@@ -729,10 +717,6 @@
         .profile-page .recharge-section .quick-amounts .quick-btn:active {
             transform: scale(0.95);
             background: rgba(91, 140, 255, 0.15);
-            color: #7DD8FF;
-        }
-        .profile-page .recharge-section .quick-amounts .quick-btn.recent {
-            border-color: rgba(91, 140, 255, 0.2);
             color: #7DD8FF;
         }
         .profile-page .recharge-section .input-group {
@@ -808,6 +792,13 @@
             transition: all 0.2s;
             cursor: pointer;
         }
+        .profile-page .contact-section .contact-link svg {
+            width: 18px;
+            height: 18px;
+            stroke: #7DD8FF;
+            stroke-width: 1.8;
+            fill: none;
+        }
         .profile-page .contact-section .contact-link:active {
             transform: scale(0.95);
             background: rgba(91, 140, 255, 0.12);
@@ -868,13 +859,13 @@
         }
         .profile-page .history-empty {
             text-align: center;
-            padding: 30px 20px;
+            padding: 40px 20px 20px;
             color: rgba(255, 255, 255, 0.15);
         }
         .profile-page .history-empty .empty-icon {
-            font-size: 2rem;
-            margin-bottom: 8px;
-            opacity: 0.3;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 12px;
         }
 
         .withdraw-overlay {
@@ -1352,9 +1343,12 @@
             font-size: 0.75rem;
         }
 
-        /* ===== СТРАНИЦА ДЕТАЛЕЙ ЗАКАЗА ===== */
         .order-detail-page {
-            background: linear-gradient(145deg, #0A0A1A 0%, #1A1A3E 30%, #2D1B69 70%, #1A1A3E 100%);
+            background: radial-gradient(ellipse at 20% 50%, rgba(91, 140, 255, 0.12) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(125, 216, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 100%, rgba(102, 117, 255, 0.08) 0%, transparent 40%),
+                linear-gradient(145deg, #0A0A1A 0%, #1A1A3E 30%, #2D1B69 70%, #1A1A3E 100%);
+            background-attachment: fixed;
         }
         .order-detail-page .detail-card {
             background: rgba(255, 255, 255, 0.04);
@@ -1625,6 +1619,7 @@
             height: 26px;
             color: rgba(255, 255, 255, 0.3);
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
         }
         .nav-item .nav-icon svg {
             width: 100%;
@@ -1633,6 +1628,40 @@
             stroke-width: 2;
             fill: none;
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .nav-item .nav-icon .draw-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            stroke: #FFFFFF;
+            stroke-width: 2;
+            fill: none;
+            stroke-dasharray: 300;
+            stroke-dashoffset: 300;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .nav-item .nav-icon .draw-overlay.active {
+            animation: drawIcon 0.6s ease forwards;
+        }
+        @keyframes drawIcon {
+            0% {
+                stroke-dashoffset: 300;
+                opacity: 1;
+            }
+            70% {
+                opacity: 1;
+            }
+            100% {
+                stroke-dashoffset: 0;
+                opacity: 0;
+            }
+        }
+        .nav-item .nav-icon .draw-overlay.done {
+            opacity: 0;
+            stroke-dashoffset: 0;
         }
         .nav-item .nav-label {
             font-size: 0.6rem;
@@ -1647,8 +1676,7 @@
             filter: drop-shadow(0 0 24px rgba(91, 140, 255, 0.8));
         }
         .nav-item.active .nav-label {
-            color: #FFFFFF;
-            text-shadow: 0 0 20px rgba(91, 140, 255, 0.6);
+            color: rgba(255, 255, 255, 0.9);
         }
         .nav-item.active .nav-icon {
             transform: scale(1.1);
@@ -1729,6 +1757,7 @@
             animation: toastIn 0.3s ease;
             max-width: 90%;
             text-align: center;
+            display: none;
         }
         .toast.success {
             border-color: rgba(0, 200, 83, 0.3);
@@ -1844,7 +1873,7 @@
                 right: 0px;
             }
         }
-        @media (supports (padding: max(0px))) {
+        @supports (padding: max(0px)) {
             .page {
                 padding-left: max(20px, env(safe-area-inset-left));
                 padding-right: max(20px, env(safe-area-inset-right));
@@ -1857,12 +1886,8 @@
     </style>
 </head>
 <body>
-    <!-- PAGE: HOME -->
+
     <div id="pageHome" class="page active">
-        <span class="floating-bg">💎</span>
-        <span class="floating-bg">🎮</span>
-        <span class="floating-bg">⭐</span>
-        <span class="floating-bg">✨</span>
         <div class="content">
             <div class="main-header">
                 <div class="header-left">
@@ -1870,16 +1895,12 @@
                     <div class="greeting" id="greetingText">👋 Загрузка...</div>
                 </div>
             </div>
-            <div class="section-title"><span class="emoji">🎮</span> Выберите раздел</div>
+            <div class="section-title">Выберите раздел</div>
             <div class="game-scroll" id="gameList"></div>
         </div>
     </div>
 
-    <!-- PAGE: BRAWL STARS -->
     <div id="pageBrawl" class="page game-page">
-        <span class="floating-bg">💎</span>
-        <span class="floating-bg">⚔️</span>
-        <span class="floating-bg">🏆</span>
         <div class="content">
             <div class="game-header">
                 <button class="back-btn" onclick="closeGame()">←</button>
@@ -1898,40 +1919,30 @@
         </div>
     </div>
 
-    <!-- PAGE: CART -->
     <div id="pageCart" class="page cart-page">
-        <span class="floating-bg">🛒</span>
-        <span class="floating-bg">💎</span>
-        <span class="floating-bg">⭐</span>
         <div class="content">
             <div class="cart-header">
                 <button class="back-btn" onclick="closeCart()">←</button>
-                <div class="cart-title">🛒 Корзина</div>
+                <div class="cart-title">Корзина</div>
             </div>
             <div id="cartItems"></div>
             <div id="cartTotal"></div>
-            <button class="checkout-btn" id="checkoutBtn" onclick="checkout()">💳 Оплатить</button>
+            <button class="checkout-btn" id="checkoutBtn" onclick="checkout()">Оплатить</button>
         </div>
     </div>
 
-    <!-- PAGE: PROFILE -->
     <div id="pageProfile" class="page profile-page">
-        <span class="floating-bg">💎</span>
-        <span class="floating-bg">🎮</span>
-        <span class="floating-bg">⭐</span>
-        <span class="floating-bg">✨</span>
         <div class="content">
             <button class="back-btn" onclick="closeProfile()">← Назад</button>
             <div class="profile-header">
-                <div class="profile-avatar">👤</div>
+                <div class="profile-avatar" id="profileAvatar"></div>
                 <div class="profile-info">
                     <div class="name" id="userName">Загрузка...</div>
                     <div class="username" id="userUsername">@loading</div>
-                    <div class="sub">Игровой донат быстро и безопасно</div>
                 </div>
             </div>
             <div class="balance-card">
-                <div class="label">💰 Баланс</div>
+                <div class="label">Баланс</div>
                 <div>
                     <span class="amount" id="balanceAmount">0</span>
                     <span class="currency">₽</span>
@@ -1949,44 +1960,50 @@
                     <div class="input-row">
                         <input type="number" id="rechargeInput" placeholder="Введите сумму" min="1">
                     </div>
-                    <button class="btn-recharge" onclick="recharge()">💰 Пополнить</button>
+                    <button class="btn-recharge" onclick="recharge()">Пополнить</button>
                 </div>
             </div>
             <div class="btn-row">
-                <button class="btn-primary" onclick="toggleRecharge()">➕ Пополнить</button>
-                <button class="btn-secondary withdraw-btn" onclick="openWithdrawPopup()">💸 Вывод</button>
+                <button class="btn-primary" onclick="toggleRecharge()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                        <line x1="12" y1="5" x2="12" y2="19"/>
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                    Пополнить
+                </button>
+                <button class="btn-secondary withdraw-btn" onclick="openWithdrawPopup()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                        <path d="M12 19V5"/>
+                        <path d="M5 12L12 5L19 12"/>
+                    </svg>
+                    Вывод
+                </button>
             </div>
             <div class="contact-section">
-                <span class="contact-label">👨‍💼 Администратор</span>
+                <span class="contact-label">Администратор</span>
                 <div class="contact-link" onclick="openAdminChat()">
-                    <span class="icon">✉️</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <circle cx="12" cy="8" r="4"/>
+                        <path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"/>
+                        <circle cx="4" cy="4" r="1.5" opacity="0.4"/>
+                        <circle cx="20" cy="4" r="1.5" opacity="0.4"/>
+                        <path d="M4 8.5L4 4" opacity="0.4"/>
+                        <path d="M20 8.5L20 4" opacity="0.4"/>
+                    </svg>
                     @v2ntyx
                 </div>
             </div>
             <div class="section">
-                <div class="section-label">📦 История покупок</div>
+                <div class="section-label">История покупок</div>
                 <div id="ordersHistory"></div>
             </div>
             <div class="section">
-                <div class="section-label">💳 Транзакции</div>
+                <div class="section-label">Транзакции</div>
                 <div id="transactionsHistory"></div>
             </div>
         </div>
     </div>
 
-    <!-- PAGE: ORDER DETAIL -->
-    <div id="pageOrderDetail" class="page order-detail-page">
-        <div class="content">
-            <div class="detail-header">
-                <button class="back-btn" onclick="closeOrderDetail()">←</button>
-                <div class="detail-title">Детали заказа</div>
-                <div class="detail-order-number" id="detailOrderNumber">VX-000000</div>
-            </div>
-            <div id="orderDetailContent"></div>
-        </div>
-    </div>
-
-    <!-- WITHDRAW POPUP -->
     <div class="withdraw-overlay" id="withdrawOverlay" onclick="closeWithdrawPopup()"></div>
     <div class="withdraw-popup" id="withdrawPopup">
         <div class="popup-header">
@@ -1998,7 +2015,7 @@
         </div>
         <div class="popup-body">
             <div class="balance-hint">
-                <span class="label">💰 Доступно для вывода</span>
+                <span class="label">Доступно для вывода</span>
                 <span class="value" id="withdrawBalanceDisplay">0 ₽</span>
             </div>
             <div class="input-group">
@@ -2014,29 +2031,25 @@
             </div>
             <div class="calc-info">
                 <div class="calc-row">
-                    <span class="calc-label">💰 Сумма вывода</span>
+                    <span class="calc-label">Сумма вывода</span>
                     <span class="calc-value" id="calcAmount">0 ₽</span>
                 </div>
                 <div class="calc-row">
-                    <span class="calc-label">💸 Комиссия (3%)</span>
+                    <span class="calc-label">Комиссия (3%)</span>
                     <span class="calc-value fee" id="calcFee">0 ₽</span>
                 </div>
                 <div class="calc-divider"></div>
                 <div class="calc-row">
-                    <span class="calc-label">💳 К получению</span>
+                    <span class="calc-label">К получению</span>
                     <span class="calc-value final" id="calcFinal">0 ₽</span>
                 </div>
             </div>
-            <div class="fee-note">💡 Минимальная сумма вывода — 50 ₽</div>
-            <button class="btn-withdraw" id="withdrawBtn" onclick="processWithdraw()">💸 Вывести</button>
+            <div class="fee-note">Минимальная сумма вывода — 50 ₽</div>
+            <button class="btn-withdraw" id="withdrawBtn" onclick="processWithdraw()">Вывести</button>
         </div>
     </div>
 
-    <!-- PAGE: ORDER FLOW -->
     <div id="pageOrderFlow" class="page order-flow-page">
-        <span class="floating-bg">📦</span>
-        <span class="floating-bg">⚡</span>
-        <span class="floating-bg">✨</span>
         <div class="content">
             <div id="orderStepEmail" class="order-step active">
                 <button class="back-btn" onclick="closeOrderFlow()">← Назад</button>
@@ -2047,13 +2060,12 @@
                 </div>
                 <div class="order-input-group">
                     <input type="email" id="orderEmailInput" placeholder="example@mail.com" class="order-input">
-                    <button class="order-btn-primary" onclick="sendCode()">📤 Отправить</button>
+                    <button class="order-btn-primary" onclick="sendCode()">Отправить</button>
                 </div>
                 <div class="order-info">
-                    <span>🔒 Данные защищены и не передаются третьим лицам</span>
+                    <span>Данные защищены и не передаются третьим лицам</span>
                 </div>
             </div>
-
             <div id="orderStepWaitingCode" class="order-step">
                 <div class="order-header text-center">
                     <div class="order-icon waiting-icon">⏳</div>
@@ -2067,9 +2079,8 @@
                         <div class="progress-bar" id="progressBarCode"></div>
                     </div>
                 </div>
-                <button class="order-btn-primary" onclick="checkOrderStatus()" style="margin-top:20px;">🔄 Проверить статус</button>
+                <button class="order-btn-primary" onclick="checkOrderStatus()" style="margin-top:20px;">Проверить статус</button>
             </div>
-
             <div id="orderStepCode" class="order-step">
                 <button class="back-btn" onclick="goBackToEmail()">← Назад</button>
                 <div class="order-header">
@@ -2079,13 +2090,12 @@
                 </div>
                 <div class="order-input-group">
                     <input type="text" id="orderCodeInput" placeholder="XXXXXX" maxlength="6" class="order-input code-input">
-                    <button class="order-btn-primary" onclick="confirmCode()">✅ Подтвердить</button>
+                    <button class="order-btn-primary" onclick="confirmCode()">Подтвердить</button>
                 </div>
                 <div class="order-info">
-                    <span>📨 Код запрошен админом</span>
+                    <span>Код запрошен админом</span>
                 </div>
             </div>
-
             <div id="orderStepWaiting" class="order-step">
                 <div class="order-header text-center">
                     <div class="order-icon waiting-icon">⏳</div>
@@ -2100,7 +2110,6 @@
                     </div>
                 </div>
             </div>
-
             <div id="orderStepReadyLogin" class="order-step">
                 <div class="order-header text-center">
                     <div class="order-icon ready-icon">🎉</div>
@@ -2109,22 +2118,21 @@
                 </div>
                 <div class="ready-content">
                     <div class="ready-item">
-                        <span class="ready-label">📦 Товар:</span>
+                        <span class="ready-label">Товар:</span>
                         <span class="ready-value" id="readyProductName">Загрузка...</span>
                     </div>
                     <div class="ready-item">
-                        <span class="ready-label">👤 Аккаунт:</span>
+                        <span class="ready-label">Аккаунт:</span>
                         <span class="ready-value" id="readyEmail">example@mail.com</span>
                     </div>
                     <div class="ready-item">
-                        <span class="ready-label">📅 Дата:</span>
+                        <span class="ready-label">Дата:</span>
                         <span class="ready-value" id="readyDate">Сегодня</span>
                     </div>
                     <div class="ready-checkmark">✅</div>
                 </div>
-                <button class="order-btn-primary" onclick="closeOrderFlow()">🏠 На главную</button>
+                <button class="order-btn-primary" onclick="closeOrderFlow()">На главную</button>
             </div>
-
             <div id="orderStepReadyDB1" class="order-step">
                 <div class="order-header text-center">
                     <div class="order-icon ready-icon">📥</div>
@@ -2133,18 +2141,17 @@
                 </div>
                 <div class="ready-content">
                     <div class="ready-item">
-                        <span class="ready-label">📦 Товар:</span>
+                        <span class="ready-label">Товар:</span>
                         <span class="ready-value" id="readyProductNameDB1">Матчерино</span>
                     </div>
                     <div id="readyLinksContainer"></div>
                     <div class="ready-item">
-                        <span class="ready-label">📅 Дата:</span>
+                        <span class="ready-label">Дата:</span>
                         <span class="ready-value" id="readyDateDB1">Сегодня</span>
                     </div>
                 </div>
-                <button class="order-btn-primary" onclick="closeOrderFlow()">🏠 На главную</button>
+                <button class="order-btn-primary" onclick="closeOrderFlow()">На главную</button>
             </div>
-
             <div id="orderStepReadyDB2" class="order-step">
                 <div class="order-header text-center">
                     <div class="order-icon ready-icon">👥</div>
@@ -2153,7 +2160,7 @@
                 </div>
                 <div class="ready-content">
                     <div class="ready-item">
-                        <span class="ready-label">📦 Товар:</span>
+                        <span class="ready-label">Товар:</span>
                         <span class="ready-value" id="readyProductNameDB2">Подарок</span>
                     </div>
                     <div class="ready-friend-box">
@@ -2164,27 +2171,34 @@
                                 <div class="friend-id" id="friendId">#Ссылка</div>
                             </div>
                         </div>
-                        <button class="order-btn-small" onclick="copyFriendId()">📋 Копировать</button>
+                        <button class="order-btn-small" onclick="copyFriendId()">Копировать</button>
                     </div>
                     <div class="ready-item">
-                        <span class="ready-label">⏳ Статус:</span>
+                        <span class="ready-label">Статус:</span>
                         <span class="ready-value" style="color: #FFD54F;" id="orderStatus">Ожидание</span>
                     </div>
                     <div class="ready-item">
-                        <span class="ready-label">📅 Дата:</span>
+                        <span class="ready-label">Дата:</span>
                         <span class="ready-value" id="readyDateDB2">Сегодня</span>
                     </div>
                 </div>
-                <button class="order-btn-primary" onclick="closeOrderFlow()">🏠 На главную</button>
+                <button class="order-btn-primary" onclick="closeOrderFlow()">На главную</button>
             </div>
         </div>
     </div>
 
-    <!-- PAGE: INFO -->
+    <div id="pageOrderDetail" class="page order-detail-page">
+        <div class="content">
+            <div class="detail-header">
+                <button class="back-btn" onclick="closeOrderDetail()">←</button>
+                <div class="detail-title">Детали заказа</div>
+                <div class="detail-order-number" id="detailOrderNumber">VX-000000</div>
+            </div>
+            <div id="orderDetailContent"></div>
+        </div>
+    </div>
+
     <div id="pageInfo" class="page info-page">
-        <span class="floating-bg">ℹ️</span>
-        <span class="floating-bg">✨</span>
-        <span class="floating-bg">💎</span>
         <div class="content">
             <div class="info-card">
                 <div class="info-icon">ℹ️</div>
@@ -2195,7 +2209,7 @@
                     Быстро. Безопасно. Надёжно.
                 </div>
                 <div class="info-contact">
-                    <span class="contact-label">👨‍💼 Администратор</span>
+                    <span class="contact-label">Администратор</span>
                     <div class="contact-link" onclick="openAdminChat()">
                         ✉️ @v2ntyx
                     </div>
@@ -2208,11 +2222,14 @@
         </div>
     </div>
 
-    <!-- NAVIGATION -->
     <nav class="bottom-nav">
         <button class="nav-item" data-page="profile" onclick="navigateTo('profile')">
-            <span class="nav-icon">
+            <span class="nav-icon" id="navProfile">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <circle cx="12" cy="8" r="4"/>
+                    <path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"/>
+                </svg>
+                <svg class="draw-overlay" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                     <circle cx="12" cy="8" r="4"/>
                     <path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"/>
                 </svg>
@@ -2220,8 +2237,13 @@
             <span class="nav-label">Профиль</span>
         </button>
         <button class="nav-item active" data-page="home" onclick="navigateTo('home')">
-            <span class="nav-icon">
+            <span class="nav-icon" id="navHome">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <path d="M3 10.5L12 3l9 7.5"/>
+                    <path d="M5 9.5V21h14V9.5"/>
+                    <path d="M9 21v-6h6v6"/>
+                </svg>
+                <svg class="draw-overlay" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                     <path d="M3 10.5L12 3l9 7.5"/>
                     <path d="M5 9.5V21h14V9.5"/>
                     <path d="M9 21v-6h6v6"/>
@@ -2230,19 +2252,29 @@
             <span class="nav-label">Главная</span>
         </button>
         <button class="nav-item" data-page="cart" onclick="navigateTo('cart')">
-            <span class="nav-icon">
+            <span class="nav-icon" id="navCart">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                     <circle cx="9" cy="21" r="1"/>
                     <circle cx="20" cy="21" r="1"/>
                     <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
                 </svg>
+                <svg class="draw-overlay" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <circle cx="9" cy="21" r="1"/>
+                    <circle cx="20" cy="21" r="1"/>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                </svg>
+                <span class="badge hidden" id="navCartBadge"></span>
             </span>
             <span class="nav-label">Корзина</span>
-            <span class="badge hidden" id="navCartBadge"></span>
         </button>
         <button class="nav-item" data-page="info" onclick="navigateTo('info')">
-            <span class="nav-icon">
+            <span class="nav-icon" id="navInfo">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <circle cx="12" cy="12" r="9"/>
+                    <path d="M12 10v6"/>
+                    <circle cx="12" cy="7" r="0.8" fill="currentColor" stroke="none"/>
+                </svg>
+                <svg class="draw-overlay" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                     <circle cx="12" cy="12" r="9"/>
                     <path d="M12 10v6"/>
                     <circle cx="12" cy="7" r="0.8" fill="currentColor" stroke="none"/>
@@ -2254,7 +2286,7 @@
 
     <script>
         const API_URL = 'https://vintyx-server-destr.waw0.amvera.tech';
-        
+
         const tg = window.Telegram?.WebApp;
         let currentUser = null;
         let cart = [];
@@ -2262,6 +2294,7 @@
         let orderCheckInterval = null;
         let isProcessing = false;
         let currentOrderId = null;
+        let isFirstLoad = true;
 
         if (tg) {
             tg.ready();
@@ -2293,6 +2326,41 @@
             });
         }
 
+        function animateNavIcon(pageName) {
+            if (isFirstLoad && pageName === 'home') {
+                isFirstLoad = false;
+                return;
+            }
+
+            const navMap = {
+                'profile': 'navProfile',
+                'home': 'navHome',
+                'cart': 'navCart',
+                'info': 'navInfo',
+                'brawl': 'navHome',
+                'order': 'navHome',
+                'orderDetail': 'navHome'
+            };
+
+            const iconId = navMap[pageName];
+            if (!iconId) return;
+
+            const container = document.getElementById(iconId);
+            if (!container) return;
+
+            const overlay = container.querySelector('.draw-overlay');
+            if (!overlay) return;
+
+            overlay.classList.remove('active', 'done');
+            void overlay.offsetWidth;
+            overlay.classList.add('active');
+
+            setTimeout(() => {
+                overlay.classList.remove('active');
+                overlay.classList.add('done');
+            }, 700);
+        }
+
         function navigateTo(pageName) {
             if (pageName === 'brawl' || pageName === 'order' || pageName === 'orderDetail') return;
 
@@ -2305,6 +2373,7 @@
             }
 
             updateNavIcons(pageName);
+            animateNavIcon(pageName);
 
             if (pageName === 'home') {
                 window.location.hash = '';
@@ -2318,6 +2387,7 @@
                 loadBalance();
                 loadOrders();
                 loadTransactions();
+                updateProfileAvatar();
             }
 
             if (pageName === 'cart') {
@@ -2340,6 +2410,7 @@
             toast.className = `toast ${type}`;
             toast.textContent = message;
             document.body.appendChild(toast);
+            toast.style.display = 'block';
 
             setTimeout(() => {
                 toast.style.opacity = '0';
@@ -2355,7 +2426,7 @@
 
         function copyLinkText(link) {
             navigator.clipboard?.writeText(link).then(() => {
-                showToast('📋 Ссылка скопирована!', 'success');
+                showToast('Ссылка скопирована!', 'success');
             }).catch(() => {
                 const textarea = document.createElement('textarea');
                 textarea.value = link;
@@ -2363,14 +2434,14 @@
                 textarea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textarea);
-                showToast('📋 Ссылка скопирована!', 'success');
+                showToast('Ссылка скопирована!', 'success');
             });
         }
 
         function copyFriendId() {
             const friendId = document.getElementById('friendId')?.textContent || '';
             navigator.clipboard?.writeText(friendId).then(() => {
-                showToast('📋 ID скопирован!', 'success');
+                showToast('ID скопирован!', 'success');
             }).catch(() => {
                 const textarea = document.createElement('textarea');
                 textarea.value = friendId;
@@ -2378,7 +2449,7 @@
                 textarea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textarea);
-                showToast('📋 ID скопирован!', 'success');
+                showToast('ID скопирован!', 'success');
             });
         }
 
@@ -2390,6 +2461,25 @@
                 hour: '2-digit',
                 minute: '2-digit'
             });
+        }
+
+        function updateProfileAvatar() {
+            const container = document.getElementById('profileAvatar');
+            if (!container) return;
+
+            if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+                const user = tg.initDataUnsafe.user;
+                const photoUrl = user.photo_url;
+
+                if (photoUrl) {
+                    container.innerHTML = `<img src="${photoUrl}" alt="avatar">`;
+                    return;
+                }
+            }
+
+            const name = document.getElementById('userName')?.textContent || 'User';
+            const firstLetter = name.charAt(0).toUpperCase();
+            container.innerHTML = `<div class="fallback">${firstLetter}</div>`;
         }
 
         async function apiRequest(endpoint, method = 'GET', data = null) {
@@ -2421,6 +2511,29 @@
             }
         }
 
+        function loadLottieAnimation(container, filePath, fallbackText = '') {
+            if (!container) return;
+
+            fetch(filePath)
+                .then(response => {
+                    if (!response.ok) throw new Error('File not found');
+                    return response.json();
+                })
+                .then(data => {
+                    container.innerHTML = `
+                        <dotlottie-wc
+                            src="${filePath}"
+                            style="width: 120px; height: 120px;"
+                            autoplay
+                            loop
+                        ></dotlottie-wc>
+                    `;
+                })
+                .catch(() => {
+                    container.innerHTML = `<div style="font-size:3rem;opacity:0.3;">${fallbackText}</div>`;
+                });
+        }
+
         async function loadUserData() {
             try {
                 const initData = getInitData();
@@ -2428,6 +2541,7 @@
                     document.getElementById('greetingText').textContent = '👋 Привет, Гость';
                     document.getElementById('userName').textContent = 'Гость';
                     document.getElementById('userUsername').textContent = '@guest';
+                    updateProfileAvatar();
                     return null;
                 }
 
@@ -2438,16 +2552,19 @@
                 document.getElementById('userName').textContent = user.first_name || 'Игрок';
                 document.getElementById('userUsername').textContent = user.username ? `@${user.username}` : '@user';
 
+                updateProfileAvatar();
+
                 await loadBalance();
                 await loadOrders();
                 await loadTransactions();
 
                 return user;
             } catch (error) {
-                console.error('❌ Ошибка загрузки пользователя:', error);
+                console.error('Ошибка загрузки пользователя:', error);
                 document.getElementById('greetingText').textContent = '👋 Привет, Гость';
                 document.getElementById('userName').textContent = 'Гость';
                 document.getElementById('userUsername').textContent = '@guest';
+                updateProfileAvatar();
                 return null;
             }
         }
@@ -2476,7 +2593,7 @@
 
         async function recharge() {
             if (!currentUser) {
-                showToast('❌ Пожалуйста, авторизуйтесь через Telegram', 'error');
+                showToast('Пожалуйста, авторизуйтесь через Telegram', 'error');
                 return;
             }
 
@@ -2484,30 +2601,30 @@
             const amount = parseInt(input.value);
 
             if (!amount || amount <= 0) {
-                showToast('❌ Введите корректную сумму', 'error');
+                showToast('Введите корректную сумму', 'error');
                 return;
             }
 
             if (amount > 100000) {
-                showToast('❌ Сумма слишком большая', 'error');
+                showToast('Сумма слишком большая', 'error');
                 return;
             }
 
             try {
                 await apiRequest('/api/balance/deposit', 'POST', { amount });
-                showToast(`✅ Заявка на пополнение ${amount} ₽ отправлена!`, 'success');
+                showToast(`Заявка на пополнение ${amount} ₽ отправлена!`, 'success');
                 if (tg) tg.openTelegramLink('https://t.me/vintyx_store_bot');
                 input.value = '';
                 document.getElementById('rechargeSection').classList.remove('active');
                 await loadBalance();
             } catch (error) {
-                showToast(error.message || '❌ Ошибка пополнения', 'error');
+                showToast(error.message || 'Ошибка пополнения', 'error');
             }
         }
 
         function openWithdrawPopup() {
             if (!currentUser) {
-                showToast('❌ Пожалуйста, авторизуйтесь через Telegram', 'error');
+                showToast('Пожалуйста, авторизуйтесь через Telegram', 'error');
                 return;
             }
             loadBalance().then(balance => {
@@ -2537,19 +2654,19 @@
             const btn = document.getElementById('withdrawBtn');
             if (amount < 50 && amount > 0) {
                 btn.disabled = true;
-                btn.textContent = '❌ Минимум 50 ₽';
+                btn.textContent = 'Минимум 50 ₽';
             } else if (amount <= 0) {
                 btn.disabled = true;
-                btn.textContent = '💸 Вывести';
+                btn.textContent = 'Вывести';
             } else {
                 btn.disabled = false;
-                btn.textContent = '💸 Вывести ' + finalAmount.toLocaleString() + ' ₽';
+                btn.textContent = 'Вывести ' + finalAmount.toLocaleString() + ' ₽';
             }
         }
 
         async function processWithdraw() {
             if (!currentUser) {
-                showToast('❌ Пожалуйста, авторизуйтесь через Telegram', 'error');
+                showToast('Пожалуйста, авторизуйтесь через Telegram', 'error');
                 return;
             }
 
@@ -2558,41 +2675,41 @@
             const card = document.getElementById('withdrawCardInput').value.trim();
 
             if (!amount || amount <= 0) {
-                showToast('❌ Введите сумму вывода', 'error');
+                showToast('Введите сумму вывода', 'error');
                 return;
             }
 
             if (amount < 50) {
-                showToast('❌ Минимальная сумма вывода 50 ₽', 'error');
+                showToast('Минимальная сумма вывода 50 ₽', 'error');
                 return;
             }
 
             try {
                 const balanceData = await apiRequest('/api/balance');
                 if (amount > balanceData.balance) {
-                    showToast(`❌ Недостаточно средств!\n💰 Баланс: ${balanceData.balance} ₽`, 'error');
+                    showToast(`Недостаточно средств!\nБаланс: ${balanceData.balance} ₽`, 'error');
                     return;
                 }
             } catch (error) {
-                showToast('❌ Ошибка проверки баланса', 'error');
+                showToast('Ошибка проверки баланса', 'error');
                 return;
             }
 
             if (!card || card.length < 4) {
-                showToast('💳 Введите номер карты или СБП', 'error');
+                showToast('Введите номер карты или СБП', 'error');
                 return;
             }
 
             try {
                 await apiRequest('/api/balance/withdraw', 'POST', { amount, details: card });
                 closeWithdrawPopup();
-                showToast(`💸 Заявка на вывод ${amount} ₽ отправлена!`, 'success');
+                showToast(`Заявка на вывод ${amount} ₽ отправлена!`, 'success');
                 input.value = '';
                 document.getElementById('withdrawCardInput').value = '';
                 await loadBalance();
                 await loadTransactions();
             } catch (error) {
-                showToast(error.message || '❌ Ошибка вывода', 'error');
+                showToast(error.message || 'Ошибка вывода', 'error');
             }
         }
 
@@ -2604,10 +2721,15 @@
                 if (!orders || orders.length === 0) {
                     container.innerHTML = `
                         <div class="history-empty">
-                            <div class="empty-icon">📭</div>
+                            <div class="empty-icon" id="emptyOrdersAnimation"></div>
                             <div>У вас пока нет покупок</div>
                         </div>
                     `;
+                    loadLottieAnimation(
+                        document.getElementById('emptyOrdersAnimation'),
+                        'nohistory.json',
+                        '📭'
+                    );
                     return;
                 }
 
@@ -2615,14 +2737,14 @@
                 orders.slice(0, 20).forEach(item => {
                     const date = formatDate(item.created_at);
                     const statusMap = {
-                        'pending': '⏳ В обработке',
-                        'code_requested': '🔑 Код запрошен',
-                        'processing': '⚡ Обработка',
-                        'friend_requested': '📨 Запрос отправлен',
-                        'friend_accepted': '⏱️ Ожидание (24ч)',
-                        'timeout': '⏰ Требуется подтверждение',
-                        'completed': '✅ Выполнен',
-                        'cancelled': '❌ Отменён'
+                        'pending': 'В обработке',
+                        'code_requested': 'Код запрошен',
+                        'processing': 'Обработка',
+                        'friend_requested': 'Запрос отправлен',
+                        'friend_accepted': 'Ожидание (24ч)',
+                        'timeout': 'Требуется подтверждение',
+                        'completed': 'Выполнен',
+                        'cancelled': 'Отменён'
                     };
                     const colorMap = {
                         'pending': '#FFD54F',
@@ -2642,7 +2764,7 @@
                     html += `
                         <div class="history-item" onclick="openOrderDetail(${item.id})">
                             <div class="h-left">
-                                <span class="h-icon">🎮</span>
+                                <span class="h-icon">${item.image || '🎮'}</span>
                                 <div class="h-info">
                                     <div class="h-name">${item.product_name}</div>
                                     <div class="h-date">${date}</div>
@@ -2659,12 +2781,18 @@
 
                 container.innerHTML = html;
             } catch (error) {
+                console.error('Ошибка загрузки заказов:', error);
                 document.getElementById('ordersHistory').innerHTML = `
                     <div class="history-empty">
-                        <div class="empty-icon">⚠️</div>
+                        <div class="empty-icon" id="errorOrdersAnimation"></div>
                         <div>Ошибка загрузки истории</div>
                     </div>
                 `;
+                loadLottieAnimation(
+                    document.getElementById('errorOrdersAnimation'),
+                    'badinput.json',
+                    '⚠️'
+                );
             }
         }
 
@@ -2701,19 +2829,19 @@
                 let detailsHtml = `
                     <div class="detail-card">
                         <div class="detail-row">
-                            <span class="detail-label">📦 Товар</span>
+                            <span class="detail-label">Товар</span>
                             <span class="detail-value">${order.product_name}</span>
                         </div>
                         <div class="detail-row">
-                            <span class="detail-label">📌 Категория</span>
+                            <span class="detail-label">Категория</span>
                             <span class="detail-value">${order.category}</span>
                         </div>
                         <div class="detail-row">
-                            <span class="detail-label">📅 Дата</span>
+                            <span class="detail-label">Дата</span>
                             <span class="detail-value">${formatDate(order.created_at)}</span>
                         </div>
                         <div class="detail-row">
-                            <span class="detail-label">📌 Статус</span>
+                            <span class="detail-label">Статус</span>
                             <span class="detail-value">
                                 <span class="detail-status-badge ${statusClass[order.status] || 'pending'}">${statusMap[order.status] || order.status}</span>
                             </span>
@@ -2723,7 +2851,7 @@
                 if (order.email) {
                     detailsHtml += `
                         <div class="detail-row">
-                            <span class="detail-label">📧 Почта</span>
+                            <span class="detail-label">Почта</span>
                             <span class="detail-value">${order.email}</span>
                         </div>
                     `;
@@ -2732,7 +2860,7 @@
                 if (order.code) {
                     detailsHtml += `
                         <div class="detail-row">
-                            <span class="detail-label">🔑 Код</span>
+                            <span class="detail-label">Код</span>
                             <span class="detail-value">${order.code}</span>
                         </div>
                     `;
@@ -2741,7 +2869,7 @@
                 if (order.link) {
                     detailsHtml += `
                         <div class="detail-row">
-                            <span class="detail-label">🔗 Ссылка</span>
+                            <span class="detail-label">Ссылка</span>
                             <span class="detail-value" style="font-size:0.75rem;color:#7DD8FF;">${order.link}</span>
                         </div>
                     `;
@@ -2750,7 +2878,7 @@
                 if (order.completed_at) {
                     detailsHtml += `
                         <div class="detail-row">
-                            <span class="detail-label">✅ Выполнен</span>
+                            <span class="detail-label">Выполнен</span>
                             <span class="detail-value">${formatDate(order.completed_at)}</span>
                         </div>
                     `;
@@ -2759,7 +2887,7 @@
                 if (order.admin_note) {
                     detailsHtml += `
                         <div class="detail-row">
-                            <span class="detail-label">📝 Примечание</span>
+                            <span class="detail-label">Примечание</span>
                             <span class="detail-value" style="color:#FFD54F;">${order.admin_note}</span>
                         </div>
                     `;
@@ -2769,7 +2897,7 @@
 
                 detailsHtml += `
                     <div class="detail-summary">
-                        <span class="summary-label">💰 Итого</span>
+                        <span class="summary-label">Итого</span>
                         <span class="summary-price">${order.product_price} ₽</span>
                     </div>
                 `;
@@ -2781,11 +2909,12 @@
                 });
                 pages.orderDetail.classList.add('active');
                 updateNavIcons('orderDetail');
+                animateNavIcon('orderDetail');
                 if (tg && tg.BackButton) tg.BackButton.show();
                 window.location.hash = 'orderDetail';
 
             } catch (error) {
-                showToast('❌ Ошибка загрузки деталей заказа', 'error');
+                showToast('Ошибка загрузки деталей заказа', 'error');
             }
         }
 
@@ -2795,6 +2924,7 @@
             });
             pages.profile.classList.add('active');
             updateNavIcons('profile');
+            animateNavIcon('profile');
             window.location.hash = 'profile';
             if (tg && tg.BackButton) tg.BackButton.show();
             loadOrders();
@@ -2810,24 +2940,33 @@
                 if (!transactions || transactions.length === 0) {
                     container.innerHTML = `
                         <div class="history-empty">
-                            <div class="empty-icon">📊</div>
+                            <div class="empty-icon" id="emptyTransactionsAnimation"></div>
                             <div>История транзакций пуста</div>
                         </div>
                     `;
+                    loadLottieAnimation(
+                        document.getElementById('emptyTransactionsAnimation'),
+                        'nohistory.json',
+                        '📊'
+                    );
                     return;
                 }
 
                 let html = '';
                 transactions.slice(0, 20).forEach(item => {
                     const date = formatDate(item.created_at);
-                    const icon = item.type === 'deposit' ? '💰' : '💸';
+                    const icon = item.type === 'deposit' ? 'deposit' : 'withdraw';
                     const amountClass = item.type === 'deposit' ? 'positive' : 'negative';
                     const sign = item.type === 'deposit' ? '+' : '-';
 
                     html += `
                         <div class="history-item">
                             <div class="h-left">
-                                <span class="h-icon">${icon}</span>
+                                <span class="h-icon" style="display:flex;align-items:center;justify-content:center;">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2">
+                                        <path d="${item.type === 'deposit' ? 'M12 5L12 19M5 12L12 5L19 12' : 'M12 19L12 5M5 12L12 19L19 12'}"/>
+                                    </svg>
+                                </span>
                                 <div class="h-info">
                                     <div class="h-name">${item.description || item.type}</div>
                                     <div class="h-date">${date}</div>
@@ -2840,12 +2979,18 @@
 
                 container.innerHTML = html;
             } catch (error) {
+                console.error('Ошибка загрузки транзакций:', error);
                 document.getElementById('transactionsHistory').innerHTML = `
                     <div class="history-empty">
-                        <div class="empty-icon">⚠️</div>
+                        <div class="empty-icon" id="errorTransactionsAnimation"></div>
                         <div>Ошибка загрузки транзакций</div>
                     </div>
                 `;
+                loadLottieAnimation(
+                    document.getElementById('errorTransactionsAnimation'),
+                    'badinput.json',
+                    '⚠️'
+                );
             }
         }
 
@@ -2883,27 +3028,11 @@
                 const card = document.createElement('div');
                 card.className = 'product-card';
 
-                let labelColor = '', labelBg = '', labelText = '';
-                if (item.category === 'login') {
-                    labelColor = '#7DD8FF';
-                    labelBg = 'rgba(91, 140, 255, 0.12)';
-                    labelText = '🔑 Вход';
-                } else if (item.category === 'db1') {
-                    labelColor = '#FFD54F';
-                    labelBg = 'rgba(255, 193, 7, 0.12)';
-                    labelText = '📥 Матчерино';
-                } else if (item.category === 'db2') {
-                    labelColor = '#00E676';
-                    labelBg = 'rgba(0, 200, 83, 0.12)';
-                    labelText = '🎁 Подарком';
-                }
-
                 const icon = item.image || '💎';
 
                 card.innerHTML = `
                     <div style="width:100%;display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
                         <div class="prod-icon" style="margin-bottom:0;font-size:1.8rem;">${icon}</div>
-                        <span class="prod-type-label" style="background:${labelBg};color:${labelColor};">${labelText}</span>
                     </div>
                     <div class="prod-name">${item.name}</div>
                     <div class="prod-sub">Brawl Stars</div>
@@ -2957,16 +3086,35 @@
         function addToCart(product) {
             const cartData = getCart();
             const existing = cartData.find(item => item.id === product.id);
-            
+
             if (existing) {
                 existing.quantity = (existing.quantity || 1) + 1;
             } else {
                 cartData.push({ ...product, quantity: 1 });
             }
-            
+
             saveCart(cartData);
-            showToast(`✅ ${product.name} добавлен в корзину! (${existing ? existing.quantity : 1} шт.)`, 'success');
             updateNavCartBadge();
+            animateNavIcon('cart');
+
+            const cartIcon = document.getElementById('navCart');
+            if (cartIcon) {
+                const svg = cartIcon.querySelector('svg:not(.draw-overlay)');
+                if (svg) {
+                    svg.style.animation = 'navPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                    setTimeout(() => {
+                        svg.style.animation = '';
+                    }, 400);
+                }
+            }
+
+            const badge = document.getElementById('navCartBadge');
+            if (badge) {
+                badge.classList.remove('hidden');
+                badge.style.animation = 'none';
+                void badge.offsetWidth;
+                badge.style.animation = 'navPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
+            }
         }
 
         function removeFromCart(productId) {
@@ -2979,11 +3127,11 @@
         function changeQuantity(productId, delta) {
             const cartData = getCart();
             const item = cartData.find(item => item.id === productId);
-            
+
             if (!item) return;
-            
+
             const newQuantity = (item.quantity || 1) + delta;
-            
+
             if (newQuantity <= 0) {
                 const newCart = cartData.filter(i => i.id !== productId);
                 saveCart(newCart);
@@ -2991,7 +3139,7 @@
                 item.quantity = newQuantity;
                 saveCart(cartData);
             }
-            
+
             renderCart();
             updateNavCartBadge();
         }
@@ -3005,14 +3153,19 @@
             if (cartData.length === 0) {
                 container.innerHTML = `
                     <div class="cart-empty">
-                        <div class="empty-icon">🛒</div>
+                        <div class="empty-icon" id="emptyCartAnimation"></div>
                         <div class="empty-text">Корзина пуста</div>
                     </div>
                 `;
+                loadLottieAnimation(
+                    document.getElementById('emptyCartAnimation'),
+                    'empty_basket.json',
+                    '🛒'
+                );
                 totalContainer.innerHTML = '';
                 if (checkoutBtn) {
                     checkoutBtn.disabled = true;
-                    checkoutBtn.textContent = '💳 Оплатить';
+                    checkoutBtn.textContent = 'Оплатить';
                 }
                 updateNavCartBadge();
                 return;
@@ -3025,7 +3178,7 @@
                 const price = item.price || 0;
                 const totalPrice = price * quantity;
                 totalItems += quantity;
-                
+
                 html += `
                     <div class="cart-item">
                         <div class="item-left">
@@ -3057,10 +3210,10 @@
                     <span class="total-price">${total} ₽</span>
                 </div>
             `;
-            
+
             if (checkoutBtn) {
                 checkoutBtn.disabled = isProcessing || false;
-                checkoutBtn.textContent = isProcessing ? '⏳ Обработка...' : '💳 Оплатить';
+                checkoutBtn.textContent = isProcessing ? 'Обработка...' : 'Оплатить';
             }
             updateNavCartBadge();
         }
@@ -3074,15 +3227,15 @@
 
             if (uniqueTypes.length > 1) {
                 const typeLabels = {
-                    'login': '🔑 Вход (почта + код)',
-                    'db1': '📥 По ссылке (Матчерино)',
-                    'db2': '🎁 Подарком (добавить в друзья)'
+                    'login': 'Вход (почта + код)',
+                    'db1': 'По ссылке (Матчерино)',
+                    'db2': 'Подарком (добавить в друзья)'
                 };
                 return {
                     error: true,
-                    message: '❌ В корзине товары разных типов!\n\n' +
-                             uniqueTypes.map(t => typeLabels[t] || t).join('\n') +
-                             '\n\nОформите заказы по отдельности!'
+                    message: 'В корзине товары разных типов!\n\n' +
+                        uniqueTypes.map(t => typeLabels[t] || t).join('\n') +
+                        '\n\nОформите заказы по отдельности!'
                 };
             }
 
@@ -3094,86 +3247,83 @@
         let progressInterval = null;
 
         async function checkout() {
-    if (isProcessing) {
-        showToast('⏳ Заказ уже обрабатывается', 'info');
-        return;
-    }
+            if (isProcessing) {
+                showToast('Заказ уже обрабатывается', 'info');
+                return;
+            }
 
-    const cartData = getCart();
+            const cartData = getCart();
 
-    if (cartData.length === 0) {
-        showToast('🛒 Корзина пуста!', 'error');
-        return;
-    }
+            if (cartData.length === 0) {
+                showToast('Корзина пуста!', 'error');
+                return;
+            }
 
-    const typeCheck = checkCartTypes();
-    if (typeCheck.error) {
-        showToast(typeCheck.message, 'error');
-        return;
-    }
+            const typeCheck = checkCartTypes();
+            if (typeCheck.error) {
+                showToast(typeCheck.message, 'error');
+                return;
+            }
 
-    const total = calculateTotal();
-    
-    try {
-        const balanceData = await apiRequest('/api/balance');
-        if (balanceData.balance < total) {
-            showToast(`❌ Недостаточно средств!\n💰 Баланс: ${balanceData.balance} ₽\n📦 Сумма: ${total} ₽`, 'error');
-            return;
+            const total = calculateTotal();
+
+            try {
+                const balanceData = await apiRequest('/api/balance');
+                if (balanceData.balance < total) {
+                    showToast(`Недостаточно средств!\nБаланс: ${balanceData.balance} ₽\nСумма: ${total} ₽`, 'error');
+                    return;
+                }
+            } catch (error) {
+                showToast('Ошибка проверки баланса', 'error');
+                return;
+            }
+
+            isProcessing = true;
+            document.getElementById('checkoutBtn').disabled = true;
+            document.getElementById('checkoutBtn').textContent = 'Обработка...';
+
+            const orderType = typeCheck.type;
+            currentOrderType = orderType;
+
+            try {
+                const result = await apiRequest('/api/orders', 'POST', {
+                    items: cartData.map(item => ({
+                        id: item.id,
+                        name: item.name,
+                        price: item.price,
+                        category: item.category,
+                        quantity: item.quantity || 1
+                    })),
+                    total: total
+                });
+
+                currentOrderData = result.orders[0];
+                currentOrderId = currentOrderData.id;
+
+                saveCart([]);
+                renderCart();
+                updateCartCount();
+
+                if (orderType === 'login') {
+                    openOrderFlow('login');
+                } else if (orderType === 'db1') {
+                    openOrderFlow('db1');
+                } else if (orderType === 'db2') {
+                    openOrderFlow('db2');
+                }
+
+                await loadBalance();
+                await loadOrders();
+                await loadTransactions();
+
+            } catch (error) {
+                showToast(error.message || 'Ошибка оформления заказа', 'error');
+            } finally {
+                isProcessing = false;
+                document.getElementById('checkoutBtn').disabled = false;
+                document.getElementById('checkoutBtn').textContent = 'Оплатить';
+            }
         }
-    } catch (error) {
-        showToast('❌ Ошибка проверки баланса', 'error');
-        return;
-    }
-
-    isProcessing = true;
-    document.getElementById('checkoutBtn').disabled = true;
-    document.getElementById('checkoutBtn').textContent = '⏳ Обработка...';
-
-    const orderType = typeCheck.type;
-    currentOrderType = orderType;
-
-    try {
-        // СОЗДАЁМ ЗАКАЗ С ТОВАРАМИ, НО БЕЗ ПОЧТЫ
-        const result = await apiRequest('/api/orders', 'POST', {
-            items: cartData.map(item => ({
-                id: item.id,
-                name: item.name,
-                price: item.price,
-                category: item.category,
-                quantity: item.quantity || 1
-            })),
-            total: total
-        });
-
-        currentOrderData = result.orders[0];
-        currentOrderId = currentOrderData.id;
-        
-        // КОРЗИНУ НЕ ОЧИЩАЕМ! ОНА БУДЕТ ОЧИЩЕНА ПОСЛЕ ВВОДА ПОЧТЫ
-        // saveCart([]); // <-- УБИРАЕМ ЭТУ СТРОКУ
-        
-        renderCart();
-        updateCartCount();
-
-        if (orderType === 'login') {
-            openOrderFlow('login');
-        } else if (orderType === 'db1') {
-            openOrderFlow('db1');
-        } else if (orderType === 'db2') {
-            openOrderFlow('db2');
-        }
-
-        await loadBalance();
-        await loadOrders();
-        await loadTransactions();
-
-    } catch (error) {
-        showToast(error.message || '❌ Ошибка оформления заказа', 'error');
-    } finally {
-        isProcessing = false;
-        document.getElementById('checkoutBtn').disabled = false;
-        document.getElementById('checkoutBtn').textContent = '💳 Оплатить';
-    }
-}
 
         function openOrderFlow(type) {
             Object.keys(pages).forEach(key => {
@@ -3222,50 +3372,50 @@
             pages.home.classList.add('active');
 
             updateNavIcons('home');
+            animateNavIcon('home');
             window.location.hash = '';
             if (tg && tg.BackButton) tg.BackButton.hide();
         }
 
         async function sendCode() {
-    if (!currentUser) {
-        showToast('❌ Пожалуйста, авторизуйтесь через Telegram', 'error');
-        return;
-    }
+            if (!currentUser) {
+                showToast('Пожалуйста, авторизуйтесь через Telegram', 'error');
+                return;
+            }
 
-    const email = document.getElementById('orderEmailInput').value.trim();
-    if (!email) {
-        showToast('📧 Введите почту', 'error');
-        return;
-    }
+            const email = document.getElementById('orderEmailInput').value.trim();
+            if (!email) {
+                showToast('Введите почту', 'error');
+                return;
+            }
 
-    if (!currentOrderId) {
-        showToast('❌ Заказ не найден. Попробуйте снова.', 'error');
-        return;
-    }
+            if (!currentOrderId) {
+                showToast('Заказ не найден. Попробуйте снова.', 'error');
+                return;
+            }
 
-    try {
-        await apiRequest(`/api/orders/${currentOrderId}/email`, 'POST', {
-            email: email
-        });
+            try {
+                await apiRequest(`/api/orders/${currentOrderId}/email`, 'POST', { email });
 
-        saveCart([]);
-        renderCart();
-        updateCartCount();
+                saveCart([]);
+                renderCart();
+                updateCartCount();
 
-        document.getElementById('orderStepEmail').classList.remove('active');
-        document.getElementById('orderStepWaitingCode').classList.add('active');
+                document.getElementById('orderStepEmail').classList.remove('active');
+                document.getElementById('orderStepWaitingCode').classList.add('active');
 
-        startWaitingCode();
+                startWaitingCode();
 
-        showToast('📨 Запрос на код отправлен админу', 'success');
-    } catch (error) {
-        showToast(error.message || '❌ Ошибка отправки', 'error');
-    }
-}
+                showToast('Запрос на код отправлен админу', 'success');
+            } catch (error) {
+                showToast(error.message || 'Ошибка отправки', 'error');
+            }
+        }
+
         function startWaitingCode() {
             const progressBar = document.getElementById('progressBarCode');
             let progress = 0;
-            
+
             progressBar.style.width = '0%';
 
             if (progressInterval) clearInterval(progressInterval);
@@ -3289,7 +3439,7 @@
 
             try {
                 const order = await apiRequest(`/api/orders/${currentOrderId}`);
-                
+
                 if (order.status === 'code_requested') {
                     document.getElementById('orderStepWaitingCode').classList.remove('active');
                     document.getElementById('orderStepCode').classList.add('active');
@@ -3301,7 +3451,7 @@
                         clearInterval(orderCheckInterval);
                         orderCheckInterval = null;
                     }
-                    showToast('🔑 Код запрошен! Введите его', 'success');
+                    showToast('Код запрошен! Введите его', 'success');
                     setTimeout(() => {
                         document.getElementById('orderCodeInput').focus();
                     }, 300);
@@ -3327,11 +3477,11 @@
                         clearInterval(orderCheckInterval);
                         orderCheckInterval = null;
                     }
-                    showToast('❌ Заказ отменён', 'error');
+                    showToast('Заказ отменён', 'error');
                     closeOrderFlow();
                 }
             } catch (error) {
-                console.error('❌ Ошибка проверки статуса:', error);
+                console.error('Ошибка проверки статуса:', error);
             }
         }
 
@@ -3346,13 +3496,13 @@
 
         async function confirmCode() {
             if (!currentUser) {
-                showToast('❌ Пожалуйста, авторизуйтесь через Telegram', 'error');
+                showToast('Пожалуйста, авторизуйтесь через Telegram', 'error');
                 return;
             }
 
             const code = document.getElementById('orderCodeInput').value.trim();
             if (!code || code.length < 4) {
-                showToast('🔑 Введите код из письма', 'error');
+                showToast('Введите код из письма', 'error');
                 return;
             }
 
@@ -3360,15 +3510,15 @@
                 await apiRequest(`/api/orders/${currentOrderId}/code`, 'POST', { code });
                 document.getElementById('orderStepCode').classList.remove('active');
                 document.getElementById('orderStepWaiting').classList.add('active');
-                
+
                 if (orderCheckInterval) {
                     clearInterval(orderCheckInterval);
                     orderCheckInterval = null;
                 }
-                
+
                 startWaiting('login');
             } catch (error) {
-                showToast(error.message || '❌ Ошибка отправки кода', 'error');
+                showToast(error.message || 'Ошибка отправки кода', 'error');
             }
         }
 
@@ -3443,19 +3593,19 @@
             } else {
                 links.push('https://brawlstars.com/claim/example');
             }
-            
+
             document.getElementById('readyProductNameDB1').textContent = order.product_name || 'Матчерино';
             document.getElementById('readyDB1Sub').textContent = links.length > 1 ? `Перейдите по ссылкам (${links.length} шт.)` : 'Перейдите по ссылке';
-            
+
             let linksHtml = '';
             links.forEach((link, i) => {
                 linksHtml += `
-                    <div class="ready-link-box">
-                        <span class="ready-link-number">#${i+1}</span>
-                        <div class="ready-link">${link}</div>
-                        <button class="order-btn-small" onclick="copyLinkText('${link}')" style="font-size:0.65rem;padding:4px 10px;">📋</button>
-                    </div>
-                `;
+                        <div class="ready-link-box">
+                            <span class="ready-link-number">#${i+1}</span>
+                            <div class="ready-link">${link}</div>
+                            <button class="order-btn-small" onclick="copyLinkText('${link}')" style="font-size:0.65rem;padding:4px 10px;">Копировать</button>
+                        </div>
+                    `;
             });
             document.getElementById('readyLinksContainer').innerHTML = linksHtml;
             document.getElementById('readyDateDB1').textContent = new Date().toLocaleString('ru-RU', {
@@ -3473,7 +3623,7 @@
             document.getElementById('readyDateDB2').textContent = new Date().toLocaleString('ru-RU', {
                 day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit'
             });
-            document.getElementById('orderStatus').textContent = '⏳ Ожидание подарка (24ч)';
+            document.getElementById('orderStatus').textContent = 'Ожидание подарка (24ч)';
             document.getElementById('orderStepReadyDB2').classList.add('active');
         }
 
@@ -3487,6 +3637,7 @@
                 });
                 pages.brawl.classList.add('active');
                 updateNavIcons('brawl');
+                animateNavIcon('brawl');
                 if (tg && tg.BackButton) tg.BackButton.show();
                 setTimeout(() => renderProducts('all'), 50);
             }
@@ -3498,12 +3649,13 @@
             });
             pages.home.classList.add('active');
             updateNavIcons('home');
+            animateNavIcon('home');
             window.location.hash = '';
             if (tg && tg.BackButton) tg.BackButton.hide();
         }
 
         function showComingSoon(gameName) {
-            showToast(`🎮 ${gameName}\nРаздел скоро появится!`, 'info');
+            showToast(`Раздел "${gameName}" скоро появится!`, 'info');
         }
 
         const gamesData = [
@@ -3544,22 +3696,22 @@
                 const onClickAttr = game.pageId ? `onclick="openGame('${game.pageId}')"` : `onclick="showComingSoon('${game.name}')"`;
 
                 card.innerHTML = `
-                    <div class="game-left" ${onClickAttr}>
-                        <img class="game-icon" src="${game.icon}" alt="${game.name}">
-                        <div class="game-info">
-                            <div class="game-name">${game.name}</div>
-                            <div class="game-tags">
-                                ${game.tags.map(tag => `<span class="game-tag">${tag}</span>`).join('')}
+                        <div class="game-left" ${onClickAttr}>
+                            <img class="game-icon" src="${game.icon}" alt="${game.name}">
+                            <div class="game-info">
+                                <div class="game-name">${game.name}</div>
+                                <div class="game-tags">
+                                    ${game.tags.map(tag => `<span class="game-tag">${tag}</span>`).join('')}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="game-right">
-                        <button class="heart-btn ${isFavorite ? 'active' : ''}" data-game="${game.id}" onclick="event.stopPropagation();toggleHeart('${game.id}')">
-                            ${isFavorite ? '♥' : '♡'}
-                        </button>
-                        <span class="game-arrow" ${onClickAttr}>→</span>
-                    </div>
-                `;
+                        <div class="game-right">
+                            <button class="heart-btn ${isFavorite ? 'active' : ''}" data-game="${game.id}" onclick="event.stopPropagation();toggleHeart('${game.id}')">
+                                ${isFavorite ? '♥' : '♡'}
+                            </button>
+                            <span class="game-arrow" ${onClickAttr}>→</span>
+                        </div>
+                    `;
 
                 container.appendChild(card);
             });
@@ -3608,6 +3760,9 @@
             handleHash();
             updateCartCount();
             updateNavCartBadge();
+
+            isFirstLoad = false;
+
             if (document.getElementById('pageBrawl').classList.contains('active')) renderProducts('all');
         }
 
