@@ -868,229 +868,6 @@
             margin: 0 auto 12px;
         }
 
-        .withdraw-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(12px);
-            z-index: 300;
-            display: none;
-            animation: overlayIn 0.3s ease;
-        }
-        .withdraw-overlay.active {
-            display: block;
-        }
-        .withdraw-popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 400px;
-            max-width: calc(100% - 40px);
-            max-height: calc(100% - 60px);
-            background: linear-gradient(145deg, rgba(20, 20, 50, 0.98), rgba(35, 20, 70, 0.98));
-            backdrop-filter: blur(40px);
-            border-radius: 32px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.04);
-            z-index: 301;
-            display: none;
-            overflow: hidden;
-            animation: withdrawPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            padding: 0;
-        }
-        .withdraw-popup.active {
-            display: flex;
-            flex-direction: column;
-        }
-        @keyframes withdrawPop {
-            0% {
-                transform: translate(-50%, -50%) scale(0.85) translateY(30px);
-                opacity: 0;
-            }
-            100% {
-                transform: translate(-50%, -50%) scale(1) translateY(0);
-                opacity: 1;
-            }
-        }
-        .withdraw-popup .popup-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 22px 24px 16px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-            flex-shrink: 0;
-        }
-        .withdraw-popup .popup-header .title {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: #FFFFFF;
-        }
-        .withdraw-popup .popup-header .title .icon {
-            font-size: 1.6rem;
-        }
-        .withdraw-popup .popup-header .close-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            color: rgba(255, 255, 255, 0.3);
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: inherit;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .withdraw-popup .popup-header .close-btn:active {
-            transform: scale(0.9);
-            background: rgba(255, 255, 255, 0.08);
-        }
-        .withdraw-popup .popup-body {
-            padding: 20px 24px 24px;
-            flex: 1;
-            overflow-y: auto;
-        }
-        .withdraw-popup .popup-body .balance-hint {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 16px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            margin-bottom: 20px;
-        }
-        .withdraw-popup .popup-body .balance-hint .label {
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 0.85rem;
-        }
-        .withdraw-popup .popup-body .balance-hint .value {
-            font-weight: 700;
-            font-size: 1.1rem;
-            background: linear-gradient(135deg, #7DD8FF 0%, #6675FF 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .withdraw-popup .popup-body .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .withdraw-popup .popup-body .input-group .input-label {
-            font-size: 0.7rem;
-            color: rgba(255, 255, 255, 0.3);
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-        .withdraw-popup .popup-body .input-group .input-wrapper {
-            position: relative;
-        }
-        .withdraw-popup .popup-body .input-group .input-wrapper .currency-symbol {
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(255, 255, 255, 0.2);
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-        .withdraw-popup .popup-body .input-group input {
-            width: 100%;
-            padding: 14px 16px 14px 40px;
-            border-radius: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            background: rgba(255, 255, 255, 0.03);
-            color: white;
-            font-size: 1.1rem;
-            font-family: inherit;
-            outline: none;
-            transition: all 0.2s;
-        }
-        .withdraw-popup .popup-body .input-group input:focus {
-            border-color: rgba(91, 140, 255, 0.2);
-            background: rgba(255, 255, 255, 0.05);
-            box-shadow: 0 0 0 1px rgba(91, 140, 255, 0.05);
-        }
-        .withdraw-popup .popup-body .input-group input::placeholder {
-            color: rgba(255, 255, 255, 0.1);
-        }
-        .withdraw-popup .popup-body .input-group input.card-input {
-            padding-left: 16px;
-            letter-spacing: 1px;
-            font-size: 0.95rem;
-        }
-        .withdraw-popup .popup-body .calc-info {
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 14px;
-            padding: 16px 18px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            margin-top: 16px;
-        }
-        .withdraw-popup .popup-body .calc-info .calc-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 4px 0;
-            font-size: 0.85rem;
-        }
-        .withdraw-popup .popup-body .calc-info .calc-row .calc-label {
-            color: rgba(255, 255, 255, 0.35);
-        }
-        .withdraw-popup .popup-body .calc-info .calc-row .calc-value {
-            font-weight: 500;
-        }
-        .withdraw-popup .popup-body .calc-info .calc-row .calc-value.fee {
-            color: #FF3B6F;
-        }
-        .withdraw-popup .popup-body .calc-info .calc-row .calc-value.final {
-            color: #00E676;
-            font-size: 1.05rem;
-        }
-        .withdraw-popup .popup-body .calc-info .calc-divider {
-            height: 1px;
-            background: rgba(255, 255, 255, 0.04);
-            margin: 6px 0;
-        }
-        .withdraw-popup .popup-body .fee-note {
-            font-size: 0.6rem;
-            color: rgba(255, 255, 255, 0.15);
-            text-align: center;
-            margin-top: 10px;
-        }
-        .withdraw-popup .popup-body .btn-withdraw {
-            width: 100%;
-            padding: 16px;
-            border-radius: 14px;
-            border: none;
-            background: linear-gradient(135deg, #FF3B6F 0%, #FF6B8A 100%);
-            color: white;
-            font-size: 1.05rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: inherit;
-            box-shadow: 0 4px 24px rgba(255, 59, 111, 0.15);
-            margin-top: 16px;
-        }
-        .withdraw-popup .popup-body .btn-withdraw:active {
-            transform: scale(0.97);
-        }
-        .withdraw-popup .popup-body .btn-withdraw:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-            transform: none;
-        }
-
         .order-flow-page .back-btn {
             display: inline-flex;
             align-items: center;
@@ -1776,6 +1553,280 @@
             }
         }
 
+        .withdraw-page .withdraw-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding-top: 8px;
+        }
+        .withdraw-page .withdraw-header .back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #FFFFFF;
+            flex-shrink: 0;
+            font-family: inherit;
+        }
+        .withdraw-page .withdraw-header .back-btn:active {
+            transform: scale(0.9);
+        }
+        .withdraw-page .withdraw-header .withdraw-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+        .withdraw-page .withdraw-subtitle {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 20px;
+        }
+        .withdraw-step {
+            display: none;
+            animation: fadeUp 0.4s ease;
+        }
+        .withdraw-step.active {
+            display: block;
+        }
+        .withdraw-method-card {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 16px 18px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 12px;
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+        .withdraw-method-card:active {
+            transform: scale(0.98);
+        }
+        .withdraw-method-card.active {
+            border-color: rgba(91, 140, 255, 0.3);
+            background: rgba(91, 140, 255, 0.06);
+        }
+        .withdraw-method-card .method-icon {
+            font-size: 1.8rem;
+            width: 40px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .withdraw-method-card .method-info {
+            flex: 1;
+        }
+        .withdraw-method-card .method-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #FFFFFF;
+        }
+        .withdraw-method-card .method-desc {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.3);
+        }
+        .withdraw-method-card .method-check {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        .withdraw-method-card.active .method-check {
+            border-color: #7DD8FF;
+            background: rgba(91, 140, 255, 0.15);
+        }
+        .withdraw-method-card.active .method-check::after {
+            content: '✓';
+            color: #7DD8FF;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .withdraw-form {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            margin-bottom: 16px;
+        }
+        .withdraw-form .form-group {
+            margin-bottom: 16px;
+        }
+        .withdraw-form .form-group label {
+            display: block;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .withdraw-input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            color: white;
+            font-size: 1rem;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .withdraw-input:focus {
+            border-color: rgba(91, 140, 255, 0.3);
+            background: rgba(255, 255, 255, 0.06);
+        }
+        .withdraw-input::placeholder {
+            color: rgba(255, 255, 255, 0.15);
+        }
+
+        .bank-quick {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+        .bank-btn {
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.7rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .bank-btn:active {
+            transform: scale(0.95);
+        }
+        .bank-btn.active {
+            border-color: rgba(91, 140, 255, 0.3);
+            color: #7DD8FF;
+            background: rgba(91, 140, 255, 0.1);
+        }
+        .bank-btn.custom {
+            border-color: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.25);
+        }
+
+        .selected-bank-display {
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 10px;
+            margin-top: 8px;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .selected-bank-display.show {
+            display: flex;
+        }
+        .selected-bank-display .bank-name {
+            color: #FFFFFF;
+            font-size: 0.85rem;
+        }
+        .selected-bank-display .clear-bank {
+            background: none;
+            border: none;
+            color: #FF3B6F;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-family: inherit;
+        }
+
+        .withdraw-summary {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin: 16px 0;
+        }
+        .withdraw-summary .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        .withdraw-summary .summary-row.total {
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            padding-top: 10px;
+            margin-top: 4px;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+        .withdraw-summary .summary-row .amount-value {
+            color: #FFFFFF;
+        }
+        .withdraw-summary .summary-row.total .amount-value {
+            font-size: 1.1rem;
+            background: linear-gradient(135deg, #7DD8FF 0%, #6675FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .withdraw-submit {
+            width: 100%;
+            padding: 14px;
+            border-radius: 14px;
+            border: none;
+            background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            box-shadow: 0 4px 24px rgba(91, 140, 255, 0.15);
+            opacity: 0.5;
+        }
+        .withdraw-submit:not(:disabled) {
+            opacity: 1;
+        }
+        .withdraw-submit:not(:disabled):active {
+            transform: scale(0.97);
+        }
+        .withdraw-submit:disabled {
+            cursor: not-allowed;
+        }
+
+        .withdraw-info {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 14px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .withdraw-info .info-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        .withdraw-info .info-text {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.3);
+            line-height: 1.5;
+        }
+
         @media (max-width: 500px) {
             .game-page .products-grid {
                 grid-template-columns: 1fr 1fr;
@@ -1783,13 +1834,6 @@
             }
             .profile-page .btn-row {
                 flex-direction: column;
-            }
-            .withdraw-popup {
-                width: calc(100% - 24px);
-                border-radius: 24px;
-            }
-            .withdraw-popup .popup-body {
-                padding: 16px 18px 20px;
             }
             .bottom-nav {
                 padding: 6px 12px;
@@ -1814,6 +1858,17 @@
                 height: 16px;
                 top: 0px;
                 right: 0px;
+            }
+            .withdraw-method-card .method-icon {
+                font-size: 1.4rem;
+                width: 32px;
+            }
+            .bank-quick {
+                gap: 4px;
+            }
+            .bank-btn {
+                font-size: 0.6rem;
+                padding: 4px 10px;
             }
         }
         @media (max-width: 380px) {
@@ -1845,9 +1900,6 @@
             .game-page .product-card .prod-btn .price {
                 font-size: 0.65rem;
             }
-            .withdraw-popup {
-                border-radius: 20px;
-            }
             .bottom-nav {
                 padding: 4px 8px;
                 gap: 2px;
@@ -1871,6 +1923,9 @@
                 height: 14px;
                 top: 0px;
                 right: 0px;
+            }
+            .withdraw-form {
+                padding: 14px;
             }
         }
         @supports (padding: max(0px)) {
@@ -1971,7 +2026,7 @@
                     </svg>
                     Пополнить
                 </button>
-                <button class="btn-secondary withdraw-btn" onclick="openWithdrawPopup()">
+                <button class="btn-secondary withdraw-btn" onclick="openWithdrawPage()">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                         <path d="M12 19V5"/>
                         <path d="M5 12L12 5L19 12"/>
@@ -2004,48 +2059,114 @@
         </div>
     </div>
 
-    <div class="withdraw-overlay" id="withdrawOverlay" onclick="closeWithdrawPopup()"></div>
-    <div class="withdraw-popup" id="withdrawPopup">
-        <div class="popup-header">
-            <span class="title">
-                <span class="icon">💸</span>
-                Вывод средств
-            </span>
-            <button class="close-btn" onclick="closeWithdrawPopup()">✕</button>
-        </div>
-        <div class="popup-body">
-            <div class="balance-hint">
-                <span class="label">Доступно для вывода</span>
-                <span class="value" id="withdrawBalanceDisplay">0 ₽</span>
+    <div id="pageWithdraw" class="page withdraw-page">
+        <div class="content">
+            <div class="withdraw-header">
+                <button class="back-btn" onclick="closeWithdrawPage()">←</button>
+                <div class="withdraw-title">Вывод средств</div>
             </div>
-            <div class="input-group">
-                <span class="input-label">Сумма вывода</span>
-                <div class="input-wrapper">
-                    <span class="currency-symbol">₽</span>
-                    <input type="number" id="withdrawInput" placeholder="0" min="50" step="1" oninput="updateWithdrawPopupInfo()">
+
+            <div id="withdrawStep1" class="withdraw-step active">
+                <div class="withdraw-subtitle">Выберите способ получения денег</div>
+
+                <div class="withdraw-method-card" onclick="selectMethod('sbp')">
+                    <div class="method-icon">⚡</div>
+                    <div class="method-info">
+                        <div class="method-name">Система быстрых платежей</div>
+                        <div class="method-desc">Перевод по номеру телефона</div>
+                    </div>
+                    <div class="method-check" id="checkSbp"></div>
+                </div>
+
+                <div class="withdraw-method-card" onclick="selectMethod('card')">
+                    <div class="method-icon">💳</div>
+                    <div class="method-info">
+                        <div class="method-name">Банковская карта</div>
+                        <div class="method-desc">Перевод на номер карты</div>
+                    </div>
+                    <div class="method-check" id="checkCard"></div>
                 </div>
             </div>
-            <div class="input-group" style="margin-top:14px;">
-                <span class="input-label">Реквизиты (карта или СБП)</span>
-                <input type="text" id="withdrawCardInput" placeholder="0000 0000 0000 0000" class="card-input">
+
+            <div id="withdrawStepSbp" class="withdraw-step">
+                <div class="withdraw-subtitle">⚡ Вывод по СБП</div>
+
+                <div class="withdraw-form">
+                    <div class="form-group">
+                        <label>Номер телефона</label>
+                        <input type="tel" id="sbpPhone" placeholder="+7 (___) ___-__-__" class="withdraw-input" oninput="formatPhone(this)">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Банк</label>
+                        <div class="bank-quick" id="bankQuick">
+                            <button class="bank-btn" onclick="selectBank('Сбер')">Сбер</button>
+                            <button class="bank-btn" onclick="selectBank('Т-Банк')">Т-Банк</button>
+                            <button class="bank-btn" onclick="selectBank('ВТБ')">ВТБ</button>
+                            <button class="bank-btn" onclick="selectBank('Альфа-Банк')">Альфа-Банк</button>
+                            <button class="bank-btn custom" onclick="selectBank('custom')">Свой вариант</button>
+                        </div>
+                        <input type="text" id="sbpBank" placeholder="Введите название банка" class="withdraw-input" style="display:none;" oninput="updateWithdrawSummarySbp()">
+                        <div class="selected-bank-display" id="selectedBankDisplay">
+                            <span class="bank-name" id="selectedBankName"></span>
+                            <button class="clear-bank" onclick="clearBank()">✕</button>
+                        </div>
+                    </div>
+
+                    <div class="withdraw-summary" id="sbpSummary">
+                        <div class="summary-row">
+                            <span>Сумма вывода</span>
+                            <span class="amount-value" id="sbpAmountDisplay">0 ₽</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Комиссия (3%)</span>
+                            <span class="amount-value" id="sbpFeeDisplay">0 ₽</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>К получению</span>
+                            <span class="amount-value" id="sbpFinalDisplay">0 ₽</span>
+                        </div>
+                    </div>
+
+                    <button class="withdraw-submit" id="sbpSubmit" onclick="processWithdrawStep('sbp')" disabled>Вывести средства</button>
+                </div>
             </div>
-            <div class="calc-info">
-                <div class="calc-row">
-                    <span class="calc-label">Сумма вывода</span>
-                    <span class="calc-value" id="calcAmount">0 ₽</span>
-                </div>
-                <div class="calc-row">
-                    <span class="calc-label">Комиссия (3%)</span>
-                    <span class="calc-value fee" id="calcFee">0 ₽</span>
-                </div>
-                <div class="calc-divider"></div>
-                <div class="calc-row">
-                    <span class="calc-label">К получению</span>
-                    <span class="calc-value final" id="calcFinal">0 ₽</span>
+
+            <div id="withdrawStepCard" class="withdraw-step">
+                <div class="withdraw-subtitle">💳 Вывод на карту</div>
+
+                <div class="withdraw-form">
+                    <div class="form-group">
+                        <label>Номер карты</label>
+                        <input type="text" id="cardNumber" placeholder="____ ____ ____ ____" class="withdraw-input" maxlength="19" oninput="formatCardNumber(this)">
+                    </div>
+
+                    <div class="withdraw-summary" id="cardSummary">
+                        <div class="summary-row">
+                            <span>Сумма вывода</span>
+                            <span class="amount-value" id="cardAmountDisplay">0 ₽</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Комиссия (3%)</span>
+                            <span class="amount-value" id="cardFeeDisplay">0 ₽</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>К получению</span>
+                            <span class="amount-value" id="cardFinalDisplay">0 ₽</span>
+                        </div>
+                    </div>
+
+                    <button class="withdraw-submit" id="cardSubmit" onclick="processWithdrawStep('card')" disabled>Вывести средства</button>
                 </div>
             </div>
-            <div class="fee-note">Минимальная сумма вывода — 50 ₽</div>
-            <button class="btn-withdraw" id="withdrawBtn" onclick="processWithdraw()">Вывести</button>
+
+            <div class="withdraw-info">
+                <div class="info-icon">ℹ️</div>
+                <div class="info-text">
+                    Деньги обычно поступают в течение нескольких минут.<br>
+                    Иногда перевод может занять до 3 рабочих дней.
+                </div>
+            </div>
         </div>
     </div>
 
@@ -2216,7 +2337,7 @@
                 </div>
                 <div class="info-footer">
                     <div class="label">Разработано с ❤️</div>
-                    <div class="team">Vintyx Team</div>
+                    <div class="team">Destr Code</div>
                 </div>
             </div>
         </div>
@@ -2295,6 +2416,8 @@
         let isProcessing = false;
         let currentOrderId = null;
         let isFirstLoad = true;
+        let selectedWithdrawMethod = null;
+        let withdrawAmount = null;
 
         if (tg) {
             tg.ready();
@@ -2308,7 +2431,8 @@
             info: document.getElementById('pageInfo'),
             brawl: document.getElementById('pageBrawl'),
             order: document.getElementById('pageOrderFlow'),
-            orderDetail: document.getElementById('pageOrderDetail')
+            orderDetail: document.getElementById('pageOrderDetail'),
+            withdraw: document.getElementById('pageWithdraw')
         };
 
         const navItems = document.querySelectorAll('.nav-item');
@@ -2339,7 +2463,8 @@
                 'info': 'navInfo',
                 'brawl': 'navHome',
                 'order': 'navHome',
-                'orderDetail': 'navHome'
+                'orderDetail': 'navHome',
+                'withdraw': 'navProfile'
             };
 
             const iconId = navMap[pageName];
@@ -2454,7 +2579,9 @@
         }
 
         function formatDate(dateStr) {
+            if (!dateStr) return 'Не указано';
             const date = new Date(dateStr);
+            date.setHours(date.getHours() + 3);
             return date.toLocaleString('ru-RU', {
                 day: 'numeric',
                 month: 'long',
@@ -2521,13 +2648,13 @@
                 })
                 .then(data => {
                     container.innerHTML = `
-                        <dotlottie-wc
-                            src="${filePath}"
-                            style="width: 120px; height: 120px;"
-                            autoplay
-                            loop
-                        ></dotlottie-wc>
-                    `;
+                            <dotlottie-wc
+                                src="${filePath}"
+                                style="width: 120px; height: 120px;"
+                                autoplay
+                                loop
+                            ></dotlottie-wc>
+                        `;
                 })
                 .catch(() => {
                     container.innerHTML = `<div style="font-size:3rem;opacity:0.3;">${fallbackText}</div>`;
@@ -2572,8 +2699,10 @@
         async function loadBalance() {
             try {
                 const data = await apiRequest('/api/balance');
-                document.getElementById('balanceAmount').textContent = data.balance.toLocaleString('ru-RU');
-                return data.balance;
+                const amount = data.balance;
+                document.getElementById('balanceAmount').textContent = amount.toLocaleString('ru-RU');
+                withdrawAmount = amount;
+                return amount;
             } catch (error) {
                 return 0;
             }
@@ -2622,62 +2751,182 @@
             }
         }
 
-        function openWithdrawPopup() {
+        function openWithdrawPage() {
             if (!currentUser) {
                 showToast('Пожалуйста, авторизуйтесь через Telegram', 'error');
                 return;
             }
-            loadBalance().then(balance => {
-                document.getElementById('withdrawBalanceDisplay').textContent = balance.toLocaleString() + ' ₽';
-                document.getElementById('withdrawOverlay').classList.add('active');
-                document.getElementById('withdrawPopup').classList.add('active');
-                document.getElementById('withdrawInput').focus();
-                updateWithdrawPopupInfo();
+            loadBalance().then(() => {
+                Object.keys(pages).forEach(key => {
+                    if (pages[key]) pages[key].classList.remove('active');
+                });
+                pages.withdraw.classList.add('active');
+                updateNavIcons('withdraw');
+                animateNavIcon('withdraw');
+                if (tg && tg.BackButton) tg.BackButton.show();
+                window.location.hash = 'withdraw';
+                resetWithdrawForm();
             });
         }
 
-        function closeWithdrawPopup() {
-            document.getElementById('withdrawOverlay').classList.remove('active');
-            document.getElementById('withdrawPopup').classList.remove('active');
+        function closeWithdrawPage() {
+            Object.keys(pages).forEach(key => {
+                if (pages[key]) pages[key].classList.remove('active');
+            });
+            pages.profile.classList.add('active');
+            updateNavIcons('profile');
+            animateNavIcon('profile');
+            window.location.hash = 'profile';
+            if (tg && tg.BackButton) tg.BackButton.show();
+            resetWithdrawForm();
         }
 
-        function updateWithdrawPopupInfo() {
-            const input = document.getElementById('withdrawInput');
-            const amount = parseFloat(input.value) || 0;
+        function resetWithdrawForm() {
+            selectedWithdrawMethod = null;
+            document.querySelectorAll('.withdraw-method-card').forEach(el => el.classList.remove('active'));
+            document.getElementById('withdrawStep1').classList.add('active');
+            document.getElementById('withdrawStepSbp').classList.remove('active');
+            document.getElementById('withdrawStepCard').classList.remove('active');
+            document.getElementById('sbpPhone').value = '';
+            document.getElementById('cardNumber').value = '';
+            document.getElementById('sbpBank').value = '';
+            document.getElementById('sbpBank').style.display = 'none';
+            document.getElementById('selectedBankDisplay').classList.remove('show');
+            document.querySelectorAll('.bank-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById('sbpSubmit').disabled = true;
+            document.getElementById('cardSubmit').disabled = true;
+            updateWithdrawSummarySbp();
+            updateWithdrawSummaryCard();
+        }
+
+        function selectMethod(method) {
+            selectedWithdrawMethod = method;
+            document.querySelectorAll('.withdraw-method-card').forEach(el => el.classList.remove('active'));
+
+            if (method === 'sbp') {
+                document.getElementById('checkSbp').closest('.withdraw-method-card').classList.add('active');
+                document.getElementById('withdrawStep1').classList.remove('active');
+                document.getElementById('withdrawStepSbp').classList.add('active');
+                document.getElementById('withdrawStepCard').classList.remove('active');
+                document.getElementById('sbpPhone').focus();
+                updateWithdrawSummarySbp();
+            } else if (method === 'card') {
+                document.getElementById('checkCard').closest('.withdraw-method-card').classList.add('active');
+                document.getElementById('withdrawStep1').classList.remove('active');
+                document.getElementById('withdrawStepCard').classList.add('active');
+                document.getElementById('withdrawStepSbp').classList.remove('active');
+                document.getElementById('cardNumber').focus();
+                updateWithdrawSummaryCard();
+            }
+        }
+
+        function formatPhone(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value.length === 0) {
+                input.value = '+7';
+                return;
+            }
+            if (value.startsWith('7')) {
+                value = value.substring(1);
+            }
+            let formatted = '+7';
+            if (value.length > 0) {
+                formatted += ' (' + value.substring(0, 3);
+            }
+            if (value.length >= 3) {
+                formatted += ') ' + value.substring(3, 6);
+            }
+            if (value.length >= 6) {
+                formatted += '-' + value.substring(6, 8);
+            }
+            if (value.length >= 8) {
+                formatted += '-' + value.substring(8, 10);
+            }
+            input.value = formatted;
+            updateWithdrawSummarySbp();
+        }
+
+        function formatCardNumber(input) {
+            let value = input.value.replace(/\D/g, '');
+            let formatted = '';
+            for (let i = 0; i < value.length && i < 16; i++) {
+                if (i > 0 && i % 4 === 0) {
+                    formatted += ' ';
+                }
+                formatted += value[i];
+            }
+            input.value = formatted;
+            updateWithdrawSummaryCard();
+        }
+
+        function selectBank(bank) {
+            document.querySelectorAll('.bank-btn').forEach(el => el.classList.remove('active'));
+
+            if (bank === 'custom') {
+                document.getElementById('sbpBank').style.display = 'block';
+                document.getElementById('sbpBank').focus();
+                document.querySelector('.bank-btn.custom').classList.add('active');
+                document.getElementById('selectedBankDisplay').classList.remove('show');
+                updateWithdrawSummarySbp();
+                return;
+            }
+
+            document.getElementById('sbpBank').style.display = 'none';
+            document.getElementById('sbpBank').value = '';
+
+            const btns = document.querySelectorAll('.bank-btn');
+            btns.forEach(btn => {
+                if (btn.textContent.trim() === bank) {
+                    btn.classList.add('active');
+                }
+            });
+
+            document.getElementById('selectedBankName').textContent = bank;
+            document.getElementById('selectedBankDisplay').classList.add('show');
+            updateWithdrawSummarySbp();
+        }
+
+        function clearBank() {
+            document.getElementById('selectedBankDisplay').classList.remove('show');
+            document.getElementById('sbpBank').style.display = 'none';
+            document.getElementById('sbpBank').value = '';
+            document.querySelectorAll('.bank-btn').forEach(el => el.classList.remove('active'));
+            updateWithdrawSummarySbp();
+        }
+
+        function updateWithdrawSummarySbp() {
+            const phone = document.getElementById('sbpPhone').value.replace(/\D/g, '');
+            const bank = document.getElementById('selectedBankName').textContent || document.getElementById('sbpBank').value;
+            const amount = withdrawAmount || 0;
+
             const fee = Math.round(amount * 0.03 * 100) / 100;
             const finalAmount = Math.round((amount - fee) * 100) / 100;
 
-            document.getElementById('calcAmount').textContent = amount > 0 ? amount.toLocaleString() + ' ₽' : '0 ₽';
-            document.getElementById('calcFee').textContent = fee > 0 ? fee.toLocaleString() + ' ₽' : '0 ₽';
-            document.getElementById('calcFinal').textContent = finalAmount > 0 ? finalAmount.toLocaleString() + ' ₽' : '0 ₽';
+            document.getElementById('sbpAmountDisplay').textContent = amount.toLocaleString() + ' ₽';
+            document.getElementById('sbpFeeDisplay').textContent = fee.toLocaleString() + ' ₽';
+            document.getElementById('sbpFinalDisplay').textContent = finalAmount.toLocaleString() + ' ₽';
 
-            const btn = document.getElementById('withdrawBtn');
-            if (amount < 50 && amount > 0) {
-                btn.disabled = true;
-                btn.textContent = 'Минимум 50 ₽';
-            } else if (amount <= 0) {
-                btn.disabled = true;
-                btn.textContent = 'Вывести';
-            } else {
-                btn.disabled = false;
-                btn.textContent = 'Вывести ' + finalAmount.toLocaleString() + ' ₽';
-            }
+            const isValid = phone.length >= 10 && bank.length > 0 && amount >= 50;
+            document.getElementById('sbpSubmit').disabled = !isValid;
         }
 
-        async function processWithdraw() {
-            if (!currentUser) {
-                showToast('Пожалуйста, авторизуйтесь через Telegram', 'error');
-                return;
-            }
+        function updateWithdrawSummaryCard() {
+            const card = document.getElementById('cardNumber').value.replace(/\s/g, '');
+            const amount = withdrawAmount || 0;
 
-            const input = document.getElementById('withdrawInput');
-            const amount = parseInt(input.value);
-            const card = document.getElementById('withdrawCardInput').value.trim();
+            const fee = Math.round(amount * 0.03 * 100) / 100;
+            const finalAmount = Math.round((amount - fee) * 100) / 100;
 
-            if (!amount || amount <= 0) {
-                showToast('Введите сумму вывода', 'error');
-                return;
-            }
+            document.getElementById('cardAmountDisplay').textContent = amount.toLocaleString() + ' ₽';
+            document.getElementById('cardFeeDisplay').textContent = fee.toLocaleString() + ' ₽';
+            document.getElementById('cardFinalDisplay').textContent = finalAmount.toLocaleString() + ' ₽';
+
+            const isValid = card.length >= 16 && amount >= 50;
+            document.getElementById('cardSubmit').disabled = !isValid;
+        }
+
+        async function processWithdrawStep(method) {
+            const amount = withdrawAmount || 0;
 
             if (amount < 50) {
                 showToast('Минимальная сумма вывода 50 ₽', 'error');
@@ -2695,17 +2944,36 @@
                 return;
             }
 
-            if (!card || card.length < 4) {
-                showToast('Введите номер карты или СБП', 'error');
-                return;
+            let details = '';
+            if (method === 'sbp') {
+                const phone = document.getElementById('sbpPhone').value;
+                const bank = document.getElementById('selectedBankName').textContent || document.getElementById('sbpBank').value;
+                if (!phone || phone.replace(/\D/g, '').length < 10) {
+                    showToast('Введите корректный номер телефона', 'error');
+                    return;
+                }
+                if (!bank) {
+                    showToast('Выберите банк', 'error');
+                    return;
+                }
+                details = `СБП: ${phone}, Банк: ${bank}`;
+            } else if (method === 'card') {
+                const card = document.getElementById('cardNumber').value.replace(/\s/g, '');
+                if (card.length < 16) {
+                    showToast('Введите корректный номер карты', 'error');
+                    return;
+                }
+                details = `Карта: ${card}`;
             }
 
             try {
-                await apiRequest('/api/balance/withdraw', 'POST', { amount, details: card });
-                closeWithdrawPopup();
+                await apiRequest('/api/balance/withdraw', 'POST', {
+                    amount: amount,
+                    details: details
+                });
+
                 showToast(`Заявка на вывод ${amount} ₽ отправлена!`, 'success');
-                input.value = '';
-                document.getElementById('withdrawCardInput').value = '';
+                closeWithdrawPage();
                 await loadBalance();
                 await loadTransactions();
             } catch (error) {
@@ -2720,11 +2988,11 @@
 
                 if (!orders || orders.length === 0) {
                     container.innerHTML = `
-                        <div class="history-empty">
-                            <div class="empty-icon" id="emptyOrdersAnimation"></div>
-                            <div>У вас пока нет покупок</div>
-                        </div>
-                    `;
+                            <div class="history-empty">
+                                <div class="empty-icon" id="emptyOrdersAnimation"></div>
+                                <div>У вас пока нет покупок</div>
+                            </div>
+                        `;
                     loadLottieAnimation(
                         document.getElementById('emptyOrdersAnimation'),
                         'nohistory.json',
@@ -2762,32 +3030,32 @@
                     const orderNumber = item.order_number || `VX-${String(item.id).padStart(6, '0')}`;
 
                     html += `
-                        <div class="history-item" onclick="openOrderDetail(${item.id})">
-                            <div class="h-left">
-                                <span class="h-icon">${item.image || '🎮'}</span>
-                                <div class="h-info">
-                                    <div class="h-name">${item.product_name}</div>
-                                    <div class="h-date">${date}</div>
-                                    <div style="font-size:0.55rem;color:rgba(255,255,255,0.15);">${orderNumber}</div>
+                            <div class="history-item" onclick="openOrderDetail(${item.id})">
+                                <div class="h-left">
+                                    <span class="h-icon">${item.image || '🎮'}</span>
+                                    <div class="h-info">
+                                        <div class="h-name">${item.product_name}</div>
+                                        <div class="h-date">${date}</div>
+                                        <div style="font-size:0.55rem;color:rgba(255,255,255,0.15);">${orderNumber}</div>
+                                    </div>
+                                </div>
+                                <div style="text-align:right;">
+                                    <div class="h-amount negative">-${item.product_price} ₽</div>
+                                    <div style="font-size:0.6rem;color:${statusColor};">${statusText}</div>
                                 </div>
                             </div>
-                            <div style="text-align:right;">
-                                <div class="h-amount negative">-${item.product_price} ₽</div>
-                                <div style="font-size:0.6rem;color:${statusColor};">${statusText}</div>
-                            </div>
-                        </div>
-                    `;
+                        `;
                 });
 
                 container.innerHTML = html;
             } catch (error) {
                 console.error('Ошибка загрузки заказов:', error);
                 document.getElementById('ordersHistory').innerHTML = `
-                    <div class="history-empty">
-                        <div class="empty-icon" id="errorOrdersAnimation"></div>
-                        <div>Ошибка загрузки истории</div>
-                    </div>
-                `;
+                        <div class="history-empty">
+                            <div class="empty-icon" id="errorOrdersAnimation"></div>
+                            <div>Ошибка загрузки истории</div>
+                        </div>
+                    `;
                 loadLottieAnimation(
                     document.getElementById('errorOrdersAnimation'),
                     'badinput.json',
@@ -2827,80 +3095,80 @@
                 document.getElementById('detailOrderNumber').textContent = orderNumber;
 
                 let detailsHtml = `
-                    <div class="detail-card">
-                        <div class="detail-row">
-                            <span class="detail-label">Товар</span>
-                            <span class="detail-value">${order.product_name}</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-label">Категория</span>
-                            <span class="detail-value">${order.category}</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-label">Дата</span>
-                            <span class="detail-value">${formatDate(order.created_at)}</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-label">Статус</span>
-                            <span class="detail-value">
-                                <span class="detail-status-badge ${statusClass[order.status] || 'pending'}">${statusMap[order.status] || order.status}</span>
-                            </span>
-                        </div>
-                `;
+                        <div class="detail-card">
+                            <div class="detail-row">
+                                <span class="detail-label">Товар</span>
+                                <span class="detail-value">${order.product_name}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Категория</span>
+                                <span class="detail-value">${order.category}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Дата</span>
+                                <span class="detail-value">${formatDate(order.created_at)}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Статус</span>
+                                <span class="detail-value">
+                                    <span class="detail-status-badge ${statusClass[order.status] || 'pending'}">${statusMap[order.status] || order.status}</span>
+                                </span>
+                            </div>
+                        `;
 
                 if (order.email) {
                     detailsHtml += `
-                        <div class="detail-row">
-                            <span class="detail-label">Почта</span>
-                            <span class="detail-value">${order.email}</span>
-                        </div>
-                    `;
+                            <div class="detail-row">
+                                <span class="detail-label">Почта</span>
+                                <span class="detail-value">${order.email}</span>
+                            </div>
+                        `;
                 }
 
                 if (order.code) {
                     detailsHtml += `
-                        <div class="detail-row">
-                            <span class="detail-label">Код</span>
-                            <span class="detail-value">${order.code}</span>
-                        </div>
-                    `;
+                            <div class="detail-row">
+                                <span class="detail-label">Код</span>
+                                <span class="detail-value">${order.code}</span>
+                            </div>
+                        `;
                 }
 
                 if (order.link) {
                     detailsHtml += `
-                        <div class="detail-row">
-                            <span class="detail-label">Ссылка</span>
-                            <span class="detail-value" style="font-size:0.75rem;color:#7DD8FF;">${order.link}</span>
-                        </div>
-                    `;
+                            <div class="detail-row">
+                                <span class="detail-label">Ссылка</span>
+                                <span class="detail-value" style="font-size:0.75rem;color:#7DD8FF;">${order.link}</span>
+                            </div>
+                        `;
                 }
 
                 if (order.completed_at) {
                     detailsHtml += `
-                        <div class="detail-row">
-                            <span class="detail-label">Выполнен</span>
-                            <span class="detail-value">${formatDate(order.completed_at)}</span>
-                        </div>
-                    `;
+                            <div class="detail-row">
+                                <span class="detail-label">Выполнен</span>
+                                <span class="detail-value">${formatDate(order.completed_at)}</span>
+                            </div>
+                        `;
                 }
 
                 if (order.admin_note) {
                     detailsHtml += `
-                        <div class="detail-row">
-                            <span class="detail-label">Примечание</span>
-                            <span class="detail-value" style="color:#FFD54F;">${order.admin_note}</span>
-                        </div>
-                    `;
+                            <div class="detail-row">
+                                <span class="detail-label">Примечание</span>
+                                <span class="detail-value" style="color:#FFD54F;">${order.admin_note}</span>
+                            </div>
+                        `;
                 }
 
                 detailsHtml += `</div>`;
 
                 detailsHtml += `
-                    <div class="detail-summary">
-                        <span class="summary-label">Итого</span>
-                        <span class="summary-price">${order.product_price} ₽</span>
-                    </div>
-                `;
+                        <div class="detail-summary">
+                            <span class="summary-label">Итого</span>
+                            <span class="summary-price">${order.product_price} ₽</span>
+                        </div>
+                    `;
 
                 container.innerHTML = detailsHtml;
 
@@ -2939,11 +3207,11 @@
 
                 if (!transactions || transactions.length === 0) {
                     container.innerHTML = `
-                        <div class="history-empty">
-                            <div class="empty-icon" id="emptyTransactionsAnimation"></div>
-                            <div>История транзакций пуста</div>
-                        </div>
-                    `;
+                            <div class="history-empty">
+                                <div class="empty-icon" id="emptyTransactionsAnimation"></div>
+                                <div>История транзакций пуста</div>
+                            </div>
+                        `;
                     loadLottieAnimation(
                         document.getElementById('emptyTransactionsAnimation'),
                         'nohistory.json',
@@ -2955,37 +3223,36 @@
                 let html = '';
                 transactions.slice(0, 20).forEach(item => {
                     const date = formatDate(item.created_at);
-                    const icon = item.type === 'deposit' ? 'deposit' : 'withdraw';
                     const amountClass = item.type === 'deposit' ? 'positive' : 'negative';
                     const sign = item.type === 'deposit' ? '+' : '-';
 
                     html += `
-                        <div class="history-item">
-                            <div class="h-left">
-                                <span class="h-icon" style="display:flex;align-items:center;justify-content:center;">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2">
-                                        <path d="${item.type === 'deposit' ? 'M12 5L12 19M5 12L12 5L19 12' : 'M12 19L12 5M5 12L12 19L19 12'}"/>
-                                    </svg>
-                                </span>
-                                <div class="h-info">
-                                    <div class="h-name">${item.description || item.type}</div>
-                                    <div class="h-date">${date}</div>
+                            <div class="history-item">
+                                <div class="h-left">
+                                    <span class="h-icon" style="display:flex;align-items:center;justify-content:center;">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2">
+                                            <path d="${item.type === 'deposit' ? 'M12 5L12 19M5 12L12 5L19 12' : 'M12 19L12 5M5 12L12 19L19 12'}"/>
+                                        </svg>
+                                    </span>
+                                    <div class="h-info">
+                                        <div class="h-name">${item.description || item.type}</div>
+                                        <div class="h-date">${date}</div>
+                                    </div>
                                 </div>
+                                <span class="h-amount ${amountClass}">${sign}${Math.abs(item.amount)} ₽</span>
                             </div>
-                            <span class="h-amount ${amountClass}">${sign}${Math.abs(item.amount)} ₽</span>
-                        </div>
-                    `;
+                        `;
                 });
 
                 container.innerHTML = html;
             } catch (error) {
                 console.error('Ошибка загрузки транзакций:', error);
                 document.getElementById('transactionsHistory').innerHTML = `
-                    <div class="history-empty">
-                        <div class="empty-icon" id="errorTransactionsAnimation"></div>
-                        <div>Ошибка загрузки транзакций</div>
-                    </div>
-                `;
+                        <div class="history-empty">
+                            <div class="empty-icon" id="errorTransactionsAnimation"></div>
+                            <div>Ошибка загрузки транзакций</div>
+                        </div>
+                    `;
                 loadLottieAnimation(
                     document.getElementById('errorTransactionsAnimation'),
                     'badinput.json',
@@ -3016,11 +3283,11 @@
 
             if (items.length === 0) {
                 grid.innerHTML = `
-                    <div style="grid-column: 1/-1; text-align: center; padding: 40px 0; color: rgba(255,255,255,0.2);">
-                        <div style="font-size: 2rem; margin-bottom: 8px;">📭</div>
-                        <div>Товаров в этой категории пока нет</div>
-                    </div>
-                `;
+                        <div style="grid-column: 1/-1; text-align: center; padding: 40px 0; color: rgba(255,255,255,0.2);">
+                            <div style="font-size: 2rem; margin-bottom: 8px;">📭</div>
+                            <div>Товаров в этой категории пока нет</div>
+                        </div>
+                    `;
                 return;
             }
 
@@ -3031,16 +3298,16 @@
                 const icon = item.image || '💎';
 
                 card.innerHTML = `
-                    <div style="width:100%;display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-                        <div class="prod-icon" style="margin-bottom:0;font-size:1.8rem;">${icon}</div>
-                    </div>
-                    <div class="prod-name">${item.name}</div>
-                    <div class="prod-sub">Brawl Stars</div>
-                    <button class="prod-btn" onclick="addToCart({id: ${item.id}, icon: '${icon}', name: '${item.name.replace(/'/g, "\\'")}', price: ${item.price}, category: '${item.category}'})" style="margin-top:4px;">
-                        <span class="price">${item.price} ₽</span>
-                        <span class="cart-text">+ в корзину</span>
-                    </button>
-                `;
+                        <div style="width:100%;display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                            <div class="prod-icon" style="margin-bottom:0;font-size:1.8rem;">${icon}</div>
+                        </div>
+                        <div class="prod-name">${item.name}</div>
+                        <div class="prod-sub">Brawl Stars</div>
+                        <button class="prod-btn" onclick="addToCart({id: ${item.id}, icon: '${icon}', name: '${item.name.replace(/'/g, "\\'")}', price: ${item.price}, category: '${item.category}'})" style="margin-top:4px;">
+                            <span class="price">${item.price} ₽</span>
+                            <span class="cart-text">+ в корзину</span>
+                        </button>
+                    `;
                 grid.appendChild(card);
             });
         }
@@ -3152,11 +3419,11 @@
 
             if (cartData.length === 0) {
                 container.innerHTML = `
-                    <div class="cart-empty">
-                        <div class="empty-icon" id="emptyCartAnimation"></div>
-                        <div class="empty-text">Корзина пуста</div>
-                    </div>
-                `;
+                        <div class="cart-empty">
+                            <div class="empty-icon" id="emptyCartAnimation"></div>
+                            <div class="empty-text">Корзина пуста</div>
+                        </div>
+                    `;
                 loadLottieAnimation(
                     document.getElementById('emptyCartAnimation'),
                     'empty_basket.json',
@@ -3180,36 +3447,36 @@
                 totalItems += quantity;
 
                 html += `
-                    <div class="cart-item">
-                        <div class="item-left">
-                            <span class="item-icon">${item.icon}</span>
-                            <div class="item-info">
-                                <div class="item-name">${item.name}</div>
-                                <div class="item-game">Brawl Stars × ${quantity}</div>
+                        <div class="cart-item">
+                            <div class="item-left">
+                                <span class="item-icon">${item.icon}</span>
+                                <div class="item-info">
+                                    <div class="item-name">${item.name}</div>
+                                    <div class="item-game">Brawl Stars × ${quantity}</div>
+                                </div>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="display:flex;align-items:center;gap:6px;">
+                                    <button class="order-btn-small" onclick="changeQuantity(${item.id}, -1)" style="min-width:28px;padding:2px 6px;font-size:0.8rem;">−</button>
+                                    <span style="font-size:0.9rem;font-weight:600;color:#FFFFFF;min-width:20px;text-align:center;">${quantity}</span>
+                                    <button class="order-btn-small" onclick="changeQuantity(${item.id}, 1)" style="min-width:28px;padding:2px 6px;font-size:0.8rem;">+</button>
+                                </div>
+                                <span class="item-price">${totalPrice} ₽</span>
+                                <button class="remove-btn" onclick="removeFromCart(${item.id})">✕</button>
                             </div>
                         </div>
-                        <div style="display:flex;align-items:center;gap:10px;">
-                            <div style="display:flex;align-items:center;gap:6px;">
-                                <button class="order-btn-small" onclick="changeQuantity(${item.id}, -1)" style="min-width:28px;padding:2px 6px;font-size:0.8rem;">−</button>
-                                <span style="font-size:0.9rem;font-weight:600;color:#FFFFFF;min-width:20px;text-align:center;">${quantity}</span>
-                                <button class="order-btn-small" onclick="changeQuantity(${item.id}, 1)" style="min-width:28px;padding:2px 6px;font-size:0.8rem;">+</button>
-                            </div>
-                            <span class="item-price">${totalPrice} ₽</span>
-                            <button class="remove-btn" onclick="removeFromCart(${item.id})">✕</button>
-                        </div>
-                    </div>
-                `;
+                    `;
             });
 
             container.innerHTML = html;
 
             const total = calculateTotal();
             totalContainer.innerHTML = `
-                <div class="cart-total">
-                    <span class="total-label">Итого (${totalItems} шт.):</span>
-                    <span class="total-price">${total} ₽</span>
-                </div>
-            `;
+                    <div class="cart-total">
+                        <span class="total-label">Итого (${totalItems} шт.):</span>
+                        <span class="total-price">${total} ₽</span>
+                    </div>
+                `;
 
             if (checkoutBtn) {
                 checkoutBtn.disabled = isProcessing || false;
