@@ -837,6 +837,9 @@
         }
         .profile-page .history-item .h-icon {
             font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .profile-page .history-item .h-info .h-name {
             font-weight: 500;
@@ -1406,40 +1409,6 @@
             fill: none;
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .nav-item .nav-icon .draw-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            stroke: #FFFFFF;
-            stroke-width: 2;
-            fill: none;
-            stroke-dasharray: 300;
-            stroke-dashoffset: 300;
-            opacity: 0;
-            pointer-events: none;
-        }
-        .nav-item .nav-icon .draw-overlay.active {
-            animation: drawIcon 0.6s ease forwards;
-        }
-        @keyframes drawIcon {
-            0% {
-                stroke-dashoffset: 300;
-                opacity: 1;
-            }
-            70% {
-                opacity: 1;
-            }
-            100% {
-                stroke-dashoffset: 0;
-                opacity: 0;
-            }
-        }
-        .nav-item .nav-icon .draw-overlay.done {
-            opacity: 0;
-            stroke-dashoffset: 0;
-        }
         .nav-item .nav-label {
             font-size: 0.6rem;
             font-weight: 600;
@@ -1596,61 +1565,60 @@
         .withdraw-step.active {
             display: block;
         }
-        .withdraw-method-card {
-            background: rgba(255, 255, 255, 0.04);
-            border-radius: 16px;
-            padding: 16px 18px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
+        
+        /* Стили для банков */
+        .bank-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .bank-item {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
             cursor: pointer;
-            transition: all 0.3s;
-            margin-bottom: 12px;
-            backdrop-filter: blur(10px);
-            position: relative;
+            transition: all 0.2s;
         }
-        .withdraw-method-card:active {
+        .bank-item:active {
             transform: scale(0.98);
         }
-        .withdraw-method-card.active {
+        .bank-item.active {
             border-color: rgba(91, 140, 255, 0.3);
             background: rgba(91, 140, 255, 0.06);
         }
-        .withdraw-method-card .method-icon {
-            font-size: 1.8rem;
-            width: 40px;
-            text-align: center;
+        .bank-item .bank-icon {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
             flex-shrink: 0;
         }
-        .withdraw-method-card .method-info {
+        .bank-item .bank-name {
             flex: 1;
-        }
-        .withdraw-method-card .method-name {
-            font-size: 1rem;
-            font-weight: 600;
+            font-size: 0.9rem;
             color: #FFFFFF;
+            font-weight: 500;
         }
-        .withdraw-method-card .method-desc {
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.3);
-        }
-        .withdraw-method-card .method-check {
-            width: 24px;
-            height: 24px;
+        .bank-item .bank-check {
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             border: 2px solid rgba(255, 255, 255, 0.15);
-            flex-shrink: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s;
+            flex-shrink: 0;
         }
-        .withdraw-method-card.active .method-check {
+        .bank-item.active .bank-check {
             border-color: #7DD8FF;
             background: rgba(91, 140, 255, 0.15);
         }
-        .withdraw-method-card.active .method-check::after {
+        .bank-item.active .bank-check::after {
             content: '✓';
             color: #7DD8FF;
             font-size: 0.7rem;
@@ -1694,37 +1662,6 @@
         }
         .withdraw-input::placeholder {
             color: rgba(255, 255, 255, 0.15);
-        }
-
-        .bank-quick {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 10px;
-        }
-        .bank-btn {
-            padding: 6px 14px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            background: rgba(255, 255, 255, 0.04);
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.7rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: inherit;
-        }
-        .bank-btn:active {
-            transform: scale(0.95);
-        }
-        .bank-btn.active {
-            border-color: rgba(91, 140, 255, 0.3);
-            color: #7DD8FF;
-            background: rgba(91, 140, 255, 0.1);
-        }
-        .bank-btn.custom {
-            border-color: rgba(255, 255, 255, 0.05);
-            color: rgba(255, 255, 255, 0.25);
         }
 
         .selected-bank-display {
@@ -1808,25 +1745,6 @@
             cursor: not-allowed;
         }
 
-        .withdraw-info {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 12px;
-            padding: 14px 16px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            display: flex;
-            gap: 12px;
-            margin-top: 16px;
-        }
-        .withdraw-info .info-icon {
-            font-size: 1.2rem;
-            flex-shrink: 0;
-        }
-        .withdraw-info .info-text {
-            font-size: 0.7rem;
-            color: rgba(255, 255, 255, 0.3);
-            line-height: 1.5;
-        }
-
         @media (max-width: 500px) {
             .game-page .products-grid {
                 grid-template-columns: 1fr 1fr;
@@ -1859,16 +1777,12 @@
                 top: 0px;
                 right: 0px;
             }
-            .withdraw-method-card .method-icon {
-                font-size: 1.4rem;
-                width: 32px;
+            .bank-item .bank-icon {
+                width: 24px;
+                height: 24px;
             }
-            .bank-quick {
-                gap: 4px;
-            }
-            .bank-btn {
-                font-size: 0.6rem;
-                padding: 4px 10px;
+            .bank-item {
+                padding: 10px 12px;
             }
         }
         @media (max-width: 380px) {
@@ -2098,15 +2012,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Банк</label>
-                        <div class="bank-quick" id="bankQuick">
-                            <button class="bank-btn" onclick="selectBank('Сбер')">Сбер</button>
-                            <button class="bank-btn" onclick="selectBank('Т-Банк')">Т-Банк</button>
-                            <button class="bank-btn" onclick="selectBank('ВТБ')">ВТБ</button>
-                            <button class="bank-btn" onclick="selectBank('Альфа-Банк')">Альфа-Банк</button>
-                            <button class="bank-btn custom" onclick="selectBank('custom')">Свой вариант</button>
+                        <label>Выберите банк</label>
+                        <div class="bank-grid" id="bankGrid">
+                            <!-- Банки будут добавлены через JS -->
                         </div>
-                        <input type="text" id="sbpBank" placeholder="Введите название банка" class="withdraw-input" style="display:none;" oninput="updateWithdrawSummarySbp()">
                         <div class="selected-bank-display" id="selectedBankDisplay">
                             <span class="bank-name" id="selectedBankName"></span>
                             <button class="clear-bank" onclick="clearBank()">✕</button>
@@ -2157,14 +2066,6 @@
                     </div>
 
                     <button class="withdraw-submit" id="cardSubmit" onclick="processWithdrawStep('card')" disabled>Вывести средства</button>
-                </div>
-            </div>
-
-            <div class="withdraw-info">
-                <div class="info-icon">ℹ️</div>
-                <div class="info-text">
-                    Деньги обычно поступают в течение нескольких минут.<br>
-                    Иногда перевод может занять до 3 рабочих дней.
                 </div>
             </div>
         </div>
@@ -2350,21 +2251,12 @@
                     <circle cx="12" cy="8" r="4"/>
                     <path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"/>
                 </svg>
-                <svg class="draw-overlay" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                    <circle cx="12" cy="8" r="4"/>
-                    <path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"/>
-                </svg>
             </span>
             <span class="nav-label">Профиль</span>
         </button>
         <button class="nav-item active" data-page="home" onclick="navigateTo('home')">
             <span class="nav-icon" id="navHome">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                    <path d="M3 10.5L12 3l9 7.5"/>
-                    <path d="M5 9.5V21h14V9.5"/>
-                    <path d="M9 21v-6h6v6"/>
-                </svg>
-                <svg class="draw-overlay" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                     <path d="M3 10.5L12 3l9 7.5"/>
                     <path d="M5 9.5V21h14V9.5"/>
                     <path d="M9 21v-6h6v6"/>
@@ -2379,11 +2271,6 @@
                     <circle cx="20" cy="21" r="1"/>
                     <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
                 </svg>
-                <svg class="draw-overlay" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                    <circle cx="9" cy="21" r="1"/>
-                    <circle cx="20" cy="21" r="1"/>
-                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-                </svg>
                 <span class="badge hidden" id="navCartBadge"></span>
             </span>
             <span class="nav-label">Корзина</span>
@@ -2391,11 +2278,6 @@
         <button class="nav-item" data-page="info" onclick="navigateTo('info')">
             <span class="nav-icon" id="navInfo">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                    <circle cx="12" cy="12" r="9"/>
-                    <path d="M12 10v6"/>
-                    <circle cx="12" cy="7" r="0.8" fill="currentColor" stroke="none"/>
-                </svg>
-                <svg class="draw-overlay" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                     <circle cx="12" cy="12" r="9"/>
                     <path d="M12 10v6"/>
                     <circle cx="12" cy="7" r="0.8" fill="currentColor" stroke="none"/>
@@ -2418,11 +2300,27 @@
         let isFirstLoad = true;
         let selectedWithdrawMethod = null;
         let withdrawAmount = null;
+        let selectedBank = null;
 
         if (tg) {
             tg.ready();
             tg.expand();
         }
+
+        // --- Список банков с иконками ---
+        const banksList = [
+            { name: 'Сбер', icon: 'https://i.imgur.com/qYkZJ7N.png' },
+            { name: 'Т-Банк', icon: 'https://i.imgur.com/5s6x8wj.png' },
+            { name: 'ВТБ', icon: 'https://i.imgur.com/KVj8z9Q.png' },
+            { name: 'Альфа-Банк', icon: 'https://i.imgur.com/3mNp7xw.png' },
+            { name: 'Газпромбанк', icon: 'https://i.imgur.com/W9xLzNp.png' },
+            { name: 'Россельхозбанк', icon: 'https://i.imgur.com/7Rj8yKp.png' },
+            { name: 'Открытие', icon: 'https://i.imgur.com/8VpLmNq.png' },
+            { name: 'МТС Банк', icon: 'https://i.imgur.com/4hJ5rFg.png' },
+            { name: 'Райффайзен', icon: 'https://i.imgur.com/6sKjLmN.png' },
+            { name: 'ЮниКредит', icon: 'https://i.imgur.com/9bVcXzQ.png' },
+            { name: 'Свой вариант', icon: '' }
+        ];
 
         const pages = {
             home: document.getElementById('pageHome'),
@@ -2441,7 +2339,10 @@
             navItems.forEach(item => {
                 item.classList.remove('active');
                 const page = item.dataset.page;
-                if (page === activePage) {
+                // Для страницы вывода показываем "Профиль"
+                if ((activePage === 'profile' || activePage === 'withdraw') && page === 'profile') {
+                    item.classList.add('active');
+                } else if (page === activePage) {
                     item.classList.add('active');
                 }
                 if ((activePage === 'brawl' || activePage === 'order' || activePage === 'orderDetail') && page === 'home') {
@@ -2451,39 +2352,7 @@
         }
 
         function animateNavIcon(pageName) {
-            if (isFirstLoad && pageName === 'home') {
-                isFirstLoad = false;
-                return;
-            }
-
-            const navMap = {
-                'profile': 'navProfile',
-                'home': 'navHome',
-                'cart': 'navCart',
-                'info': 'navInfo',
-                'brawl': 'navHome',
-                'order': 'navHome',
-                'orderDetail': 'navHome',
-                'withdraw': 'navProfile'
-            };
-
-            const iconId = navMap[pageName];
-            if (!iconId) return;
-
-            const container = document.getElementById(iconId);
-            if (!container) return;
-
-            const overlay = container.querySelector('.draw-overlay');
-            if (!overlay) return;
-
-            overlay.classList.remove('active', 'done');
-            void overlay.offsetWidth;
-            overlay.classList.add('active');
-
-            setTimeout(() => {
-                overlay.classList.remove('active');
-                overlay.classList.add('done');
-            }, 700);
+            // Убираем анимации SVG - ничего не делаем
         }
 
         function navigateTo(pageName) {
@@ -2766,6 +2635,7 @@
                 if (tg && tg.BackButton) tg.BackButton.show();
                 window.location.hash = 'withdraw';
                 resetWithdrawForm();
+                renderBanks();
             });
         }
 
@@ -2783,20 +2653,68 @@
 
         function resetWithdrawForm() {
             selectedWithdrawMethod = null;
+            selectedBank = null;
             document.querySelectorAll('.withdraw-method-card').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.bank-item').forEach(el => el.classList.remove('active'));
             document.getElementById('withdrawStep1').classList.add('active');
             document.getElementById('withdrawStepSbp').classList.remove('active');
             document.getElementById('withdrawStepCard').classList.remove('active');
             document.getElementById('sbpPhone').value = '';
             document.getElementById('cardNumber').value = '';
-            document.getElementById('sbpBank').value = '';
-            document.getElementById('sbpBank').style.display = 'none';
             document.getElementById('selectedBankDisplay').classList.remove('show');
-            document.querySelectorAll('.bank-btn').forEach(el => el.classList.remove('active'));
             document.getElementById('sbpSubmit').disabled = true;
             document.getElementById('cardSubmit').disabled = true;
             updateWithdrawSummarySbp();
             updateWithdrawSummaryCard();
+            renderBanks();
+        }
+
+        function renderBanks() {
+            const grid = document.getElementById('bankGrid');
+            if (!grid) return;
+            
+            grid.innerHTML = '';
+            banksList.forEach(bank => {
+                const item = document.createElement('div');
+                item.className = 'bank-item';
+                item.dataset.bank = bank.name;
+                
+                const iconHtml = bank.icon ? 
+                    `<img class="bank-icon" src="${bank.icon}" alt="${bank.name}">` : 
+                    `<div class="bank-icon" style="font-size:1.2rem;display:flex;align-items:center;justify-content:center;">✏️</div>`;
+                
+                item.innerHTML = `
+                    ${iconHtml}
+                    <span class="bank-name">${bank.name}</span>
+                    <div class="bank-check"></div>
+                `;
+                
+                item.addEventListener('click', () => selectBankItem(bank.name));
+                grid.appendChild(item);
+            });
+        }
+
+        function selectBankItem(bankName) {
+            selectedBank = bankName;
+            document.querySelectorAll('.bank-item').forEach(el => el.classList.remove('active'));
+            
+            const items = document.querySelectorAll('.bank-item');
+            items.forEach(item => {
+                if (item.dataset.bank === bankName) {
+                    item.classList.add('active');
+                }
+            });
+            
+            document.getElementById('selectedBankName').textContent = bankName;
+            document.getElementById('selectedBankDisplay').classList.add('show');
+            updateWithdrawSummarySbp();
+        }
+
+        function clearBank() {
+            selectedBank = null;
+            document.getElementById('selectedBankDisplay').classList.remove('show');
+            document.querySelectorAll('.bank-item').forEach(el => el.classList.remove('active'));
+            updateWithdrawSummarySbp();
         }
 
         function selectMethod(method) {
@@ -2859,44 +2777,9 @@
             updateWithdrawSummaryCard();
         }
 
-        function selectBank(bank) {
-            document.querySelectorAll('.bank-btn').forEach(el => el.classList.remove('active'));
-
-            if (bank === 'custom') {
-                document.getElementById('sbpBank').style.display = 'block';
-                document.getElementById('sbpBank').focus();
-                document.querySelector('.bank-btn.custom').classList.add('active');
-                document.getElementById('selectedBankDisplay').classList.remove('show');
-                updateWithdrawSummarySbp();
-                return;
-            }
-
-            document.getElementById('sbpBank').style.display = 'none';
-            document.getElementById('sbpBank').value = '';
-
-            const btns = document.querySelectorAll('.bank-btn');
-            btns.forEach(btn => {
-                if (btn.textContent.trim() === bank) {
-                    btn.classList.add('active');
-                }
-            });
-
-            document.getElementById('selectedBankName').textContent = bank;
-            document.getElementById('selectedBankDisplay').classList.add('show');
-            updateWithdrawSummarySbp();
-        }
-
-        function clearBank() {
-            document.getElementById('selectedBankDisplay').classList.remove('show');
-            document.getElementById('sbpBank').style.display = 'none';
-            document.getElementById('sbpBank').value = '';
-            document.querySelectorAll('.bank-btn').forEach(el => el.classList.remove('active'));
-            updateWithdrawSummarySbp();
-        }
-
         function updateWithdrawSummarySbp() {
             const phone = document.getElementById('sbpPhone').value.replace(/\D/g, '');
-            const bank = document.getElementById('selectedBankName').textContent || document.getElementById('sbpBank').value;
+            const bank = selectedBank;
             const amount = withdrawAmount || 0;
 
             const fee = Math.round(amount * 0.03 * 100) / 100;
@@ -2906,7 +2789,7 @@
             document.getElementById('sbpFeeDisplay').textContent = fee.toLocaleString() + ' ₽';
             document.getElementById('sbpFinalDisplay').textContent = finalAmount.toLocaleString() + ' ₽';
 
-            const isValid = phone.length >= 10 && bank.length > 0 && amount >= 50;
+            const isValid = phone.length >= 10 && bank && bank.length > 0 && amount >= 50;
             document.getElementById('sbpSubmit').disabled = !isValid;
         }
 
@@ -2947,16 +2830,15 @@
             let details = '';
             if (method === 'sbp') {
                 const phone = document.getElementById('sbpPhone').value;
-                const bank = document.getElementById('selectedBankName').textContent || document.getElementById('sbpBank').value;
                 if (!phone || phone.replace(/\D/g, '').length < 10) {
                     showToast('Введите корректный номер телефона', 'error');
                     return;
                 }
-                if (!bank) {
+                if (!selectedBank) {
                     showToast('Выберите банк', 'error');
                     return;
                 }
-                details = `СБП: ${phone}, Банк: ${bank}`;
+                details = `СБП: ${phone}, Банк: ${selectedBank}`;
             } else if (method === 'card') {
                 const card = document.getElementById('cardNumber').value.replace(/\s/g, '');
                 if (card.length < 16) {
@@ -2967,6 +2849,45 @@
             }
 
             try {
+                // Сначала списываем сумму с баланса локально для UX
+                const currentBalance = parseInt(document.getElementById('balanceAmount').textContent.replace(/\s/g, ''));
+                document.getElementById('balanceAmount').textContent = (currentBalance - amount).toLocaleString('ru-RU');
+                
+                // Добавляем транзакцию в историю локально
+                const transactionsContainer = document.getElementById('transactionsHistory');
+                const date = new Date().toLocaleString('ru-RU', {
+                    day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit'
+                });
+                
+                // Сохраняем текущие транзакции в переменную
+                const existingHtml = transactionsContainer.innerHTML;
+                
+                // Добавляем новую транзакцию в начало списка
+                const newTransactionHtml = `
+                    <div class="history-item">
+                        <div class="h-left">
+                            <span class="h-icon" style="display:flex;align-items:center;justify-content:center;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2">
+                                    <path d="M12 19L12 5M5 12L12 19L19 12"/>
+                                </svg>
+                            </span>
+                            <div class="h-info">
+                                <div class="h-name">Вывод средств (в обработке)</div>
+                                <div class="h-date">${date}</div>
+                            </div>
+                        </div>
+                        <span class="h-amount negative">-${amount} ₽</span>
+                    </div>
+                `;
+                
+                // Проверяем, есть ли уже транзакции
+                if (existingHtml.includes('history-empty')) {
+                    transactionsContainer.innerHTML = newTransactionHtml;
+                } else {
+                    transactionsContainer.innerHTML = newTransactionHtml + existingHtml;
+                }
+
+                // Отправляем запрос на сервер
                 await apiRequest('/api/balance/withdraw', 'POST', {
                     amount: amount,
                     details: details
@@ -2977,7 +2898,12 @@
                 await loadBalance();
                 await loadTransactions();
             } catch (error) {
+                // Если ошибка - возвращаем деньги обратно
+                const currentBalance = parseInt(document.getElementById('balanceAmount').textContent.replace(/\s/g, ''));
+                document.getElementById('balanceAmount').textContent = (currentBalance + amount).toLocaleString('ru-RU');
                 showToast(error.message || 'Ошибка вывода', 'error');
+                await loadBalance();
+                await loadTransactions();
             }
         }
 
@@ -3225,13 +3151,18 @@
                     const date = formatDate(item.created_at);
                     const amountClass = item.type === 'deposit' ? 'positive' : 'negative';
                     const sign = item.type === 'deposit' ? '+' : '-';
+                    
+                    // Для вывода меняем иконку: при пополнении стрелка вниз, при выводе - вверх
+                    const iconPath = item.type === 'deposit' 
+                        ? 'M12 5L12 19M5 12L12 5L19 12'  // стрелка вниз (пополнение)
+                        : 'M12 19L12 5M5 12L12 19L19 12'; // стрелка вверх (вывод)
 
                     html += `
                             <div class="history-item">
                                 <div class="h-left">
                                     <span class="h-icon" style="display:flex;align-items:center;justify-content:center;">
                                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2">
-                                            <path d="${item.type === 'deposit' ? 'M12 5L12 19M5 12L12 5L19 12' : 'M12 19L12 5M5 12L12 19L19 12'}"/>
+                                            <path d="${iconPath}"/>
                                         </svg>
                                     </span>
                                     <div class="h-info">
@@ -3362,26 +3293,8 @@
 
             saveCart(cartData);
             updateNavCartBadge();
-            animateNavIcon('cart');
-
-            const cartIcon = document.getElementById('navCart');
-            if (cartIcon) {
-                const svg = cartIcon.querySelector('svg:not(.draw-overlay)');
-                if (svg) {
-                    svg.style.animation = 'navPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
-                    setTimeout(() => {
-                        svg.style.animation = '';
-                    }, 400);
-                }
-            }
-
-            const badge = document.getElementById('navCartBadge');
-            if (badge) {
-                badge.classList.remove('hidden');
-                badge.style.animation = 'none';
-                void badge.offsetWidth;
-                badge.style.animation = 'navPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
-            }
+            // Убираем анимацию SVG - просто обновляем бейдж
+            showToast(`${product.name} добавлен в корзину!`, 'success');
         }
 
         function removeFromCart(productId) {
@@ -4012,6 +3925,7 @@
                     else if (id === 'pageCart' || id === 'pageProfile') navigateTo('home');
                     else if (id === 'pageOrderFlow') closeOrderFlow();
                     else if (id === 'pageOrderDetail') closeOrderDetail();
+                    else if (id === 'pageWithdraw') closeWithdrawPage();
                     else {
                         const hash = window.location.hash.replace('#', '');
                         if (hash && hash !== 'home' && hash !== '') navigateTo('home');
