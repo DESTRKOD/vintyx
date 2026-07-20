@@ -51,7 +51,7 @@
         /* ГЕРОЙ — премиум баннер */
         .hero-section {
             position: relative;
-            height: 240px;
+            height: 200px;
             border-radius: 32px;
             margin-bottom: 28px;
             overflow: hidden;
@@ -149,27 +149,31 @@
             pointer-events: none;
         }
 
-        /* КАРТОЧКИ ИГР — 35% арт / 65% текст */
+        /* КАРТОЧКИ ИГР — более высокие, менее широкие */
         .game-cards {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 18px;
             margin-top: 8px;
         }
         .game-card {
             display: flex;
             border-radius: 28px;
             overflow: hidden;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(4px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            background: #1A1A2E;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
             cursor: pointer;
             transition: all 0.25s ease;
-            height: 120px;
+            height: 150px;
             position: relative;
+            border: 2px solid;
         }
         .game-card:active { transform: scale(0.97); }
+        
+        /* Индивидуальные ободки */
+        .game-card.brawl { border-color: #FF3B3B; }
+        .game-card.clash { border-color: #4A7BFF; }
+        .game-card.telegram { border-color: #5BC8FF; }
         
         /* Левая часть — 35% */
         .game-card .artwork {
@@ -177,8 +181,11 @@
             flex-shrink: 0;
             position: relative;
             overflow: hidden;
-            border-radius: 28px 0 0 28px;
-            background: #1A1A3E;
+            border-radius: 26px 0 0 26px;
+            background: #2A2A3E;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .game-card .artwork .character {
             width: 100%;
@@ -191,30 +198,20 @@
             position: absolute;
             top: 0;
             right: 0;
-            width: 60%;
+            width: 50%;
             height: 100%;
-            background: linear-gradient(90deg, transparent 0%, rgba(8, 8, 15, 0.7) 100%);
+            background: linear-gradient(90deg, transparent 0%, rgba(26, 26, 46, 0.8) 100%);
             pointer-events: none;
-        }
-        .game-card .artwork .art-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: rgba(255,255,255,0.1);
-            background: inherit;
         }
         
         /* Правая часть — 65% */
         .game-card .info {
             flex: 1;
-            padding: 16px 18px 14px 16px;
+            padding: 18px 20px 16px 18px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            background: #1A1A2E;
         }
         .game-card .info .title-group {
             display: flex;
@@ -222,34 +219,43 @@
             line-height: 1;
         }
         .game-card .info .title-group .game-name {
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             font-weight: 800;
-            letter-spacing: -0.3px;
-            color: #FFFFFF;
+            letter-spacing: -0.5px;
+            line-height: 1.1;
         }
-        .game-card .info .title-group .game-name span {
-            display: block;
-            font-weight: 300;
-            opacity: 0.5;
-            font-size: 0.7rem;
-            letter-spacing: 1px;
-            margin-top: 2px;
-        }
+        /* Brawl Stars: BRAWL белый, STARS красный */
+        .game-card.brawl .info .title-group .game-name .first { color: #FFFFFF; }
+        .game-card.brawl .info .title-group .game-name .second { color: #FF3B3B; }
+        
+        /* Clash Royale: CLASH белый, ROYALE синий */
+        .game-card.clash .info .title-group .game-name .first { color: #FFFFFF; }
+        .game-card.clash .info .title-group .game-name .second { color: #4A7BFF; }
+        
+        /* Telegram: TELEGRAM белый, PREMIUM голубой */
+        .game-card.telegram .info .title-group .game-name .first { color: #FFFFFF; }
+        .game-card.telegram .info .title-group .game-name .second { color: #5BC8FF; }
+        
         .game-card .info .tags {
             display: flex;
-            gap: 6px;
+            gap: 8px;
             flex-wrap: wrap;
-            margin: 6px 0 4px;
+            margin: 8px 0 6px;
         }
         .game-card .info .tags .tag {
-            font-size: 0.55rem;
+            font-size: 0.6rem;
             font-weight: 600;
-            padding: 2px 10px;
+            padding: 4px 12px;
             border-radius: 30px;
             background: rgba(255, 255, 255, 0.06);
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 0.6);
             letter-spacing: 0.3px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
         }
+        .game-card.brawl .info .tags .tag { border-color: rgba(255, 59, 59, 0.15); color: #FF6B6B; }
+        .game-card.clash .info .tags .tag { border-color: rgba(74, 123, 255, 0.15); color: #6B8CFF; }
+        .game-card.telegram .info .tags .tag { border-color: rgba(91, 200, 255, 0.15); color: #7DD8FF; }
+        
         .game-card .info .bottom-row {
             display: flex;
             justify-content: space-between;
@@ -259,30 +265,21 @@
         .game-card .info .bottom-row .price-badge {
             font-size: 0.7rem;
             font-weight: 700;
-            padding: 4px 14px;
+            padding: 5px 16px;
             border-radius: 30px;
-            background: rgba(91, 140, 255, 0.12);
-            color: #7DD8FF;
-            border: 1px solid rgba(91, 140, 255, 0.08);
+            background: rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.06);
         }
+        .game-card.brawl .info .bottom-row .price-badge { background: rgba(255, 59, 59, 0.08); color: #FF6B6B; border-color: rgba(255,59,59,0.1); }
+        .game-card.clash .info .bottom-row .price-badge { background: rgba(74, 123, 255, 0.08); color: #6B8CFF; border-color: rgba(74,123,255,0.1); }
+        .game-card.telegram .info .bottom-row .price-badge { background: rgba(91, 200, 255, 0.08); color: #7DD8FF; border-color: rgba(91,200,255,0.1); }
+        
         .game-card .info .bottom-row .arrow {
             color: rgba(255, 255, 255, 0.15);
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             transition: all 0.2s;
         }
-        
-        /* Индивидуальные цвета для каждой игры */
-        .game-card.brawl .artwork { background: linear-gradient(135deg, #7B2F2F 0%, #C0392B 100%); }
-        .game-card.brawl .info .title-group .game-name { color: #FF6B6B; }
-        .game-card.brawl .info .bottom-row .price-badge { background: rgba(255, 107, 107, 0.12); color: #FF6B6B; border-color: rgba(255,107,107,0.1); }
-        
-        .game-card.clash .artwork { background: linear-gradient(135deg, #1A2A6C 0%, #2A4B8C 100%); }
-        .game-card.clash .info .title-group .game-name { color: #5B8CFF; }
-        .game-card.clash .info .bottom-row .price-badge { background: rgba(91, 140, 255, 0.12); color: #5B8CFF; border-color: rgba(91,140,255,0.1); }
-        
-        .game-card.telegram .artwork { background: linear-gradient(135deg, #1A3A5C 0%, #2C6B9E 100%); }
-        .game-card.telegram .info .title-group .game-name { color: #7DD8FF; }
-        .game-card.telegram .info .bottom-row .price-badge { background: rgba(125, 216, 255, 0.12); color: #7DD8FF; border-color: rgba(125,216,255,0.1); }
 
         /* Другие страницы (скрыты) */
         .page:not(.active) { display: none; }
@@ -360,18 +357,20 @@
 
         /* Адаптивность */
         @media (max-width: 500px) {
-            .hero-section { height: 200px; }
+            .hero-section { height: 170px; }
             .hero-placeholder h1 { font-size: 1.4rem; }
-            .game-card { height: 100px; }
-            .game-card .info .title-group .game-name { font-size: 1.0rem; }
-            .game-card .info .tags .tag { font-size: 0.45rem; padding: 1px 8px; }
-            .game-card .info .bottom-row .price-badge { font-size: 0.55rem; padding: 2px 10px; }
+            .game-card { height: 130px; }
+            .game-card .info .title-group .game-name { font-size: 1.2rem; }
+            .game-card .info .tags .tag { font-size: 0.5rem; padding: 3px 10px; }
+            .game-card .info .bottom-row .price-badge { font-size: 0.6rem; padding: 3px 12px; }
         }
         @media (max-width: 380px) {
-            .hero-section { height: 170px; }
+            .hero-section { height: 150px; }
             .hero-placeholder h1 { font-size: 1.2rem; }
-            .game-card { height: 85px; }
-            .game-card .info .title-group .game-name { font-size: 0.85rem; }
+            .game-card { height: 110px; }
+            .game-card .info .title-group .game-name { font-size: 1.0rem; }
+            .game-card .info .tags .tag { font-size: 0.45rem; padding: 2px 8px; }
+            .game-card .info .bottom-row .price-badge { font-size: 0.5rem; padding: 2px 10px; }
         }
         @supports (padding: max(0px)) {
             .page { padding-left: max(20px, env(safe-area-inset-left)); padding-right: max(20px, env(safe-area-inset-right)); padding-bottom: max(100px, env(safe-area-inset-bottom)); }
@@ -380,7 +379,7 @@
     </style>
 </head>
 <body>
-    <!-- ГЛАВНАЯ СТРАНИЦА (переработанная) -->
+    <!-- ГЛАВНАЯ СТРАНИЦА -->
     <div id="pageHome" class="page active">
         <div class="content">
             <!-- ГЕРОЙ-БАННЕР -->
@@ -390,9 +389,9 @@
                 <div class="hero-placeholder">
                     <span class="badge">ОГРАНИЧЕННОЕ ПРЕДЛОЖЕНИЕ</span>
                     <h1>Vintyx<br>Store</h1>
-                    <p>Премиальный игровой магазин</p>
+                    <p>Телеграмчик</p>
                     <div class="hero-cta">
-                        <button class="btn-primary">Исследовать</button>
+                        <button class="btn-primary">Акции</button>
                         <button class="btn-secondary">Подарки</button>
                     </div>
                 </div>
@@ -409,12 +408,15 @@
                     <div class="info">
                         <div>
                             <div class="title-group">
-                                <span class="game-name">BRAWL <span>STARS</span></span>
+                                <span class="game-name">
+                                    <span class="first">BRAWL</span>
+                                    <span class="second">STARS</span>
+                                </span>
                             </div>
                             <div class="tags">
-                                <span class="tag">Гемы</span>
-                                <span class="tag">Brawl Pass</span>
-                                <span class="tag">Предложения</span>
+                                <span class="tag">● Гемы</span>
+                                <span class="tag">● Brawl Pass</span>
+                                <span class="tag">● Акции</span>
                             </div>
                         </div>
                         <div class="bottom-row">
@@ -433,12 +435,15 @@
                     <div class="info">
                         <div>
                             <div class="title-group">
-                                <span class="game-name">CLASH <span>ROYALE</span></span>
+                                <span class="game-name">
+                                    <span class="first">CLASH</span>
+                                    <span class="second">ROYALE</span>
+                                </span>
                             </div>
                             <div class="tags">
-                                <span class="tag">Кристаллы</span>
-                                <span class="tag">Pass Royale</span>
-                                <span class="tag">Сундуки</span>
+                                <span class="tag">● Кристаллы</span>
+                                <span class="tag">● Pass Royale</span>
+                                <span class="tag">● Сундуки</span>
                             </div>
                         </div>
                         <div class="bottom-row">
@@ -457,12 +462,15 @@
                     <div class="info">
                         <div>
                             <div class="title-group">
-                                <span class="game-name">TELEGRAM <span>PREMIUM</span></span>
+                                <span class="game-name">
+                                    <span class="first">TELEGRAM</span>
+                                    <span class="second">PREMIUM</span>
+                                </span>
                             </div>
                             <div class="tags">
-                                <span class="tag">Stars</span>
-                                <span class="tag">Premium</span>
-                                <span class="tag">Подарки</span>
+                                <span class="tag">● Stars</span>
+                                <span class="tag">● Premium</span>
+                                <span class="tag">● Подарки</span>
                             </div>
                         </div>
                         <div class="bottom-row">
@@ -475,7 +483,7 @@
         </div>
     </div>
 
-    <!-- ДРУГИЕ СТРАНИЦЫ (заглушки, не перерабатываются) -->
+    <!-- ДРУГИЕ СТРАНИЦЫ (заглушки) -->
     <div id="pageBrawl" class="page game-page"><div class="content"><button class="back-btn" onclick="закрытьИгру()">←</button><p>Brawl Stars (не переработано)</p></div></div>
     <div id="pageCart" class="page cart-page"><div class="content"><button class="back-btn" onclick="закрытьКорзину()">←</button><p>Корзина</p></div></div>
     <div id="pageProfile" class="page profile-page"><div class="content"><button class="back-btn" onclick="закрытьПрофиль()">←</button><p>Профиль</p></div></div>
@@ -484,7 +492,7 @@
     <div id="pageOrderDetail" class="page order-detail-page"><div class="content"><p>Детали заказа</p></div></div>
     <div id="pageWithdraw" class="page withdraw-page"><div class="content"><p>Вывод средств</p></div></div>
 
-    <!-- НИЖНЯЯ НАВИГАЦИЯ (без изменений) -->
+    <!-- НИЖНЯЯ НАВИГАЦИЯ -->
     <nav class="bottom-nav">
         <button class="nav-item" data-page="profile" onclick="перейтиНа('profile')">
             <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"/></svg></span>
@@ -509,7 +517,7 @@
         //  ИЗОБРАЖЕНИЯ ДЛЯ КАРТОЧЕК (IMGUR)
         // ============================================
         const ИЗОБРАЖЕНИЯ_ИГР = {
-            BRAWL_STARS: 'https://i.imgur.com/Rv6p1OU.png',
+            BRAWL_STARS: 'https://i.imgur.com/3Zm7Tr0.png',
             CLASH_ROYALE: 'https://i.imgur.com/B4idahX.png',
             TELEGRAM: 'https://i.imgur.com/eM5u3Td.png'
         };
@@ -567,505 +575,6 @@
 
         // Запуск
         перейтиНа('home');
-    </script>
-</body>
-</html>        .page::-webkit-scrollbar-track { background: transparent; }
-        .page::-webkit-scrollbar-thumb { background: rgba(91, 140, 255, 0.3); border-radius: 10px; }
-        .page.active { display: block; }
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .page .content {
-            max-width: 480px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* HERO SECTION — redesigned premium banner */
-        .hero-section {
-            position: relative;
-            height: 240px;
-            border-radius: 32px;
-            margin-bottom: 28px;
-            overflow: hidden;
-            background: linear-gradient(145deg, #1A1A3E 0%, #2D1B69 50%, #1A1A3E 100%);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-        }
-        .hero-section .hero-glow {
-            position: absolute;
-            top: -40%;
-            right: -20%;
-            width: 80%;
-            height: 80%;
-            background: radial-gradient(circle, rgba(91, 140, 255, 0.25) 0%, transparent 70%);
-            pointer-events: none;
-        }
-        .hero-placeholder {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 24px 28px;
-            z-index: 2;
-        }
-        .hero-placeholder .badge {
-            display: inline-block;
-            background: rgba(91, 140, 255, 0.15);
-            backdrop-filter: blur(8px);
-            padding: 4px 14px;
-            border-radius: 20px;
-            font-size: 0.65rem;
-            font-weight: 600;
-            color: #7DD8FF;
-            letter-spacing: 0.5px;
-            border: 1px solid rgba(91, 140, 255, 0.1);
-            width: fit-content;
-            margin-bottom: 12px;
-        }
-        .hero-placeholder h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            line-height: 1.1;
-            margin-bottom: 6px;
-            background: linear-gradient(135deg, #FFFFFF 30%, #7DD8FF 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .hero-placeholder p {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.4);
-            margin-bottom: 16px;
-            font-weight: 400;
-        }
-        .hero-cta {
-            display: flex;
-            gap: 10px;
-        }
-        .hero-cta .btn-primary {
-            padding: 10px 24px;
-            border-radius: 30px;
-            background: linear-gradient(135deg, #6675FF, #5B8CFF);
-            border: none;
-            color: white;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 4px 20px rgba(91, 140, 255, 0.25);
-            font-family: inherit;
-        }
-        .hero-cta .btn-primary:active { transform: scale(0.96); }
-        .hero-cta .btn-secondary {
-            padding: 10px 24px;
-            border-radius: 30px;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            color: white;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: inherit;
-            backdrop-filter: blur(8px);
-        }
-        .hero-cta .btn-secondary:active { transform: scale(0.96); background: rgba(255,255,255,0.1); }
-        .hero-art {
-            position: absolute;
-            right: 0;
-            bottom: 0;
-            width: 50%;
-            height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" opacity="0.15"><path d="M40 160 L80 40 L140 80 L160 140 L100 180 Z" fill="%236675FF"/><circle cx="120" cy="60" r="30" fill="%235B8CFF" opacity="0.3"/></svg>') no-repeat center/cover;
-            pointer-events: none;
-        }
-
-        /* GAME CARDS — redesigned premium */
-        .game-cards {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            margin-top: 8px;
-        }
-        .game-card {
-            display: flex;
-            border-radius: 28px;
-            overflow: hidden;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(4px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-            cursor: pointer;
-            transition: all 0.25s ease;
-            height: 120px;
-            position: relative;
-        }
-        .game-card:active { transform: scale(0.97); }
-        /* left artwork 35% */
-        .game-card .artwork {
-            width: 35%;
-            flex-shrink: 0;
-            position: relative;
-            overflow: hidden;
-            border-radius: 28px 0 0 28px;
-            background: #1A1A3E;
-        }
-        .game-card .artwork .character {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center 20%;
-            opacity: 0.9;
-            transition: all 0.3s;
-        }
-        .game-card .artwork .gradient-overlay {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 60%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent 0%, rgba(8, 8, 15, 0.6) 100%);
-            pointer-events: none;
-        }
-        /* right content 65% */
-        .game-card .info {
-            flex: 1;
-            padding: 16px 18px 14px 16px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .game-card .info .title-group {
-            display: flex;
-            flex-direction: column;
-            line-height: 1;
-        }
-        .game-card .info .title-group .game-name {
-            font-size: 1.3rem;
-            font-weight: 800;
-            letter-spacing: -0.3px;
-            color: #FFFFFF;
-        }
-        .game-card .info .title-group .game-name span {
-            display: block;
-            font-weight: 300;
-            opacity: 0.5;
-            font-size: 0.7rem;
-            letter-spacing: 1px;
-            margin-top: 2px;
-        }
-        .game-card .info .tags {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            margin: 6px 0 4px;
-        }
-        .game-card .info .tags .tag {
-            font-size: 0.55rem;
-            font-weight: 600;
-            padding: 2px 10px;
-            border-radius: 30px;
-            background: rgba(255, 255, 255, 0.06);
-            color: rgba(255, 255, 255, 0.5);
-            letter-spacing: 0.3px;
-        }
-        .game-card .info .bottom-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 4px;
-        }
-        .game-card .info .bottom-row .price-badge {
-            font-size: 0.7rem;
-            font-weight: 700;
-            padding: 4px 14px;
-            border-radius: 30px;
-            background: rgba(91, 140, 255, 0.12);
-            color: #7DD8FF;
-            border: 1px solid rgba(91, 140, 255, 0.08);
-        }
-        .game-card .info .bottom-row .arrow {
-            color: rgba(255, 255, 255, 0.15);
-            font-size: 1.2rem;
-            transition: all 0.2s;
-        }
-        /* Brawl Stars */
-        .game-card.brawl .artwork { background: linear-gradient(135deg, #7B2F2F 0%, #C0392B 100%); }
-        .game-card.brawl .info .title-group .game-name { color: #FF6B6B; }
-        .game-card.brawl .info .bottom-row .price-badge { background: rgba(255, 107, 107, 0.12); color: #FF6B6B; border-color: rgba(255,107,107,0.1); }
-        /* Clash Royale */
-        .game-card.clash .artwork { background: linear-gradient(135deg, #1A2A6C 0%, #2A4B8C 100%); }
-        .game-card.clash .info .title-group .game-name { color: #5B8CFF; }
-        .game-card.clash .info .bottom-row .price-badge { background: rgba(91, 140, 255, 0.12); color: #5B8CFF; border-color: rgba(91,140,255,0.1); }
-        /* Telegram */
-        .game-card.telegram .artwork { background: linear-gradient(135deg, #1A3A5C 0%, #2C6B9E 100%); }
-        .game-card.telegram .info .title-group .game-name { color: #7DD8FF; }
-        .game-card.telegram .info .bottom-row .price-badge { background: rgba(125, 216, 255, 0.12); color: #7DD8FF; border-color: rgba(125,216,255,0.1); }
-
-        /* other pages hidden for brevity, but keep structure */
-        .page:not(.active) { display: none; }
-        .bottom-nav {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(20, 20, 50, 0.6);
-            backdrop-filter: blur(40px) saturate(1.6);
-            -webkit-backdrop-filter: blur(40px) saturate(1.6);
-            border-radius: 50px;
-            padding: 8px 16px;
-            display: flex;
-            gap: 6px;
-            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            z-index: 1000;
-            max-width: 340px;
-            width: calc(100% - 32px);
-            justify-content: space-around;
-        }
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 6px 12px;
-            border-radius: 22px;
-            cursor: pointer;
-            border: none;
-            background: transparent;
-            font-family: inherit;
-            gap: 2px;
-            min-width: 48px;
-            position: relative;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        .nav-item .nav-icon { width: 26px; height: 26px; color: rgba(255,255,255,0.3); transition: all 0.3s; }
-        .nav-item .nav-icon svg { width: 100%; height: 100%; stroke: rgba(255,255,255,0.35); stroke-width: 2; fill: none; transition: all 0.3s; }
-        .nav-item .nav-label { font-size: 0.6rem; font-weight: 600; color: rgba(255,255,255,0.3); transition: all 0.3s; margin-top: 1px; letter-spacing: 0.3px; }
-        .nav-item.active .nav-icon svg { stroke: #FFFFFF; filter: drop-shadow(0 0 24px rgba(91,140,255,0.8)); }
-        .nav-item.active .nav-label { color: rgba(255,255,255,0.9); }
-        .nav-item.active .nav-icon { transform: scale(1.1); }
-        .nav-item .badge { position: absolute; top: -6px; right: -6px; background: #FF3B6F; color: white; font-size: 0.5rem; font-weight: 700; min-width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(20,20,50,0.9); padding: 0 4px; }
-        .nav-item .badge.hidden { display: none; }
-        .toast {
-            position: fixed;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(20, 20, 35, 0.95);
-            backdrop-filter: blur(20px);
-            padding: 14px 24px;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            font-size: 0.9rem;
-            color: white;
-            z-index: 1000;
-            animation: toastIn 0.3s ease;
-            max-width: 90%;
-            text-align: center;
-            display: none;
-        }
-        .toast.success { border-color: rgba(0, 200, 83, 0.3); }
-        .toast.error { border-color: rgba(255, 59, 111, 0.3); }
-        @keyframes toastIn {
-            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
-            to { opacity: 1; transform: translateX(-50%) translateY(0); }
-        }
-        @media (max-width: 500px) {
-            .hero-section { height: 200px; }
-            .hero-placeholder h1 { font-size: 1.4rem; }
-            .game-card { height: 100px; }
-            .game-card .info .title-group .game-name { font-size: 1.0rem; }
-            .game-card .info .tags .tag { font-size: 0.45rem; padding: 1px 8px; }
-            .game-card .info .bottom-row .price-badge { font-size: 0.55rem; padding: 2px 10px; }
-        }
-        @media (max-width: 380px) {
-            .hero-section { height: 170px; }
-            .hero-placeholder h1 { font-size: 1.2rem; }
-            .game-card { height: 85px; }
-            .game-card .info .title-group .game-name { font-size: 0.85rem; }
-        }
-        @supports (padding: max(0px)) {
-            .page { padding-left: max(20px, env(safe-area-inset-left)); padding-right: max(20px, env(safe-area-inset-right)); padding-bottom: max(100px, env(safe-area-inset-bottom)); }
-            .bottom-nav { bottom: max(20px, env(safe-area-inset-bottom)); }
-        }
-    </style>
-</head>
-<body>
-    <!-- HOME PAGE (redesigned) -->
-    <div id="pageHome" class="page active">
-        <div class="content">
-            <!-- HERO -->
-            <div class="hero-section">
-                <div class="hero-glow"></div>
-                <div class="hero-art"></div>
-                <div class="hero-placeholder">
-                    <span class="badge">LIMITED OFFER</span>
-                    <h1>Vintyx<br>Store</h1>
-                    <p>Premium gaming shop</p>
-                    <div class="hero-cta">
-                        <button class="btn-primary">Explore</button>
-                        <button class="btn-secondary">Gifts</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- GAME CARDS -->
-            <div class="game-cards" id="gameList">
-                <!-- Brawl Stars -->
-                <div class="game-card brawl" onclick="showComingSoon('Brawl Stars')">
-                    <div class="artwork">
-                        <div class="gradient-overlay"></div>
-                        <div class="character" style="background: radial-gradient(circle at 30% 40%, #FF6B6B 0%, #C0392B 80%);"></div>
-                    </div>
-                    <div class="info">
-                        <div>
-                            <div class="title-group">
-                                <span class="game-name">BRAWL <span>STARS</span></span>
-                            </div>
-                            <div class="tags">
-                                <span class="tag">Gems</span>
-                                <span class="tag">Brawl Pass</span>
-                                <span class="tag">Offers</span>
-                            </div>
-                        </div>
-                        <div class="bottom-row">
-                            <span class="price-badge">From 99 ₽</span>
-                            <span class="arrow">→</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Clash Royale -->
-                <div class="game-card clash" onclick="showComingSoon('Clash Royale')">
-                    <div class="artwork">
-                        <div class="gradient-overlay"></div>
-                        <div class="character" style="background: radial-gradient(circle at 40% 30%, #5B8CFF 0%, #1A2A6C 80%);"></div>
-                    </div>
-                    <div class="info">
-                        <div>
-                            <div class="title-group">
-                                <span class="game-name">CLASH <span>ROYALE</span></span>
-                            </div>
-                            <div class="tags">
-                                <span class="tag">Crystals</span>
-                                <span class="tag">Pass Royale</span>
-                                <span class="tag">Chests</span>
-                            </div>
-                        </div>
-                        <div class="bottom-row">
-                            <span class="price-badge">From 149 ₽</span>
-                            <span class="arrow">→</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Telegram -->
-                <div class="game-card telegram" onclick="showComingSoon('Telegram')">
-                    <div class="artwork">
-                        <div class="gradient-overlay"></div>
-                        <div class="character" style="background: radial-gradient(circle at 30% 40%, #7DD8FF 0%, #1A3A5C 80%);"></div>
-                    </div>
-                    <div class="info">
-                        <div>
-                            <div class="title-group">
-                                <span class="game-name">TELEGRAM <span>PREMIUM</span></span>
-                            </div>
-                            <div class="tags">
-                                <span class="tag">Stars</span>
-                                <span class="tag">Premium</span>
-                                <span class="tag">Gifts</span>
-                            </div>
-                        </div>
-                        <div class="bottom-row">
-                            <span class="price-badge">From 79 ₽</span>
-                            <span class="arrow">→</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- other pages (kept for routing, not redesigned) -->
-    <div id="pageBrawl" class="page game-page"><div class="content"><button class="back-btn" onclick="closeGame()">←</button><p>Brawl Stars (not redesigned)</p></div></div>
-    <div id="pageCart" class="page cart-page"><div class="content"><button class="back-btn" onclick="closeCart()">←</button><p>Cart</p></div></div>
-    <div id="pageProfile" class="page profile-page"><div class="content"><button class="back-btn" onclick="closeProfile()">←</button><p>Profile</p></div></div>
-    <div id="pageInfo" class="page info-page"><div class="content"><p>Info</p></div></div>
-    <div id="pageOrderFlow" class="page order-flow-page"><div class="content"><p>Order flow</p></div></div>
-    <div id="pageOrderDetail" class="page order-detail-page"><div class="content"><p>Order detail</p></div></div>
-    <div id="pageWithdraw" class="page withdraw-page"><div class="content"><p>Withdraw</p></div></div>
-
-    <!-- bottom navigation (unchanged) -->
-    <nav class="bottom-nav">
-        <button class="nav-item" data-page="profile" onclick="navigateTo('profile')">
-            <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"/></svg></span>
-            <span class="nav-label">Profile</span>
-        </button>
-        <button class="nav-item active" data-page="home" onclick="navigateTo('home')">
-            <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9 21v-6h6v6"/></svg></span>
-            <span class="nav-label">Home</span>
-        </button>
-        <button class="nav-item" data-page="cart" onclick="navigateTo('cart')">
-            <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span class="badge hidden" id="navCartBadge">0</span></span>
-            <span class="nav-label">Cart</span>
-        </button>
-        <button class="nav-item" data-page="info" onclick="navigateTo('info')">
-            <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="M12 10v6"/><circle cx="12" cy="7" r="0.8" fill="currentColor" stroke="none"/></svg></span>
-            <span class="nav-label">Info</span>
-        </button>
-    </nav>
-
-    <script>
-        // minimal JS to keep navigation and placeholder functions
-        const tg = window.Telegram?.WebApp;
-        if (tg) { tg.ready(); tg.expand(); }
-
-        function navigateTo(page) {
-            if (page === 'home') {
-                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-                document.getElementById('pageHome').classList.add('active');
-                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-                document.querySelector('.nav-item[data-page="home"]').classList.add('active');
-                if (tg && tg.BackButton) tg.BackButton.hide();
-                window.location.hash = '';
-            } else {
-                // simple fallback
-                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-                const target = document.getElementById('page' + page.charAt(0).toUpperCase() + page.slice(1));
-                if (target) target.classList.add('active');
-                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-                document.querySelector(`.nav-item[data-page="${page}"]`)?.classList.add('active');
-                if (tg && tg.BackButton) tg.BackButton.show();
-                window.location.hash = page;
-            }
-        }
-
-        function showComingSoon(name) {
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.textContent = `${name} — coming soon`;
-            document.body.appendChild(toast);
-            toast.style.display = 'block';
-            setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 2500);
-        }
-
-        function closeGame() { navigateTo('home'); }
-        function closeCart() { navigateTo('home'); }
-        function closeProfile() { navigateTo('home'); }
-
-        // handle initial hash
-        window.addEventListener('hashchange', () => {
-            const hash = window.location.hash.replace('#', '');
-            if (hash && hash !== 'home') navigateTo(hash);
-            else navigateTo('home');
-        });
-        // default
-        navigateTo('home');
     </script>
 </body>
 </html>
