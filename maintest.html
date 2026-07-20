@@ -149,7 +149,7 @@
             pointer-events: none;
         }
 
-        /* КАРТОЧКИ ИГР — более высокие, менее широкие */
+        /* КАРТОЧКИ ИГР — очень высокие */
         .game-cards {
             display: flex;
             flex-direction: column;
@@ -164,18 +164,28 @@
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
             cursor: pointer;
             transition: all 0.25s ease;
-            height: 150px;
+            height: 190px;
             position: relative;
-            border: 2px solid;
+            border: 1.5px solid transparent;
+            background-clip: padding-box;
         }
         .game-card:active { transform: scale(0.97); }
         
-        /* Индивидуальные ободки */
-        .game-card.brawl { border-color: #FF3B3B; }
-        .game-card.clash { border-color: #4A7BFF; }
-        .game-card.telegram { border-color: #5BC8FF; }
+        /* Сияющая обводка через box-shadow */
+        .game-card.brawl {
+            box-shadow: 0 0 20px rgba(255, 59, 59, 0.15), 0 8px 30px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 59, 59, 0.2);
+        }
+        .game-card.clash {
+            box-shadow: 0 0 20px rgba(74, 123, 255, 0.15), 0 8px 30px rgba(0, 0, 0, 0.4);
+            border-color: rgba(74, 123, 255, 0.2);
+        }
+        .game-card.telegram {
+            box-shadow: 0 0 20px rgba(91, 200, 255, 0.15), 0 8px 30px rgba(0, 0, 0, 0.4);
+            border-color: rgba(91, 200, 255, 0.2);
+        }
         
-        /* Левая часть — 35% */
+        /* Левая часть — 35% с фоном под изображение */
         .game-card .artwork {
             width: 35%;
             flex-shrink: 0;
@@ -198,7 +208,7 @@
             position: absolute;
             top: 0;
             right: 0;
-            width: 50%;
+            width: 40%;
             height: 100%;
             background: linear-gradient(90deg, transparent 0%, rgba(26, 26, 46, 0.8) 100%);
             pointer-events: none;
@@ -207,60 +217,60 @@
         /* Правая часть — 65% */
         .game-card .info {
             flex: 1;
-            padding: 18px 20px 16px 18px;
+            padding: 20px 20px 18px 18px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             background: #1A1A2E;
         }
+        
+        /* Название игры в две строки */
         .game-card .info .title-group {
             display: flex;
             flex-direction: column;
             line-height: 1;
+            gap: 0;
         }
         .game-card .info .title-group .game-name {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 800;
             letter-spacing: -0.5px;
             line-height: 1.1;
         }
-        /* Brawl Stars: BRAWL белый, STARS красный */
-        .game-card.brawl .info .title-group .game-name .first { color: #FFFFFF; }
+        .game-card .info .title-group .game-name .first { color: #FFFFFF; }
+        .game-card .info .title-group .game-name .second { 
+            display: block;
+            margin-top: -2px;
+        }
+        
+        /* Цвета для второго слова */
         .game-card.brawl .info .title-group .game-name .second { color: #FF3B3B; }
-        
-        /* Clash Royale: CLASH белый, ROYALE синий */
-        .game-card.clash .info .title-group .game-name .first { color: #FFFFFF; }
         .game-card.clash .info .title-group .game-name .second { color: #4A7BFF; }
-        
-        /* Telegram: TELEGRAM белый, PREMIUM голубой */
-        .game-card.telegram .info .title-group .game-name .first { color: #FFFFFF; }
         .game-card.telegram .info .title-group .game-name .second { color: #5BC8FF; }
         
-        .game-card .info .tags {
+        /* Преимущества — вертикальный список */
+        .game-card .info .features {
             display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin: 8px 0 6px;
+            flex-direction: column;
+            gap: 3px;
+            margin: 10px 0 8px;
         }
-        .game-card .info .tags .tag {
-            font-size: 0.6rem;
-            font-weight: 600;
-            padding: 4px 12px;
-            border-radius: 30px;
-            background: rgba(255, 255, 255, 0.06);
-            color: rgba(255, 255, 255, 0.6);
-            letter-spacing: 0.3px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
+        .game-card .info .features .feature {
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 0.2px;
         }
-        .game-card.brawl .info .tags .tag { border-color: rgba(255, 59, 59, 0.15); color: #FF6B6B; }
-        .game-card.clash .info .tags .tag { border-color: rgba(74, 123, 255, 0.15); color: #6B8CFF; }
-        .game-card.telegram .info .tags .tag { border-color: rgba(91, 200, 255, 0.15); color: #7DD8FF; }
+        .game-card .info .features .feature::before {
+            content: "● ";
+            color: rgba(255, 255, 255, 0.2);
+        }
         
         .game-card .info .bottom-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 4px;
+            margin-top: 2px;
         }
         .game-card .info .bottom-row .price-badge {
             font-size: 0.7rem;
@@ -359,17 +369,17 @@
         @media (max-width: 500px) {
             .hero-section { height: 170px; }
             .hero-placeholder h1 { font-size: 1.4rem; }
-            .game-card { height: 130px; }
-            .game-card .info .title-group .game-name { font-size: 1.2rem; }
-            .game-card .info .tags .tag { font-size: 0.5rem; padding: 3px 10px; }
+            .game-card { height: 165px; }
+            .game-card .info .title-group .game-name { font-size: 1.4rem; }
+            .game-card .info .features .feature { font-size: 0.6rem; }
             .game-card .info .bottom-row .price-badge { font-size: 0.6rem; padding: 3px 12px; }
         }
         @media (max-width: 380px) {
             .hero-section { height: 150px; }
             .hero-placeholder h1 { font-size: 1.2rem; }
-            .game-card { height: 110px; }
-            .game-card .info .title-group .game-name { font-size: 1.0rem; }
-            .game-card .info .tags .tag { font-size: 0.45rem; padding: 2px 8px; }
+            .game-card { height: 145px; }
+            .game-card .info .title-group .game-name { font-size: 1.2rem; }
+            .game-card .info .features .feature { font-size: 0.55rem; }
             .game-card .info .bottom-row .price-badge { font-size: 0.5rem; padding: 2px 10px; }
         }
         @supports (padding: max(0px)) {
@@ -389,9 +399,9 @@
                 <div class="hero-placeholder">
                     <span class="badge">ОГРАНИЧЕННОЕ ПРЕДЛОЖЕНИЕ</span>
                     <h1>Vintyx<br>Store</h1>
-                    <p>Телеграмчик</p>
+                    <p>Премиальный игровой магазин</p>
                     <div class="hero-cta">
-                        <button class="btn-primary">Акции</button>
+                        <button class="btn-primary">Исследовать</button>
                         <button class="btn-secondary">Подарки</button>
                     </div>
                 </div>
@@ -413,10 +423,10 @@
                                     <span class="second">STARS</span>
                                 </span>
                             </div>
-                            <div class="tags">
-                                <span class="tag">● Гемы</span>
-                                <span class="tag">● Brawl Pass</span>
-                                <span class="tag">● Акции</span>
+                            <div class="features">
+                                <span class="feature">Гемы</span>
+                                <span class="feature">Brawl Pass</span>
+                                <span class="feature">Акции</span>
                             </div>
                         </div>
                         <div class="bottom-row">
@@ -440,10 +450,10 @@
                                     <span class="second">ROYALE</span>
                                 </span>
                             </div>
-                            <div class="tags">
-                                <span class="tag">● Кристаллы</span>
-                                <span class="tag">● Pass Royale</span>
-                                <span class="tag">● Сундуки</span>
+                            <div class="features">
+                                <span class="feature">Кристаллы</span>
+                                <span class="feature">Pass Royale</span>
+                                <span class="feature">Сундуки</span>
                             </div>
                         </div>
                         <div class="bottom-row">
@@ -467,10 +477,10 @@
                                     <span class="second">PREMIUM</span>
                                 </span>
                             </div>
-                            <div class="tags">
-                                <span class="tag">● Stars</span>
-                                <span class="tag">● Premium</span>
-                                <span class="tag">● Подарки</span>
+                            <div class="features">
+                                <span class="feature">Stars</span>
+                                <span class="feature">Premium</span>
+                                <span class="feature">Подарки</span>
                             </div>
                         </div>
                         <div class="bottom-row">
