@@ -14,7 +14,7 @@
         }
         html,
         body {
-            background: #08080F;
+            background: #0A0A0F;
             font-family: -apple-system, 'Segoe UI', 'Roboto', system-ui, sans-serif;
             height: 100%;
             overflow: hidden;
@@ -23,9 +23,11 @@
         .page {
             display: none;
             animation: fadeUp 0.4s ease;
-            background: #08080F;
-            background-image: radial-gradient(circle at 20% 30%, rgba(91, 140, 255, 0.08) 0%, transparent 50%),
-                              radial-gradient(circle at 80% 70%, rgba(102, 117, 255, 0.05) 0%, transparent 40%);
+            background: radial-gradient(ellipse at 20% 50%, rgba(91, 140, 255, 0.12) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(125, 216, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 100%, rgba(102, 117, 255, 0.08) 0%, transparent 40%),
+                linear-gradient(145deg, #0A0A1A 0%, #1A1A3E 30%, #2D1B69 70%, #1A1A3E 100%);
+            background-attachment: fixed;
             height: 100%;
             overflow-y: auto;
             overflow-x: hidden;
@@ -33,13 +35,28 @@
             padding: 16px 20px 100px;
             position: relative;
         }
-        .page::-webkit-scrollbar { width: 3px; }
-        .page::-webkit-scrollbar-track { background: transparent; }
-        .page::-webkit-scrollbar-thumb { background: rgba(91, 140, 255, 0.3); border-radius: 10px; }
-        .page.active { display: block; }
+        .page::-webkit-scrollbar {
+            width: 3px;
+        }
+        .page::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .page::-webkit-scrollbar-thumb {
+            background: rgba(91, 140, 255, 0.3);
+            border-radius: 10px;
+        }
+        .page.active {
+            display: block;
+        }
         @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         .page .content {
             max-width: 480px;
@@ -48,271 +65,1800 @@
             z-index: 1;
         }
 
-        /* ГЕРОЙ — премиум баннер */
-        .hero-section {
-            position: relative;
-            height: 200px;
-            border-radius: 32px;
-            margin-bottom: 28px;
-            overflow: hidden;
-            background: linear-gradient(145deg, #1A1A3E 0%, #2D1B69 50%, #1A1A3E 100%);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-        }
-        .hero-section .hero-glow {
-            position: absolute;
-            top: -40%;
-            right: -20%;
-            width: 80%;
-            height: 80%;
-            background: radial-gradient(circle, rgba(91, 140, 255, 0.25) 0%, transparent 70%);
-            pointer-events: none;
-        }
-        .hero-placeholder {
-            position: absolute;
-            inset: 0;
+        .main-header {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 24px 28px;
-            z-index: 2;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding-top: 4px;
         }
-        .hero-placeholder .badge {
-            display: inline-block;
-            background: rgba(91, 140, 255, 0.15);
-            backdrop-filter: blur(8px);
-            padding: 4px 14px;
-            border-radius: 20px;
-            font-size: 0.65rem;
-            font-weight: 600;
-            color: #7DD8FF;
+        .main-header .header-left .store-name {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.2);
+            font-weight: 500;
             letter-spacing: 0.5px;
-            border: 1px solid rgba(91, 140, 255, 0.1);
-            width: fit-content;
-            margin-bottom: 12px;
+            text-transform: uppercase;
         }
-        .hero-placeholder h1 {
-            font-size: 1.8rem;
+        .main-header .header-left .greeting {
+            font-size: 1.6rem;
             font-weight: 700;
-            line-height: 1.1;
-            margin-bottom: 6px;
-            background: linear-gradient(135deg, #FFFFFF 30%, #7DD8FF 100%);
+            background: linear-gradient(135deg, #7DD8FF 0%, #6675FF 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            letter-spacing: -0.5px;
         }
-        .hero-placeholder p {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.4);
-            margin-bottom: 16px;
-            font-weight: 400;
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 14px;
         }
-        .hero-cta {
-            display: flex;
-            gap: 10px;
-        }
-        .hero-cta .btn-primary {
-            padding: 10px 24px;
-            border-radius: 30px;
-            background: linear-gradient(135deg, #6675FF, #5B8CFF);
-            border: none;
-            color: white;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 4px 20px rgba(91, 140, 255, 0.25);
-            font-family: inherit;
-        }
-        .hero-cta .btn-primary:active { transform: scale(0.96); }
-        .hero-cta .btn-secondary {
-            padding: 10px 24px;
-            border-radius: 30px;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            color: white;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: inherit;
-            backdrop-filter: blur(8px);
-        }
-        .hero-cta .btn-secondary:active { transform: scale(0.96); background: rgba(255,255,255,0.1); }
-        .hero-art {
-            position: absolute;
-            right: 0;
-            bottom: 0;
-            width: 50%;
-            height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" opacity="0.15"><path d="M40 160 L80 40 L140 80 L160 140 L100 180 Z" fill="%236675FF"/><circle cx="120" cy="60" r="30" fill="%235B8CFF" opacity="0.3"/></svg>') no-repeat center/cover;
-            pointer-events: none;
-        }
-
-        /* КАРТОЧКИ ИГР — очень высокие */
-        .game-cards {
+        .game-scroll {
             display: flex;
             flex-direction: column;
-            gap: 18px;
-            margin-top: 8px;
-        }
-        .game-card {
-            display: flex;
-            border-radius: 28px;
-            overflow: hidden;
-            background: #1A1A2E;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-            cursor: pointer;
-            transition: all 0.25s ease;
-            height: 190px;
+            gap: 16px;
+            margin-bottom: 24px;
             position: relative;
-            border: 1.5px solid transparent;
-            background-clip: padding-box;
-        }
-        .game-card:active { transform: scale(0.97); }
-        
-        /* Сияющая обводка через box-shadow */
-        .game-card.brawl {
-            box-shadow: 0 0 20px rgba(255, 59, 59, 0.15), 0 8px 30px rgba(0, 0, 0, 0.4);
-            border-color: rgba(255, 59, 59, 0.2);
-        }
-        .game-card.clash {
-            box-shadow: 0 0 20px rgba(74, 123, 255, 0.15), 0 8px 30px rgba(0, 0, 0, 0.4);
-            border-color: rgba(74, 123, 255, 0.2);
-        }
-        .game-card.telegram {
-            box-shadow: 0 0 20px rgba(91, 200, 255, 0.15), 0 8px 30px rgba(0, 0, 0, 0.4);
-            border-color: rgba(91, 200, 255, 0.2);
         }
         
-        /* Левая часть — 35% с фоном под изображение */
-        .game-card .artwork {
+        /* ============================================
+           НОВЫЕ КАРТОЧКИ В СТИЛЕ BRAWL STARS, CLASH ROYALE, TELEGRAM
+           ============================================ */
+        .brawl-card,
+        .clash-card,
+        .telegram-card {
+            width: 100%;
+            height: 200px;
+            border-radius: 30px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.3s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .brawl-card:hover,
+        .clash-card:hover,
+        .telegram-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.9);
+        }
+        .brawl-card:active,
+        .clash-card:active,
+        .telegram-card:active {
+            transform: scale(0.97);
+        }
+        .brawl-card .artwork,
+        .clash-card .artwork,
+        .telegram-card .artwork {
             width: 35%;
             flex-shrink: 0;
             position: relative;
             overflow: hidden;
-            border-radius: 26px 0 0 26px;
-            background: #2A2A3E;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            z-index: 1;
         }
-        .game-card .artwork .character {
+        .brawl-card .artwork .bg-glow {
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(ellipse at 50% 90%, rgba(200, 30, 30, 0.6) 0%, transparent 60%),
+                radial-gradient(ellipse at 30% 50%, rgba(255, 80, 80, 0.2) 0%, transparent 40%),
+                radial-gradient(ellipse at 70% 20%, rgba(180, 20, 20, 0.3) 0%, transparent 50%),
+                linear-gradient(180deg, #1A0808 0%, #2A0A0A 40%, #1A0505 100%);
+            z-index: 0;
+        }
+        .clash-card .artwork .bg-glow {
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(ellipse at 50% 90%, rgba(30, 80, 200, 0.6) 0%, transparent 60%),
+                radial-gradient(ellipse at 30% 50%, rgba(80, 150, 255, 0.2) 0%, transparent 40%),
+                radial-gradient(ellipse at 70% 20%, rgba(20, 60, 180, 0.3) 0%, transparent 50%),
+                linear-gradient(180deg, #08081A 0%, #0A0A2A 40%, #05051A 100%);
+            z-index: 0;
+        }
+        .telegram-card .artwork .bg-glow {
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(ellipse at 50% 90%, rgba(0, 150, 255, 0.5) 0%, transparent 60%),
+                radial-gradient(ellipse at 30% 50%, rgba(80, 200, 255, 0.2) 0%, transparent 40%),
+                radial-gradient(ellipse at 70% 20%, rgba(0, 120, 220, 0.3) 0%, transparent 50%),
+                linear-gradient(180deg, #08081A 0%, #0A1A2A 40%, #05051A 100%);
+            z-index: 0;
+        }
+        .brawl-card .artwork .particles,
+        .clash-card .artwork .particles,
+        .telegram-card .artwork .particles {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .brawl-card .artwork .particles span,
+        .clash-card .artwork .particles span,
+        .telegram-card .artwork .particles span {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            animation: floatParticle 4s infinite ease-in-out;
+        }
+        .brawl-card .artwork .particles span {
+            background: rgba(255, 200, 100, 0.4);
+            box-shadow: 0 0 6px rgba(255, 200, 100, 0.2);
+        }
+        .clash-card .artwork .particles span {
+            background: rgba(100, 180, 255, 0.4);
+            box-shadow: 0 0 6px rgba(100, 180, 255, 0.2);
+        }
+        .telegram-card .artwork .particles span {
+            background: rgba(100, 200, 255, 0.4);
+            box-shadow: 0 0 6px rgba(100, 200, 255, 0.2);
+        }
+        .brawl-card .artwork .particles span:nth-child(1),
+        .clash-card .artwork .particles span:nth-child(1),
+        .telegram-card .artwork .particles span:nth-child(1) { left: 15%; top: 20%; animation-delay: 0s; width: 3px; height: 3px; }
+        .brawl-card .artwork .particles span:nth-child(2),
+        .clash-card .artwork .particles span:nth-child(2),
+        .telegram-card .artwork .particles span:nth-child(2) { left: 60%; top: 15%; animation-delay: 1.2s; width: 5px; height: 5px; opacity: 0.5; }
+        .brawl-card .artwork .particles span:nth-child(3),
+        .clash-card .artwork .particles span:nth-child(3),
+        .telegram-card .artwork .particles span:nth-child(3) { left: 30%; top: 70%; animation-delay: 2.5s; width: 4px; height: 4px; }
+        .brawl-card .artwork .particles span:nth-child(4),
+        .clash-card .artwork .particles span:nth-child(4),
+        .telegram-card .artwork .particles span:nth-child(4) { left: 70%; top: 60%; animation-delay: 0.8s; width: 3px; height: 3px; opacity: 0.3; }
+        .brawl-card .artwork .particles span:nth-child(5),
+        .clash-card .artwork .particles span:nth-child(5),
+        .telegram-card .artwork .particles span:nth-child(5) { left: 10%; top: 85%; animation-delay: 1.8s; width: 6px; height: 6px; opacity: 0.2; }
+
+        @keyframes floatParticle {
+            0%, 100% { transform: translateY(0) scale(1); opacity: 0.3; }
+            50% { transform: translateY(-20px) scale(1.5); opacity: 0.8; }
+        }
+        .brawl-card .artwork .character,
+        .clash-card .artwork .character,
+        .telegram-card .artwork .character {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
             width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center 30%;
-            display: block;
+            height: 105%;
+            object-fit: contain;
+            object-position: bottom center;
+            z-index: 2;
         }
-        .game-card .artwork .gradient-overlay {
+        .brawl-card .artwork .character {
+            filter: drop-shadow(0 10px 30px rgba(200, 30, 30, 0.3));
+        }
+        .clash-card .artwork .character {
+            filter: drop-shadow(0 10px 30px rgba(30, 80, 200, 0.3));
+        }
+        .telegram-card .artwork .character {
+            filter: drop-shadow(0 10px 30px rgba(0, 150, 255, 0.3));
+        }
+        .brawl-card .artwork .edge-mask,
+        .clash-card .artwork .edge-mask,
+        .telegram-card .artwork .edge-mask {
             position: absolute;
             top: 0;
             right: 0;
             width: 40%;
             height: 100%;
-            background: linear-gradient(90deg, transparent 0%, rgba(26, 26, 46, 0.8) 100%);
+            z-index: 3;
             pointer-events: none;
         }
-        
-        /* Правая часть — 65% */
-        .game-card .info {
+        .brawl-card .artwork .edge-mask {
+            background: linear-gradient(90deg, transparent 0%, rgba(26, 10, 10, 0.9) 100%);
+        }
+        .clash-card .artwork .edge-mask {
+            background: linear-gradient(90deg, transparent 0%, rgba(10, 10, 26, 0.9) 100%);
+        }
+        .telegram-card .artwork .edge-mask {
+            background: linear-gradient(90deg, transparent 0%, rgba(10, 10, 26, 0.9) 100%);
+        }
+
+        .brawl-card .content,
+        .clash-card .content,
+        .telegram-card .content {
             flex: 1;
-            padding: 20px 20px 18px 18px;
+            padding: 20px 22px 18px 20px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            background: #1A1A2E;
+            position: relative;
+            z-index: 1;
         }
-        
-        /* Название игры в две строки */
-        .game-card .info .title-group {
+        .brawl-card .content {
+            background: linear-gradient(135deg, #0D0808 0%, #1A0D0D 40%, #0F0808 100%);
+        }
+        .clash-card .content {
+            background: linear-gradient(135deg, #0D0D1A 0%, #0D1A2A 40%, #0A0A1A 100%);
+        }
+        .telegram-card .content {
+            background: linear-gradient(135deg, #0D0D1A 0%, #0A1A2A 40%, #0A0A1A 100%);
+        }
+        .brawl-card .content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 0% 50%, rgba(200, 40, 40, 0.06) 0%, transparent 60%),
+                radial-gradient(ellipse at 100% 20%, rgba(255, 60, 60, 0.04) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .clash-card .content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 0% 50%, rgba(40, 100, 200, 0.06) 0%, transparent 60%),
+                radial-gradient(ellipse at 100% 20%, rgba(60, 130, 255, 0.04) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .telegram-card .content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 0% 50%, rgba(0, 150, 255, 0.06) 0%, transparent 60%),
+                radial-gradient(ellipse at 100% 20%, rgba(80, 200, 255, 0.04) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .brawl-card .content > *,
+        .clash-card .content > *,
+        .telegram-card .content > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .brawl-card .content .logo,
+        .clash-card .content .logo,
+        .telegram-card .content .logo {
             display: flex;
             flex-direction: column;
             line-height: 1;
-            gap: 0;
+            margin-bottom: 2px;
         }
-        .game-card .info .title-group .game-name {
-            font-size: 1.6rem;
-            font-weight: 800;
+        .brawl-card .content .logo .brawl {
+            font-size: 1.7rem;
+            font-weight: 900;
+            color: #FFFFFF;
             letter-spacing: -0.5px;
-            line-height: 1.1;
+            font-family: 'Helvetica Neue', system-ui, sans-serif;
+            text-shadow: 0 2px 20px rgba(255, 255, 255, 0.05);
         }
-        .game-card .info .title-group .game-name .first { color: #FFFFFF; }
-        .game-card .info .title-group .game-name .second { 
-            display: block;
-            margin-top: -2px;
+        .brawl-card .content .logo .stars {
+            font-size: 1.7rem;
+            font-weight: 900;
+            color: #FF3B3B;
+            letter-spacing: -0.5px;
+            margin-top: -4px;
+            font-family: 'Helvetica Neue', system-ui, sans-serif;
+            text-shadow: 0 0 30px rgba(255, 59, 59, 0.2);
         }
-        
-        /* Цвета для второго слова */
-        .game-card.brawl .info .title-group .game-name .second { color: #FF3B3B; }
-        .game-card.clash .info .title-group .game-name .second { color: #4A7BFF; }
-        .game-card.telegram .info .title-group .game-name .second { color: #5BC8FF; }
-        
-        /* Преимущества — вертикальный список */
-        .game-card .info .features {
+        .clash-card .content .logo .clash {
+            font-size: 1.7rem;
+            font-weight: 900;
+            color: #FFFFFF;
+            letter-spacing: -0.5px;
+            font-family: 'Helvetica Neue', system-ui, sans-serif;
+            text-shadow: 0 2px 20px rgba(255, 255, 255, 0.05);
+        }
+        .clash-card .content .logo .royale {
+            font-size: 1.7rem;
+            font-weight: 900;
+            color: #4A7BFF;
+            letter-spacing: -0.5px;
+            margin-top: -4px;
+            font-family: 'Helvetica Neue', system-ui, sans-serif;
+            text-shadow: 0 0 30px rgba(74, 123, 255, 0.2);
+        }
+        .telegram-card .content .logo .telegram {
+            font-size: 1.7rem;
+            font-weight: 900;
+            color: #FFFFFF;
+            letter-spacing: -0.5px;
+            font-family: 'Helvetica Neue', system-ui, sans-serif;
+            text-shadow: 0 2px 20px rgba(255, 255, 255, 0.05);
+        }
+        .telegram-card .content .logo .premium {
+            font-size: 1.7rem;
+            font-weight: 900;
+            color: #5BC8FF;
+            letter-spacing: -0.5px;
+            margin-top: -4px;
+            font-family: 'Helvetica Neue', system-ui, sans-serif;
+            text-shadow: 0 0 30px rgba(91, 200, 255, 0.2);
+        }
+
+        .brawl-card .content .features,
+        .clash-card .content .features,
+        .telegram-card .content .features {
             display: flex;
             flex-direction: column;
-            gap: 3px;
-            margin: 10px 0 8px;
+            gap: 4px;
+            margin: 8px 0 6px;
         }
-        .game-card .info .features .feature {
+        .brawl-card .content .features .feature,
+        .clash-card .content .features .feature,
+        .telegram-card .content .features .feature {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             font-size: 0.7rem;
             font-weight: 500;
-            color: rgba(255, 255, 255, 0.4);
+            color: rgba(255, 255, 255, 0.5);
             letter-spacing: 0.2px;
         }
-        .game-card .info .features .feature::before {
-            content: "● ";
+        .brawl-card .content .features .feature .icon-placeholder,
+        .clash-card .content .features .feature .icon-placeholder,
+        .telegram-card .content .features .feature .icon-placeholder {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.5rem;
             color: rgba(255, 255, 255, 0.2);
         }
-        
-        .game-card .info .bottom-row {
+
+        .brawl-card .content .divider,
+        .clash-card .content .divider,
+        .telegram-card .content .divider {
+            width: 100%;
+            height: 1px;
+            margin: 4px 0 8px;
+        }
+        .brawl-card .content .divider {
+            background: linear-gradient(90deg, rgba(255, 59, 59, 0.15) 0%, rgba(255, 59, 59, 0.03) 100%);
+        }
+        .clash-card .content .divider {
+            background: linear-gradient(90deg, rgba(74, 123, 255, 0.15) 0%, rgba(74, 123, 255, 0.03) 100%);
+        }
+        .telegram-card .content .divider {
+            background: linear-gradient(90deg, rgba(91, 200, 255, 0.15) 0%, rgba(91, 200, 255, 0.03) 100%);
+        }
+
+        .brawl-card .content .bottom-row,
+        .clash-card .content .bottom-row,
+        .telegram-card .content .bottom-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 2px;
         }
-        .game-card .info .bottom-row .price-badge {
-            font-size: 0.7rem;
-            font-weight: 700;
-            padding: 5px 16px;
-            border-radius: 30px;
-            background: rgba(255, 255, 255, 0.06);
-            color: rgba(255, 255, 255, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+        .brawl-card .content .bottom-row .price-group,
+        .clash-card .content .bottom-row .price-group,
+        .telegram-card .content .bottom-row .price-group {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
         }
-        .game-card.brawl .info .bottom-row .price-badge { background: rgba(255, 59, 59, 0.08); color: #FF6B6B; border-color: rgba(255,59,59,0.1); }
-        .game-card.clash .info .bottom-row .price-badge { background: rgba(74, 123, 255, 0.08); color: #6B8CFF; border-color: rgba(74,123,255,0.1); }
-        .game-card.telegram .info .bottom-row .price-badge { background: rgba(91, 200, 255, 0.08); color: #7DD8FF; border-color: rgba(91,200,255,0.1); }
-        
-        .game-card .info .bottom-row .arrow {
-            color: rgba(255, 255, 255, 0.15);
+        .brawl-card .content .bottom-row .price-group .donat-label,
+        .clash-card .content .bottom-row .price-group .donat-label,
+        .telegram-card .content .bottom-row .price-group .donat-label {
+            font-size: 0.55rem;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.2);
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+        .brawl-card .content .bottom-row .price-group .price,
+        .clash-card .content .bottom-row .price-group .price,
+        .telegram-card .content .bottom-row .price-group .price {
             font-size: 1.3rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            letter-spacing: -0.5px;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
+        }
+        .brawl-card .content .bottom-row .arrow,
+        .clash-card .content .bottom-row .arrow,
+        .telegram-card .content .bottom-row .arrow {
+            color: rgba(255, 255, 255, 0.15);
+            font-size: 1.4rem;
+            font-weight: 300;
             transition: all 0.2s;
         }
+        .brawl-card:hover .content .bottom-row .arrow,
+        .clash-card:hover .content .bottom-row .arrow,
+        .telegram-card:hover .content .bottom-row .arrow {
+            color: rgba(255, 255, 255, 0.4);
+            transform: translateX(4px);
+        }
 
-        /* Другие страницы (скрыты) */
-        .page:not(.active) { display: none; }
+        @media (max-width: 480px) {
+            .brawl-card,
+            .clash-card,
+            .telegram-card {
+                height: 175px;
+                border-radius: 24px;
+            }
+            .brawl-card .content,
+            .clash-card .content,
+            .telegram-card .content {
+                padding: 16px 18px 14px 16px;
+            }
+            .brawl-card .content .logo .brawl,
+            .brawl-card .content .logo .stars,
+            .clash-card .content .logo .clash,
+            .clash-card .content .logo .royale,
+            .telegram-card .content .logo .telegram,
+            .telegram-card .content .logo .premium {
+                font-size: 1.4rem;
+            }
+            .brawl-card .content .features .feature,
+            .clash-card .content .features .feature,
+            .telegram-card .content .features .feature {
+                font-size: 0.6rem;
+                gap: 8px;
+            }
+            .brawl-card .content .features .feature .icon-placeholder,
+            .clash-card .content .features .feature .icon-placeholder,
+            .telegram-card .content .features .feature .icon-placeholder {
+                width: 14px;
+                height: 14px;
+            }
+            .brawl-card .content .bottom-row .price-group .price,
+            .clash-card .content .bottom-row .price-group .price,
+            .telegram-card .content .bottom-row .price-group .price {
+                font-size: 1.1rem;
+            }
+            .brawl-card .content .bottom-row .arrow,
+            .clash-card .content .bottom-row .arrow,
+            .telegram-card .content .bottom-row .arrow {
+                font-size: 1.2rem;
+            }
+            .brawl-card .artwork .character,
+            .clash-card .artwork .character,
+            .telegram-card .artwork .character {
+                height: 100%;
+                width: 100%;
+            }
+        }
+        @media (max-width: 380px) {
+            .brawl-card,
+            .clash-card,
+            .telegram-card {
+                height: 155px;
+                border-radius: 20px;
+            }
+            .brawl-card .content,
+            .clash-card .content,
+            .telegram-card .content {
+                padding: 14px 14px 12px 14px;
+            }
+            .brawl-card .content .logo .brawl,
+            .brawl-card .content .logo .stars,
+            .clash-card .content .logo .clash,
+            .clash-card .content .logo .royale,
+            .telegram-card .content .logo .telegram,
+            .telegram-card .content .logo .premium {
+                font-size: 1.2rem;
+            }
+            .brawl-card .content .features .feature,
+            .clash-card .content .features .feature,
+            .telegram-card .content .features .feature {
+                font-size: 0.55rem;
+                gap: 6px;
+            }
+            .brawl-card .content .features .feature .icon-placeholder,
+            .clash-card .content .features .feature .icon-placeholder,
+            .telegram-card .content .features .feature .icon-placeholder {
+                width: 12px;
+                height: 12px;
+            }
+            .brawl-card .content .bottom-row .price-group .price,
+            .clash-card .content .bottom-row .price-group .price,
+            .telegram-card .content .bottom-row .price-group .price {
+                font-size: 1rem;
+            }
+            .brawl-card .content .bottom-row .arrow,
+            .clash-card .content .bottom-row .arrow,
+            .telegram-card .content .bottom-row .arrow {
+                font-size: 1rem;
+            }
+            .brawl-card .content .divider,
+            .clash-card .content .divider,
+            .telegram-card .content .divider {
+                margin: 2px 0 6px;
+            }
+        }
 
-        /* Нижняя навигация */
+        /* ===== Остальные стили страницы ===== */
+        .game-card {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 24px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+        .game-card:active {
+            transform: scale(0.98);
+        }
+        .game-card .game-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex: 1;
+        }
+        .game-card .game-icon {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+            border-radius: 10px;
+            flex-shrink: 0;
+        }
+        .game-card .game-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+        .game-card .game-tags {
+            display: flex;
+            gap: 6px;
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+        .game-card .game-tag {
+            font-size: 0.6rem;
+            padding: 2px 10px;
+            border-radius: 12px;
+            background: rgba(91, 140, 255, 0.12);
+            color: #7DD8FF;
+            font-weight: 500;
+        }
+        .game-card .game-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+        .game-card .heart-btn {
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s;
+            color: rgba(255, 255, 255, 0.15);
+            padding: 4px;
+            line-height: 1;
+            font-family: inherit;
+        }
+        .game-card .heart-btn.active {
+            color: #FF3B6F;
+            animation: heartPop 0.3s ease;
+        }
+        @keyframes heartPop {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.3);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        .game-card .heart-btn:active {
+            transform: scale(1.2);
+        }
+        .game-card .game-arrow {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.15);
+            transition: all 0.2s;
+        }
+        .game-card.brawl {
+            background: linear-gradient(135deg, rgba(91, 140, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border-color: rgba(91, 140, 255, 0.08);
+        }
+        .game-card.brawl .game-tag {
+            background: rgba(91, 140, 255, 0.12);
+            color: #7DD8FF;
+        }
+        .game-card.clash {
+            background: linear-gradient(135deg, rgba(91, 140, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border-color: rgba(91, 140, 255, 0.08);
+        }
+        .game-card.clash .game-tag {
+            background: rgba(91, 140, 255, 0.12);
+            color: #7DD8FF;
+        }
+        .game-card.telegram {
+            background: linear-gradient(135deg, rgba(91, 140, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border-color: rgba(91, 140, 255, 0.08);
+        }
+        .game-card.telegram .game-tag {
+            background: rgba(91, 140, 255, 0.12);
+            color: #7DD8FF;
+        }
+
+        .game-page .game-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-top: 4px;
+        }
+        .game-page .game-header .back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #FFFFFF;
+            flex-shrink: 0;
+            font-family: inherit;
+        }
+        .game-page .game-header .back-btn:active {
+            transform: scale(0.9);
+        }
+        .game-page .game-header .game-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .game-page .game-header .game-title .icon {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+        }
+        .game-page .categories {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+            padding: 2px 0;
+        }
+        .game-page .categories::-webkit-scrollbar {
+            display: none;
+        }
+        .game-page .category-btn {
+            padding: 6px 14px;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.25s;
+            white-space: nowrap;
+            font-family: inherit;
+            flex-shrink: 0;
+        }
+        .game-page .category-btn:active {
+            transform: scale(0.95);
+        }
+        .game-page .category-btn.active {
+            background: rgba(91, 140, 255, 0.15);
+            border-color: rgba(91, 140, 255, 0.3);
+            color: #7DD8FF;
+        }
+        .game-page .products-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .game-page .product-card {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 18px;
+            padding: 12px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: all 0.2s;
+            backdrop-filter: blur(10px);
+        }
+        .game-page .product-card:active {
+            transform: scale(0.96);
+        }
+        .game-page .product-card .prod-icon {
+            font-size: 2rem;
+            margin-bottom: 4px;
+        }
+        .game-page .product-card .prod-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #FFFFFF;
+            margin-bottom: 1px;
+            line-height: 1.2;
+        }
+        .game-page .product-card .prod-sub {
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.2);
+            margin-bottom: 6px;
+        }
+        .game-page .product-card .prod-btn {
+            background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            box-shadow: 0 2px 10px rgba(91, 140, 255, 0.15);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 48px;
+            text-align: center;
+            width: 100%;
+        }
+        .game-page .product-card .prod-btn:active {
+            transform: scale(0.95);
+        }
+        .game-page .product-card .prod-btn .price {
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        .game-page .product-card .prod-btn .cart-text {
+            font-size: 0.4rem;
+            font-weight: 400;
+            opacity: 0.5;
+            letter-spacing: 0.2px;
+        }
+
+        .cart-page .cart-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-top: 4px;
+        }
+        .cart-page .cart-header .back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #FFFFFF;
+            flex-shrink: 0;
+            font-family: inherit;
+        }
+        .cart-page .cart-header .back-btn:active {
+            transform: scale(0.9);
+        }
+        .cart-page .cart-header .cart-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+        .cart-item {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            margin-bottom: 10px;
+            backdrop-filter: blur(10px);
+        }
+        .cart-item .item-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .cart-item .item-icon {
+            font-size: 1.8rem;
+        }
+        .cart-item .item-info .item-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #FFFFFF;
+        }
+        .cart-item .item-info .item-game {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.2);
+        }
+        .cart-item .item-price {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #7DD8FF;
+        }
+        .cart-item .remove-btn {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.15);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            padding: 4px;
+        }
+        .cart-item .remove-btn:active {
+            transform: scale(0.8);
+            color: #FF3B6F;
+        }
+        .cart-empty {
+            text-align: center;
+            padding: 40px 20px 20px;
+            color: rgba(255, 255, 255, 0.15);
+        }
+        .cart-empty .empty-icon {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 12px;
+        }
+        .cart-empty .empty-text {
+            font-size: 0.9rem;
+        }
+        .cart-total {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            margin-top: 16px;
+            backdrop-filter: blur(10px);
+        }
+        .cart-total .total-label {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+        .cart-total .total-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #7DD8FF 0%, #6675FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .checkout-btn {
+            background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.25s;
+            box-shadow: 0 4px 24px rgba(91, 140, 255, 0.2);
+            font-family: inherit;
+            margin-top: 16px;
+            letter-spacing: 0.5px;
+        }
+        .checkout-btn:active {
+            transform: scale(0.97);
+        }
+        .checkout-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .order-btn-small {
+            padding: 8px 16px;
+            border-radius: 10px;
+            border: none;
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+        .order-btn-small:active {
+            transform: scale(0.95);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .profile-page .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: inherit;
+            padding: 0;
+        }
+        .profile-page .back-btn:active {
+            opacity: 0.5;
+        }
+        .profile-page .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+            padding-top: 10px;
+        }
+        .profile-page .profile-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.4rem;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        .profile-page .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .profile-page .profile-avatar .fallback {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6675FF, #7DD8FF);
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF;
+        }
+        .profile-page .profile-info .name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+        .profile-page .profile-info .username {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+        .profile-page .balance-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 24px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .profile-page .balance-card .label {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .profile-page .balance-card .amount {
+            font-size: 2.4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #7DD8FF 0%, #6675FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .profile-page .balance-card .currency {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 400;
+            margin-left: 4px;
+        }
+        .profile-page .btn-primary {
+            background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 20px rgba(91, 140, 255, 0.2);
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .profile-page .btn-primary:active {
+            transform: scale(0.97);
+        }
+        .profile-page .btn-primary svg {
+            width: 20px;
+            height: 20px;
+            stroke: #FFFFFF;
+            stroke-width: 2;
+            fill: none;
+        }
+        .profile-page .btn-secondary {
+            background: rgba(255, 255, 255, 0.06);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 14px 24px;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .profile-page .btn-secondary:active {
+            transform: scale(0.97);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .profile-page .btn-secondary.withdraw-btn {
+            border-color: rgba(255, 59, 111, 0.3);
+            color: #FF3B6F;
+            background: rgba(255, 59, 111, 0.06);
+        }
+        .profile-page .btn-secondary.withdraw-btn svg {
+            stroke: #FF3B6F;
+            stroke-width: 2;
+            fill: none;
+            width: 20px;
+            height: 20px;
+        }
+        .profile-page .btn-secondary.withdraw-btn:active {
+            background: rgba(255, 59, 111, 0.12);
+        }
+        .profile-page .btn-row {
+            display: flex;
+            gap: 10px;
+        }
+        .profile-page .btn-row .btn-primary,
+        .profile-page .btn-row .btn-secondary {
+            flex: 1;
+        }
+        .profile-page .recharge-section {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            display: none;
+        }
+        .profile-page .recharge-section.active {
+            display: block;
+            animation: fadeUp 0.3s ease;
+        }
+        .profile-page .recharge-section .quick-amounts {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        .profile-page .recharge-section .quick-amounts .quick-btn {
+            flex: 1;
+            min-width: 55px;
+            padding: 6px 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            text-align: center;
+        }
+        .profile-page .recharge-section .quick-amounts .quick-btn:active {
+            transform: scale(0.95);
+            background: rgba(91, 140, 255, 0.15);
+            color: #7DD8FF;
+        }
+        .profile-page .recharge-section .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .profile-page .recharge-section .input-row {
+            display: flex;
+            gap: 10px;
+        }
+        .profile-page .recharge-section input {
+            flex: 1;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.06);
+            color: white;
+            font-size: 1rem;
+            font-family: inherit;
+            outline: none;
+            min-width: 0;
+        }
+        .profile-page .recharge-section input:focus {
+            border-color: rgba(91, 140, 255, 0.4);
+        }
+        .profile-page .recharge-section input::placeholder {
+            color: rgba(255, 255, 255, 0.2);
+        }
+        .profile-page .recharge-section .btn-recharge {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(135deg, #00C853 0%, #00E676 100%);
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .profile-page .recharge-section .btn-recharge:active {
+            transform: scale(0.97);
+        }
+        .profile-page .contact-section {
+            margin-top: 16px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .profile-page .contact-section .contact-label {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.25);
+            font-weight: 400;
+        }
+        .profile-page .contact-section .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #7DD8FF;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
+            padding: 4px 12px;
+            border-radius: 8px;
+            background: rgba(91, 140, 255, 0.06);
+            border: 1px solid rgba(91, 140, 255, 0.06);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .profile-page .contact-section .contact-link svg {
+            width: 18px;
+            height: 18px;
+            stroke: #7DD8FF;
+            stroke-width: 1.8;
+            fill: none;
+        }
+        .profile-page .contact-section .contact-link:active {
+            transform: scale(0.95);
+            background: rgba(91, 140, 255, 0.12);
+        }
+        .profile-page .section {
+            margin-top: 24px;
+        }
+        .profile-page .section .section-label {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        .profile-page .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            margin-bottom: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .profile-page .history-item:active {
+            transform: scale(0.98);
+            background: rgba(255, 255, 255, 0.06);
+        }
+        .profile-page .history-item .h-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .profile-page .history-item .h-icon {
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .profile-page .history-item .h-info .h-name {
+            font-weight: 500;
+            color: #FFFFFF;
+            font-size: 0.85rem;
+        }
+        .profile-page .history-item .h-info .h-date {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.2);
+        }
+        .profile-page .history-item .h-amount {
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .profile-page .history-item .h-amount.positive {
+            color: #00E676;
+        }
+        .profile-page .history-item .h-amount.negative {
+            color: #FF3B6F;
+        }
+        .profile-page .history-empty {
+            text-align: center;
+            padding: 40px 20px 20px;
+            color: rgba(255, 255, 255, 0.15);
+        }
+        .profile-page .history-empty .empty-icon {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 12px;
+        }
+
+        .order-flow-page .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: inherit;
+            padding: 0;
+        }
+        .order-flow-page .back-btn:active {
+            opacity: 0.5;
+        }
+        .order-step {
+            display: none;
+            animation: fadeUp 0.4s ease;
+        }
+        .order-step.active {
+            display: block;
+        }
+        .order-header {
+            margin-bottom: 24px;
+        }
+        .order-header.text-center {
+            text-align: center;
+        }
+        .order-header .order-icon {
+            font-size: 3rem;
+            margin-bottom: 8px;
+        }
+        .order-header .order-icon.waiting-icon {
+            animation: pulse 1.5s infinite;
+        }
+        .order-header .order-icon.ready-icon {
+            animation: bounce 0.6s ease;
+        }
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.3;
+            }
+        }
+        @keyframes bounce {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+        }
+        .order-header .order-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 4px;
+        }
+        .order-header .order-sub {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+        .order-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .order-input {
+            padding: 14px 16px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            color: white;
+            font-size: 1rem;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.2s;
+            width: 100%;
+        }
+        .order-input:focus {
+            border-color: rgba(91, 140, 255, 0.4);
+            background: rgba(255, 255, 255, 0.06);
+        }
+        .order-input::placeholder {
+            color: rgba(255, 255, 255, 0.2);
+        }
+        .order-input.code-input {
+            text-align: center;
+            font-size: 1.4rem;
+            letter-spacing: 8px;
+            font-weight: 700;
+        }
+        .order-btn-primary {
+            padding: 14px 24px;
+            border-radius: 14px;
+            border: none;
+            background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            box-shadow: 0 4px 20px rgba(91, 140, 255, 0.2);
+            width: 100%;
+            text-align: center;
+        }
+        .order-btn-primary:active {
+            transform: scale(0.97);
+        }
+        .order-info {
+            margin-top: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 0.8rem;
+        }
+        .order-info .resend-link {
+            color: #7DD8FF;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .order-info .resend-link:active {
+            opacity: 0.5;
+        }
+        .waiting-animation {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 40px 0;
+        }
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(91, 140, 255, 0.1);
+            border-top-color: #6675FF;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .waiting-text {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.9rem;
+        }
+        .waiting-progress {
+            width: 100%;
+            max-width: 300px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #6675FF, #7DD8FF);
+            border-radius: 4px;
+            transition: width 0.1s linear;
+        }
+        .ready-content {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .ready-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .ready-item:last-child {
+            border-bottom: none;
+        }
+        .ready-item .ready-label {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.85rem;
+        }
+        .ready-item .ready-value {
+            color: #FFFFFF;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        .ready-checkmark {
+            text-align: center;
+            font-size: 3rem;
+            padding: 10px 0;
+        }
+        .ready-link-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .ready-link-box:last-child {
+            border-bottom: none;
+        }
+        .ready-link {
+            flex: 1;
+            color: #7DD8FF;
+            font-size: 0.75rem;
+            word-break: break-all;
+            background: rgba(91, 140, 255, 0.06);
+            padding: 6px 10px;
+            border-radius: 8px;
+        }
+        .ready-link-number {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.65rem;
+            min-width: 28px;
+            font-weight: 500;
+        }
+        .ready-friend-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            gap: 10px;
+        }
+        .friend-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .friend-info .friend-icon {
+            font-size: 2rem;
+        }
+        .friend-info .friend-name {
+            color: #FFFFFF;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .friend-info .friend-id {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.75rem;
+        }
+
+        .order-detail-page {
+            background: radial-gradient(ellipse at 20% 50%, rgba(91, 140, 255, 0.12) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(125, 216, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 100%, rgba(102, 117, 255, 0.08) 0%, transparent 40%),
+                linear-gradient(145deg, #0A0A1A 0%, #1A1A3E 30%, #2D1B69 70%, #1A1A3E 100%);
+            background-attachment: fixed;
+        }
+        .order-detail-page .detail-card {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 24px;
+            padding: 24px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(10px);
+            margin-bottom: 16px;
+        }
+        .order-detail-page .detail-card .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .order-detail-page .detail-card .detail-row:last-child {
+            border-bottom: none;
+        }
+        .order-detail-page .detail-card .detail-label {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.85rem;
+        }
+        .order-detail-page .detail-card .detail-value {
+            color: #FFFFFF;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: right;
+            max-width: 60%;
+            word-break: break-all;
+        }
+        .order-detail-page .detail-card .detail-value.status-completed {
+            color: #00E676;
+        }
+        .order-detail-page .detail-card .detail-value.status-pending {
+            color: #FFD54F;
+        }
+        .order-detail-page .detail-card .detail-value.status-cancelled {
+            color: #FF3B6F;
+        }
+        .order-detail-page .detail-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+            padding-top: 8px;
+        }
+        .order-detail-page .detail-header .back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #FFFFFF;
+            flex-shrink: 0;
+            font-family: inherit;
+        }
+        .order-detail-page .detail-header .back-btn:active {
+            transform: scale(0.9);
+        }
+        .order-detail-page .detail-header .detail-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+        .order-detail-page .detail-header .detail-order-number {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.3);
+            margin-left: auto;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 4px 12px;
+            border-radius: 12px;
+        }
+        .order-detail-page .detail-status-badge {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .order-detail-page .detail-status-badge.completed {
+            background: rgba(0, 230, 118, 0.15);
+            color: #00E676;
+        }
+        .order-detail-page .detail-status-badge.pending {
+            background: rgba(255, 213, 79, 0.15);
+            color: #FFD54F;
+        }
+        .order-detail-page .detail-status-badge.cancelled {
+            background: rgba(255, 59, 111, 0.15);
+            color: #FF3B6F;
+        }
+        .order-detail-page .detail-status-badge.processing {
+            background: rgba(91, 140, 255, 0.15);
+            color: #7DD8FF;
+        }
+        .order-detail-page .detail-summary {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-top: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .order-detail-page .detail-summary .summary-label {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.85rem;
+        }
+        .order-detail-page .detail-summary .summary-price {
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #7DD8FF 0%, #6675FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .order-detail-page .detail-empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(255, 255, 255, 0.15);
+        }
+        .order-detail-page .detail-empty .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+            opacity: 0.3;
+        }
+
+        .info-page .info-card {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 28px;
+            padding: 40px 24px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(10px);
+        }
+        .info-page .info-card .info-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+        }
+        .info-page .info-card .info-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 4px;
+        }
+        .info-page .info-card .info-version {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.15);
+            margin-bottom: 16px;
+        }
+        .info-page .info-card .info-desc {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .info-page .info-card .info-contact {
+            padding: 12px 16px;
+            background: rgba(91, 140, 255, 0.04);
+            border-radius: 12px;
+            border: 1px solid rgba(91, 140, 255, 0.06);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .info-page .info-card .info-contact .contact-label {
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.15);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .info-page .info-card .info-contact .contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #7DD8FF;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            padding: 4px 12px;
+            border-radius: 8px;
+            background: rgba(91, 140, 255, 0.06);
+            border: 1px solid rgba(91, 140, 255, 0.06);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .info-page .info-card .info-contact .contact-link:active {
+            transform: scale(0.95);
+            background: rgba(91, 140, 255, 0.1);
+        }
+        .info-page .info-card .info-footer {
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .info-page .info-card .info-footer .label {
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.15);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .info-page .info-card .info-footer .team {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.2);
+            margin-top: 4px;
+        }
+
         .bottom-nav {
             position: fixed;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(20, 20, 50, 0.6);
+            background: rgba(20, 20, 50, 0.5);
             backdrop-filter: blur(40px) saturate(1.6);
             -webkit-backdrop-filter: blur(40px) saturate(1.6);
             border-radius: 50px;
             padding: 8px 16px;
             display: flex;
             gap: 6px;
-            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 0 60px rgba(91, 140, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.08);
             z-index: 1000;
             max-width: 340px;
             width: calc(100% - 32px);
             justify-content: space-around;
+            transition: all 0.3s ease;
+        }
+        .bottom-nav::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 50px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%, rgba(91, 140, 255, 0.08) 100%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
         }
         .nav-item {
             display: flex;
@@ -322,24 +1868,106 @@
             padding: 6px 12px;
             border-radius: 22px;
             cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             border: none;
             background: transparent;
             font-family: inherit;
             gap: 2px;
             min-width: 48px;
             position: relative;
+        }
+        .nav-item .nav-icon {
+            width: 26px;
+            height: 26px;
+            color: rgba(255, 255, 255, 0.3);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+        .nav-item .nav-icon svg {
+            width: 100%;
+            height: 100%;
+            stroke: rgba(255, 255, 255, 0.35);
+            stroke-width: 2;
+            fill: none;
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .nav-item .nav-icon { width: 26px; height: 26px; color: rgba(255,255,255,0.3); transition: all 0.3s; }
-        .nav-item .nav-icon svg { width: 100%; height: 100%; stroke: rgba(255,255,255,0.35); stroke-width: 2; fill: none; transition: all 0.3s; }
-        .nav-item .nav-label { font-size: 0.6rem; font-weight: 600; color: rgba(255,255,255,0.3); transition: all 0.3s; margin-top: 1px; letter-spacing: 0.3px; }
-        .nav-item.active .nav-icon svg { stroke: #FFFFFF; filter: drop-shadow(0 0 24px rgba(91,140,255,0.8)); }
-        .nav-item.active .nav-label { color: rgba(255,255,255,0.9); }
-        .nav-item.active .nav-icon { transform: scale(1.1); }
-        .nav-item .badge { position: absolute; top: -6px; right: -6px; background: #FF3B6F; color: white; font-size: 0.5rem; font-weight: 700; min-width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(20,20,50,0.9); padding: 0 4px; }
-        .nav-item .badge.hidden { display: none; }
+        .nav-item .nav-label {
+            font-size: 0.6rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.3);
+            transition: all 0.3s;
+            margin-top: 1px;
+            letter-spacing: 0.3px;
+        }
+        .nav-item.active .nav-icon svg {
+            stroke: #FFFFFF;
+            filter: drop-shadow(0 0 24px rgba(91, 140, 255, 0.8));
+        }
+        .nav-item.active .nav-label {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        .nav-item.active .nav-icon {
+            transform: scale(1.1);
+            animation: navPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .nav-item:active {
+            transform: scale(0.88);
+        }
+        .nav-item .badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: #FF3B6F;
+            color: white;
+            font-size: 0.5rem;
+            font-weight: 700;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(20, 20, 50, 0.9);
+            padding: 0 4px;
+            box-shadow: 0 0 20px rgba(255, 59, 111, 0.3);
+        }
+        .nav-item .badge.hidden {
+            display: none;
+        }
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            inset: -2px -6px;
+            border-radius: 22px;
+            background: rgba(91, 140, 255, 0.2);
+            backdrop-filter: blur(12px);
+            z-index: -1;
+            animation: islandGlow 0.3s ease;
+            border: 1px solid rgba(91, 140, 255, 0.2);
+            box-shadow: 0 0 50px rgba(91, 140, 255, 0.15);
+        }
+        @keyframes islandGlow {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        @keyframes navPop {
+            0% {
+                transform: scale(0.8);
+            }
+            50% {
+                transform: scale(1.15);
+            }
+            100% {
+                transform: scale(1.1);
+            }
+        }
 
-        /* Всплывающие уведомления */
         .toast {
             position: fixed;
             bottom: 100px;
@@ -358,233 +1986,2581 @@
             text-align: center;
             display: none;
         }
-        .toast.success { border-color: rgba(0, 200, 83, 0.3); }
-        .toast.error { border-color: rgba(255, 59, 111, 0.3); }
+        .toast.success {
+            border-color: rgba(0, 200, 83, 0.3);
+        }
+        .toast.error {
+            border-color: rgba(255, 59, 111, 0.3);
+        }
         @keyframes toastIn {
-            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
-            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
         }
 
-        /* Адаптивность */
+        .withdraw-page .withdraw-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding-top: 8px;
+        }
+        .withdraw-page .withdraw-header .back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #FFFFFF;
+            flex-shrink: 0;
+            font-family: inherit;
+        }
+        .withdraw-page .withdraw-header .back-btn:active {
+            transform: scale(0.9);
+        }
+        .withdraw-page .withdraw-header .withdraw-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+        .withdraw-page .withdraw-subtitle {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 20px;
+        }
+        .withdraw-step {
+            display: none;
+            animation: fadeUp 0.4s ease;
+        }
+        .withdraw-step.active {
+            display: block;
+        }
+        
+        /* Стили для банков */
+        .bank-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .bank-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .bank-item:active {
+            transform: scale(0.98);
+        }
+        .bank-item.active {
+            border-color: rgba(91, 140, 255, 0.3);
+            background: rgba(91, 140, 255, 0.06);
+        }
+        .bank-item .bank-icon {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+        .bank-item .bank-name {
+            flex: 1;
+            font-size: 0.9rem;
+            color: #FFFFFF;
+            font-weight: 500;
+        }
+        .bank-item .bank-check {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+        .bank-item.active .bank-check {
+            border-color: #7DD8FF;
+            background: rgba(91, 140, 255, 0.15);
+        }
+        .bank-item.active .bank-check::after {
+            content: '✓';
+            color: #7DD8FF;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        /* Стили для методов вывода */
+        .withdraw-method-card {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 16px 18px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 12px;
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+        .withdraw-method-card:active {
+            transform: scale(0.98);
+        }
+        .withdraw-method-card.active {
+            border-color: rgba(91, 140, 255, 0.3);
+            background: rgba(91, 140, 255, 0.06);
+        }
+        .withdraw-method-card .method-icon {
+            font-size: 1.8rem;
+            width: 40px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .withdraw-method-card .method-info {
+            flex: 1;
+        }
+        .withdraw-method-card .method-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #FFFFFF;
+        }
+        .withdraw-method-card .method-desc {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.3);
+        }
+        .withdraw-method-card .method-check {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        .withdraw-method-card.active .method-check {
+            border-color: #7DD8FF;
+            background: rgba(91, 140, 255, 0.15);
+        }
+        .withdraw-method-card.active .method-check::after {
+            content: '✓';
+            color: #7DD8FF;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .withdraw-form {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            margin-bottom: 16px;
+        }
+        .withdraw-form .form-group {
+            margin-bottom: 16px;
+        }
+        .withdraw-form .form-group label {
+            display: block;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .withdraw-input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            color: white;
+            font-size: 1rem;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .withdraw-input:focus {
+            border-color: rgba(91, 140, 255, 0.3);
+            background: rgba(255, 255, 255, 0.06);
+        }
+        .withdraw-input::placeholder {
+            color: rgba(255, 255, 255, 0.15);
+        }
+        
+        .withdraw-amount-input {
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-align: center;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            color: #FFFFFF;
+            width: 100%;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .withdraw-amount-input:focus {
+            border-color: rgba(91, 140, 255, 0.3);
+            background: rgba(255, 255, 255, 0.06);
+        }
+        .withdraw-amount-input::placeholder {
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .selected-bank-display {
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 10px;
+            margin-top: 8px;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .selected-bank-display.show {
+            display: flex;
+        }
+        .selected-bank-display .bank-name {
+            color: #FFFFFF;
+            font-size: 0.85rem;
+        }
+        .selected-bank-display .clear-bank {
+            background: none;
+            border: none;
+            color: #FF3B6F;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-family: inherit;
+        }
+
+        .withdraw-summary {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin: 16px 0;
+        }
+        .withdraw-summary .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        .withdraw-summary .summary-row.total {
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            padding-top: 10px;
+            margin-top: 4px;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+        .withdraw-summary .summary-row .amount-value {
+            color: #FFFFFF;
+        }
+        .withdraw-summary .summary-row.total .amount-value {
+            font-size: 1.1rem;
+            background: linear-gradient(135deg, #7DD8FF 0%, #6675FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .withdraw-submit {
+            width: 100%;
+            padding: 14px;
+            border-radius: 14px;
+            border: none;
+            background: linear-gradient(135deg, #6675FF 0%, #5B8CFF 100%);
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            box-shadow: 0 4px 24px rgba(91, 140, 255, 0.15);
+            opacity: 0.5;
+        }
+        .withdraw-submit:not(:disabled) {
+            opacity: 1;
+        }
+        .withdraw-submit:not(:disabled):active {
+            transform: scale(0.97);
+        }
+        .withdraw-submit:disabled {
+            cursor: not-allowed;
+        }
+
         @media (max-width: 500px) {
-            .hero-section { height: 170px; }
-            .hero-placeholder h1 { font-size: 1.4rem; }
-            .game-card { height: 165px; }
-            .game-card .info .title-group .game-name { font-size: 1.4rem; }
-            .game-card .info .features .feature { font-size: 0.6rem; }
-            .game-card .info .bottom-row .price-badge { font-size: 0.6rem; padding: 3px 12px; }
+            .game-page .products-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .profile-page .btn-row {
+                flex-direction: column;
+            }
+            .bottom-nav {
+                padding: 6px 12px;
+                gap: 4px;
+                max-width: 300px;
+                border-radius: 40px;
+            }
+            .nav-item {
+                padding: 4px 8px;
+                min-width: 40px;
+            }
+            .nav-item .nav-icon {
+                width: 22px;
+                height: 22px;
+            }
+            .nav-item .nav-label {
+                font-size: 0.5rem;
+            }
+            .nav-item .badge {
+                font-size: 0.4rem;
+                min-width: 16px;
+                height: 16px;
+                top: -4px;
+                right: -4px;
+            }
+            .bank-item .bank-icon {
+                width: 24px;
+                height: 24px;
+            }
+            .bank-item {
+                padding: 10px 12px;
+            }
+            .withdraw-amount-input {
+                font-size: 1.2rem;
+                padding: 14px;
+            }
         }
         @media (max-width: 380px) {
-            .hero-section { height: 150px; }
-            .hero-placeholder h1 { font-size: 1.2rem; }
-            .game-card { height: 145px; }
-            .game-card .info .title-group .game-name { font-size: 1.2rem; }
-            .game-card .info .features .feature { font-size: 0.55rem; }
-            .game-card .info .bottom-row .price-badge { font-size: 0.5rem; padding: 2px 10px; }
+            .profile-page .recharge-section .input-row {
+                flex-direction: column;
+            }
+            .profile-page .profile-avatar {
+                width: 56px;
+                height: 56px;
+                font-size: 1.8rem;
+            }
+            .profile-page .balance-card .amount {
+                font-size: 1.8rem;
+            }
+            .profile-page .recharge-section .quick-amounts .quick-btn {
+                min-width: 45px;
+                font-size: 0.65rem;
+                padding: 5px 6px;
+            }
+            .game-page .products-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 6px;
+            }
+            .game-page .product-card .prod-btn {
+                font-size: 0.65rem;
+                min-height: 40px;
+                padding: 6px 8px;
+            }
+            .game-page .product-card .prod-btn .price {
+                font-size: 0.65rem;
+            }
+            .bottom-nav {
+                padding: 4px 8px;
+                gap: 2px;
+                max-width: 260px;
+                border-radius: 30px;
+            }
+            .nav-item {
+                padding: 4px 6px;
+                min-width: 32px;
+            }
+            .nav-item .nav-icon {
+                width: 18px;
+                height: 18px;
+            }
+            .nav-item .nav-label {
+                font-size: 0.4rem;
+            }
+            .nav-item .badge {
+                font-size: 0.35rem;
+                min-width: 14px;
+                height: 14px;
+                top: -3px;
+                right: -3px;
+            }
+            .withdraw-form {
+                padding: 14px;
+            }
+            .withdraw-amount-input {
+                font-size: 1rem;
+                padding: 12px;
+            }
         }
         @supports (padding: max(0px)) {
-            .page { padding-left: max(20px, env(safe-area-inset-left)); padding-right: max(20px, env(safe-area-inset-right)); padding-bottom: max(100px, env(safe-area-inset-bottom)); }
-            .bottom-nav { bottom: max(20px, env(safe-area-inset-bottom)); }
+            .page {
+                padding-left: max(20px, env(safe-area-inset-left));
+                padding-right: max(20px, env(safe-area-inset-right));
+                padding-bottom: max(100px, env(safe-area-inset-bottom));
+            }
+            .bottom-nav {
+                bottom: max(20px, env(safe-area-inset-bottom));
+            }
         }
     </style>
 </head>
 <body>
-    <!-- ГЛАВНАЯ СТРАНИЦА -->
+
     <div id="pageHome" class="page active">
         <div class="content">
-            <!-- ГЕРОЙ-БАННЕР -->
-            <div class="hero-section">
-                <div class="hero-glow"></div>
-                <div class="hero-art"></div>
-                <div class="hero-placeholder">
-                    <span class="badge">ОГРАНИЧЕННОЕ ПРЕДЛОЖЕНИЕ</span>
-                    <h1>Vintyx<br>Store</h1>
-                    <p>Премиальный игровой магазин</p>
-                    <div class="hero-cta">
-                        <button class="btn-primary">Исследовать</button>
-                        <button class="btn-secondary">Подарки</button>
+            <div class="main-header">
+                <div class="header-left">
+                    <div class="store-name">Vintyx Store</div>
+                    <div class="greeting" id="greetingText">👋 Загрузка...</div>
+                </div>
+            </div>
+            <div class="section-title">Выберите раздел</div>
+            <div class="game-scroll" id="gameList"></div>
+        </div>
+    </div>
+
+    <div id="pageBrawl" class="page game-page">
+        <div class="content">
+            <div class="game-header">
+                <button class="back-btn" onclick="closeGame()">←</button>
+                <div class="game-title">
+                    <img class="icon" src="https://i.imgur.com/3Zm7Tr0.png" alt="Brawl Stars">
+                    Brawl Stars
+                </div>
+            </div>
+            <div class="categories" id="brawlCategories">
+                <button class="category-btn active" data-cat="all" data-game="brawl">Все</button>
+                <button class="category-btn" data-cat="login" data-game="brawl">По входу</button>
+                <button class="category-btn" data-cat="db1" data-game="brawl">Матчерино</button>
+                <button class="category-btn" data-cat="db2" data-game="brawl">Подарком</button>
+            </div>
+            <div class="products-grid" id="productsGrid"></div>
+        </div>
+    </div>
+
+    <div id="pageCart" class="page cart-page">
+        <div class="content">
+            <div class="cart-header">
+                <button class="back-btn" onclick="closeCart()">←</button>
+                <div class="cart-title">Корзина</div>
+            </div>
+            <div id="cartItems"></div>
+            <div id="cartTotal"></div>
+            <button class="checkout-btn" id="checkoutBtn" onclick="checkout()">Оплатить</button>
+        </div>
+    </div>
+
+    <div id="pageProfile" class="page profile-page">
+        <div class="content">
+            <button class="back-btn" onclick="closeProfile()">← Назад</button>
+            <div class="profile-header">
+                <div class="profile-avatar" id="profileAvatar"></div>
+                <div class="profile-info">
+                    <div class="name" id="userName">Загрузка...</div>
+                    <div class="username" id="userUsername">@loading</div>
+                </div>
+            </div>
+            <div class="balance-card">
+                <div class="label">Баланс</div>
+                <div>
+                    <span class="amount" id="balanceAmount">0</span>
+                    <span class="currency">₽</span>
+                </div>
+            </div>
+            <div class="recharge-section" id="rechargeSection">
+                <div class="quick-amounts">
+                    <button class="quick-btn" onclick="setAmount(100)">100 ₽</button>
+                    <button class="quick-btn" onclick="setAmount(250)">250 ₽</button>
+                    <button class="quick-btn" onclick="setAmount(500)">500 ₽</button>
+                    <button class="quick-btn" onclick="setAmount(1000)">1,000 ₽</button>
+                    <button class="quick-btn" onclick="setAmount(2500)">2,500 ₽</button>
+                </div>
+                <div class="input-group">
+                    <div class="input-row">
+                        <input type="number" id="rechargeInput" placeholder="Введите сумму" min="1">
                     </div>
+                    <button class="btn-recharge" onclick="recharge()">Пополнить</button>
+                </div>
+            </div>
+            <div class="btn-row">
+                <button class="btn-primary" onclick="toggleRecharge()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                        <line x1="12" y1="5" x2="12" y2="19"/>
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                    Пополнить
+                </button>
+                <button class="btn-secondary withdraw-btn" onclick="openWithdrawPage()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                        <path d="M12 19V5"/>
+                        <path d="M5 12L12 5L19 12"/>
+                    </svg>
+                    Вывод
+                </button>
+            </div>
+            <div class="contact-section">
+                <span class="contact-label">Администратор</span>
+                <div class="contact-link" onclick="openAdminChat()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <circle cx="12" cy="8" r="4"/>
+                        <path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"/>
+                        <circle cx="4" cy="4" r="1.5" opacity="0.4"/>
+                        <circle cx="20" cy="4" r="1.5" opacity="0.4"/>
+                        <path d="M4 8.5L4 4" opacity="0.4"/>
+                        <path d="M20 8.5L20 4" opacity="0.4"/>
+                    </svg>
+                    @v2ntyx
+                </div>
+            </div>
+            <div class="section">
+                <div class="section-label">История покупок</div>
+                <div id="ordersHistory"></div>
+            </div>
+            <div class="section">
+                <div class="section-label">Транзакции</div>
+                <div id="transactionsHistory"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="pageWithdraw" class="page withdraw-page">
+        <div class="content">
+            <div class="withdraw-header">
+                <button class="back-btn" onclick="closeWithdrawPage()">←</button>
+                <div class="withdraw-title">Вывод средств</div>
+            </div>
+
+            <div id="withdrawStep1" class="withdraw-step active">
+                <div class="withdraw-subtitle">Введите сумму вывода</div>
+                
+                <div class="withdraw-form">
+                    <div class="form-group">
+                        <label>Сумма</label>
+                        <input type="number" id="withdrawAmountInput" class="withdraw-amount-input" placeholder="Введите сумму" min="50" oninput="updateWithdrawSummaries()">
+                    </div>
+                </div>
+
+                <div class="withdraw-subtitle" style="margin-top: 20px;">Выберите способ получения денег</div>
+
+                <div class="withdraw-method-card" onclick="selectMethod('sbp')">
+                    <div class="method-icon">⚡</div>
+                    <div class="method-info">
+                        <div class="method-name">Система быстрых платежей</div>
+                        <div class="method-desc">Перевод по номеру телефона</div>
+                    </div>
+                    <div class="method-check" id="checkSbp"></div>
+                </div>
+
+                <div class="withdraw-method-card" onclick="selectMethod('card')">
+                    <div class="method-icon">💳</div>
+                    <div class="method-info">
+                        <div class="method-name">Банковская карта</div>
+                        <div class="method-desc">Перевод на номер карты</div>
+                    </div>
+                    <div class="method-check" id="checkCard"></div>
                 </div>
             </div>
 
-            <!-- КАРТОЧКИ ИГР -->
-            <div class="game-cards" id="gameList">
-                <!-- Brawl Stars -->
-                <div class="game-card brawl" onclick="показатьСкоро('Brawl Stars')">
-                    <div class="artwork">
-                        <div class="gradient-overlay"></div>
-                        <img class="character" src="https://i.imgur.com/Rv6p1OU.png" alt="Brawl Stars" loading="lazy">
-                    </div>
-                    <div class="info">
-                        <div>
-                            <div class="title-group">
-                                <span class="game-name">
-                                    <span class="first">BRAWL</span>
-                                    <span class="second">STARS</span>
-                                </span>
-                            </div>
-                            <div class="features">
-                                <span class="feature">Гемы</span>
-                                <span class="feature">Brawl Pass</span>
-                                <span class="feature">Акции</span>
-                            </div>
-                        </div>
-                        <div class="bottom-row">
-                            <span class="price-badge">От 99 ₽</span>
-                            <span class="arrow">→</span>
-                        </div>
-                    </div>
-                </div>
+            <div id="withdrawStepSbp" class="withdraw-step">
+                <div class="withdraw-subtitle">⚡ Вывод по СБП</div>
 
-                <!-- Clash Royale -->
-                <div class="game-card clash" onclick="показатьСкоро('Clash Royale')">
-                    <div class="artwork">
-                        <div class="gradient-overlay"></div>
-                        <img class="character" src="https://i.imgur.com/B4idahX.png" alt="Clash Royale" loading="lazy">
+                <div class="withdraw-form">
+                    <div class="form-group">
+                        <label>Номер телефона</label>
+                        <input type="tel" id="sbpPhone" placeholder="+7 (___) ___-__-__" class="withdraw-input" oninput="formatPhone(this)">
                     </div>
-                    <div class="info">
-                        <div>
-                            <div class="title-group">
-                                <span class="game-name">
-                                    <span class="first">CLASH</span>
-                                    <span class="second">ROYALE</span>
-                                </span>
-                            </div>
-                            <div class="features">
-                                <span class="feature">Кристаллы</span>
-                                <span class="feature">Pass Royale</span>
-                                <span class="feature">Сундуки</span>
-                            </div>
-                        </div>
-                        <div class="bottom-row">
-                            <span class="price-badge">От 149 ₽</span>
-                            <span class="arrow">→</span>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Telegram -->
-                <div class="game-card telegram" onclick="показатьСкоро('Telegram')">
-                    <div class="artwork">
-                        <div class="gradient-overlay"></div>
-                        <img class="character" src="https://i.imgur.com/eM5u3Td.png" alt="Telegram" loading="lazy">
-                    </div>
-                    <div class="info">
-                        <div>
-                            <div class="title-group">
-                                <span class="game-name">
-                                    <span class="first">TELEGRAM</span>
-                                    <span class="second">PREMIUM</span>
-                                </span>
-                            </div>
-                            <div class="features">
-                                <span class="feature">Stars</span>
-                                <span class="feature">Premium</span>
-                                <span class="feature">Подарки</span>
-                            </div>
+                    <div class="form-group">
+                        <label>Выберите банк</label>
+                        <div class="bank-grid" id="bankGrid">
+                            <!-- Банки будут добавлены через JS -->
                         </div>
-                        <div class="bottom-row">
-                            <span class="price-badge">От 79 ₽</span>
-                            <span class="arrow">→</span>
+                        <div class="selected-bank-display" id="selectedBankDisplay">
+                            <span class="bank-name" id="selectedBankName"></span>
+                            <button class="clear-bank" onclick="clearBank()">✕</button>
                         </div>
                     </div>
+
+                    <div class="withdraw-summary" id="sbpSummary">
+                        <div class="summary-row">
+                            <span>Сумма вывода</span>
+                            <span class="amount-value" id="sbpAmountDisplay">0 ₽</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Комиссия (3%)</span>
+                            <span class="amount-value" id="sbpFeeDisplay">0 ₽</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>К получению</span>
+                            <span class="amount-value" id="sbpFinalDisplay">0 ₽</span>
+                        </div>
+                    </div>
+
+                    <button class="withdraw-submit" id="sbpSubmit" onclick="processWithdrawStep('sbp')" disabled>Вывести средства</button>
+                </div>
+            </div>
+
+            <div id="withdrawStepCard" class="withdraw-step">
+                <div class="withdraw-subtitle">💳 Вывод на карту</div>
+
+                <div class="withdraw-form">
+                    <div class="form-group">
+                        <label>Номер карты</label>
+                        <input type="text" id="cardNumber" placeholder="____ ____ ____ ____" class="withdraw-input" maxlength="19" oninput="formatCardNumber(this)">
+                    </div>
+
+                    <div class="withdraw-summary" id="cardSummary">
+                        <div class="summary-row">
+                            <span>Сумма вывода</span>
+                            <span class="amount-value" id="cardAmountDisplay">0 ₽</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Комиссия (3%)</span>
+                            <span class="amount-value" id="cardFeeDisplay">0 ₽</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>К получению</span>
+                            <span class="amount-value" id="cardFinalDisplay">0 ₽</span>
+                        </div>
+                    </div>
+
+                    <button class="withdraw-submit" id="cardSubmit" onclick="processWithdrawStep('card')" disabled>Вывести средства</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ДРУГИЕ СТРАНИЦЫ (заглушки) -->
-    <div id="pageBrawl" class="page game-page"><div class="content"><button class="back-btn" onclick="закрытьИгру()">←</button><p>Brawl Stars (не переработано)</p></div></div>
-    <div id="pageCart" class="page cart-page"><div class="content"><button class="back-btn" onclick="закрытьКорзину()">←</button><p>Корзина</p></div></div>
-    <div id="pageProfile" class="page profile-page"><div class="content"><button class="back-btn" onclick="закрытьПрофиль()">←</button><p>Профиль</p></div></div>
-    <div id="pageInfo" class="page info-page"><div class="content"><p>Информация</p></div></div>
-    <div id="pageOrderFlow" class="page order-flow-page"><div class="content"><p>Оформление заказа</p></div></div>
-    <div id="pageOrderDetail" class="page order-detail-page"><div class="content"><p>Детали заказа</p></div></div>
-    <div id="pageWithdraw" class="page withdraw-page"><div class="content"><p>Вывод средств</p></div></div>
+    <div id="pageOrderFlow" class="page order-flow-page">
+        <div class="content">
+            <div id="orderStepEmail" class="order-step active">
+                <button class="back-btn" onclick="closeOrderFlow()">← Назад</button>
+                <div class="order-header">
+                    <div class="order-icon">📧</div>
+                    <div class="order-title">Вход в аккаунт</div>
+                    <div class="order-sub">Введите почту от вашего аккаунта Brawl Stars</div>
+                </div>
+                <div class="order-input-group">
+                    <input type="email" id="orderEmailInput" placeholder="example@mail.com" class="order-input">
+                    <button class="order-btn-primary" onclick="sendCode()">Отправить</button>
+                </div>
+                <div class="order-info">
+                    <span>Данные защищены и не передаются третьим лицам</span>
+                </div>
+            </div>
+            <div id="orderStepWaitingCode" class="order-step">
+                <div class="order-header text-center">
+                    <div class="order-icon waiting-icon">⏳</div>
+                    <div class="order-title">Запрос кода отправлен</div>
+                    <div class="order-sub">Ожидайте, пока админ запросит код</div>
+                </div>
+                <div class="waiting-animation">
+                    <div class="spinner"></div>
+                    <div class="waiting-text">Админ запрашивает код...</div>
+                    <div class="waiting-progress">
+                        <div class="progress-bar" id="progressBarCode"></div>
+                    </div>
+                </div>
+                <button class="order-btn-primary" onclick="checkOrderStatus()" style="margin-top:20px;">Проверить статус</button>
+            </div>
+            <div id="orderStepCode" class="order-step">
+                <button class="back-btn" onclick="goBackToEmail()">← Назад</button>
+                <div class="order-header">
+                    <div class="order-icon">🔑</div>
+                    <div class="order-title">Введите код</div>
+                    <div class="order-sub">Введите код из письма</div>
+                </div>
+                <div class="order-input-group">
+                    <input type="text" id="orderCodeInput" placeholder="XXXXXX" maxlength="6" class="order-input code-input">
+                    <button class="order-btn-primary" onclick="confirmCode()">Подтвердить</button>
+                </div>
+                <div class="order-info">
+                    <span>Код запрошен админом</span>
+                </div>
+            </div>
+            <div id="orderStepWaiting" class="order-step">
+                <div class="order-header text-center">
+                    <div class="order-icon waiting-icon">⏳</div>
+                    <div class="order-title">Обработка заказа</div>
+                    <div class="order-sub">Пожалуйста, подождите...</div>
+                </div>
+                <div class="waiting-animation">
+                    <div class="spinner"></div>
+                    <div class="waiting-text">Это займёт всего несколько секунд</div>
+                    <div class="waiting-progress">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="orderStepReadyLogin" class="order-step">
+                <div class="order-header text-center">
+                    <div class="order-icon ready-icon">🎉</div>
+                    <div class="order-title">Заказ выполнен!</div>
+                    <div class="order-sub">Товар уже на вашем аккаунте</div>
+                </div>
+                <div class="ready-content">
+                    <div class="ready-item">
+                        <span class="ready-label">Товар:</span>
+                        <span class="ready-value" id="readyProductName">Загрузка...</span>
+                    </div>
+                    <div class="ready-item">
+                        <span class="ready-label">Аккаунт:</span>
+                        <span class="ready-value" id="readyEmail">example@mail.com</span>
+                    </div>
+                    <div class="ready-item">
+                        <span class="ready-label">Дата:</span>
+                        <span class="ready-value" id="readyDate">Сегодня</span>
+                    </div>
+                    <div class="ready-checkmark">✅</div>
+                </div>
+                <button class="order-btn-primary" onclick="closeOrderFlow()">На главную</button>
+            </div>
+            <div id="orderStepReadyDB1" class="order-step">
+                <div class="order-header text-center">
+                    <div class="order-icon ready-icon">📥</div>
+                    <div class="order-title">Заказ готов!</div>
+                    <div class="order-sub" id="readyDB1Sub">Перейдите по ссылке, чтобы получить заказ</div>
+                </div>
+                <div class="ready-content">
+                    <div class="ready-item">
+                        <span class="ready-label">Товар:</span>
+                        <span class="ready-value" id="readyProductNameDB1">Матчерино</span>
+                    </div>
+                    <div id="readyLinksContainer"></div>
+                    <div class="ready-item">
+                        <span class="ready-label">Дата:</span>
+                        <span class="ready-value" id="readyDateDB1">Сегодня</span>
+                    </div>
+                </div>
+                <button class="order-btn-primary" onclick="closeOrderFlow()">На главную</button>
+            </div>
+            <div id="orderStepReadyDB2" class="order-step">
+                <div class="order-header text-center">
+                    <div class="order-icon ready-icon">👥</div>
+                    <div class="order-title">Добавьте продавца!</div>
+                    <div class="order-sub">Добавьте продавца в друзья для получения заказа</div>
+                </div>
+                <div class="ready-content">
+                    <div class="ready-item">
+                        <span class="ready-label">Товар:</span>
+                        <span class="ready-value" id="readyProductNameDB2">Подарок</span>
+                    </div>
+                    <div class="ready-friend-box">
+                        <div class="friend-info">
+                            <span class="friend-icon">👤</span>
+                            <div>
+                                <div class="friend-name" id="friendName">Донор</div>
+                                <div class="friend-id" id="friendId">#Ссылка</div>
+                            </div>
+                        </div>
+                        <button class="order-btn-small" onclick="copyFriendId()">Копировать</button>
+                    </div>
+                    <div class="ready-item">
+                        <span class="ready-label">Статус:</span>
+                        <span class="ready-value" style="color: #FFD54F;" id="orderStatus">Ожидание</span>
+                    </div>
+                    <div class="ready-item">
+                        <span class="ready-label">Дата:</span>
+                        <span class="ready-value" id="readyDateDB2">Сегодня</span>
+                    </div>
+                </div>
+                <button class="order-btn-primary" onclick="closeOrderFlow()">На главную</button>
+            </div>
+        </div>
+    </div>
 
-    <!-- НИЖНЯЯ НАВИГАЦИЯ -->
+    <div id="pageOrderDetail" class="page order-detail-page">
+        <div class="content">
+            <div class="detail-header">
+                <button class="back-btn" onclick="closeOrderDetail()">←</button>
+                <div class="detail-title">Детали заказа</div>
+                <div class="detail-order-number" id="detailOrderNumber">VX-000000</div>
+            </div>
+            <div id="orderDetailContent"></div>
+        </div>
+    </div>
+
+    <div id="pageInfo" class="page info-page">
+        <div class="content">
+            <div class="info-card">
+                <div class="info-icon">ℹ️</div>
+                <div class="info-title">Vintyx Store</div>
+                <div class="info-version">v3.0.0</div>
+                <div class="info-desc">
+                    Премиальный игровой магазин.<br>
+                    Быстро. Безопасно. Надёжно.
+                </div>
+                <div class="info-contact">
+                    <span class="contact-label">Администратор</span>
+                    <div class="contact-link" onclick="openAdminChat()">
+                        ✉️ @v2ntyx
+                    </div>
+                </div>
+                <div class="info-footer">
+                    <div class="label">Разработано с ❤️</div>
+                    <div class="team">Destr Code</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <nav class="bottom-nav">
-        <button class="nav-item" data-page="profile" onclick="перейтиНа('profile')">
-            <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"/></svg></span>
+        <button class="nav-item" data-page="profile" onclick="navigateTo('profile')">
+            <span class="nav-icon" id="navProfile">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <circle cx="12" cy="8" r="4"/>
+                    <path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"/>
+                </svg>
+            </span>
             <span class="nav-label">Профиль</span>
         </button>
-        <button class="nav-item active" data-page="home" onclick="перейтиНа('home')">
-            <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9 21v-6h6v6"/></svg></span>
+        <button class="nav-item active" data-page="home" onclick="navigateTo('home')">
+            <span class="nav-icon" id="navHome">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <path d="M3 10.5L12 3l9 7.5"/>
+                    <path d="M5 9.5V21h14V9.5"/>
+                    <path d="M9 21v-6h6v6"/>
+                </svg>
+            </span>
             <span class="nav-label">Главная</span>
         </button>
-        <button class="nav-item" data-page="cart" onclick="перейтиНа('cart')">
-            <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span class="badge hidden" id="navCartBadge">0</span></span>
+        <button class="nav-item" data-page="cart" onclick="navigateTo('cart')">
+            <span class="nav-icon" id="navCart">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <circle cx="9" cy="21" r="1"/>
+                    <circle cx="20" cy="21" r="1"/>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                </svg>
+                <span class="badge hidden" id="navCartBadge">0</span>
+            </span>
             <span class="nav-label">Корзина</span>
         </button>
-        <button class="nav-item" data-page="info" onclick="перейтиНа('info')">
-            <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="M12 10v6"/><circle cx="12" cy="7" r="0.8" fill="currentColor" stroke="none"/></svg></span>
+        <button class="nav-item" data-page="info" onclick="navigateTo('info')">
+            <span class="nav-icon" id="navInfo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <circle cx="12" cy="12" r="9"/>
+                    <path d="M12 10v6"/>
+                    <circle cx="12" cy="7" r="0.8" fill="currentColor" stroke="none"/>
+                </svg>
+            </span>
             <span class="nav-label">Инфо</span>
         </button>
     </nav>
 
     <script>
-        // ============================================
-        //  ИЗОБРАЖЕНИЯ ДЛЯ КАРТОЧЕК (IMGUR)
-        // ============================================
-        const ИЗОБРАЖЕНИЯ_ИГР = {
-            BRAWL_STARS: 'https://i.imgur.com/3Zm7Tr0.png',
-            CLASH_ROYALE: 'https://i.imgur.com/B4idahX.png',
-            TELEGRAM: 'https://i.imgur.com/eM5u3Td.png'
+        const API_URL = 'https://vintyx-server-destr.waw0.amvera.tech';
+
+        const tg = window.Telegram?.WebApp;
+        let currentUser = null;
+        let cart = [];
+        let currentOrderData = null;
+        let orderCheckInterval = null;
+        let isProcessing = false;
+        let currentOrderId = null;
+        let isFirstLoad = true;
+        let selectedWithdrawMethod = null;
+        let withdrawAmount = 0;
+        let selectedBank = null;
+
+        if (tg) {
+            tg.ready();
+            tg.expand();
+        }
+
+        // --- Список банков с иконками ---
+        const banksList = [
+            { name: 'Сбер', icon: 'https://i.imgur.com/qYkZJ7N.png' },
+            { name: 'Т-Банк', icon: 'https://i.imgur.com/5s6x8wj.png' },
+            { name: 'ВТБ', icon: 'https://i.imgur.com/KVj8z9Q.png' },
+            { name: 'Альфа-Банк', icon: 'https://i.imgur.com/3mNp7xw.png' },
+            { name: 'Газпромбанк', icon: 'https://i.imgur.com/W9xLzNp.png' },
+            { name: 'Россельхозбанк', icon: 'https://i.imgur.com/7Rj8yKp.png' },
+            { name: 'Открытие', icon: 'https://i.imgur.com/8VpLmNq.png' },
+            { name: 'МТС Банк', icon: 'https://i.imgur.com/4hJ5rFg.png' },
+            { name: 'Райффайзен', icon: 'https://i.imgur.com/6sKjLmN.png' },
+            { name: 'ЮниКредит', icon: 'https://i.imgur.com/9bVcXzQ.png' },
+            { name: 'Свой вариант', icon: '' }
+        ];
+
+        const pages = {
+            home: document.getElementById('pageHome'),
+            profile: document.getElementById('pageProfile'),
+            cart: document.getElementById('pageCart'),
+            info: document.getElementById('pageInfo'),
+            brawl: document.getElementById('pageBrawl'),
+            order: document.getElementById('pageOrderFlow'),
+            orderDetail: document.getElementById('pageOrderDetail'),
+            withdraw: document.getElementById('pageWithdraw')
         };
 
-        // Telegram WebApp
-        const tg = window.Telegram?.WebApp;
-        if (tg) { tg.ready(); tg.expand(); }
+        const navItems = document.querySelectorAll('.nav-item');
 
-        // ============================================
-        //  НАВИГАЦИЯ
-        // ============================================
-        function перейтиНа(страница) {
-            if (страница === 'home') {
-                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-                document.getElementById('pageHome').classList.add('active');
-                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-                document.querySelector('.nav-item[data-page="home"]').classList.add('active');
-                if (tg && tg.BackButton) tg.BackButton.hide();
+        function updateNavIcons(activePage) {
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                const page = item.dataset.page;
+                if ((activePage === 'profile' || activePage === 'withdraw') && page === 'profile') {
+                    item.classList.add('active');
+                } else if (page === activePage) {
+                    item.classList.add('active');
+                }
+                if ((activePage === 'brawl' || activePage === 'order' || activePage === 'orderDetail') && page === 'home') {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        function navigateTo(pageName) {
+            if (pageName === 'brawl' || pageName === 'order' || pageName === 'orderDetail') return;
+
+            Object.keys(pages).forEach(key => {
+                if (pages[key]) pages[key].classList.remove('active');
+            });
+
+            if (pages[pageName]) {
+                pages[pageName].classList.add('active');
+            }
+
+            updateNavIcons(pageName);
+
+            if (pageName === 'home') {
                 window.location.hash = '';
+                if (tg && tg.BackButton) tg.BackButton.hide();
             } else {
-                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-                const target = document.getElementById('page' + страница.charAt(0).toUpperCase() + страница.slice(1));
-                if (target) target.classList.add('active');
-                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-                document.querySelector(`.nav-item[data-page="${страница}"]`)?.classList.add('active');
+                window.location.hash = pageName;
                 if (tg && tg.BackButton) tg.BackButton.show();
-                window.location.hash = страница;
+            }
+
+            if (pageName === 'profile') {
+                loadBalance();
+                loadOrders();
+                loadTransactions();
+                updateProfileAvatar();
+            }
+
+            if (pageName === 'cart') {
+                renderCart();
+            }
+
+            updateNavIcons(pageName);
+        }
+
+        function getInitData() {
+            if (tg && tg.initData) return tg.initData;
+            return new URLSearchParams(window.location.search).get('tgWebAppData') || '';
+        }
+
+        function showToast(message, type = 'info') {
+            const existing = document.querySelector('.toast');
+            if (existing) existing.remove();
+
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            toast.style.display = 'block';
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function openAdminChat() {
+            if (tg) tg.openTelegramLink('https://t.me/v2ntyx');
+            else window.open('https://t.me/v2ntyx', '_blank');
+        }
+
+        function copyLinkText(link) {
+            navigator.clipboard?.writeText(link).then(() => {
+                showToast('Ссылка скопирована!', 'success');
+            }).catch(() => {
+                const textarea = document.createElement('textarea');
+                textarea.value = link;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showToast('Ссылка скопирована!', 'success');
+            });
+        }
+
+        function copyFriendId() {
+            const friendId = document.getElementById('friendId')?.textContent || '';
+            navigator.clipboard?.writeText(friendId).then(() => {
+                showToast('ID скопирован!', 'success');
+            }).catch(() => {
+                const textarea = document.createElement('textarea');
+                textarea.value = friendId;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showToast('ID скопирован!', 'success');
+            });
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return 'Не указано';
+            const date = new Date(dateStr);
+            date.setHours(date.getHours() + 3);
+            return date.toLocaleString('ru-RU', {
+                day: 'numeric',
+                month: 'long',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function updateProfileAvatar() {
+            const container = document.getElementById('profileAvatar');
+            if (!container) return;
+
+            if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+                const user = tg.initDataUnsafe.user;
+                const photoUrl = user.photo_url;
+
+                if (photoUrl) {
+                    container.innerHTML = `<img src="${photoUrl}" alt="avatar">`;
+                    return;
+                }
+            }
+
+            const name = document.getElementById('userName')?.textContent || 'User';
+            const firstLetter = name.charAt(0).toUpperCase();
+            container.innerHTML = `<div class="fallback">${firstLetter}</div>`;
+        }
+
+        async function apiRequest(endpoint, method = 'GET', data = null) {
+            const url = `${API_URL}${endpoint}`;
+            const headers = {
+                'Content-Type': 'application/json',
+                'X-Telegram-Init-Data': getInitData()
+            };
+
+            const options = { method, headers };
+            if (data) options.body = JSON.stringify(data);
+
+            try {
+                const response = await fetch(url, options);
+                const contentType = response.headers.get('content-type');
+                let result;
+                if (contentType && contentType.includes('application/json')) {
+                    result = await response.json();
+                } else {
+                    const text = await response.text();
+                    throw new Error('Сервер вернул не JSON');
+                }
+                if (!response.ok) throw new Error(result.error || 'Ошибка сервера');
+                return result;
+            } catch (error) {
+                console.error('API Error:', error);
+                showToast(error.message || 'Ошибка соединения с сервером', 'error');
+                throw error;
             }
         }
 
-        // ============================================
-        //  ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
-        // ============================================
-        function показатьСкоро(название) {
-            const уведомление = document.createElement('div');
-            уведомление.className = 'toast';
-            уведомление.textContent = `${название} — скоро появится`;
-            document.body.appendChild(уведомление);
-            уведомление.style.display = 'block';
-            setTimeout(() => { уведомление.style.opacity = '0'; setTimeout(() => уведомление.remove(), 300); }, 2500);
+        function loadLottieAnimation(container, filePath, fallbackText = '') {
+            if (!container) return;
+
+            fetch(filePath)
+                .then(response => {
+                    if (!response.ok) throw new Error('File not found');
+                    return response.json();
+                })
+                .then(data => {
+                    container.innerHTML = `
+                            <dotlottie-wc
+                                src="${filePath}"
+                                style="width: 120px; height: 120px;"
+                                autoplay
+                                loop
+                            ></dotlottie-wc>
+                        `;
+                })
+                .catch(() => {
+                    container.innerHTML = `<div style="font-size:3rem;opacity:0.3;">${fallbackText}</div>`;
+                });
         }
 
-        function закрытьИгру() { перейтиНа('home'); }
-        function закрытьКорзину() { перейтиНа('home'); }
-        function закрытьПрофиль() { перейтиНа('home'); }
+        async function loadUserData() {
+            try {
+                const initData = getInitData();
+                if (!initData) {
+                    document.getElementById('greetingText').textContent = '👋 Привет, Гость';
+                    document.getElementById('userName').textContent = 'Гость';
+                    document.getElementById('userUsername').textContent = '@guest';
+                    updateProfileAvatar();
+                    return null;
+                }
 
-        // ============================================
-        //  ОБРАБОТКА URL-ХЭША
-        // ============================================
-        window.addEventListener('hashchange', () => {
-            const хэш = window.location.hash.replace('#', '');
-            if (хэш && хэш !== 'home') перейтиНа(хэш);
-            else перейтиНа('home');
+                const user = await apiRequest('/api/auth/me');
+                currentUser = user;
+
+                document.getElementById('greetingText').textContent = `👋 Привет, ${user.first_name || 'Игрок'}`;
+                document.getElementById('userName').textContent = user.first_name || 'Игрок';
+                document.getElementById('userUsername').textContent = user.username ? `@${user.username}` : '@user';
+
+                updateProfileAvatar();
+
+                await loadBalance();
+                await loadOrders();
+                await loadTransactions();
+
+                return user;
+            } catch (error) {
+                console.error('Ошибка загрузки пользователя:', error);
+                document.getElementById('greetingText').textContent = '👋 Привет, Гость';
+                document.getElementById('userName').textContent = 'Гость';
+                document.getElementById('userUsername').textContent = '@guest';
+                updateProfileAvatar();
+                return null;
+            }
+        }
+
+        async function loadBalance() {
+            try {
+                const data = await apiRequest('/api/balance');
+                const amount = data.balance;
+                document.getElementById('balanceAmount').textContent = amount.toLocaleString('ru-RU');
+                return amount;
+            } catch (error) {
+                return 0;
+            }
+        }
+
+        function toggleRecharge() {
+            const section = document.getElementById('rechargeSection');
+            section.classList.toggle('active');
+            if (section.classList.contains('active')) {
+                document.getElementById('rechargeInput').focus();
+            }
+        }
+
+        function setAmount(amount) {
+            document.getElementById('rechargeInput').value = amount;
+        }
+
+        async function recharge() {
+            if (!currentUser) {
+                showToast('Пожалуйста, авторизуйтесь через Telegram', 'error');
+                return;
+            }
+
+            const input = document.getElementById('rechargeInput');
+            const amount = parseInt(input.value);
+
+            if (!amount || amount <= 0) {
+                showToast('Введите корректную сумму', 'error');
+                return;
+            }
+
+            if (amount > 100000) {
+                showToast('Сумма слишком большая', 'error');
+                return;
+            }
+
+            try {
+                await apiRequest('/api/balance/deposit', 'POST', { amount });
+                showToast(`Заявка на пополнение ${amount} ₽ отправлена!`, 'success');
+                if (tg) tg.openTelegramLink('https://t.me/vintyx_store_bot');
+                input.value = '';
+                document.getElementById('rechargeSection').classList.remove('active');
+                await loadBalance();
+            } catch (error) {
+                showToast(error.message || 'Ошибка пополнения', 'error');
+            }
+        }
+
+        function openWithdrawPage() {
+            if (!currentUser) {
+                showToast('Пожалуйста, авторизуйтесь через Telegram', 'error');
+                return;
+            }
+            loadBalance().then(() => {
+                Object.keys(pages).forEach(key => {
+                    if (pages[key]) pages[key].classList.remove('active');
+                });
+                pages.withdraw.classList.add('active');
+                updateNavIcons('withdraw');
+                if (tg && tg.BackButton) tg.BackButton.show();
+                window.location.hash = 'withdraw';
+                resetWithdrawForm();
+                renderBanks();
+                document.getElementById('withdrawAmountInput').focus();
+            });
+        }
+
+        function closeWithdrawPage() {
+            Object.keys(pages).forEach(key => {
+                if (pages[key]) pages[key].classList.remove('active');
+            });
+            pages.profile.classList.add('active');
+            updateNavIcons('profile');
+            window.location.hash = 'profile';
+            if (tg && tg.BackButton) tg.BackButton.show();
+            resetWithdrawForm();
+        }
+
+        function resetWithdrawForm() {
+            selectedWithdrawMethod = null;
+            selectedBank = null;
+            withdrawAmount = 0;
+            document.querySelectorAll('.withdraw-method-card').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.bank-item').forEach(el => el.classList.remove('active'));
+            document.getElementById('withdrawStep1').classList.add('active');
+            document.getElementById('withdrawStepSbp').classList.remove('active');
+            document.getElementById('withdrawStepCard').classList.remove('active');
+            document.getElementById('sbpPhone').value = '';
+            document.getElementById('cardNumber').value = '';
+            document.getElementById('withdrawAmountInput').value = '';
+            document.getElementById('selectedBankDisplay').classList.remove('show');
+            document.getElementById('sbpSubmit').disabled = true;
+            document.getElementById('cardSubmit').disabled = true;
+            updateWithdrawSummaries();
+            renderBanks();
+        }
+
+        function renderBanks() {
+            const grid = document.getElementById('bankGrid');
+            if (!grid) return;
+            
+            grid.innerHTML = '';
+            banksList.forEach(bank => {
+                const item = document.createElement('div');
+                item.className = 'bank-item';
+                item.dataset.bank = bank.name;
+                
+                const iconHtml = bank.icon ? 
+                    `<img class="bank-icon" src="${bank.icon}" alt="${bank.name}">` : 
+                    `<div class="bank-icon" style="font-size:1.2rem;display:flex;align-items:center;justify-content:center;">✏️</div>`;
+                
+                item.innerHTML = `
+                    ${iconHtml}
+                    <span class="bank-name">${bank.name}</span>
+                    <div class="bank-check"></div>
+                `;
+                
+                item.addEventListener('click', () => selectBankItem(bank.name));
+                grid.appendChild(item);
+            });
+        }
+
+        function selectBankItem(bankName) {
+            selectedBank = bankName;
+            document.querySelectorAll('.bank-item').forEach(el => el.classList.remove('active'));
+            
+            const items = document.querySelectorAll('.bank-item');
+            items.forEach(item => {
+                if (item.dataset.bank === bankName) {
+                    item.classList.add('active');
+                }
+            });
+            
+            document.getElementById('selectedBankName').textContent = bankName;
+            document.getElementById('selectedBankDisplay').classList.add('show');
+            updateWithdrawSummaries();
+        }
+
+        function clearBank() {
+            selectedBank = null;
+            document.getElementById('selectedBankDisplay').classList.remove('show');
+            document.querySelectorAll('.bank-item').forEach(el => el.classList.remove('active'));
+            updateWithdrawSummaries();
+        }
+
+        function selectMethod(method) {
+            selectedWithdrawMethod = method;
+            document.querySelectorAll('.withdraw-method-card').forEach(el => el.classList.remove('active'));
+
+            if (method === 'sbp') {
+                document.getElementById('checkSbp').closest('.withdraw-method-card').classList.add('active');
+                document.getElementById('withdrawStep1').classList.remove('active');
+                document.getElementById('withdrawStepSbp').classList.add('active');
+                document.getElementById('withdrawStepCard').classList.remove('active');
+                document.getElementById('sbpPhone').focus();
+                updateWithdrawSummaries();
+            } else if (method === 'card') {
+                document.getElementById('checkCard').closest('.withdraw-method-card').classList.add('active');
+                document.getElementById('withdrawStep1').classList.remove('active');
+                document.getElementById('withdrawStepCard').classList.add('active');
+                document.getElementById('withdrawStepSbp').classList.remove('active');
+                document.getElementById('cardNumber').focus();
+                updateWithdrawSummaries();
+            }
+        }
+
+        function formatPhone(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value.length === 0) {
+                input.value = '+7';
+                return;
+            }
+            if (value.startsWith('7')) {
+                value = value.substring(1);
+            }
+            let formatted = '+7';
+            if (value.length > 0) {
+                formatted += ' (' + value.substring(0, 3);
+            }
+            if (value.length >= 3) {
+                formatted += ') ' + value.substring(3, 6);
+            }
+            if (value.length >= 6) {
+                formatted += '-' + value.substring(6, 8);
+            }
+            if (value.length >= 8) {
+                formatted += '-' + value.substring(8, 10);
+            }
+            input.value = formatted;
+            updateWithdrawSummaries();
+        }
+
+        function formatCardNumber(input) {
+            let value = input.value.replace(/\D/g, '');
+            let formatted = '';
+            for (let i = 0; i < value.length && i < 16; i++) {
+                if (i > 0 && i % 4 === 0) {
+                    formatted += ' ';
+                }
+                formatted += value[i];
+            }
+            input.value = formatted;
+            updateWithdrawSummaries();
+        }
+
+        function updateWithdrawSummaries() {
+            const amountInput = document.getElementById('withdrawAmountInput');
+            withdrawAmount = parseInt(amountInput.value) || 0;
+            
+            // Обновляем SBP
+            const phone = document.getElementById('sbpPhone').value.replace(/\D/g, '');
+            const bank = selectedBank;
+            const amount = withdrawAmount;
+
+            const fee = Math.round(amount * 0.03 * 100) / 100;
+            const finalAmount = Math.round((amount - fee) * 100) / 100;
+
+            document.getElementById('sbpAmountDisplay').textContent = amount.toLocaleString() + ' ₽';
+            document.getElementById('sbpFeeDisplay').textContent = fee.toLocaleString() + ' ₽';
+            document.getElementById('sbpFinalDisplay').textContent = finalAmount.toLocaleString() + ' ₽';
+
+            const isValidSbp = phone.length >= 10 && bank && bank.length > 0 && amount >= 50;
+            document.getElementById('sbpSubmit').disabled = !isValidSbp;
+
+            // Обновляем Card
+            const card = document.getElementById('cardNumber').value.replace(/\s/g, '');
+
+            document.getElementById('cardAmountDisplay').textContent = amount.toLocaleString() + ' ₽';
+            document.getElementById('cardFeeDisplay').textContent = fee.toLocaleString() + ' ₽';
+            document.getElementById('cardFinalDisplay').textContent = finalAmount.toLocaleString() + ' ₽';
+
+            const isValidCard = card.length >= 16 && amount >= 50;
+            document.getElementById('cardSubmit').disabled = !isValidCard;
+        }
+
+        async function processWithdrawStep(method) {
+            const amount = withdrawAmount || 0;
+
+            if (amount < 50) {
+                showToast('Минимальная сумма вывода 50 ₽', 'error');
+                return;
+            }
+
+            try {
+                const balanceData = await apiRequest('/api/balance');
+                if (amount > balanceData.balance) {
+                    showToast(`Недостаточно средств!\nБаланс: ${balanceData.balance} ₽`, 'error');
+                    return;
+                }
+            } catch (error) {
+                showToast('Ошибка проверки баланса', 'error');
+                return;
+            }
+
+            let details = '';
+            if (method === 'sbp') {
+                const phone = document.getElementById('sbpPhone').value;
+                if (!phone || phone.replace(/\D/g, '').length < 10) {
+                    showToast('Введите корректный номер телефона', 'error');
+                    return;
+                }
+                if (!selectedBank) {
+                    showToast('Выберите банк', 'error');
+                    return;
+                }
+                details = `СБП: ${phone}, Банк: ${selectedBank}`;
+            } else if (method === 'card') {
+                const card = document.getElementById('cardNumber').value.replace(/\s/g, '');
+                if (card.length < 16) {
+                    showToast('Введите корректный номер карты', 'error');
+                    return;
+                }
+                details = `Карта: ${card}`;
+            }
+
+            try {
+                // Сначала списываем сумму с баланса локально для UX
+                const currentBalance = parseInt(document.getElementById('balanceAmount').textContent.replace(/\s/g, ''));
+                document.getElementById('balanceAmount').textContent = (currentBalance - amount).toLocaleString('ru-RU');
+                
+                // Добавляем транзакцию в историю локально
+                const transactionsContainer = document.getElementById('transactionsHistory');
+                const date = new Date().toLocaleString('ru-RU', {
+                    day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit'
+                });
+                
+                const existingHtml = transactionsContainer.innerHTML;
+                
+                const newTransactionHtml = `
+                    <div class="history-item">
+                        <div class="h-left">
+                            <span class="h-icon" style="display:flex;align-items:center;justify-content:center;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2">
+                                    <path d="M12 19L12 5M5 12L12 19L19 12"/>
+                                </svg>
+                            </span>
+                            <div class="h-info">
+                                <div class="h-name">Вывод средств (в обработке)</div>
+                                <div class="h-date">${date}</div>
+                            </div>
+                        </div>
+                        <span class="h-amount negative">-${amount} ₽</span>
+                    </div>
+                `;
+                
+                if (existingHtml.includes('history-empty')) {
+                    transactionsContainer.innerHTML = newTransactionHtml;
+                } else {
+                    transactionsContainer.innerHTML = newTransactionHtml + existingHtml;
+                }
+
+                await apiRequest('/api/balance/withdraw', 'POST', {
+                    amount: amount,
+                    details: details
+                });
+
+                showToast(`Заявка на вывод ${amount} ₽ отправлена!`, 'success');
+                closeWithdrawPage();
+                await loadBalance();
+                await loadTransactions();
+            } catch (error) {
+                // Если ошибка - возвращаем деньги обратно
+                const currentBalance = parseInt(document.getElementById('balanceAmount').textContent.replace(/\s/g, ''));
+                document.getElementById('balanceAmount').textContent = (currentBalance + amount).toLocaleString('ru-RU');
+                showToast(error.message || 'Ошибка вывода', 'error');
+                await loadBalance();
+                await loadTransactions();
+            }
+        }
+
+        async function loadOrders() {
+            try {
+                const orders = await apiRequest('/api/orders');
+                const container = document.getElementById('ordersHistory');
+
+                if (!orders || orders.length === 0) {
+                    container.innerHTML = `
+                            <div class="history-empty">
+                                <div class="empty-icon" id="emptyOrdersAnimation"></div>
+                                <div>У вас пока нет покупок</div>
+                            </div>
+                        `;
+                    loadLottieAnimation(
+                        document.getElementById('emptyOrdersAnimation'),
+                        'nohistory.json',
+                        '📭'
+                    );
+                    return;
+                }
+
+                let html = '';
+                orders.slice(0, 20).forEach(item => {
+                    const date = formatDate(item.created_at);
+                    const statusMap = {
+                        'pending': 'В обработке',
+                        'code_requested': 'Код запрошен',
+                        'processing': 'Обработка',
+                        'friend_requested': 'Запрос отправлен',
+                        'friend_accepted': 'Ожидание (24ч)',
+                        'timeout': 'Требуется подтверждение',
+                        'completed': 'Выполнен',
+                        'cancelled': 'Отменён'
+                    };
+                    const colorMap = {
+                        'pending': '#FFD54F',
+                        'code_requested': '#FFD54F',
+                        'processing': '#FFD54F',
+                        'friend_requested': '#FFD54F',
+                        'friend_accepted': '#FFD54F',
+                        'timeout': '#FF6B6B',
+                        'completed': '#00E676',
+                        'cancelled': '#FF3B6F'
+                    };
+                    const statusText = statusMap[item.status] || item.status;
+                    const statusColor = colorMap[item.status] || '#FFFFFF';
+
+                    const orderNumber = item.order_number || `VX-${String(item.id).padStart(6, '0')}`;
+
+                    html += `
+                            <div class="history-item" onclick="openOrderDetail(${item.id})">
+                                <div class="h-left">
+                                    <span class="h-icon">${item.image || '🎮'}</span>
+                                    <div class="h-info">
+                                        <div class="h-name">${item.product_name}</div>
+                                        <div class="h-date">${date}</div>
+                                        <div style="font-size:0.55rem;color:rgba(255,255,255,0.15);">${orderNumber}</div>
+                                    </div>
+                                </div>
+                                <div style="text-align:right;">
+                                    <div class="h-amount negative">-${item.product_price} ₽</div>
+                                    <div style="font-size:0.6rem;color:${statusColor};">${statusText}</div>
+                                </div>
+                            </div>
+                        `;
+                });
+
+                container.innerHTML = html;
+            } catch (error) {
+                console.error('Ошибка загрузки заказов:', error);
+                document.getElementById('ordersHistory').innerHTML = `
+                        <div class="history-empty">
+                            <div class="empty-icon" id="errorOrdersAnimation"></div>
+                            <div>Ошибка загрузки истории</div>
+                        </div>
+                    `;
+                loadLottieAnimation(
+                    document.getElementById('errorOrdersAnimation'),
+                    'badinput.json',
+                    '⚠️'
+                );
+            }
+        }
+
+        async function openOrderDetail(orderId) {
+            try {
+                const order = await apiRequest(`/api/orders/${orderId}`);
+                const container = document.getElementById('orderDetailContent');
+
+                const statusMap = {
+                    'pending': 'В обработке',
+                    'code_requested': 'Код запрошен',
+                    'processing': 'Обработка',
+                    'friend_requested': 'Запрос в друзья',
+                    'friend_accepted': 'Ожидание подарка',
+                    'timeout': 'Требуется подтверждение',
+                    'completed': 'Выполнен',
+                    'cancelled': 'Отменён'
+                };
+
+                const statusClass = {
+                    'pending': 'pending',
+                    'code_requested': 'pending',
+                    'processing': 'processing',
+                    'friend_requested': 'pending',
+                    'friend_accepted': 'pending',
+                    'timeout': 'pending',
+                    'completed': 'completed',
+                    'cancelled': 'cancelled'
+                };
+
+                const orderNumber = order.order_number || `VX-${String(order.id).padStart(6, '0')}`;
+                document.getElementById('detailOrderNumber').textContent = orderNumber;
+
+                let detailsHtml = `
+                        <div class="detail-card">
+                            <div class="detail-row">
+                                <span class="detail-label">Товар</span>
+                                <span class="detail-value">${order.product_name}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Категория</span>
+                                <span class="detail-value">${order.category}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Дата</span>
+                                <span class="detail-value">${formatDate(order.created_at)}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Статус</span>
+                                <span class="detail-value">
+                                    <span class="detail-status-badge ${statusClass[order.status] || 'pending'}">${statusMap[order.status] || order.status}</span>
+                                </span>
+                            </div>
+                        `;
+
+                if (order.email) {
+                    detailsHtml += `
+                            <div class="detail-row">
+                                <span class="detail-label">Почта</span>
+                                <span class="detail-value">${order.email}</span>
+                            </div>
+                        `;
+                }
+
+                if (order.code) {
+                    detailsHtml += `
+                            <div class="detail-row">
+                                <span class="detail-label">Код</span>
+                                <span class="detail-value">${order.code}</span>
+                            </div>
+                        `;
+                }
+
+                if (order.link) {
+                    detailsHtml += `
+                            <div class="detail-row">
+                                <span class="detail-label">Ссылка</span>
+                                <span class="detail-value" style="font-size:0.75rem;color:#7DD8FF;">${order.link}</span>
+                            </div>
+                        `;
+                }
+
+                if (order.completed_at) {
+                    detailsHtml += `
+                            <div class="detail-row">
+                                <span class="detail-label">Выполнен</span>
+                                <span class="detail-value">${formatDate(order.completed_at)}</span>
+                            </div>
+                        `;
+                }
+
+                if (order.admin_note) {
+                    detailsHtml += `
+                            <div class="detail-row">
+                                <span class="detail-label">Примечание</span>
+                                <span class="detail-value" style="color:#FFD54F;">${order.admin_note}</span>
+                            </div>
+                        `;
+                }
+
+                detailsHtml += `</div>`;
+
+                detailsHtml += `
+                        <div class="detail-summary">
+                            <span class="summary-label">Итого</span>
+                            <span class="summary-price">${order.product_price} ₽</span>
+                        </div>
+                    `;
+
+                container.innerHTML = detailsHtml;
+
+                Object.keys(pages).forEach(key => {
+                    if (pages[key]) pages[key].classList.remove('active');
+                });
+                pages.orderDetail.classList.add('active');
+                updateNavIcons('orderDetail');
+                if (tg && tg.BackButton) tg.BackButton.show();
+                window.location.hash = 'orderDetail';
+
+            } catch (error) {
+                showToast('Ошибка загрузки деталей заказа', 'error');
+            }
+        }
+
+        function closeOrderDetail() {
+            Object.keys(pages).forEach(key => {
+                if (pages[key]) pages[key].classList.remove('active');
+            });
+            pages.profile.classList.add('active');
+            updateNavIcons('profile');
+            window.location.hash = 'profile';
+            if (tg && tg.BackButton) tg.BackButton.show();
+            loadOrders();
+            loadBalance();
+            loadTransactions();
+        }
+
+        async function loadTransactions() {
+            try {
+                const transactions = await apiRequest('/api/balance/transactions');
+                const container = document.getElementById('transactionsHistory');
+
+                if (!transactions || transactions.length === 0) {
+                    container.innerHTML = `
+                            <div class="history-empty">
+                                <div class="empty-icon" id="emptyTransactionsAnimation"></div>
+                                <div>История транзакций пуста</div>
+                            </div>
+                        `;
+                    loadLottieAnimation(
+                        document.getElementById('emptyTransactionsAnimation'),
+                        'nohistory.json',
+                        '📊'
+                    );
+                    return;
+                }
+
+                let html = '';
+                transactions.slice(0, 20).forEach(item => {
+                    const date = formatDate(item.created_at);
+                    const amountClass = item.type === 'deposit' ? 'positive' : 'negative';
+                    const sign = item.type === 'deposit' ? '+' : '-';
+                    
+                    // Для вывода меняем иконку: при пополнении стрелка вниз, при выводе - вверх
+                    const iconPath = item.type === 'deposit' 
+                        ? 'M12 5L12 19M5 12L12 5L19 12'  // стрелка вниз (пополнение)
+                        : 'M12 19L12 5M5 12L12 19L19 12'; // стрелка вверх (вывод)
+
+                    html += `
+                            <div class="history-item">
+                                <div class="h-left">
+                                    <span class="h-icon" style="display:flex;align-items:center;justify-content:center;">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2">
+                                            <path d="${iconPath}"/>
+                                        </svg>
+                                    </span>
+                                    <div class="h-info">
+                                        <div class="h-name">${item.description || item.type}</div>
+                                        <div class="h-date">${date}</div>
+                                    </div>
+                                </div>
+                                <span class="h-amount ${amountClass}">${sign}${Math.abs(item.amount)} ₽</span>
+                            </div>
+                        `;
+                });
+
+                container.innerHTML = html;
+            } catch (error) {
+                console.error('Ошибка загрузки транзакций:', error);
+                document.getElementById('transactionsHistory').innerHTML = `
+                        <div class="history-empty">
+                            <div class="empty-icon" id="errorTransactionsAnimation"></div>
+                            <div>Ошибка загрузки транзакций</div>
+                        </div>
+                    `;
+                loadLottieAnimation(
+                    document.getElementById('errorTransactionsAnimation'),
+                    'badinput.json',
+                    '⚠️'
+                );
+            }
+        }
+
+        let productsData = [];
+
+        async function loadProducts() {
+            try {
+                productsData = await apiRequest('/api/products');
+                renderProducts('all');
+                return productsData;
+            } catch (error) {
+                productsData = [];
+                renderProducts('all');
+            }
+        }
+
+        function renderProducts(category) {
+            const grid = document.getElementById('productsGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            let items = category === 'all' ? productsData : productsData.filter(p => p.category === category);
+
+            if (items.length === 0) {
+                grid.innerHTML = `
+                        <div style="grid-column: 1/-1; text-align: center; padding: 40px 0; color: rgba(255,255,255,0.2);">
+                            <div style="font-size: 2rem; margin-bottom: 8px;">📭</div>
+                            <div>Товаров в этой категории пока нет</div>
+                        </div>
+                    `;
+                return;
+            }
+
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+
+                const icon = item.image || '💎';
+
+                card.innerHTML = `
+                        <div style="width:100%;display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                            <div class="prod-icon" style="margin-bottom:0;font-size:1.8rem;">${icon}</div>
+                        </div>
+                        <div class="prod-name">${item.name}</div>
+                        <div class="prod-sub">Brawl Stars</div>
+                        <button class="prod-btn" onclick="addToCart({id: ${item.id}, icon: '${icon}', name: '${item.name.replace(/'/g, "\\'")}', price: ${item.price}, category: '${item.category}'})" style="margin-top:4px;">
+                            <span class="price">${item.price} ₽</span>
+                            <span class="cart-text">+ в корзину</span>
+                        </button>
+                    `;
+                grid.appendChild(card);
+            });
+        }
+
+        function getCart() {
+            try { return JSON.parse(localStorage.getItem('vintyx_cart')) || []; } catch { return []; }
+        }
+
+        function saveCart(cartData) {
+            localStorage.setItem('vintyx_cart', JSON.stringify(cartData));
+            updateCartCount();
+            updateNavCartBadge();
+        }
+
+        function updateCartCount() {
+            const cartData = getCart();
+            const count = cartData.reduce((sum, item) => sum + (item.quantity || 1), 0);
+            updateNavCartBadge();
+        }
+
+        function updateNavCartBadge() {
+            const cartData = getCart();
+            const count = cartData.reduce((sum, item) => sum + (item.quantity || 1), 0);
+            const badge = document.getElementById('navCartBadge');
+            if (badge) {
+                if (count > 0) {
+                    badge.classList.remove('hidden');
+                    badge.textContent = count > 9 ? '9+' : count;
+                } else {
+                    badge.classList.add('hidden');
+                }
+            }
+        }
+
+        function calculateTotal() {
+            const cartData = getCart();
+            return cartData.reduce((sum, item) => {
+                const quantity = item.quantity || 1;
+                return sum + ((item.price || 0) * quantity);
+            }, 0);
+        }
+
+        function addToCart(product) {
+            const cartData = getCart();
+            const existing = cartData.find(item => item.id === product.id);
+
+            if (existing) {
+                existing.quantity = (existing.quantity || 1) + 1;
+            } else {
+                cartData.push({ ...product, quantity: 1 });
+            }
+
+            saveCart(cartData);
+            updateNavCartBadge();
+            showToast(`${product.name} добавлен в корзину!`, 'success');
+        }
+
+        function removeFromCart(productId) {
+            let cartData = getCart();
+            cartData = cartData.filter(item => item.id !== productId);
+            saveCart(cartData);
+            renderCart();
+        }
+
+        function changeQuantity(productId, delta) {
+            const cartData = getCart();
+            const item = cartData.find(item => item.id === productId);
+
+            if (!item) return;
+
+            const newQuantity = (item.quantity || 1) + delta;
+
+            if (newQuantity <= 0) {
+                const newCart = cartData.filter(i => i.id !== productId);
+                saveCart(newCart);
+            } else {
+                item.quantity = newQuantity;
+                saveCart(cartData);
+            }
+
+            renderCart();
+            updateNavCartBadge();
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cartItems');
+            const totalContainer = document.getElementById('cartTotal');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            const cartData = getCart();
+
+            if (cartData.length === 0) {
+                container.innerHTML = `
+                        <div class="cart-empty">
+                            <div class="empty-icon" id="emptyCartAnimation"></div>
+                            <div class="empty-text">Корзина пуста</div>
+                        </div>
+                    `;
+                loadLottieAnimation(
+                    document.getElementById('emptyCartAnimation'),
+                    'empty_basket.json',
+                    '🛒'
+                );
+                totalContainer.innerHTML = '';
+                if (checkoutBtn) {
+                    checkoutBtn.disabled = true;
+                    checkoutBtn.textContent = 'Оплатить';
+                }
+                updateNavCartBadge();
+                return;
+            }
+
+            let html = '';
+            let totalItems = 0;
+            cartData.forEach(item => {
+                const quantity = item.quantity || 1;
+                const price = item.price || 0;
+                const totalPrice = price * quantity;
+                totalItems += quantity;
+
+                html += `
+                        <div class="cart-item">
+                            <div class="item-left">
+                                <span class="item-icon">${item.icon}</span>
+                                <div class="item-info">
+                                    <div class="item-name">${item.name}</div>
+                                    <div class="item-game">Brawl Stars × ${quantity}</div>
+                                </div>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="display:flex;align-items:center;gap:6px;">
+                                    <button class="order-btn-small" onclick="changeQuantity(${item.id}, -1)" style="min-width:28px;padding:2px 6px;font-size:0.8rem;">−</button>
+                                    <span style="font-size:0.9rem;font-weight:600;color:#FFFFFF;min-width:20px;text-align:center;">${quantity}</span>
+                                    <button class="order-btn-small" onclick="changeQuantity(${item.id}, 1)" style="min-width:28px;padding:2px 6px;font-size:0.8rem;">+</button>
+                                </div>
+                                <span class="item-price">${totalPrice} ₽</span>
+                                <button class="remove-btn" onclick="removeFromCart(${item.id})">✕</button>
+                            </div>
+                        </div>
+                    `;
+            });
+
+            container.innerHTML = html;
+
+            const total = calculateTotal();
+            totalContainer.innerHTML = `
+                    <div class="cart-total">
+                        <span class="total-label">Итого (${totalItems} шт.):</span>
+                        <span class="total-price">${total} ₽</span>
+                    </div>
+                `;
+
+            if (checkoutBtn) {
+                checkoutBtn.disabled = isProcessing || false;
+                checkoutBtn.textContent = isProcessing ? 'Обработка...' : 'Оплатить';
+            }
+            updateNavCartBadge();
+        }
+
+        function checkCartTypes() {
+            const cartData = getCart();
+            if (cartData.length === 0) return null;
+
+            const types = cartData.map(item => item.category);
+            const uniqueTypes = [...new Set(types)];
+
+            if (uniqueTypes.length > 1) {
+                const typeLabels = {
+                    'login': 'Вход (почта + код)',
+                    'db1': 'По ссылке (Матчерино)',
+                    'db2': 'Подарком (добавить в друзья)'
+                };
+                return {
+                    error: true,
+                    message: 'В корзине товары разных типов!\n\n' +
+                        uniqueTypes.map(t => typeLabels[t] || t).join('\n') +
+                        '\n\nОформите заказы по отдельности!'
+                };
+            }
+
+            return { error: false, type: uniqueTypes[0] };
+        }
+
+        let currentOrderType = 'login';
+        let waitingTimer = null;
+        let progressInterval = null;
+
+        async function checkout() {
+            if (isProcessing) {
+                showToast('Заказ уже обрабатывается', 'info');
+                return;
+            }
+
+            const cartData = getCart();
+
+            if (cartData.length === 0) {
+                showToast('Корзина пуста!', 'error');
+                return;
+            }
+
+            const typeCheck = checkCartTypes();
+            if (typeCheck.error) {
+                showToast(typeCheck.message, 'error');
+                return;
+            }
+
+            const total = calculateTotal();
+
+            try {
+                const balanceData = await apiRequest('/api/balance');
+                if (balanceData.balance < total) {
+                    showToast(`Недостаточно средств!\nБаланс: ${balanceData.balance} ₽\nСумма: ${total} ₽`, 'error');
+                    return;
+                }
+            } catch (error) {
+                showToast('Ошибка проверки баланса', 'error');
+                return;
+            }
+
+            isProcessing = true;
+            document.getElementById('checkoutBtn').disabled = true;
+            document.getElementById('checkoutBtn').textContent = 'Обработка...';
+
+            const orderType = typeCheck.type;
+            currentOrderType = orderType;
+
+            try {
+                const result = await apiRequest('/api/orders', 'POST', {
+                    items: cartData.map(item => ({
+                        id: item.id,
+                        name: item.name,
+                        price: item.price,
+                        category: item.category,
+                        quantity: item.quantity || 1
+                    })),
+                    total: total
+                });
+
+                currentOrderData = result.orders[0];
+                currentOrderId = currentOrderData.id;
+
+                saveCart([]);
+                renderCart();
+                updateCartCount();
+
+                if (orderType === 'login') {
+                    openOrderFlow('login');
+                } else if (orderType === 'db1') {
+                    openOrderFlow('db1');
+                } else if (orderType === 'db2') {
+                    openOrderFlow('db2');
+                }
+
+                await loadBalance();
+                await loadOrders();
+                await loadTransactions();
+
+            } catch (error) {
+                showToast(error.message || 'Ошибка оформления заказа', 'error');
+            } finally {
+                isProcessing = false;
+                document.getElementById('checkoutBtn').disabled = false;
+                document.getElementById('checkoutBtn').textContent = 'Оплатить';
+            }
+        }
+
+        function openOrderFlow(type) {
+            Object.keys(pages).forEach(key => {
+                if (pages[key]) pages[key].classList.remove('active');
+            });
+
+            const orderPage = document.getElementById('pageOrderFlow');
+            orderPage.classList.add('active');
+
+            document.querySelectorAll('.order-step').forEach(step => step.classList.remove('active'));
+
+            if (type === 'login') {
+                document.getElementById('orderStepEmail').classList.add('active');
+            } else if (type === 'db1') {
+                document.getElementById('orderStepWaiting').classList.add('active');
+                startWaiting('db1');
+            } else if (type === 'db2') {
+                document.getElementById('orderStepWaiting').classList.add('active');
+                startWaiting('db2');
+            }
+
+            if (tg && tg.BackButton) tg.BackButton.show();
+            window.location.hash = 'order';
+        }
+
+        function closeOrderFlow() {
+            if (progressInterval) {
+                clearInterval(progressInterval);
+                progressInterval = null;
+            }
+            if (waitingTimer) {
+                clearTimeout(waitingTimer);
+                waitingTimer = null;
+            }
+            if (orderCheckInterval) {
+                clearInterval(orderCheckInterval);
+                orderCheckInterval = null;
+            }
+
+            document.getElementById('pageOrderFlow').classList.remove('active');
+            document.querySelectorAll('.order-step').forEach(step => step.classList.remove('active'));
+
+            Object.keys(pages).forEach(key => {
+                if (pages[key]) pages[key].classList.remove('active');
+            });
+            pages.home.classList.add('active');
+
+            updateNavIcons('home');
+            window.location.hash = '';
+            if (tg && tg.BackButton) tg.BackButton.hide();
+        }
+
+        async function sendCode() {
+            if (!currentUser) {
+                showToast('Пожалуйста, авторизуйтесь через Telegram', 'error');
+                return;
+            }
+
+            const email = document.getElementById('orderEmailInput').value.trim();
+            if (!email) {
+                showToast('Введите почту', 'error');
+                return;
+            }
+
+            if (!currentOrderId) {
+                showToast('Заказ не найден. Попробуйте снова.', 'error');
+                return;
+            }
+
+            try {
+                await apiRequest(`/api/orders/${currentOrderId}/email`, 'POST', { email });
+
+                saveCart([]);
+                renderCart();
+                updateCartCount();
+
+                document.getElementById('orderStepEmail').classList.remove('active');
+                document.getElementById('orderStepWaitingCode').classList.add('active');
+
+                startWaitingCode();
+
+                showToast('Запрос на код отправлен админу', 'success');
+            } catch (error) {
+                showToast(error.message || 'Ошибка отправки', 'error');
+            }
+        }
+
+        function startWaitingCode() {
+            const progressBar = document.getElementById('progressBarCode');
+            let progress = 0;
+
+            progressBar.style.width = '0%';
+
+            if (progressInterval) clearInterval(progressInterval);
+
+            progressInterval = setInterval(() => {
+                progress += 2;
+                if (progress >= 90) {
+                    progress = 90;
+                    clearInterval(progressInterval);
+                    progressInterval = null;
+                }
+                progressBar.style.width = progress + '%';
+            }, 300);
+
+            if (orderCheckInterval) clearInterval(orderCheckInterval);
+            orderCheckInterval = setInterval(checkOrderStatus, 5000);
+        }
+
+        async function checkOrderStatus() {
+            if (!currentOrderId) return;
+
+            try {
+                const order = await apiRequest(`/api/orders/${currentOrderId}`);
+
+                if (order.status === 'code_requested') {
+                    document.getElementById('orderStepWaitingCode').classList.remove('active');
+                    document.getElementById('orderStepCode').classList.add('active');
+                    if (progressInterval) {
+                        clearInterval(progressInterval);
+                        progressInterval = null;
+                    }
+                    if (orderCheckInterval) {
+                        clearInterval(orderCheckInterval);
+                        orderCheckInterval = null;
+                    }
+                    showToast('Код запрошен! Введите его', 'success');
+                    setTimeout(() => {
+                        document.getElementById('orderCodeInput').focus();
+                    }, 300);
+                } else if (order.status === 'completed') {
+                    document.getElementById('orderStepWaitingCode').classList.remove('active');
+                    document.getElementById('orderStepCode').classList.remove('active');
+                    document.getElementById('orderStepWaiting').classList.remove('active');
+                    if (progressInterval) {
+                        clearInterval(progressInterval);
+                        progressInterval = null;
+                    }
+                    if (orderCheckInterval) {
+                        clearInterval(orderCheckInterval);
+                        orderCheckInterval = null;
+                    }
+                    showReadyLogin();
+                } else if (order.status === 'cancelled') {
+                    if (progressInterval) {
+                        clearInterval(progressInterval);
+                        progressInterval = null;
+                    }
+                    if (orderCheckInterval) {
+                        clearInterval(orderCheckInterval);
+                        orderCheckInterval = null;
+                    }
+                    showToast('Заказ отменён', 'error');
+                    closeOrderFlow();
+                }
+            } catch (error) {
+                console.error('Ошибка проверки статуса:', error);
+            }
+        }
+
+        function goBackToEmail() {
+            document.getElementById('orderStepCode').classList.remove('active');
+            document.getElementById('orderStepEmail').classList.add('active');
+            if (orderCheckInterval) {
+                clearInterval(orderCheckInterval);
+                orderCheckInterval = null;
+            }
+        }
+
+        async function confirmCode() {
+            if (!currentUser) {
+                showToast('Пожалуйста, авторизуйтесь через Telegram', 'error');
+                return;
+            }
+
+            const code = document.getElementById('orderCodeInput').value.trim();
+            if (!code || code.length < 4) {
+                showToast('Введите код из письма', 'error');
+                return;
+            }
+
+            try {
+                await apiRequest(`/api/orders/${currentOrderId}/code`, 'POST', { code });
+                document.getElementById('orderStepCode').classList.remove('active');
+                document.getElementById('orderStepWaiting').classList.add('active');
+
+                if (orderCheckInterval) {
+                    clearInterval(orderCheckInterval);
+                    orderCheckInterval = null;
+                }
+
+                startWaiting('login');
+            } catch (error) {
+                showToast(error.message || 'Ошибка отправки кода', 'error');
+            }
+        }
+
+        function startWaiting(type) {
+            const progressBar = document.getElementById('progressBar');
+            let progress = 0;
+            const duration = 5000;
+            const interval = 50;
+            const step = (interval / duration) * 100;
+
+            progressBar.style.width = '0%';
+
+            if (progressInterval) clearInterval(progressInterval);
+            if (waitingTimer) clearTimeout(waitingTimer);
+
+            progressInterval = setInterval(() => {
+                progress += step;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(progressInterval);
+                    progressInterval = null;
+                    completeOrder(type);
+                }
+                progressBar.style.width = progress + '%';
+            }, interval);
+
+            waitingTimer = setTimeout(() => {
+                if (progressInterval) {
+                    clearInterval(progressInterval);
+                    progressInterval = null;
+                }
+                completeOrder(type);
+            }, duration + 200);
+        }
+
+        function completeOrder(type) {
+            loadBalance();
+            if (type === 'login') {
+                checkOrderStatus();
+                if (orderCheckInterval) {
+                    clearInterval(orderCheckInterval);
+                    orderCheckInterval = null;
+                }
+                setTimeout(() => {
+                    checkOrderStatus();
+                }, 1000);
+            } else if (type === 'db1') showReadyDB1();
+            else if (type === 'db2') showReadyDB2();
+            loadOrders();
+            loadTransactions();
+        }
+
+        function showReadyLogin() {
+            document.getElementById('orderStepWaiting').classList.remove('active');
+            const order = currentOrderData || {};
+            document.getElementById('readyProductName').textContent = order.product_name || 'Товар';
+            document.getElementById('readyEmail').textContent = document.getElementById('orderEmailInput').value || 'example@mail.com';
+            document.getElementById('readyDate').textContent = new Date().toLocaleString('ru-RU', {
+                day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit'
+            });
+            document.getElementById('orderStepReadyLogin').classList.add('active');
+        }
+
+        function showReadyDB1() {
+            document.getElementById('orderStepWaiting').classList.remove('active');
+            const order = currentOrderData || {};
+            const links = [];
+            if (order.links) {
+                links.push(...order.links);
+            } else if (order.link) {
+                links.push(order.link);
+            } else {
+                links.push('https://brawlstars.com/claim/example');
+            }
+
+            document.getElementById('readyProductNameDB1').textContent = order.product_name || 'Матчерино';
+            document.getElementById('readyDB1Sub').textContent = links.length > 1 ? `Перейдите по ссылкам (${links.length} шт.)` : 'Перейдите по ссылке';
+
+            let linksHtml = '';
+            links.forEach((link, i) => {
+                linksHtml += `
+                        <div class="ready-link-box">
+                            <span class="ready-link-number">#${i+1}</span>
+                            <div class="ready-link">${link}</div>
+                            <button class="order-btn-small" onclick="copyLinkText('${link}')" style="font-size:0.65rem;padding:4px 10px;">Копировать</button>
+                        </div>
+                    `;
+            });
+            document.getElementById('readyLinksContainer').innerHTML = linksHtml;
+            document.getElementById('readyDateDB1').textContent = new Date().toLocaleString('ru-RU', {
+                day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit'
+            });
+            document.getElementById('orderStepReadyDB1').classList.add('active');
+        }
+
+        function showReadyDB2() {
+            document.getElementById('orderStepWaiting').classList.remove('active');
+            const order = currentOrderData || {};
+            document.getElementById('readyProductNameDB2').textContent = order.product_name || 'Подарок';
+            document.getElementById('friendId').textContent = order.link || 'https://brawlstars.com/invite/example';
+            document.getElementById('friendName').textContent = 'Донор';
+            document.getElementById('readyDateDB2').textContent = new Date().toLocaleString('ru-RU', {
+                day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit'
+            });
+            document.getElementById('orderStatus').textContent = 'Ожидание подарка (24ч)';
+            document.getElementById('orderStepReadyDB2').classList.add('active');
+        }
+
+        function closeCart() { navigateTo('home'); }
+        function closeProfile() { navigateTo('home'); }
+
+        function openGame(pageId) {
+            if (pageId === 'pageBrawl') {
+                Object.keys(pages).forEach(key => {
+                    if (pages[key]) pages[key].classList.remove('active');
+                });
+                pages.brawl.classList.add('active');
+                updateNavIcons('brawl');
+                if (tg && tg.BackButton) tg.BackButton.show();
+                setTimeout(() => renderProducts('all'), 50);
+            }
+        }
+
+        function closeGame() {
+            Object.keys(pages).forEach(key => {
+                if (pages[key]) pages[key].classList.remove('active');
+            });
+            pages.home.classList.add('active');
+            updateNavIcons('home');
+            window.location.hash = '';
+            if (tg && tg.BackButton) tg.BackButton.hide();
+        }
+
+        function showComingSoon(gameName) {
+            showToast(`Раздел "${gameName}" скоро появится!`, 'info');
+        }
+
+        const gamesData = [
+            { id: 'brawl', name: 'Brawl Stars', icon: 'https://i.imgur.com/3Zm7Tr0.png', tags: ['Гемы', 'Brawl Pass'], cardClass: 'brawl-card', pageId: 'pageBrawl' },
+            { id: 'clash', name: 'Clash Royale', icon: 'https://i.imgur.com/B4idahX.png', tags: ['Кристаллы', 'Pass Royale'], cardClass: 'clash-card', pageId: null },
+            { id: 'telegram', name: 'Telegram', icon: 'https://i.imgur.com/eM5u3Td.png', tags: ['Stars', 'Premium'], cardClass: 'telegram-card', pageId: null }
+        ];
+
+        function getFavorites() {
+            try { return JSON.parse(localStorage.getItem('vintyx_favorites')) || {}; } catch { return {}; }
+        }
+
+        function saveFavorites(favorites) { localStorage.setItem('vintyx_favorites', JSON.stringify(favorites)); }
+
+        function toggleHeart(gameId) {
+            const favorites = getFavorites();
+            favorites[gameId] = !favorites[gameId];
+            saveFavorites(favorites);
+            renderGames();
+        }
+
+        function renderGames() {
+            const container = document.getElementById('gameList');
+            const favorites = getFavorites();
+
+            const sortedGames = [...gamesData].sort((a, b) => {
+                return (favorites[b.id] || false) - (favorites[a.id] || false);
+            });
+
+            container.innerHTML = '';
+
+            sortedGames.forEach((game) => {
+                const isFavorite = favorites[game.id] || false;
+                const card = document.createElement('div');
+                card.className = game.cardClass;
+
+                const onClickAttr = game.pageId ? `onclick="openGame('${game.pageId}')"` : `onclick="showComingSoon('${game.name}')"`;
+
+                // Определяем цвета для каждой игры
+                let colorMain, colorLight;
+                if (game.id === 'brawl') {
+                    colorMain = '#FF3B3B';
+                    colorLight = 'rgba(255,59,59,0.2)';
+                } else if (game.id === 'clash') {
+                    colorMain = '#4A7BFF';
+                    colorLight = 'rgba(74,123,255,0.2)';
+                } else {
+                    colorMain = '#5BC8FF';
+                    colorLight = 'rgba(91,200,255,0.2)';
+                }
+
+                // Строим HTML карточки
+                card.innerHTML = `
+                    <div class="artwork" ${onClickAttr}>
+                        <div class="bg-glow"></div>
+                        <div class="particles">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <img class="character" src="${game.icon}" alt="${game.name}" loading="lazy">
+                        <div class="edge-mask"></div>
+                    </div>
+                    <div class="content" ${onClickAttr}>
+                        <div>
+                            <div class="logo">
+                                ${game.id === 'brawl' ? `
+                                    <span class="brawl">BRAWL</span>
+                                    <span class="stars">STARS</span>
+                                ` : game.id === 'clash' ? `
+                                    <span class="clash">CLASH</span>
+                                    <span class="royale">ROYALE</span>
+                                ` : `
+                                    <span class="telegram">TELEGRAM</span>
+                                    <span class="premium">PREMIUM</span>
+                                `}
+                            </div>
+                            <div class="features">
+                                ${game.tags.map(tag => `
+                                    <div class="feature">
+                                        <span class="icon-placeholder">✦</span>
+                                        ${tag}
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <div>
+                            <div class="divider"></div>
+                            <div class="bottom-row">
+                                <div class="price-group">
+                                    <span class="donat-label">Донат от</span>
+                                    <span class="price" style="color: ${colorMain};">${game.id === 'brawl' ? '99' : game.id === 'clash' ? '149' : '79'} ₽</span>
+                                </div>
+                                <div style="display:flex;align-items:center;gap:12px;">
+                                    <button class="heart-btn ${isFavorite ? 'active' : ''}" data-game="${game.id}" onclick="event.stopPropagation();toggleHeart('${game.id}')" style="font-size:1.6rem;background:none;border:none;cursor:pointer;color:${isFavorite ? '#FF3B6F' : 'rgba(255,255,255,0.15)'};padding:0;line-height:1;font-family:inherit;transition:all 0.25s;">
+                                        ${isFavorite ? '♥' : '♡'}
+                                    </button>
+                                    <span class="arrow">→</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('category-btn') && e.target.dataset.game === 'brawl') {
+                document.querySelectorAll('#brawlCategories .category-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                renderProducts(e.target.dataset.cat);
+            }
         });
 
-        // Запуск
-        перейтиНа('home');
+        function handleHash() {
+            const hash = window.location.hash.replace('#', '');
+            if (hash === 'brawl') { openGame('pageBrawl'); return; }
+            if (hash === 'order') return;
+            if (hash === 'orderDetail') return;
+            if (hash && pages[hash]) navigateTo(hash);
+            else navigateTo('home');
+        }
+
+        window.addEventListener('hashchange', handleHash);
+
+        if (tg && tg.BackButton) {
+            tg.BackButton.onClick(() => {
+                const currentPage = document.querySelector('.page.active');
+                if (currentPage) {
+                    const id = currentPage.id;
+                    if (id === 'pageBrawl') closeGame();
+                    else if (id === 'pageCart' || id === 'pageProfile') navigateTo('home');
+                    else if (id === 'pageOrderFlow') closeOrderFlow();
+                    else if (id === 'pageOrderDetail') closeOrderDetail();
+                    else if (id === 'pageWithdraw') closeWithdrawPage();
+                    else {
+                        const hash = window.location.hash.replace('#', '');
+                        if (hash && hash !== 'home' && hash !== '') navigateTo('home');
+                    }
+                }
+            });
+        }
+
+        async function init() {
+            await loadUserData();
+            await loadProducts();
+            renderGames();
+            handleHash();
+            updateCartCount();
+            updateNavCartBadge();
+
+            isFirstLoad = false;
+
+            if (document.getElementById('pageBrawl').classList.contains('active')) renderProducts('all');
+        }
+
+        init();
     </script>
 </body>
 </html>
