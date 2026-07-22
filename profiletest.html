@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Vintyx Store — Профиль</title>
+    <style>
+        /* ======================================================
+                   БАЗА
+                   ====================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0B0B12;
+            font-family: -apple-system, 'Helvetica Neue', 'Segoe UI', system-ui, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            color: #FFFFFF;
+        }
+
+        /* ======================================================
+                   КОНТЕЙНЕР ПРОФИЛЯ
+                   ====================================================== */
+        .profile-screen {
+            max-width: 420px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 8px 0 20px;
+        }
+
+        /* ======================================================
+                   БАЛАНСОВАЯ КАРТА — ПРЕМИАЛЬНАЯ С АНИМАЦИЕЙ
+                   ====================================================== */
+        .balance-card {
+            position: relative;
+            border-radius: 32px;
+            padding: 28px 24px 32px;
+            background: #111122;
+            overflow: hidden;
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.8),
+                0 0 40px rgba(60, 80, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            margin-bottom: 28px;
+            transition: box-shadow 0.4s ease;
+        }
+
+        /* Анимированный фон — мерцающие тёмно-синие волны */
+        .balance-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 32px;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(40, 60, 200, 0.25) 0%, transparent 60%),
+                radial-gradient(circle at 80% 70%, rgba(80, 100, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 50% 100%, rgba(20, 40, 180, 0.20) 0%, transparent 40%);
+            animation: shimmerCard 4s ease-in-out infinite alternate;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .balance-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 32px;
+            background:
+                radial-gradient(circle at 60% 20%, rgba(60, 80, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 10% 80%, rgba(100, 130, 255, 0.05) 0%, transparent 40%);
+            animation: shimmerCard2 6s ease-in-out infinite alternate;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes shimmerCard {
+            0% {
+                opacity: 0.6;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.02);
+            }
+            100% {
+                opacity: 0.7;
+                transform: scale(0.98);
+            }
+        }
+
+        @keyframes shimmerCard2 {
+            0% {
+                opacity: 0.3;
+                transform: translateX(-5%) scale(1);
+            }
+            100% {
+                opacity: 0.8;
+                transform: translateX(5%) scale(1.05);
+            }
+        }
+
+        /* Контент поверх анимации */
+        .balance-card>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Аватарка в левом верхнем углу */
+        .balance-card .avatar-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1.5px solid rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+            flex-shrink: 0;
+            margin-bottom: 20px;
+        }
+
+        .balance-card .avatar-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .balance-card .avatar-wrap .fallback {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 0.5px;
+        }
+
+        /* Баланс — крупный и чистый */
+        .balance-card .balance-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .balance-card .balance-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.25);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .balance-card .balance-amount {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            letter-spacing: -0.5px;
+            line-height: 1;
+            text-shadow: 0 0 40px rgba(100, 130, 255, 0.08);
+        }
+
+        .balance-card .balance-currency {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.3);
+            margin-left: 4px;
+        }
+
+        /* Тонкая линия внизу карты (опционально) */
+        .balance-card .card-footer-line {
+            margin-top: 20px;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+        }
+
+        /* ======================================================
+                   КНОПКИ БЫСТРЫХ ДЕЙСТВИЙ — РАВНЫЕ
+                   ====================================================== */
+        .quick-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 32px;
+        }
+
+        .quick-actions .qa-btn {
+            flex: 1;
+            height: 52px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.85rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.15s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            letter-spacing: 0.3px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 0 6px;
+            white-space: nowrap;
+        }
+
+        .quick-actions .qa-btn:active {
+            transform: scale(0.96);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .quick-actions .qa-btn svg {
+            width: 18px;
+            height: 18px;
+            stroke: rgba(255, 255, 255, 0.5);
+            stroke-width: 2;
+            fill: none;
+            flex-shrink: 0;
+        }
+
+        /* ======================================================
+                   ОПЕРАЦИИ
+                   ====================================================== */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .section-header .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #FFFFFF;
+            letter-spacing: -0.2px;
+        }
+
+        .section-header .section-link {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.25);
+            cursor: pointer;
+            transition: color 0.2s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .section-header .section-link:hover {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .section-header .section-link svg {
+            width: 14px;
+            height: 14px;
+            stroke: rgba(255, 255, 255, 0.2);
+            stroke-width: 2;
+            fill: none;
+        }
+
+        /* Список операций */
+        .operations-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            margin-bottom: 32px;
+        }
+
+        .operation-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 14px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.02);
+            transition: background 0.15s ease;
+            cursor: default;
+        }
+
+        .operation-item:active {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .operation-item .op-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .operation-item .op-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .operation-item .op-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .operation-item .op-name {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #FFFFFF;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .operation-item .op-date {
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.15);
+            font-weight: 400;
+            margin-top: 1px;
+        }
+
+        .operation-item .op-amount {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #FFFFFF;
+            flex-shrink: 0;
+            margin-left: 12px;
+        }
+
+        .operation-item .op-amount.negative {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .operation-item .op-amount.positive {
+            color: #4ADE80;
+        }
+
+        /* Пустое состояние */
+        .operations-empty {
+            text-align: center;
+            padding: 28px 0 12px;
+            color: rgba(255, 255, 255, 0.08);
+            font-size: 0.8rem;
+        }
+
+        /* ======================================================
+                   ИНФОРМАЦИОННЫЙ БЛОК
+                   ====================================================== */
+        .info-block {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 16px;
+            padding: 16px 4px 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            margin-top: 8px;
+        }
+
+        .info-block .info-item {
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: color 0.2s;
+            text-decoration: none;
+            letter-spacing: 0.2px;
+        }
+
+        .info-block .info-item:hover {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .info-block .info-item:active {
+            opacity: 0.5;
+        }
+
+        /* ======================================================
+                   АДАПТИВНОСТЬ
+                   ====================================================== */
+        @media (max-width: 420px) {
+            .balance-card {
+                padding: 24px 20px 28px;
+                border-radius: 28px;
+            }
+
+            .balance-card .balance-amount {
+                font-size: 2.4rem;
+            }
+
+            .quick-actions .qa-btn {
+                height: 46px;
+                font-size: 0.75rem;
+                border-radius: 14px;
+            }
+
+            .quick-actions .qa-btn svg {
+                width: 16px;
+                height: 16px;
+            }
+
+            .operation-item {
+                padding: 10px 12px;
+            }
+
+            .operation-item .op-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 0.85rem;
+            }
+
+            .operation-item .op-name {
+                font-size: 0.8rem;
+            }
+
+            .info-block {
+                gap: 6px 14px;
+                padding: 14px 2px 4px;
+            }
+
+            .info-block .info-item {
+                font-size: 0.65rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .balance-card .balance-amount {
+                font-size: 2rem;
+            }
+
+            .quick-actions {
+                gap: 6px;
+            }
+
+            .quick-actions .qa-btn {
+                font-size: 0.65rem;
+                height: 40px;
+                padding: 0 4px;
+            }
+
+            .quick-actions .qa-btn svg {
+                width: 14px;
+                height: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="profile-screen">
+
+        <!-- ============================================
+        БАЛАНСОВАЯ КАРТА
+        ============================================ -->
+        <div class="balance-card">
+
+            <!-- Аватарка в левом верхнем углу -->
+            <div class="avatar-wrap">
+                <span class="fallback">V</span>
+            </div>
+
+            <!-- Баланс -->
+            <div class="balance-group">
+                <span class="balance-label">Баланс</span>
+                <div>
+                    <span class="balance-amount">1 488</span>
+                    <span class="balance-currency">₽</span>
+                </div>
+            </div>
+
+            <!-- Декоративная линия -->
+            <div class="card-footer-line"></div>
+        </div>
+
+        <!-- ============================================
+        БЫСТРЫЕ ДЕЙСТВИЯ — 3 РАВНЫЕ КНОПКИ
+        ============================================ -->
+        <div class="quick-actions">
+            <button class="qa-btn" onclick="alert('Вывод')">
+                <svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+                Вывод
+            </button>
+            <button class="qa-btn" onclick="alert('Пополнить')">
+                <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+                Пополнить
+            </button>
+            <button class="qa-btn" onclick="alert('Промокод')">
+                <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                Промокод
+            </button>
+        </div>
+
+        <!-- ============================================
+        ОПЕРАЦИИ
+        ============================================ -->
+        <div class="section-header">
+            <span class="section-title">Мои операции</span>
+            <span class="section-link" onclick="alert('Все операции')">
+                Все операции
+                <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+        </div>
+
+        <div class="operations-list">
+            <!-- Операция 1 -->
+            <div class="operation-item">
+                <div class="op-left">
+                    <div class="op-icon">🎮</div>
+                    <div class="op-info">
+                        <div class="op-name">Brawl Pass</div>
+                        <div class="op-date">Сегодня, 14:32</div>
+                    </div>
+                </div>
+                <span class="op-amount negative">−149 ₽</span>
+            </div>
+
+            <!-- Операция 2 -->
+            <div class="operation-item">
+                <div class="op-left">
+                    <div class="op-icon">⚡</div>
+                    <div class="op-info">
+                        <div class="op-name">Гемы</div>
+                        <div class="op-date">Вчера, 09:15</div>
+                    </div>
+                </div>
+                <span class="op-amount negative">−299 ₽</span>
+            </div>
+
+            <!-- Операция 3 -->
+            <div class="operation-item">
+                <div class="op-left">
+                    <div class="op-icon">💎</div>
+                    <div class="op-info">
+                        <div class="op-name">Пополнение</div>
+                        <div class="op-date">12 мар, 18:00</div>
+                    </div>
+                </div>
+                <span class="op-amount positive">+500 ₽</span>
+            </div>
+        </div>
+
+        <!-- ============================================
+        ИНФОРМАЦИОННЫЙ БЛОК
+        ============================================ -->
+        <div class="info-block">
+            <span class="info-item" onclick="alert('О магазине')">О магазине</span>
+            <span class="info-item" onclick="alert('Поддержка')">Поддержка</span>
+            <span class="info-item" onclick="alert('Условия')">Условия</span>
+            <span class="info-item" onclick="alert('Политика конфиденциальности')">Политика</span>
+        </div>
+
+    </div>
+
+</body>
+</html>
