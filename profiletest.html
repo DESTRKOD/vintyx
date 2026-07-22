@@ -113,7 +113,7 @@
             position: absolute;
             inset: 0;
             z-index: 1;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.25);
             border-radius: 32px;
         }
 
@@ -131,8 +131,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.1);
             border: 1.5px solid rgba(255, 255, 255, 0.15);
@@ -151,13 +151,13 @@
         }
 
         .balance-card .avatar-wrap .fallback {
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 600;
             color: rgba(255, 255, 255, 0.6);
             letter-spacing: 0.5px;
         }
 
-        /* Баланс — строго по центру */
+        /* Баланс — строго по центру, слегка выше */
         .balance-card .balance-center {
             display: flex;
             flex-direction: column;
@@ -167,6 +167,7 @@
             z-index: 2;
             position: relative;
             text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+            margin-top: -8px;
         }
 
         .balance-card .balance-label {
@@ -420,8 +421,8 @@
             .balance-card .avatar-wrap {
                 top: 16px;
                 left: 16px;
-                width: 36px;
-                height: 36px;
+                width: 38px;
+                height: 38px;
             }
 
             .balance-card .balance-label {
@@ -480,12 +481,12 @@
             .balance-card .avatar-wrap {
                 top: 14px;
                 left: 14px;
-                width: 32px;
-                height: 32px;
+                width: 34px;
+                height: 34px;
             }
 
             .balance-card .avatar-wrap .fallback {
-                font-size: 0.8rem;
+                font-size: 0.9rem;
             }
 
             .balance-card .balance-label {
@@ -532,13 +533,13 @@
         </div>
 
         <!-- ============================================
-        БАЛАНСОВАЯ КАРТА — С ИЗОБРАЖЕНИЕМ
+        БАЛАНСОВАЯ КАРТА — С НОВЫМ ИЗОБРАЖЕНИЕМ
         ============================================ -->
         <div class="balance-card">
 
             <!-- Фоновое изображение -->
             <img class="card-bg-image"
-                 src="https://i.imgur.com/PZ6Js5z.jpeg"
+                 src="https://i.imgur.com/BgiOzRI.png"
                  alt="Card background"
                  loading="lazy" />
 
@@ -550,7 +551,7 @@
                 <span class="fallback">V</span>
             </div>
 
-            <!-- Баланс — строго по центру -->
+            <!-- Баланс — строго по центру, слегка выше -->
             <div class="balance-center">
                 <span class="balance-label">Баланс</span>
                 <div>
