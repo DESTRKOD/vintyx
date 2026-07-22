@@ -57,27 +57,8 @@
             letter-spacing: 0.5px;
         }
 
-        .profile-header .profile-actions {
-            display: flex;
-            gap: 12px;
-        }
-
-        .profile-header .profile-actions svg {
-            width: 22px;
-            height: 22px;
-            stroke: rgba(255, 255, 255, 0.2);
-            stroke-width: 2;
-            fill: none;
-            cursor: pointer;
-            transition: stroke 0.2s;
-        }
-
-        .profile-header .profile-actions svg:hover {
-            stroke: rgba(255, 255, 255, 0.4);
-        }
-
         /* ======================================================
-                   БАЛАНСОВАЯ КАРТА — С ИЗОБРАЖЕНИЕМ
+                   БАЛАНСОВАЯ КАРТА — БЕЗ ЧЁРНОГО ФОНА
                    ====================================================== */
         .balance-card {
             position: relative;
@@ -88,16 +69,16 @@
                 0 0 40px rgba(60, 80, 255, 0.06);
             border: 1px solid rgba(255, 255, 255, 0.04);
             margin-bottom: 28px;
-            height: 190px;
-            background: #0A0A14;
+            height: 200px;
+            background: transparent;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 28px 24px 32px;
+            padding: 0;
         }
 
-        /* Фоновое изображение */
+        /* Фоновое изображение на всю карту */
         .balance-card .card-bg-image {
             position: absolute;
             inset: 0;
@@ -108,12 +89,12 @@
             border-radius: 32px;
         }
 
-        /* Тёмная полупрозрачная накладка для читаемости текста */
+        /* Лёгкая накладка для читаемости */
         .balance-card .card-overlay {
             position: absolute;
             inset: 0;
             z-index: 1;
-            background: rgba(0, 0, 0, 0.25);
+            background: rgba(0, 0, 0, 0.15);
             border-radius: 32px;
         }
 
@@ -131,11 +112,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 44px;
-            height: 44px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1.5px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1.5px solid rgba(255, 255, 255, 0.12);
             overflow: hidden;
             flex-shrink: 0;
             z-index: 3;
@@ -151,13 +132,13 @@
         }
 
         .balance-card .avatar-wrap .fallback {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 600;
             color: rgba(255, 255, 255, 0.6);
             letter-spacing: 0.5px;
         }
 
-        /* Баланс — строго по центру, слегка выше */
+        /* Баланс — строго по центру, поднят выше */
         .balance-card .balance-center {
             display: flex;
             flex-direction: column;
@@ -166,21 +147,21 @@
             text-align: center;
             z-index: 2;
             position: relative;
-            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
-            margin-top: -8px;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
+            margin-top: -20px;
         }
 
         .balance-card .balance-label {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: 600;
             color: rgba(255, 255, 255, 0.5);
             text-transform: uppercase;
-            letter-spacing: 0.8px;
-            margin-bottom: 4px;
+            letter-spacing: 1px;
+            margin-bottom: 2px;
         }
 
         .balance-card .balance-amount {
-            font-size: 3rem;
+            font-size: 3.8rem;
             font-weight: 700;
             color: #FFFFFF;
             letter-spacing: -0.5px;
@@ -188,22 +169,13 @@
         }
 
         .balance-card .balance-currency {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             font-weight: 400;
             color: rgba(255, 255, 255, 0.3);
             margin-left: 4px;
         }
 
-        /* Тонкая линия внизу карты */
-        .balance-card .card-footer-line {
-            position: absolute;
-            bottom: 16px;
-            left: 24px;
-            right: 24px;
-            height: 1px;
-            background: linear-gradient(90deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
-            z-index: 2;
-        }
+        /* Убрал декоративную линию */
 
         /* ======================================================
                    ОСТАЛЬНЫЕ СТИЛИ (без изменений)
@@ -414,23 +386,22 @@
         @media (max-width: 420px) {
             .balance-card {
                 border-radius: 28px;
-                height: 170px;
-                padding: 24px 20px 28px;
+                height: 180px;
             }
 
             .balance-card .avatar-wrap {
                 top: 16px;
                 left: 16px;
-                width: 38px;
-                height: 38px;
+                width: 42px;
+                height: 42px;
             }
 
             .balance-card .balance-label {
-                font-size: 0.75rem;
+                font-size: 0.8rem;
             }
 
             .balance-card .balance-amount {
-                font-size: 2.4rem;
+                font-size: 3.2rem;
             }
 
             .profile-header .profile-title {
@@ -474,15 +445,15 @@
 
         @media (max-width: 360px) {
             .balance-card {
-                height: 150px;
-                padding: 20px 16px 24px;
+                height: 160px;
+                border-radius: 24px;
             }
 
             .balance-card .avatar-wrap {
                 top: 14px;
                 left: 14px;
-                width: 34px;
-                height: 34px;
+                width: 36px;
+                height: 36px;
             }
 
             .balance-card .avatar-wrap .fallback {
@@ -494,7 +465,7 @@
             }
 
             .balance-card .balance-amount {
-                font-size: 2rem;
+                font-size: 2.6rem;
             }
 
             .profile-header .profile-title {
@@ -527,13 +498,10 @@
         ============================================ -->
         <div class="profile-header">
             <span class="profile-title">ПРОФИЛЬ</span>
-            <div class="profile-actions">
-                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><circle cx="12" cy="5" r="2"/><circle cx="12" cy="19" r="2"/></svg>
-            </div>
         </div>
 
         <!-- ============================================
-        БАЛАНСОВАЯ КАРТА — С НОВЫМ ИЗОБРАЖЕНИЕМ
+        БАЛАНСОВАЯ КАРТА
         ============================================ -->
         <div class="balance-card">
 
@@ -543,7 +511,7 @@
                  alt="Card background"
                  loading="lazy" />
 
-            <!-- Тёмная накладка для читаемости -->
+            <!-- Лёгкая накладка -->
             <div class="card-overlay"></div>
 
             <!-- Аватарка в левом верхнем углу -->
@@ -551,7 +519,7 @@
                 <span class="fallback">V</span>
             </div>
 
-            <!-- Баланс — строго по центру, слегка выше -->
+            <!-- Баланс — по центру, поднят выше -->
             <div class="balance-center">
                 <span class="balance-label">Баланс</span>
                 <div>
@@ -559,13 +527,10 @@
                     <span class="balance-currency">₽</span>
                 </div>
             </div>
-
-            <!-- Декоративная линия -->
-            <div class="card-footer-line"></div>
         </div>
 
         <!-- ============================================
-        БЫСТРЫЕ ДЕЙСТВИЯ — 3 РАВНЫЕ КНОПКИ
+        БЫСТРЫЕ ДЕЙСТВИЯ
         ============================================ -->
         <div class="quick-actions">
             <button class="qa-btn" onclick="alert('Вывод')">
@@ -629,7 +594,7 @@
         </div>
 
         <!-- ============================================
-        ИНФОРМАЦИОННЫЙ БЛОК — ЦЕНТРИРОВАННЫЙ
+        ИНФОРМАЦИОННЫЙ БЛОК
         ============================================ -->
         <div class="info-block">
             <span class="info-item" onclick="alert('О магазине')">О магазине</span>
