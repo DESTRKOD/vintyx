@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Vintyx Store</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #0A0A0F;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: -apple-system, 'Helvetica Neue', 'Segoe UI', system-ui, sans-serif;
+            padding: 20px;
+        }
+
+        /* ============================================
+           КАРТОЧКА В СТИЛЕ BRAWL STARS
+           ============================================ */
+        .brawl-card {
+            width: 100%;
+            max-width: 440px;
+            height: 200px;
+            border-radius: 30px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.3s ease;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.8),
+                0 0 40px rgba(255, 50, 50, 0.08);
+        }
+        .brawl-card:hover {
+            transform: scale(1.02);
+            box-shadow: 
+                0 25px 70px rgba(0, 0, 0, 0.9),
+                0 0 60px rgba(255, 50, 50, 0.15);
+        }
+        .brawl-card:active {
+            transform: scale(0.97);
+        }
+
+        /* ============================================
+           ЛЕВАЯ ЧАСТЬ — 35% (ПЕРСОНАЖ)
+           ============================================ */
+        .brawl-card .artwork {
+            width: 35%;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+            background: #1A0A0A;
+            z-index: 1;
+        }
+
+        /* Сложный градиентный фон с красным свечением */
+        .brawl-card .artwork .bg-glow {
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(ellipse at 50% 90%, rgba(200, 30, 30, 0.6) 0%, transparent 60%),
+                radial-gradient(ellipse at 30% 50%, rgba(255, 80, 80, 0.2) 0%, transparent 40%),
+                radial-gradient(ellipse at 70% 20%, rgba(180, 20, 20, 0.3) 0%, transparent 50%),
+                linear-gradient(180deg, #1A0808 0%, #2A0A0A 40%, #1A0505 100%);
+            z-index: 0;
+        }
+
+        /* Частицы */
+        .brawl-card .artwork .particles {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .brawl-card .artwork .particles span {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 200, 100, 0.4);
+            border-radius: 50%;
+            box-shadow: 0 0 6px rgba(255, 200, 100, 0.2);
+            animation: floatParticle 4s infinite ease-in-out;
+        }
+        .brawl-card .artwork .particles span:nth-child(1) { left: 15%; top: 20%; animation-delay: 0s; width: 3px; height: 3px; }
+        .brawl-card .artwork .particles span:nth-child(2) { left: 60%; top: 15%; animation-delay: 1.2s; width: 5px; height: 5px; opacity: 0.5; }
+        .brawl-card .artwork .particles span:nth-child(3) { left: 30%; top: 70%; animation-delay: 2.5s; width: 4px; height: 4px; }
+        .brawl-card .artwork .particles span:nth-child(4) { left: 70%; top: 60%; animation-delay: 0.8s; width: 3px; height: 3px; opacity: 0.3; }
+        .brawl-card .artwork .particles span:nth-child(5) { left: 10%; top: 85%; animation-delay: 1.8s; width: 6px; height: 6px; opacity: 0.2; }
+
+        @keyframes floatParticle {
+            0%, 100% { transform: translateY(0) scale(1); opacity: 0.3; }
+            50% { transform: translateY(-20px) scale(1.5); opacity: 0.8; }
+        }
+
+        /* Изображение персонажа */
+        .brawl-card .artwork .character {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 105%;
+            object-fit: contain;
+            object-position: bottom center;
+            z-index: 2;
+            filter: drop-shadow(0 10px 30px rgba(200, 30, 30, 0.3));
+        }
+
+        /* Правая градиентная маска для плавного перехода */
+        .brawl-card .artwork .edge-mask {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 40%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent 0%, rgba(26, 10, 10, 0.9) 100%);
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        /* ============================================
+           ПРАВАЯ ЧАСТЬ — 65% (КОНТЕНТ)
+           ============================================ */
+        .brawl-card .content {
+            flex: 1;
+            padding: 20px 22px 18px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: linear-gradient(135deg, #0D0808 0%, #1A0D0D 40%, #0F0808 100%);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Тонкий красный отлив на правой части */
+        .brawl-card .content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 0% 50%, rgba(200, 40, 40, 0.06) 0%, transparent 60%),
+                radial-gradient(ellipse at 100% 20%, rgba(255, 60, 60, 0.04) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .brawl-card .content > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Логотип BRAWL STARS */
+        .brawl-card .content .logo {
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+            margin-bottom: 2px;
+        }
+        .brawl-card .content .logo .brawl {
+            font-size: 1.7rem;
+            font-weight: 900;
+            color: #FFFFFF;
+            letter-spacing: -0.5px;
+            font-family: 'Helvetica Neue', system-ui, sans-serif;
+            text-shadow: 0 2px 20px rgba(255, 255, 255, 0.05);
+        }
+        .brawl-card .content .logo .stars {
+            font-size: 1.7rem;
+            font-weight: 900;
+            color: #FF3B3B;
+            letter-spacing: -0.5px;
+            margin-top: -4px;
+            font-family: 'Helvetica Neue', system-ui, sans-serif;
+            text-shadow: 0 0 30px rgba(255, 59, 59, 0.2);
+        }
+
+        /* Список возможностей */
+        .brawl-card .content .features {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin: 8px 0 6px;
+        }
+        .brawl-card .content .features .feature {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 0.2px;
+        }
+        .brawl-card .content .features .feature .icon-placeholder {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        /* Иконки будут добавлены через Imgur */
+        .brawl-card .content .features .feature .icon-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* Разделитель */
+        .brawl-card .content .divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(255, 59, 59, 0.15) 0%, rgba(255, 59, 59, 0.03) 100%);
+            margin: 4px 0 8px;
+        }
+
+        /* Нижняя строка */
+        .brawl-card .content .bottom-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brawl-card .content .bottom-row .price-group {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+        .brawl-card .content .bottom-row .price-group .donat-label {
+            font-size: 0.55rem;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.2);
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+        .brawl-card .content .bottom-row .price-group .price {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            letter-spacing: -0.5px;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
+        }
+
+        .brawl-card .content .bottom-row .arrow {
+            color: rgba(255, 255, 255, 0.15);
+            font-size: 1.4rem;
+            font-weight: 300;
+            transition: all 0.2s;
+        }
+        .brawl-card:hover .content .bottom-row .arrow {
+            color: rgba(255, 255, 255, 0.4);
+            transform: translateX(4px);
+        }
+
+        /* ============================================
+           АДАПТИВНОСТЬ
+           ============================================ */
+        @media (max-width: 480px) {
+            .brawl-card {
+                height: 175px;
+                border-radius: 24px;
+            }
+            .brawl-card .content {
+                padding: 16px 18px 14px 16px;
+            }
+            .brawl-card .content .logo .brawl,
+            .brawl-card .content .logo .stars {
+                font-size: 1.4rem;
+            }
+            .brawl-card .content .features .feature {
+                font-size: 0.6rem;
+                gap: 8px;
+            }
+            .brawl-card .content .features .feature .icon-placeholder {
+                width: 14px;
+                height: 14px;
+            }
+            .brawl-card .content .bottom-row .price-group .price {
+                font-size: 1.1rem;
+            }
+            .brawl-card .content .bottom-row .arrow {
+                font-size: 1.2rem;
+            }
+            .brawl-card .artwork .character {
+                height: 100%;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .brawl-card {
+                height: 155px;
+                border-radius: 20px;
+            }
+            .brawl-card .content {
+                padding: 14px 14px 12px 14px;
+            }
+            .brawl-card .content .logo .brawl,
+            .brawl-card .content .logo .stars {
+                font-size: 1.2rem;
+            }
+            .brawl-card .content .features .feature {
+                font-size: 0.55rem;
+                gap: 6px;
+            }
+            .brawl-card .content .features .feature .icon-placeholder {
+                width: 12px;
+                height: 12px;
+            }
+            .brawl-card .content .bottom-row .price-group .price {
+                font-size: 1rem;
+            }
+            .brawl-card .content .bottom-row .arrow {
+                font-size: 1rem;
+            }
+            .brawl-card .content .divider {
+                margin: 2px 0 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================
+         КАРТОЧКА BRAWL STARS
+         ============================================ -->
+    <div class="brawl-card" onclick="alert('Переход в раздел Brawl Stars')">
+
+        <!-- ЛЕВАЯ ЧАСТЬ — 35% -->
+        <div class="artwork">
+            <div class="bg-glow"></div>
+            
+            <!-- Частицы -->
+            <div class="particles">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <!-- Изображение персонажа (Imgur) -->
+            <img class="character" 
+                 src="https://i.imgur.com/3Zm7Tr0.png" 
+                 alt="Brawl Stars Character"
+                 loading="lazy">
+
+            <!-- Маска перехода -->
+            <div class="edge-mask"></div>
+        </div>
+
+        <!-- ПРАВАЯ ЧАСТЬ — 65% -->
+        <div class="content">
+            <!-- Логотип -->
+            <div class="logo">
+                <span class="brawl">BRAWL</span>
+                <span class="stars">STARS</span>
+            </div>
+
+            <!-- Возможности -->
+            <div class="features">
+                <div class="feature">
+                    <span class="icon-placeholder">
+                        <!-- Иконка Гемы (Imgur) -->
+                        <img src="https://i.imgur.com/gem-icon.png" alt="Gems" 
+                             onerror="this.style.display='none'">
+                    </span>
+                    Гемы
+                </div>
+                <div class="feature">
+                    <span class="icon-placeholder">
+                        <!-- Иконка Brawl Pass (Imgur) -->
+                        <img src="https://i.imgur.com/pass-icon.png" alt="Brawl Pass"
+                             onerror="this.style.display='none'">
+                    </span>
+                    Brawl Pass
+                </div>
+                <div class="feature">
+                    <span class="icon-placeholder">
+                        <!-- Иконка Акции (Imgur) -->
+                        <img src="https://i.imgur.com/offer-icon.png" alt="Special Offers"
+                             onerror="this.style.display='none'">
+                    </span>
+                    Акции
+                </div>
+            </div>
+
+            <!-- Разделитель -->
+            <div class="divider"></div>
+
+            <!-- Нижняя строка -->
+            <div class="bottom-row">
+                <div class="price-group">
+                    <span class="donat-label">Донат от</span>
+                    <span class="price">99 ₽</span>
+                </div>
+                <span class="arrow">→</span>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
