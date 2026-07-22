@@ -40,7 +40,44 @@
         }
 
         /* ======================================================
-                   БАЛАНСОВАЯ КАРТА — ПЛАВНЫЕ ПЕРЕЛИВАЮЩИЕСЯ КЛЯКСЫ
+                   ЗАГОЛОВОК "ПРОФИЛЬ"
+                   ====================================================== */
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding: 0 4px;
+        }
+
+        .profile-header .profile-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.9);
+            letter-spacing: 0.5px;
+        }
+
+        .profile-header .profile-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .profile-header .profile-actions svg {
+            width: 22px;
+            height: 22px;
+            stroke: rgba(255, 255, 255, 0.2);
+            stroke-width: 2;
+            fill: none;
+            cursor: pointer;
+            transition: stroke 0.2s;
+        }
+
+        .profile-header .profile-actions svg:hover {
+            stroke: rgba(255, 255, 255, 0.4);
+        }
+
+        /* ======================================================
+                   БАЛАНСОВАЯ КАРТА — НАСЫЩЕННЫЙ СИНИЙ ГРАДИЕНТ
                    ====================================================== */
         .balance-card {
             position: relative;
@@ -48,7 +85,7 @@
             overflow: hidden;
             box-shadow:
                 0 20px 60px rgba(0, 0, 0, 0.8),
-                0 0 40px rgba(60, 80, 255, 0.06);
+                0 0 40px rgba(40, 100, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.04);
             margin-bottom: 28px;
             height: 190px;
@@ -60,54 +97,64 @@
             padding: 28px 24px 32px;
         }
 
-        /* Основной фон с плавными кляксами */
+        /* Насыщенный синий градиент — не отходит от рамки */
         .balance-card .blob-bg {
             position: absolute;
             inset: 0;
             z-index: 0;
             border-radius: 32px;
             background:
-                radial-gradient(ellipse at 15% 20%, rgba(40, 120, 255, 0.3) 0%, transparent 45%),
-                radial-gradient(ellipse at 75% 80%, rgba(80, 180, 255, 0.25) 0%, transparent 40%),
-                radial-gradient(ellipse at 45% 40%, rgba(20, 80, 220, 0.2) 0%, transparent 50%),
-                radial-gradient(ellipse at 85% 25%, rgba(60, 160, 255, 0.15) 0%, transparent 35%),
-                radial-gradient(ellipse at 10% 75%, rgba(100, 200, 255, 0.1) 0%, transparent 40%);
+                radial-gradient(ellipse at 15% 20%, rgba(30, 80, 255, 0.45) 0%, transparent 50%),
+                radial-gradient(ellipse at 75% 80%, rgba(60, 140, 255, 0.35) 0%, transparent 45%),
+                radial-gradient(ellipse at 45% 40%, rgba(20, 60, 220, 0.3) 0%, transparent 55%),
+                radial-gradient(ellipse at 85% 25%, rgba(50, 130, 255, 0.25) 0%, transparent 40%),
+                radial-gradient(ellipse at 10% 75%, rgba(80, 180, 255, 0.2) 0%, transparent 45%);
             animation: blobFloat1 6s ease-in-out infinite alternate;
         }
 
-        /* Второй слой клякс для глубины */
         .balance-card .blob-bg2 {
             position: absolute;
             inset: 0;
             z-index: 0;
             border-radius: 32px;
             background:
-                radial-gradient(ellipse at 30% 60%, rgba(60, 140, 255, 0.35) 0%, transparent 50%),
-                radial-gradient(ellipse at 60% 30%, rgba(40, 100, 240, 0.2) 0%, transparent 45%),
-                radial-gradient(ellipse at 50% 85%, rgba(80, 180, 255, 0.15) 0%, transparent 40%),
-                radial-gradient(ellipse at 5% 45%, rgba(120, 200, 255, 0.1) 0%, transparent 35%),
-                radial-gradient(ellipse at 90% 60%, rgba(30, 90, 230, 0.2) 0%, transparent 40%);
+                radial-gradient(ellipse at 30% 60%, rgba(50, 120, 255, 0.5) 0%, transparent 50%),
+                radial-gradient(ellipse at 60% 30%, rgba(30, 80, 240, 0.35) 0%, transparent 45%),
+                radial-gradient(ellipse at 50% 85%, rgba(70, 160, 255, 0.25) 0%, transparent 40%),
+                radial-gradient(ellipse at 5% 45%, rgba(100, 200, 255, 0.15) 0%, transparent 35%),
+                radial-gradient(ellipse at 90% 60%, rgba(25, 70, 230, 0.3) 0%, transparent 40%);
             animation: blobFloat2 7s ease-in-out infinite alternate;
         }
 
-        /* Третий слой для сложности */
         .balance-card .blob-bg3 {
             position: absolute;
             inset: 0;
             z-index: 0;
             border-radius: 32px;
             background:
-                radial-gradient(ellipse at 70% 15%, rgba(100, 200, 255, 0.12) 0%, transparent 40%),
-                radial-gradient(ellipse at 25% 90%, rgba(50, 130, 255, 0.2) 0%, transparent 45%),
-                radial-gradient(ellipse at 55% 55%, rgba(20, 70, 210, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at 40% 10%, rgba(80, 170, 255, 0.08) 0%, transparent 35%);
+                radial-gradient(ellipse at 70% 15%, rgba(80, 180, 255, 0.2) 0%, transparent 40%),
+                radial-gradient(ellipse at 25% 90%, rgba(40, 110, 255, 0.35) 0%, transparent 45%),
+                radial-gradient(ellipse at 55% 55%, rgba(15, 50, 210, 0.25) 0%, transparent 50%),
+                radial-gradient(ellipse at 40% 10%, rgba(60, 150, 255, 0.15) 0%, transparent 35%);
             animation: blobFloat3 5.5s ease-in-out infinite alternate;
+        }
+
+        .balance-card .blob-bg4 {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            border-radius: 32px;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(60, 160, 255, 0.25) 0%, transparent 30%),
+                radial-gradient(circle at 80% 70%, rgba(30, 100, 255, 0.2) 0%, transparent 35%),
+                radial-gradient(circle at 50% 50%, rgba(50, 140, 255, 0.15) 0%, transparent 45%);
+            animation: blobFloat4 4.5s ease-in-out infinite alternate;
         }
 
         @keyframes blobFloat1 {
             0% {
                 transform: scale(1) translate(0, 0);
-                opacity: 0.8;
+                opacity: 0.9;
             }
             33% {
                 transform: scale(1.02) translate(3%, -2%);
@@ -115,98 +162,85 @@
             }
             66% {
                 transform: scale(0.98) translate(-2%, 3%);
-                opacity: 0.9;
+                opacity: 0.95;
             }
             100% {
                 transform: scale(1.01) translate(2%, -1%);
-                opacity: 0.85;
+                opacity: 0.9;
             }
         }
 
         @keyframes blobFloat2 {
             0% {
                 transform: scale(1) translate(0, 0);
-                opacity: 0.6;
+                opacity: 0.7;
             }
             50% {
                 transform: scale(1.04) translate(-3%, 2%);
-                opacity: 0.9;
+                opacity: 1;
             }
             100% {
                 transform: scale(0.96) translate(4%, -3%);
-                opacity: 0.7;
+                opacity: 0.8;
             }
         }
 
         @keyframes blobFloat3 {
             0% {
                 transform: scale(1) translate(0, 0);
-                opacity: 0.5;
+                opacity: 0.6;
             }
             40% {
                 transform: scale(0.97) translate(-4%, -2%);
-                opacity: 0.8;
+                opacity: 0.9;
             }
             80% {
                 transform: scale(1.03) translate(3%, 4%);
-                opacity: 0.6;
+                opacity: 0.7;
             }
             100% {
                 transform: scale(0.99) translate(-1%, -3%);
-                opacity: 0.7;
+                opacity: 0.8;
             }
-        }
-
-        /* Четвёртый слой — яркие акценты */
-        .balance-card .blob-bg4 {
-            position: absolute;
-            inset: 0;
-            z-index: 0;
-            border-radius: 32px;
-            background:
-                radial-gradient(circle at 20% 30%, rgba(80, 180, 255, 0.15) 0%, transparent 30%),
-                radial-gradient(circle at 80% 70%, rgba(40, 120, 255, 0.12) 0%, transparent 35%),
-                radial-gradient(circle at 50% 50%, rgba(60, 160, 255, 0.08) 0%, transparent 45%);
-            animation: blobFloat4 4.5s ease-in-out infinite alternate;
         }
 
         @keyframes blobFloat4 {
             0% {
                 transform: scale(1) translate(0, 0);
-                opacity: 0.4;
+                opacity: 0.5;
             }
             100% {
                 transform: scale(1.08) translate(-5%, 5%);
-                opacity: 0.8;
+                opacity: 0.9;
             }
         }
 
-        /* Тёмные участки для контраста (чёрные кляксы) */
+        /* Тёмные участки для контраста */
         .balance-card .dark-blobs {
             position: absolute;
             inset: 0;
             z-index: 0;
             border-radius: 32px;
             background:
-                radial-gradient(ellipse at 40% 20%, rgba(0, 0, 0, 0.4) 0%, transparent 50%),
-                radial-gradient(ellipse at 70% 60%, rgba(0, 0, 0, 0.3) 0%, transparent 45%),
-                radial-gradient(ellipse at 15% 80%, rgba(0, 0, 0, 0.25) 0%, transparent 40%),
-                radial-gradient(ellipse at 85% 30%, rgba(0, 0, 0, 0.2) 0%, transparent 35%);
+                radial-gradient(ellipse at 40% 20%, rgba(0, 0, 0, 0.5) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 60%, rgba(0, 0, 0, 0.4) 0%, transparent 45%),
+                radial-gradient(ellipse at 15% 80%, rgba(0, 0, 0, 0.35) 0%, transparent 40%),
+                radial-gradient(ellipse at 85% 30%, rgba(0, 0, 0, 0.3) 0%, transparent 35%);
             animation: darkBlobFloat 8s ease-in-out infinite alternate;
         }
 
         @keyframes darkBlobFloat {
             0% {
                 transform: scale(1) translate(0, 0);
-                opacity: 0.5;
+                opacity: 0.6;
             }
             50% {
                 transform: scale(1.03) translate(-3%, 2%);
-                opacity: 0.7;
+                opacity: 0.8;
             }
             100% {
                 transform: scale(0.97) translate(4%, -3%);
-                opacity: 0.4;
+                opacity: 0.5;
             }
         }
 
@@ -260,9 +294,9 @@
         }
 
         .balance-card .balance-label {
-            font-size: 0.7rem;
+            font-size: 0.85rem;
             font-weight: 600;
-            color: rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.35);
             text-transform: uppercase;
             letter-spacing: 0.8px;
             margin-bottom: 4px;
@@ -523,8 +557,16 @@
                 height: 36px;
             }
 
+            .balance-card .balance-label {
+                font-size: 0.75rem;
+            }
+
             .balance-card .balance-amount {
                 font-size: 2.4rem;
+            }
+
+            .profile-header .profile-title {
+                font-size: 1.4rem;
             }
 
             .quick-actions .qa-btn {
@@ -579,8 +621,16 @@
                 font-size: 0.8rem;
             }
 
+            .balance-card .balance-label {
+                font-size: 0.7rem;
+            }
+
             .balance-card .balance-amount {
                 font-size: 2rem;
+            }
+
+            .profile-header .profile-title {
+                font-size: 1.2rem;
             }
 
             .quick-actions {
@@ -605,11 +655,21 @@
     <div class="profile-screen">
 
         <!-- ============================================
-        БАЛАНСОВАЯ КАРТА — ПЛАВНЫЕ ПЕРЕЛИВАЮЩИЕСЯ КЛЯКСЫ
+        ЗАГОЛОВОК "ПРОФИЛЬ"
+        ============================================ -->
+        <div class="profile-header">
+            <span class="profile-title">ПРОФИЛЬ</span>
+            <div class="profile-actions">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><circle cx="12" cy="5" r="2"/><circle cx="12" cy="19" r="2"/></svg>
+            </div>
+        </div>
+
+        <!-- ============================================
+        БАЛАНСОВАЯ КАРТА — НАСЫЩЕННЫЙ СИНИЙ
         ============================================ -->
         <div class="balance-card">
 
-            <!-- Слои с плавными кляксами -->
+            <!-- Слои с насыщенными синими кляксами -->
             <div class="blob-bg"></div>
             <div class="blob-bg2"></div>
             <div class="blob-bg3"></div>
@@ -664,7 +724,6 @@
         </div>
 
         <div class="operations-list">
-            <!-- Операция 1 -->
             <div class="operation-item">
                 <div class="op-left">
                     <div class="op-icon">🎮</div>
@@ -676,7 +735,6 @@
                 <span class="op-amount negative">−149 ₽</span>
             </div>
 
-            <!-- Операция 2 -->
             <div class="operation-item">
                 <div class="op-left">
                     <div class="op-icon">⚡</div>
@@ -688,7 +746,6 @@
                 <span class="op-amount negative">−299 ₽</span>
             </div>
 
-            <!-- Операция 3 -->
             <div class="operation-item">
                 <div class="op-left">
                     <div class="op-icon">💎</div>
