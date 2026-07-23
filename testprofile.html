@@ -74,10 +74,10 @@ import { createRoot } from 'react-dom/client';
 import {
   Camera, ArrowUpRight, Plus, Ticket, ArrowRight, X, CheckCircle,
   Smartphone, CreditCard, Send, Zap, Gift, Copy, Check, Search,
-  ArrowLeft, Inbox, AlertTriangle, ShieldCheck, Users, ShoppingBag
+  ArrowLeft, Inbox, AlertTriangle
 } from 'lucide-react';
 
-// Начальные данные
+// Данные
 const INITIAL_USER = {
   name: 'Vintyx User',
   username: '@vintyx_member',
@@ -199,7 +199,7 @@ const QuickActions = ({ onNavigate, onOpenPromoModal }) => (
   </div>
 );
 
-// Компактный список операций
+// Список операций (ровно 3 элемента в компактном пропорциональном контейнере)
 const OperationsList = ({ transactions, onOpenAll }) => {
   const displayTransactions = transactions.slice(0, 3);
 
@@ -253,13 +253,13 @@ const OperationsList = ({ transactions, onOpenAll }) => {
   );
 };
 
-// Блок информации о магазине Vintyx Store
+// Блок информации о магазине
 const StoreInfoCard = ({ onOpenAbout }) => (
   <div className="mb-3 shrink-0 bg-gradient-to-br from-white/[0.05] to-white/[0.02] backdrop-blur-[12px] border border-white/10 rounded-[22px] p-3.5 shadow-xl">
     <div className="flex items-center justify-between mb-2.5">
       <div className="flex items-center gap-2">
         <div className="w-6 h-6 rounded-lg bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400">
-          <ShoppingBag className="w-3.5 h-3.5" />
+          <Gift className="w-3.5 h-3.5" />
         </div>
         <span className="text-xs font-extrabold text-white tracking-wide">Vintyx Store</span>
       </div>
@@ -280,13 +280,13 @@ const StoreInfoCard = ({ onOpenAbout }) => (
       </div>
 
       <div className="p-2 rounded-xl bg-white/[0.03] border border-white/[0.04] flex flex-col items-center">
-        <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 mb-1" />
+        <CheckCircle className="w-3.5 h-3.5 text-emerald-400 mb-1" />
         <span className="text-[11px] font-extrabold text-white leading-tight">100%</span>
         <span className="text-[9px] text-white/40 mt-0.5">Гарантия</span>
       </div>
 
       <div className="p-2 rounded-xl bg-white/[0.03] border border-white/[0.04] flex flex-col items-center">
-        <Users className="w-3.5 h-3.5 text-sky-400 mb-1" />
+        <Smartphone className="w-3.5 h-3.5 text-sky-400 mb-1" />
         <span className="text-[11px] font-extrabold text-white leading-tight">50,000+</span>
         <span className="text-[9px] text-white/40 mt-0.5">Клиентов</span>
       </div>
@@ -322,6 +322,7 @@ const TopUpScreen = ({ onBack, onTopUp }) => {
   const [amount, setAmount] = useState(500);
   const [customAmount, setCustomAmount] = useState('');
   const [method, setMethod] = useState('sbp');
+  const [error, setError] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
 
   const presets = [100, 250, 500, 1000, 2500];
@@ -329,6 +330,7 @@ const TopUpScreen = ({ onBack, onTopUp }) => {
   const handleSelectPreset = (val) => {
     setAmount(val);
     setCustomAmount('');
+    setError('');
   };
 
   const handleCustomChange = (e) => {
@@ -336,11 +338,17 @@ const TopUpScreen = ({ onBack, onTopUp }) => {
     setCustomAmount(val);
     if (val && parseInt(val) > 0) {
       setAmount(parseInt(val));
+      setError('');
     }
   };
 
-  const handleSubmit = () => {
-    if (!amount || amount <= 0) return;
+  const handleSubmit = (e) => {
+    if (e) e.preventDefault();
+    if (!amount || amount <= 0) {
+      setError('Укажите сумму пополнения больше 0 ₽');
+      return;
+    }
+    setError('');
     setIsSuccess(true);
     setTimeout(() => {
       onTopUp(amount, method);
@@ -442,13 +450,22 @@ const TopUpScreen = ({ onBack, onTopUp }) => {
         </div>
       </div>
 
-      <button
-        type="button"
-        onClick={handleSubmit}
-        className="w-full mt-3 py-3 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xs shadow-lg shadow-indigo-950/50 cursor-pointer transition-all active:scale-[0.98] shrink-0"
-      >
-        Перейти к оплате {amount.toLocaleString('ru-RU')} ₽
-      </button>
+      <div className="pt-3 shrink-0 border-t border-white/10 mt-2 space-y-2">
+        {error && (
+          <p className="text-[11px] text-rose-400 text-center font-medium bg-rose-500/10 border border-rose-500/20 py-1.5 rounded-lg">
+            {error}
+          </p>
+        )}
+
+        <button
+          type="button"
+          onClick={handleSubmit}
+          className="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-400 hover:to-teal-400 text-white font-extrabold text-xs sm:text-sm shadow-lg shadow-emerald-950/50 cursor-pointer transition-all active:scale-[0.98] flex items-center justify-center gap-2 shrink-0"
+        >
+          <span>Перейти к оплате {amount > 0 ? `${amount.toLocaleString('ru-RU')} ₽` : ''}</span>
+          <ArrowRight className="w-4 h-4" />
+        </button>
+      </div>
     </div>
   );
 };
@@ -629,31 +646,36 @@ const WithdrawScreen = ({ userBalance, onBack, onWithdraw }) => {
             )}
           </div>
 
-          <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] space-y-1.5 text-[11px]">
+          <div className="p-3 rounded-xl bg-white/[0.04] border border-white/10 space-y-1.5 text-[11px] mt-2">
             <div className="flex justify-between text-white/60">
               <span>Сумма вывода:</span>
               <span className="text-white font-semibold">{numAmount.toLocaleString('ru-RU')} ₽</span>
             </div>
             <div className="flex justify-between text-white/60">
-              <span>Комиссия (3%):</span>
-              <span className="text-amber-400 font-medium">{fee.toLocaleString('ru-RU')} ₽</span>
+              <span>Комиссия сервиса (3%):</span>
+              <span className="text-amber-400 font-medium">-{fee.toLocaleString('ru-RU')} ₽</span>
             </div>
             <div className="border-t border-white/10 pt-1.5 flex justify-between font-bold text-xs text-white">
-              <span>К получению:</span>
-              <span className="text-emerald-400">{finalAmount.toLocaleString('ru-RU')} ₽</span>
+              <span>К зачислению:</span>
+              <span className="text-emerald-400 font-extrabold">{finalAmount.toLocaleString('ru-RU')} ₽</span>
             </div>
           </div>
-
-          {error && <p className="text-[11px] text-rose-400 text-center">{error}</p>}
         </div>
 
-        <button
-          type="submit"
-          disabled={numAmount < 50 || numAmount > userBalance}
-          className="w-full mt-3 py-3 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 disabled:opacity-40 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xs shadow-lg shadow-indigo-950/50 cursor-pointer transition-all active:scale-[0.98] shrink-0"
-        >
-          Запросить вывод
-        </button>
+        <div className="pt-3 shrink-0 border-t border-white/10 mt-2 space-y-2">
+          {error && (
+            <p className="text-[11px] text-rose-400 text-center font-medium bg-rose-500/10 border border-rose-500/20 py-1.5 px-2 rounded-lg">
+              {error}
+            </p>
+          )}
+
+          <button
+            type="submit"
+            className="w-full py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-600 hover:from-indigo-500 hover:to-blue-500 text-white font-extrabold text-xs sm:text-sm shadow-lg shadow-indigo-950/50 cursor-pointer transition-all active:scale-[0.98] flex items-center justify-center gap-2 shrink-0"
+          >
+            <span>Запросить вывод {numAmount > 0 ? `${numAmount.toLocaleString('ru-RU')} ₽` : ''}</span>
+          </button>
+        </div>
       </form>
     </div>
   );
@@ -789,9 +811,9 @@ const Modals = ({ activeModal, onClose, user, onApplyPromo, onUpdateAvatar }) =>
               Vintyx Store — цифровой маркетплейс внутриигровых ценностей и подписок (Brawl Stars, PUBG Mobile, Telegram Stars).
             </p>
             <div className="p-3 bg-white/5 rounded-xl border border-white/5 text-xs text-white/60 space-y-1">
-              <p>⚡ Мгновенное автозачисление 24/7</p>
-              <p>🛡️ Официальная гарантия сервиса</p>
-              <p>💎 Более 50,000 довольных клиентов</p>
+              <p>⚡ Мгновенное автозачисление</p>
+              <p>🛡️ Официальная гарантия</p>
+              <p>💎 Более 50,000 клиентов</p>
             </div>
           </div>
         )}
@@ -817,7 +839,7 @@ const Modals = ({ activeModal, onClose, user, onApplyPromo, onUpdateAvatar }) =>
           <div className="space-y-2 text-xs text-white/70">
             <h3 className="text-base font-bold text-white mb-2">Условия использования</h3>
             <p>1. Использование Vintyx Store означает согласие с правилами.</p>
-            <p>2. Зачисление производится автоматически после оплаты.</p>
+            <p>2. Зачисление производиться автоматически после оплаты.</p>
           </div>
         )}
         {activeModal === 'privacy' && (
