@@ -63,6 +63,17 @@
     ::-webkit-scrollbar-thumb:hover {
       background: rgba(255, 255, 255, 0.3);
     }
+
+    /* Скрытие стрелочек переключателя (спиннеров) у численных input */
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type="number"] {
+      -moz-appearance: textfield;
+      appearance: textfield;
+    }
   </style>
 </head>
 <body>
@@ -111,7 +122,7 @@ const BANKS_LIST = [
   { name: 'Альфа-Банк', icon: '🔴' },
   { name: 'ВТБ', icon: '🔵' },
   { name: 'Райффайзен', icon: '🟡' },
-  { name: 'Совкомбанк', icon: '🔵' },
+  { name: 'Свой вариант', icon: '🏦' },
 ];
 
 // Шапка
@@ -199,7 +210,7 @@ const QuickActions = ({ onNavigate, onOpenPromoModal }) => (
   </div>
 );
 
-// Список операций (ровно 3 элемента в компактном пропорциональном контейнере)
+// Список операций
 const OperationsList = ({ transactions, onOpenAll }) => {
   const displayTransactions = transactions.slice(0, 3);
 
@@ -322,15 +333,14 @@ const TopUpScreen = ({ onBack, onTopUp }) => {
   const [amount, setAmount] = useState(500);
   const [customAmount, setCustomAmount] = useState('');
   const [method, setMethod] = useState('sbp');
-  const [error, setError] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
+  const [error, setError] = useState('');
 
   const presets = [100, 250, 500, 1000, 2500];
 
   const handleSelectPreset = (val) => {
     setAmount(val);
     setCustomAmount('');
-    setError('');
   };
 
   const handleCustomChange = (e) => {
@@ -338,17 +348,11 @@ const TopUpScreen = ({ onBack, onTopUp }) => {
     setCustomAmount(val);
     if (val && parseInt(val) > 0) {
       setAmount(parseInt(val));
-      setError('');
     }
   };
 
-  const handleSubmit = (e) => {
-    if (e) e.preventDefault();
-    if (!amount || amount <= 0) {
-      setError('Укажите сумму пополнения больше 0 ₽');
-      return;
-    }
-    setError('');
+  const handleSubmit = () => {
+    if (!amount || amount <= 0) return;
     setIsSuccess(true);
     setTimeout(() => {
       onTopUp(amount, method);
@@ -408,7 +412,7 @@ const TopUpScreen = ({ onBack, onTopUp }) => {
             placeholder="Своя сумма (₽)"
             value={customAmount}
             onChange={handleCustomChange}
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 transition-colors"
+            className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
           />
         </div>
 
@@ -470,12 +474,14 @@ const TopUpScreen = ({ onBack, onTopUp }) => {
   );
 };
 
-// Экран Вывода
+// Экран Вывода Средств
 const WithdrawScreen = ({ userBalance, onBack, onWithdraw }) => {
   const [method, setMethod] = useState('sbp');
   const [amount, setAmount] = useState('');
-  const [phone, setPhone] = useState('+7');
-  const [selectedBank, setSelectedBank] = useState(null);
+  const [phone, setPhone] = useState('+7 (999) 000-00-00');
+  const [selectedBank, setSelectedBank] = useState('Сбер');
+  const [isCustomBank, setIsCustomBank] = useState(false);
+  const [customBank, setCustomBank] = useState('');
   const [cardNumber, setCardNumber] = useState('');
   const [error, setError] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
@@ -483,6 +489,47 @@ const WithdrawScreen = ({ userBalance, onBack, onWithdraw }) => {
   const numAmount = parseInt(amount) || 0;
   const fee = Math.round(numAmount * 0.03 * 100) / 100;
   const finalAmount = Math.max(0, Math.round((numAmount - fee) * 100) / 100);
+
+  const formatPhoneInput = (val) => {
+    if (!val) return '+7 ';
+    let cleaned = val.trim();
+    if (cleaned.startsWith('+')) {
+      let digits = cleaned.replace(/[^\d+]/g, '');
+      if (digits.startsWith('+7') || digits.startsWith('+8')) {
+        let nums = digits.replace(/\D/g, '');
+        if (nums.startsWith('7') || nums.startsWith('8')) nums = nums.substring(1);
+        let res = '+7';
+        if (nums.length > 0) res += ' (' + nums.substring(0, 3);
+        if (nums.length >= 3) res += ') ' + nums.substring(3, 6);
+        if (nums.length >= 6) res += '-' + nums.substring(6, 8);
+        if (nums.length >= 8) res += '-' + nums.substring(8, 10);
+        return res;
+      } else {
+        return cleaned;
+      }
+    } else {
+      let nums = cleaned.replace(/\D/g, '');
+      if (nums.startsWith('8') || nums.startsWith('7')) {
+        nums = nums.substring(1);
+      }
+      let res = '+7';
+      if (nums.length > 0) res += ' (' + nums.substring(0, 3);
+      if (nums.length >= 3) res += ') ' + nums.substring(3, 6);
+      if (nums.length >= 6) res += '-' + nums.substring(6, 8);
+      if (nums.length >= 8) res += '-' + nums.substring(8, 10);
+      return res;
+    }
+  };
+
+  const formatCardInput = (val) => {
+    const digits = val.replace(/\D/g, '').substring(0, 16);
+    let formatted = '';
+    for (let i = 0; i < digits.length; i++) {
+      if (i > 0 && i % 4 === 0) formatted += ' ';
+      formatted += digits[i];
+    }
+    return formatted;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -498,14 +545,15 @@ const WithdrawScreen = ({ userBalance, onBack, onWithdraw }) => {
     let details = '';
     if (method === 'sbp') {
       if (phone.replace(/\D/g, '').length < 10) {
-        setError('Укажите корректный номер телефона');
+        setError('Укажите корректный номер телефона (не менее 10 цифр)');
         return;
       }
-      if (!selectedBank) {
-        setError('Выберите банк получателя');
+      const bankToUse = isCustomBank ? customBank.trim() : selectedBank;
+      if (!bankToUse) {
+        setError('Укажите название банка получателя');
         return;
       }
-      details = `СБП: ${phone}, ${selectedBank}`;
+      details = `СБП: ${phone}, ${bankToUse}`;
     } else {
       if (cardNumber.replace(/\s/g, '').length < 16) {
         setError('Укажите 16-значный номер карты');
@@ -534,24 +582,24 @@ const WithdrawScreen = ({ userBalance, onBack, onWithdraw }) => {
 
   return (
     <div className="flex flex-col w-full h-full min-h-0 justify-between animate-fadeIn overflow-hidden">
-      <div className="flex items-center gap-3 mb-3 shrink-0">
+      <div className="flex items-center gap-3 mb-3 shrink-0 pb-2 border-b border-white/10">
         <button
           type="button"
           onClick={onBack}
-          className="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-white cursor-pointer transition-all active:scale-95"
+          className="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-white cursor-pointer transition-all active:scale-95 shrink-0"
         >
           <ArrowLeft className="w-4 h-4" />
         </button>
         <div>
-          <h2 className="text-lg font-extrabold text-white">Вывод средств</h2>
+          <h2 className="text-lg font-extrabold text-white leading-tight">Вывод средств</h2>
           <p className="text-[11px] text-white/40">
-            Доступно: <span className="text-white font-semibold">{userBalance.toLocaleString('ru-RU')} ₽</span>
+            Доступно к выводу: <span className="text-emerald-400 font-bold">{userBalance.toLocaleString('ru-RU')} ₽</span>
           </p>
         </div>
       </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col flex-1 min-h-0 justify-between">
-        <div className="flex-1 overflow-y-auto space-y-3.5 pr-0.5 min-h-0">
+        <div className="flex-1 overflow-y-auto space-y-3.5 pr-1 min-h-0">
           <div>
             <label className="text-[10px] font-semibold text-white/50 mb-1 block uppercase tracking-wider">
               Сумма вывода (₽)
@@ -560,9 +608,25 @@ const WithdrawScreen = ({ userBalance, onBack, onWithdraw }) => {
               type="number"
               placeholder="Мин. 50 ₽"
               value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-base font-bold text-white text-center focus:outline-none focus:border-indigo-500 transition-colors"
+              onChange={(e) => {
+                setAmount(e.target.value);
+                setError('');
+              }}
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-base font-bold text-white text-center focus:outline-none focus:border-indigo-500 transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
             />
+            <div className="flex justify-between items-center mt-1.5 px-0.5 text-[11px]">
+              <span className="text-white/40">Мин. 50 ₽</span>
+              <button
+                type="button"
+                onClick={() => {
+                  setAmount(userBalance.toString());
+                  setError('');
+                }}
+                className="text-indigo-400 hover:text-indigo-300 font-semibold cursor-pointer transition-colors"
+              >
+                Вывести всё ({userBalance.toLocaleString('ru-RU')} ₽)
+              </button>
+            </div>
           </div>
 
           <div>
@@ -596,37 +660,88 @@ const WithdrawScreen = ({ userBalance, onBack, onWithdraw }) => {
             {method === 'sbp' && (
               <div className="space-y-3">
                 <div>
-                  <label className="text-[10px] font-medium text-white/50 mb-1 block">Номер телефона СБП</label>
+                  <label className="text-[10px] font-medium text-white/50 mb-1 block">
+                    Номер телефона СБП (+7)
+                  </label>
+
                   <input
                     type="tel"
                     value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
+                    onChange={(e) => {
+                      setPhone(formatPhoneInput(e.target.value));
+                      setError('');
+                    }}
                     placeholder="+7 (999) 000-00-00"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-indigo-500"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2 text-xs font-semibold text-white focus:outline-none focus:border-indigo-500 tracking-wide"
                   />
                 </div>
 
                 <div>
-                  <label className="text-[10px] font-medium text-white/50 mb-1 block">Выберите банк</label>
+                  <label className="text-[10px] font-medium text-white/50 mb-1 block">Выберите банк получателя</label>
                   <div className="grid grid-cols-2 gap-1.5">
-                    {BANKS_LIST.map((b) => (
-                      <button
-                        key={b.name}
-                        type="button"
-                        onClick={() => setSelectedBank(b.name)}
-                        className={`flex items-center justify-between p-2 rounded-xl border text-[11px] text-left transition-all cursor-pointer ${
-                          selectedBank === b.name
-                            ? 'bg-indigo-600/20 border-indigo-500 text-white font-medium'
-                            : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'
-                        }`}
-                      >
-                        <span className="flex items-center gap-1.5 truncate">
-                          <span>{b.icon}</span>
-                          <span className="truncate">{b.name}</span>
-                        </span>
-                        {selectedBank === b.name && <Check className="w-3 h-3 text-indigo-400 shrink-0" />}
-                      </button>
-                    ))}
+                    {BANKS_LIST.map((b) => {
+                      if (b.name === 'Свой вариант') {
+                        if (isCustomBank) {
+                          return (
+                            <div key="custom-bank-input" className="col-span-1">
+                              <input
+                                type="text"
+                                value={customBank}
+                                onChange={(e) => {
+                                  setCustomBank(e.target.value);
+                                  setSelectedBank(e.target.value);
+                                  setError('');
+                                }}
+                                placeholder="Название банка..."
+                                autoFocus
+                                className="w-full h-full bg-indigo-600/30 border border-indigo-500 rounded-xl px-2.5 py-2 text-[11px] font-bold text-white focus:outline-none placeholder-white/40 shadow-sm"
+                              />
+                            </div>
+                          );
+                        }
+                        return (
+                          <button
+                            key={b.name}
+                            type="button"
+                            onClick={() => {
+                              setIsCustomBank(true);
+                              setSelectedBank(customBank);
+                              setError('');
+                            }}
+                            className="flex items-center justify-between p-2 rounded-xl border text-[11px] text-left transition-all cursor-pointer bg-white/5 border-white/10 text-white/70 hover:bg-white/10"
+                          >
+                            <span className="flex items-center gap-1.5 truncate">
+                              <span>{b.icon}</span>
+                              <span className="truncate">{b.name}</span>
+                            </span>
+                          </button>
+                        );
+                      }
+
+                      const isSelected = !isCustomBank && selectedBank === b.name;
+                      return (
+                        <button
+                          key={b.name}
+                          type="button"
+                          onClick={() => {
+                            setIsCustomBank(false);
+                            setSelectedBank(b.name);
+                            setError('');
+                          }}
+                          className={`flex items-center justify-between p-2 rounded-xl border text-[11px] text-left transition-all cursor-pointer ${
+                            isSelected
+                              ? 'bg-indigo-600/30 border-indigo-500 text-white font-bold shadow-sm'
+                              : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'
+                          }`}
+                        >
+                          <span className="flex items-center gap-1.5 truncate">
+                            <span>{b.icon}</span>
+                            <span className="truncate">{b.name}</span>
+                          </span>
+                          {isSelected && <Check className="w-3 h-3 text-indigo-400 shrink-0" />}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
@@ -638,7 +753,10 @@ const WithdrawScreen = ({ userBalance, onBack, onWithdraw }) => {
                 <input
                   type="text"
                   value={cardNumber}
-                  onChange={(e) => setCardNumber(e.target.value)}
+                  onChange={(e) => {
+                    setCardNumber(formatCardInput(e.target.value));
+                    setError('');
+                  }}
                   placeholder="2200 0000 0000 0000"
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-white tracking-widest focus:outline-none focus:border-indigo-500"
                 />
@@ -662,7 +780,7 @@ const WithdrawScreen = ({ userBalance, onBack, onWithdraw }) => {
           </div>
         </div>
 
-        <div className="pt-3 shrink-0 border-t border-white/10 mt-2 space-y-2">
+        <div className="pt-3 shrink-0 border-t border-white/10 mt-2 space-y-2 z-20">
           {error && (
             <p className="text-[11px] text-rose-400 text-center font-medium bg-rose-500/10 border border-rose-500/20 py-1.5 px-2 rounded-lg">
               {error}
@@ -671,9 +789,10 @@ const WithdrawScreen = ({ userBalance, onBack, onWithdraw }) => {
 
           <button
             type="submit"
-            className="w-full py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-600 hover:from-indigo-500 hover:to-blue-500 text-white font-extrabold text-xs sm:text-sm shadow-lg shadow-indigo-950/50 cursor-pointer transition-all active:scale-[0.98] flex items-center justify-center gap-2 shrink-0"
+            className="w-full py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 hover:from-indigo-500 hover:to-purple-500 text-white font-extrabold text-xs sm:text-sm shadow-lg shadow-indigo-950/50 cursor-pointer transition-all active:scale-[0.98] flex items-center justify-center gap-2 shrink-0"
           >
             <span>Запросить вывод {numAmount > 0 ? `${numAmount.toLocaleString('ru-RU')} ₽` : ''}</span>
+            <ArrowRight className="w-4 h-4" />
           </button>
         </div>
       </form>
@@ -827,8 +946,9 @@ const Modals = ({ activeModal, onClose, user, onApplyPromo, onUpdateAvatar }) =>
                 <p className="text-[11px] text-indigo-300">@vintyx_support</p>
               </div>
               <button
+                type="button"
                 onClick={() => navigator.clipboard.writeText('@vintyx_support')}
-                className="px-3 py-1.5 bg-indigo-600 text-white rounded-lg text-xs font-medium cursor-pointer"
+                className="px-3 py-1.5 bg-indigo-600 text-white rounded-lg text-xs font-medium cursor-pointer hover:bg-indigo-500 transition-colors"
               >
                 Скопировать
               </button>
@@ -839,13 +959,14 @@ const Modals = ({ activeModal, onClose, user, onApplyPromo, onUpdateAvatar }) =>
           <div className="space-y-2 text-xs text-white/70">
             <h3 className="text-base font-bold text-white mb-2">Условия использования</h3>
             <p>1. Использование Vintyx Store означает согласие с правилами.</p>
-            <p>2. Зачисление производиться автоматически после оплаты.</p>
+            <p>2. Зачисление производится автоматически после оплаты.</p>
           </div>
         )}
         {activeModal === 'privacy' && (
           <div className="space-y-2 text-xs text-white/70">
             <h3 className="text-base font-bold text-white mb-2">Политика конфиденциальности</h3>
-            <p>Мы гарантируем сохранность и конфиденциальность ваших данных.</p>
+            <p>1. Ваши данные под надежной защитой.</p>
+            <p>2. Информация не передается третьим лицам.</p>
           </div>
         )}
       </div>
@@ -853,111 +974,137 @@ const Modals = ({ activeModal, onClose, user, onApplyPromo, onUpdateAvatar }) =>
   );
 };
 
+// Промокод
 const PromoModal = ({ onClose, onApplyPromo }) => {
   const [code, setCode] = useState('');
-  const [message, setMessage] = useState(null);
+  const [status, setStatus] = useState(null);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleApply = () => {
     if (!code.trim()) return;
-
-    const ok = onApplyPromo(code.trim().toUpperCase());
-    if (ok) {
-      setMessage({ text: 'Промокод активирован!', success: true });
-      setTimeout(onClose, 1200);
+    if (code.toUpperCase() === 'VINTYX') {
+      setStatus({ type: 'success', text: 'Промокод активирован! +500 ₽' });
+      setTimeout(() => {
+        onApplyPromo(500, 'Промокод VINTYX');
+        onClose();
+      }, 1000);
     } else {
-      setMessage({ text: 'Неверный или уже использованный промокод', success: false });
+      setStatus({ type: 'error', text: 'Неверный промокод' });
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-      <div className="flex items-center gap-3">
-        <div className="w-9 h-9 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400">
-          <Gift className="w-4 h-4" />
+    <div className="space-y-4">
+      <div className="flex items-center gap-2">
+        <div className="w-8 h-8 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400">
+          <Ticket className="w-4 h-4" />
         </div>
-        <div>
-          <h3 className="text-base font-bold text-white">Промокод</h3>
-          <p className="text-[11px] text-white/50">Введите промокод для бонуса</p>
-        </div>
+        <h3 className="text-base font-extrabold text-white">Активация промокода</h3>
       </div>
 
-      <input
-        type="text"
-        placeholder="ВВЕДИТЕ ПРОМОКОД"
-        value={code}
-        onChange={(e) => setCode(e.target.value)}
-        className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white uppercase font-semibold text-center focus:outline-none focus:border-amber-500"
-      />
-      <p className="text-[10px] text-white/40 text-center">
-        Попробуйте: <span className="text-amber-300 font-mono">VINTYX2026</span> или <span className="text-amber-300 font-mono">START</span>
-      </p>
+      <div className="space-y-2">
+        <input
+          type="text"
+          placeholder="Введите промокод (например, VINTYX)"
+          value={code}
+          onChange={(e) => {
+            setCode(e.target.value);
+            setStatus(null);
+          }}
+          className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white uppercase tracking-wider focus:outline-none focus:border-indigo-500"
+        />
 
-      {message && (
-        <p className={`text-xs text-center font-medium ${message.success ? 'text-emerald-400' : 'text-rose-400'}`}>
-          {message.text}
-        </p>
-      )}
+        {status && (
+          <p className={`text-xs ${status.type === 'success' ? 'text-emerald-400' : 'text-rose-400'}`}>
+            {status.text}
+          </p>
+        )}
 
-      <button
-        type="submit"
-        className="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs cursor-pointer"
-      >
-        Активировать
-      </button>
-    </form>
+        <button
+          type="button"
+          onClick={handleApply}
+          className="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs cursor-pointer transition-all active:scale-95"
+        >
+          Применить
+        </button>
+      </div>
+    </div>
   );
 };
 
-const AvatarModal = ({ user, onClose, onUpdateAvatar }) => (
-  <div className="flex flex-col gap-3">
-    <div>
-      <h3 className="text-base font-bold text-white mb-1">Выбор аватарки</h3>
-      <p className="text-[11px] text-white/50">Выберите аватар</p>
-    </div>
-    <div className="flex gap-2 justify-center py-2">
-      {PRESET_AVATARS.map((url, idx) => (
+// Аватар
+const AvatarModal = ({ user, onClose, onUpdateAvatar }) => {
+  const [inputUrl, setInputUrl] = useState('');
+
+  return (
+    <div className="space-y-4">
+      <h3 className="text-base font-extrabold text-white">Сменить аватарку</h3>
+
+      <div>
+        <label className="text-[10px] text-white/50 block mb-1.5 uppercase tracking-wider">Готовые пресеты</label>
+        <div className="grid grid-cols-4 gap-2">
+          {PRESET_AVATARS.map((url, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => {
+                onUpdateAvatar(url);
+                onClose();
+              }}
+              className="w-12 h-12 rounded-full overflow-hidden border border-white/20 hover:border-indigo-400 transition-all cursor-pointer hover:scale-105"
+            >
+              <img src={url} alt={`Avatar ${i}`} className="w-full h-full object-cover" />
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <label className="text-[10px] text-white/50 block mb-1 uppercase tracking-wider">Или ссылка на изображение</label>
+        <div className="flex gap-2">
+          <input
+            type="url"
+            placeholder="https://..."
+            value={inputUrl}
+            onChange={(e) => setInputUrl(e.target.value)}
+            className="flex-1 bg-white/5 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500"
+          />
+          <button
+            type="button"
+            onClick={() => {
+              if (inputUrl.trim()) {
+                onUpdateAvatar(inputUrl.trim());
+                onClose();
+              }
+            }}
+            className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold cursor-pointer"
+          >
+            Сохранить
+          </button>
+        </div>
+      </div>
+
+      {user.avatarUrl && (
         <button
-          key={idx}
-          onClick={() => { onUpdateAvatar(url); onClose(); }}
-          className="w-11 h-11 rounded-full border border-white/20 overflow-hidden hover:scale-110 transition-all shrink-0 cursor-pointer"
+          type="button"
+          onClick={() => {
+            onUpdateAvatar(null);
+            onClose();
+          }}
+          className="w-full py-2 text-rose-400 text-xs font-semibold hover:bg-rose-500/10 rounded-xl transition-colors cursor-pointer"
         >
-          <img src={url} alt={`Avatar ${idx}`} className="w-full h-full object-cover" />
+          Удалить аватарку
         </button>
-      ))}
-      <button
-        onClick={() => { onUpdateAvatar(null); onClose(); }}
-        className="w-11 h-11 rounded-full border border-white/20 bg-white/10 flex items-center justify-center font-bold text-white text-xs cursor-pointer"
-      >
-        {user.avatarFallback}
-      </button>
+      )}
     </div>
-  </div>
-);
+  );
+};
 
-// Главное приложение
-function App() {
-  const [activeScreen, setActiveScreen] = useState('profile');
+// Главный компонент приложения
+const App = () => {
+  const [user, setUser] = useState(INITIAL_USER);
+  const [transactions, setTransactions] = useState(INITIAL_TRANSACTIONS);
+  const [currentScreen, setCurrentScreen] = useState('profile');
   const [activeModal, setActiveModal] = useState(null);
-
-  const [user, setUser] = useState(() => {
-    const saved = localStorage.getItem('vintyx_user');
-    return saved ? JSON.parse(saved) : INITIAL_USER;
-  });
-
-  const [usedPromos, setUsedPromos] = useState(() => {
-    const saved = localStorage.getItem('vintyx_promos');
-    return saved ? JSON.parse(saved) : [];
-  });
-
-  const [transactions, setTransactions] = useState(() => {
-    const saved = localStorage.getItem('vintyx_transactions');
-    return saved ? JSON.parse(saved) : INITIAL_TRANSACTIONS;
-  });
-
-  useEffect(() => { localStorage.setItem('vintyx_user', JSON.stringify(user)); }, [user]);
-  useEffect(() => { localStorage.setItem('vintyx_promos', JSON.stringify(usedPromos)); }, [usedPromos]);
-  useEffect(() => { localStorage.setItem('vintyx_transactions', JSON.stringify(transactions)); }, [transactions]);
 
   const handleTopUp = (amount, method) => {
     setUser((prev) => ({ ...prev, balance: prev.balance + amount }));
@@ -975,10 +1122,10 @@ function App() {
   };
 
   const handleWithdraw = (amount, details) => {
-    setUser((prev) => ({ ...prev, balance: Math.max(0, prev.balance - amount) }));
+    setUser((prev) => ({ ...prev, balance: prev.balance - amount }));
     const newTx = {
       id: `tx-${Date.now()}`,
-      title: `Вывод (${details.slice(0, 15)}...)`,
+      title: `Вывод средств`,
       category: 'withdraw',
       icon: '💸',
       date: 'Только что',
@@ -989,75 +1136,79 @@ function App() {
     setTransactions((prev) => [newTx, ...prev]);
   };
 
-  const handleApplyPromo = (code) => {
-    const cleanCode = code.toUpperCase();
-    if (usedPromos.includes(cleanCode)) return false;
+  const handleApplyPromo = (amount, title) => {
+    setUser((prev) => ({ ...prev, balance: prev.balance + amount }));
+    const newTx = {
+      id: `tx-${Date.now()}`,
+      title: title,
+      category: 'promo',
+      icon: '🎁',
+      date: 'Только что',
+      amount: amount,
+      type: 'positive',
+      status: 'completed',
+    };
+    setTransactions((prev) => [newTx, ...prev]);
+  };
 
-    let bonus = 0;
-    if (cleanCode === 'VINTYX2026') bonus = 200;
-    else if (cleanCode === 'START') bonus = 100;
-    else if (cleanCode === 'BONUS500') bonus = 500;
-
-    if (bonus > 0) {
-      setUser((prev) => ({ ...prev, balance: prev.balance + bonus }));
-      setUsedPromos((prev) => [...prev, cleanCode]);
-      const newTx = {
-        id: `tx-${Date.now()}`,
-        title: `Промокод ${cleanCode}`,
-        category: 'promo',
-        icon: '🎁',
-        date: 'Только что',
-        amount: bonus,
-        type: 'positive',
-        status: 'completed',
-      };
-      setTransactions((prev) => [newTx, ...prev]);
-      return true;
-    }
-    return false;
+  const handleUpdateAvatar = (url) => {
+    setUser((prev) => ({ ...prev, avatarUrl: url }));
   };
 
   return (
-    <div className="h-screen h-dvh w-full select-none relative overflow-hidden font-sans flex flex-col justify-between p-4 sm:p-6 max-w-md mx-auto">
-      {activeScreen === 'profile' && (
-        <div className="flex flex-col h-full justify-between animate-fadeIn overflow-hidden">
-          <Header userName={user.name} />
-          <BalanceCard user={user} onOpenAvatarModal={() => setActiveModal('avatar')} />
-          <QuickActions onNavigate={setActiveScreen} onOpenPromoModal={() => setActiveModal('promo')} />
-          <OperationsList transactions={transactions} onOpenAll={() => setActiveScreen('all-operations')} />
-          <StoreInfoCard onOpenAbout={() => setActiveModal('about')} />
-          <InfoFooter onOpenModal={(type) => setActiveModal(type)} />
-        </div>
-      )}
+    <div className="w-full h-full min-h-dvh flex items-center justify-center p-2 sm:p-4 overflow-hidden">
+      <div className="relative w-full max-w-[420px] h-[100dvh] max-h-[820px] sm:max-h-[780px] bg-[#0A0A18]/85 backdrop-blur-2xl border border-white/10 rounded-[28px] p-3.5 sm:p-4 text-white shadow-2xl flex flex-col justify-between overflow-hidden">
+        
+        {currentScreen === 'profile' && (
+          <div className="flex flex-col h-full justify-between animate-fadeIn overflow-y-auto">
+            <Header userName={user.username} />
+            <BalanceCard user={user} onOpenAvatarModal={() => setActiveModal('avatar')} />
+            <QuickActions
+              onNavigate={(screen) => setCurrentScreen(screen)}
+              onOpenPromoModal={() => setActiveModal('promo')}
+            />
+            <OperationsList
+              transactions={transactions}
+              onOpenAll={() => setCurrentScreen('all_operations')}
+            />
+            <StoreInfoCard onOpenAbout={() => setActiveModal('about')} />
+            <InfoFooter onOpenModal={(modal) => setActiveModal(modal)} />
+          </div>
+        )}
 
-      {activeScreen === 'all-operations' && (
-        <AllOperationsScreen transactions={transactions} onBack={() => setActiveScreen('profile')} />
-      )}
+        {currentScreen === 'topup' && (
+          <TopUpScreen onBack={() => setCurrentScreen('profile')} onTopUp={handleTopUp} />
+        )}
 
-      {activeScreen === 'topup' && (
-        <TopUpScreen onBack={() => setActiveScreen('profile')} onTopUp={handleTopUp} />
-      )}
+        {currentScreen === 'withdraw' && (
+          <WithdrawScreen
+            userBalance={user.balance}
+            onBack={() => setCurrentScreen('profile')}
+            onWithdraw={handleWithdraw}
+          />
+        )}
 
-      {activeScreen === 'withdraw' && (
-        <WithdrawScreen
-          userBalance={user.balance}
-          onBack={() => setActiveScreen('profile')}
-          onWithdraw={handleWithdraw}
+        {currentScreen === 'all_operations' && (
+          <AllOperationsScreen
+            transactions={transactions}
+            onBack={() => setCurrentScreen('profile')}
+          />
+        )}
+
+        <Modals
+          activeModal={activeModal}
+          onClose={() => setActiveModal(null)}
+          user={user}
+          onApplyPromo={handleApplyPromo}
+          onUpdateAvatar={handleUpdateAvatar}
         />
-      )}
-
-      <Modals
-        activeModal={activeModal}
-        onClose={() => setActiveModal(null)}
-        user={user}
-        onApplyPromo={handleApplyPromo}
-        onUpdateAvatar={(url) => setUser((prev) => ({ ...prev, avatarUrl: url }))}
-      />
+      </div>
     </div>
   );
-}
+};
 
-createRoot(document.getElementById('root')).render(<App />);
+const root = createRoot(document.getElementById('root'));
+root.render(<App />);
   </script>
 </body>
 </html>
