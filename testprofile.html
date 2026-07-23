@@ -1,1265 +1,601 @@
-<!doctype html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Vintyx Store — Профиль</title>
-
-  <!-- Tailwind CSS v4 CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-
-  <!-- Import map для React 19 и зависимостей -->
-  <script type="importmap">
-  {
-    "imports": {
-      "react": "https://esm.sh/react@19.0.1",
-      "react/jsx-runtime": "https://esm.sh/react@19.0.1/jsx-runtime",
-      "react-dom/client": "https://esm.sh/react-dom@19.0.1/client",
-      "lucide-react": "https://esm.sh/lucide-react@0.546.0?external=react",
-      "motion/react": "https://esm.sh/motion@12.23.24/react?external=react,react-dom"
-    }
-  }
-  </script>
-
-  <!-- Babel Standalone для транспиляции JSX -->
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-  <style>
-    html, body, #root {
-      width: 100%;
-      height: 100vh;
-      height: 100dvh;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      overscroll-behavior: none;
-      touch-action: manipulation;
-      user-select: none;
-      -webkit-user-select: none;
-    }
-
-    body {
-      background-color: #0c1738;
-      background-image:
-        radial-gradient(ellipse at 50% 0%, rgba(99, 130, 255, 0.3) 0%, transparent 70%),
-        radial-gradient(ellipse at 85% 30%, rgba(125, 211, 252, 0.2) 0%, transparent 60%),
-        radial-gradient(ellipse at 15% 85%, rgba(99, 102, 241, 0.25) 0%, transparent 60%),
-        linear-gradient(160deg, #0b1433 0%, #122150 40%, #1c2e6b 75%, #0e193d 100%);
-      background-attachment: fixed;
-      color: #FFFFFF;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    }
-
-    ::-webkit-scrollbar {
-      width: 4px;
-    }
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 9999px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: rgba(255, 255, 255, 0.3);
-    }
-
-    /* Hide number input spinners */
-    input[type="number"]::-webkit-outer-spin-button,
-    input[type="number"]::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-    input[type="number"] {
-      -moz-appearance: textfield;
-      appearance: textfield;
-    }
-  </style>
-</head>
-<body>
-  <div id="root"></div>
-
-  <script type="text/babel" data-type="module" data-presets="react">
-import React, { useState, useEffect } from 'react';
-import { createRoot } from 'react-dom/client';
-import {
-  Camera, ArrowUpRight, Plus, Ticket, ArrowRight, X, CheckCircle,
-  Smartphone, CreditCard, Send, Zap, Gift, Copy, Check, Search,
-  ArrowLeft, Inbox, AlertTriangle
-} from 'lucide-react';
-
-// Данные
-const INITIAL_USER = {
-  name: 'Vintyx User',
-  username: '@vintyx_member',
-  userId: '849201',
-  avatarUrl: null,
-  avatarFallback: 'V',
-  balance: 1488,
-  currency: '₽',
-  isPremium: true,
-  joinedDate: '12 марта 2026',
-};
-
-const INITIAL_TRANSACTIONS = [
-  { id: 'tx-1', title: 'Brawl Pass Plus', category: 'pass', icon: '🎮', date: 'Сегодня, 14:32', amount: -149, type: 'negative', status: 'completed' },
-  { id: 'tx-2', title: '80 Гемов Brawl Stars', category: 'gems', icon: '⚡', date: 'Вчера, 09:15', amount: -299, type: 'negative', status: 'completed' },
-  { id: 'tx-3', title: 'Пополнение СБП', category: 'topup', icon: '💎', date: '12 мар, 18:00', amount: 500, type: 'positive', status: 'completed' },
-  { id: 'tx-4', title: 'Telegram Stars (100 шт)', category: 'stars', icon: '⭐️', date: '10 мар, 12:40', amount: -190, type: 'negative', status: 'completed' },
-  { id: 'tx-5', title: 'Вывод на карту', category: 'withdraw', icon: '💸', date: '08 мар, 21:10', amount: -1000, type: 'negative', status: 'completed' },
-];
-
-const PRESET_AVATARS = [
-  'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80',
-];
-
-const BANKS_LIST = [
-  { name: 'Т-Банк (Тинькофф)', icon: '🟡' },
-  { name: 'Сбербанк', icon: '🟢' },
-  { name: 'Альфа-Банк', icon: '🔴' },
-  { name: 'ВТБ', icon: '🔵' },
-  { name: 'Райффайзен', icon: '🟡' },
-  { name: 'Совкомбанк', icon: '🔵' },
-  { name: 'Свой вариант', icon: '🏦' },
-];
-
-// Шапка
-const Header = ({ userName }) => (
-  <div className="flex items-center justify-between mb-3 px-0.5 shrink-0">
-    <h1 className="text-xs font-extrabold text-white/40 tracking-[2px] uppercase">
-      ПРОФИЛЬ
-    </h1>
-    <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-[11px] font-semibold text-white/70 backdrop-blur-md">
-      <span>{userName}</span>
-    </div>
-  </div>
-);
-
-// Карточка баланса
-const BalanceCard = ({ user, onOpenAvatarModal }) => {
-  const formattedBalance = user.balance.toLocaleString('ru-RU');
-
-  return (
-    <div className="relative w-full h-[135px] sm:h-[150px] bg-white/[0.03] backdrop-blur-[12px] border border-white/10 rounded-[24px] mb-4 flex flex-col justify-center items-center shadow-xl overflow-hidden group shrink-0">
-      <button
-        type="button"
-        onClick={onOpenAvatarModal}
-        className="absolute top-4 left-4 z-10 flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-[#6675FF] to-[#7DD8FF] border-2 border-white/20 shadow-[0_6px_14px_rgba(91,140,255,0.3)] overflow-hidden cursor-pointer hover:scale-105 active:scale-95 transition-all group/avatar"
-        title="Сменить аватарку"
-      >
-        {user.avatarUrl ? (
-          <img src={user.avatarUrl} alt="Avatar" className="w-full h-full object-cover rounded-full" />
-        ) : (
-          <span className="text-lg sm:text-xl font-bold text-white tracking-wider">
-            {user.avatarFallback || user.name.charAt(0).toUpperCase()}
-          </span>
-        )}
-        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/avatar:opacity-100 flex items-center justify-center transition-opacity rounded-full">
-          <Camera className="w-4 h-4 text-white/90" />
-        </div>
-      </button>
-
-      <div className="relative z-10 flex flex-col items-center justify-center text-center">
-        <span className="text-[11px] font-semibold text-white/50 uppercase tracking-[1px] mb-1">
-          Текущий баланс
-        </span>
-        <div className="flex items-baseline justify-center tracking-[-1px]">
-          <span className="text-[38px] sm:text-[44px] font-extrabold text-white leading-none">
-            {formattedBalance}
-          </span>
-          <span className="text-xl sm:text-2xl font-light text-white/30 ml-1.5">
-            {user.currency}
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// Быстрые действия
-const QuickActions = ({ onNavigate, onOpenPromoModal }) => (
-  <div className="grid grid-cols-3 gap-2 mb-4 shrink-0">
-    <button
-      type="button"
-      onClick={() => onNavigate('withdraw')}
-      className="h-[54px] sm:h-[58px] rounded-[16px] bg-white/[0.05] hover:bg-white/[0.09] active:scale-[0.96] border border-white/10 text-white transition-all duration-200 flex flex-col items-center justify-center gap-0.5 backdrop-blur-md cursor-pointer group px-1"
-    >
-      <ArrowUpRight className="w-4 h-4 text-white/70 group-hover:text-blue-400 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-all" />
-      <span className="text-[10px] sm:text-[11px] font-semibold text-white/80 group-hover:text-white whitespace-nowrap">Вывод</span>
-    </button>
-
-    <button
-      type="button"
-      onClick={() => onNavigate('topup')}
-      className="h-[54px] sm:h-[58px] rounded-[16px] bg-white/[0.05] hover:bg-white/[0.09] active:scale-[0.96] border border-white/10 text-white transition-all duration-200 flex flex-col items-center justify-center gap-0.5 backdrop-blur-md cursor-pointer group px-1"
-    >
-      <Plus className="w-4 h-4 text-white/70 group-hover:text-emerald-400 group-hover:scale-110 transition-all" />
-      <span className="text-[10px] sm:text-[11px] font-semibold text-white/80 group-hover:text-white whitespace-nowrap">Пополнить</span>
-    </button>
-
-    <button
-      type="button"
-      onClick={onOpenPromoModal}
-      className="h-[54px] sm:h-[58px] rounded-[16px] bg-white/[0.05] hover:bg-white/[0.09] active:scale-[0.96] border border-white/10 text-white transition-all duration-200 flex flex-col items-center justify-center gap-0.5 backdrop-blur-md cursor-pointer group px-1"
-    >
-      <Ticket className="w-4 h-4 text-white/70 group-hover:text-amber-400 group-hover:rotate-12 transition-all" />
-      <span className="text-[10px] sm:text-[11px] font-semibold text-white/80 group-hover:text-white whitespace-nowrap">Промокод</span>
-    </button>
-  </div>
-);
-
-// Список операций
-const OperationsList = ({ transactions, onOpenAll }) => {
-  const displayTransactions = transactions.slice(0, 3);
-
-  return (
-    <div className="mb-3 shrink-0 bg-white/[0.03] backdrop-blur-[12px] border border-white/10 rounded-[22px] p-3.5 shadow-xl">
-      <div className="flex items-center justify-between mb-2 px-0.5">
-        <h2 className="text-xs font-bold tracking-tight uppercase text-white/50">Операции</h2>
-        <button
-          type="button"
-          onClick={onOpenAll}
-          className="text-xs font-semibold text-[#3B82F6] hover:text-blue-400 transition-colors flex items-center gap-1 cursor-pointer group"
-        >
-          <span>Смотреть все</span>
-          <ArrowRight className="w-3.5 h-3.5 text-[#3B82F6] group-hover:translate-x-0.5 transition-transform" />
-        </button>
-      </div>
-
-      {displayTransactions.length === 0 ? (
-        <div className="text-center py-4 text-white/30 text-xs rounded-[14px] bg-white/[0.02] border border-white/[0.04]">
-          История операций пуста
-        </div>
-      ) : (
-        <div className="space-y-1.5">
-          {displayTransactions.map((tx) => {
-            const isPositive = tx.type === 'positive';
-            return (
-              <div
-                key={tx.id}
-                className="flex items-center justify-between p-2.5 rounded-[14px] bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.05] transition-all"
-              >
-                <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                  <div className="w-8 h-8 rounded-[10px] bg-white/[0.06] flex items-center justify-center text-[15px] shrink-0">
-                    {tx.icon}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-xs font-semibold text-white truncate leading-tight">{tx.title}</p>
-                    <p className="text-[10px] text-white/40 font-normal">{tx.date}</p>
-                  </div>
-                </div>
-
-                <div className={`text-xs font-bold shrink-0 ml-2 ${isPositive ? 'text-[#10B981]' : 'text-white/70'}`}>
-                  {isPositive ? '+' : '−'}
-                  {Math.abs(tx.amount).toLocaleString('ru-RU')} ₽
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
-    </div>
-  );
-};
-
-// Блок информации о магазине
-const StoreInfoCard = ({ onOpenAbout }) => (
-  <div className="mb-3 shrink-0 bg-gradient-to-br from-white/[0.05] to-white/[0.02] backdrop-blur-[12px] border border-white/10 rounded-[22px] p-3.5 shadow-xl">
-    <div className="flex items-center justify-between mb-2.5">
-      <div className="flex items-center gap-2">
-        <div className="w-6 h-6 rounded-lg bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400">
-          <Gift className="w-3.5 h-3.5" />
-        </div>
-        <span className="text-xs font-extrabold text-white tracking-wide">Vintyx Store</span>
-      </div>
-      <button
-        type="button"
-        onClick={onOpenAbout}
-        className="text-[11px] font-semibold text-white/50 hover:text-white transition-colors cursor-pointer"
-      >
-        Подробнее →
-      </button>
-    </div>
-
-    <div className="grid grid-cols-3 gap-2 text-center">
-      <div className="p-2 rounded-xl bg-white/[0.03] border border-white/[0.04] flex flex-col items-center">
-        <Zap className="w-3.5 h-3.5 text-amber-400 mb-1" />
-        <span className="text-[11px] font-extrabold text-white leading-tight">Авто</span>
-        <span className="text-[9px] text-white/40 mt-0.5">Выдача 24/7</span>
-      </div>
-
-      <div className="p-2 rounded-xl bg-white/[0.03] border border-white/[0.04] flex flex-col items-center">
-        <CheckCircle className="w-3.5 h-3.5 text-emerald-400 mb-1" />
-        <span className="text-[11px] font-extrabold text-white leading-tight">100%</span>
-        <span className="text-[9px] text-white/40 mt-0.5">Гарантия</span>
-      </div>
-
-      <div className="p-2 rounded-xl bg-white/[0.03] border border-white/[0.04] flex flex-col items-center">
-        <Smartphone className="w-3.5 h-3.5 text-sky-400 mb-1" />
-        <span className="text-[11px] font-extrabold text-white leading-tight">50,000+</span>
-        <span className="text-[9px] text-white/40 mt-0.5">Клиентов</span>
-      </div>
-    </div>
-  </div>
-);
-
-// Футер
-const InfoFooter = ({ onOpenModal }) => (
-  <div className="flex flex-col items-center gap-2 pt-3 pb-1 border-t border-white/[0.08] mt-auto shrink-0 text-center">
-    <div className="flex flex-wrap justify-center items-center gap-3.5">
-      <button type="button" onClick={() => onOpenModal('about')} className="text-[11px] font-medium text-white/40 hover:text-white transition-colors cursor-pointer py-0.5">
-        Магазин
-      </button>
-      <button type="button" onClick={() => onOpenModal('support')} className="text-[11px] font-medium text-white/40 hover:text-white transition-colors cursor-pointer py-0.5">
-        Поддержка
-      </button>
-      <button type="button" onClick={() => onOpenModal('terms')} className="text-[11px] font-medium text-white/40 hover:text-white transition-colors cursor-pointer py-0.5">
-        Условия
-      </button>
-      <button type="button" onClick={() => onOpenModal('privacy')} className="text-[11px] font-medium text-white/40 hover:text-white transition-colors cursor-pointer py-0.5">
-        Политика
-      </button>
-    </div>
-    <p className="text-[10px] text-white/25">
-      Vintyx Store © 2026 • Все права защищены
-    </p>
-  </div>
-);
-
-// Экран Пополнения
-const TopUpScreen = ({ onBack, onTopUp }) => {
-  const [amount, setAmount] = useState(500);
-  const [customAmount, setCustomAmount] = useState('500');
-  const [method, setMethod] = useState('sbp');
-  const [error, setError] = useState('');
-  const [isSuccess, setIsSuccess] = useState(false);
-
-  const presets = [100, 250, 500, 1000, 2500];
-
-  const handleSelectPreset = (val) => {
-    setAmount(val);
-    setCustomAmount(val.toString());
-    setError('');
-  };
-
-  const handleCustomChange = (e) => {
-    const val = e.target.value;
-    setCustomAmount(val);
-    if (val && parseInt(val) > 0) {
-      setAmount(parseInt(val));
-      setError('');
-    }
-  };
-
-  const handleSubmit = (e) => {
-    if (e) e.preventDefault();
-    if (!amount || amount <= 0) {
-      setError('Укажите сумму больше 0 ₽');
-      return;
-    }
-    setError('');
-    setIsSuccess(true);
-    setTimeout(() => {
-      onTopUp(amount, method);
-      onBack();
-    }, 1200);
-  };
-
-  if (isSuccess) {
-    return (
-      <div className="flex flex-col items-center justify-center py-16 text-center animate-fadeIn my-auto">
-        <CheckCircle className="w-16 h-16 text-emerald-400 mb-4 animate-bounce" />
-        <h3 className="text-xl font-bold text-white mb-2">Баланс пополнен!</h3>
-        <p className="text-xs text-white/50">Зачислено {amount.toLocaleString('ru-RU')} ₽</p>
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex flex-col w-full h-full min-h-0 justify-between animate-fadeIn overflow-hidden">
-      <div className="flex items-center gap-3 mb-3 shrink-0 pb-2 border-b border-white/10">
-        <button
-          type="button"
-          onClick={onBack}
-          className="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-white cursor-pointer transition-all active:scale-95"
-        >
-          <ArrowLeft className="w-4 h-4" />
-        </button>
-        <div>
-          <h2 className="text-lg font-extrabold text-white">Пополнение баланса</h2>
-          <p className="text-[11px] text-white/40">Выберите сумму и способ оплаты</p>
-        </div>
-      </div>
-
-      <form onSubmit={handleSubmit} className="flex flex-col flex-1 min-h-0 justify-between">
-        <div className="flex-1 overflow-y-auto space-y-4 pr-0.5 min-h-0">
-          <div>
-            <label className="text-[10px] font-semibold text-white/50 mb-1.5 block uppercase tracking-wider">
-              Быстрый выбор суммы
-            </label>
-            <div className="grid grid-cols-5 max-sm:grid-cols-3 gap-1.5 mb-2">
-              {presets.map((p) => (
-                <button
-                  key={p}
-                  type="button"
-                  onClick={() => handleSelectPreset(p)}
-                  className={`py-2 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
-                    amount === p
-                      ? 'bg-indigo-600/30 border-indigo-500 text-white shadow-md'
-                      : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'
-                  }`}
-                >
-                  {p} ₽
-                </button>
-              ))}
-            </div>
-            <input
-              type="number"
-              placeholder="Своя сумма (₽)"
-              value={customAmount}
-              onChange={handleCustomChange}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 transition-colors"
-            />
-          </div>
-
-          <div>
-            <label className="text-[10px] font-semibold text-white/50 mb-1.5 block uppercase tracking-wider">
-              Способ оплаты
-            </label>
-            <div className="space-y-2">
-              {[
-                { id: 'sbp', label: 'СБП (Система быстрых платежей)', icon: <Smartphone className="w-3.5 h-3.5 text-emerald-400" /> },
-                { id: 'card', label: 'Банковская карта (Мир, Visa, MC)', icon: <CreditCard className="w-3.5 h-3.5 text-indigo-400" /> },
-                { id: 'stars', label: 'Telegram Stars', icon: <Send className="w-3.5 h-3.5 text-sky-400" /> },
-                { id: 'crypto', label: 'Криптовалюта (TON, USDT)', icon: <Zap className="w-3.5 h-3.5 text-amber-400" /> },
-              ].map((m) => (
-                <button
-                  key={m.id}
-                  type="button"
-                  onClick={() => setMethod(m.id)}
-                  className={`w-full flex items-center justify-between p-2.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
-                    method === m.id
-                      ? 'bg-indigo-600/20 border-indigo-500 text-white shadow-md'
-                      : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'
-                  }`}
-                >
-                  <div className="flex items-center gap-2.5">
-                    {m.icon}
-                    <span>{m.label}</span>
-                  </div>
-                  <div
-                    className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center ${
-                      method === m.id ? 'border-indigo-500 bg-indigo-500' : 'border-white/20'
-                    }`}
-                  >
-                    {method === m.id && <div className="w-1 h-1 bg-white rounded-full" />}
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="pt-3 shrink-0 border-t border-white/10 mt-2 space-y-2">
-          {error && (
-            <p className="text-[11px] text-rose-400 text-center font-medium bg-rose-500/10 border border-rose-500/20 py-1.5 rounded-lg">
-              {error}
-            </p>
-          )}
-
-          <button
-            type="submit"
-            className="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-400 hover:to-teal-400 text-white font-extrabold text-xs sm:text-sm shadow-lg shadow-emerald-950/50 cursor-pointer transition-all active:scale-[0.98] flex items-center justify-center gap-2 shrink-0"
-          >
-            <span>Перейти к оплате {amount > 0 ? `${amount.toLocaleString('ru-RU')} ₽` : ''}</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
-        </div>
-      </form>
-    </div>
-  );
-};
-
-// Экран Вывода Средств
-const WithdrawScreen = ({ userBalance, onBack, onWithdraw }) => {
-  const [method, setMethod] = useState('sbp');
-  const [amount, setAmount] = useState('');
-  const [phone, setPhone] = useState('+7 (999) 000-00-00');
-  const [selectedBank, setSelectedBank] = useState('Сбер');
-  const [isCustomBank, setIsCustomBank] = useState(false);
-  const [customBank, setCustomBank] = useState('');
-  const [cardNumber, setCardNumber] = useState('');
-  const [error, setError] = useState('');
-  const [isSuccess, setIsSuccess] = useState(false);
-
-  const presets = [100, 250, 500, 1000, 2500];
-  const numAmount = parseInt(amount) || 0;
-  const fee = Math.round(numAmount * 0.03 * 100) / 100;
-  const finalAmount = Math.max(0, Math.round((numAmount - fee) * 100) / 100);
-
-  const formatPhoneInput = (val) => {
-    if (!val) return '+7 ';
-    let cleaned = val.trim();
-    if (cleaned.startsWith('+')) {
-      let digits = cleaned.replace(/[^\d+]/g, '');
-      if (digits.startsWith('+7') || digits.startsWith('+8')) {
-        let nums = digits.replace(/\D/g, '');
-        if (nums.startsWith('7') || nums.startsWith('8')) nums = nums.substring(1);
-        let res = '+7';
-        if (nums.length > 0) res += ' (' + nums.substring(0, 3);
-        if (nums.length >= 3) res += ') ' + nums.substring(3, 6);
-        if (nums.length >= 6) res += '-' + nums.substring(6, 8);
-        if (nums.length >= 8) res += '-' + nums.substring(8, 10);
-        return res;
-      } else {
-        return cleaned;
-      }
-    } else {
-      let nums = cleaned.replace(/\D/g, '');
-      if (nums.startsWith('8') || nums.startsWith('7')) {
-        nums = nums.substring(1);
-      }
-      let res = '+7';
-      if (nums.length > 0) res += ' (' + nums.substring(0, 3);
-      if (nums.length >= 3) res += ') ' + nums.substring(3, 6);
-      if (nums.length >= 6) res += '-' + nums.substring(6, 8);
-      if (nums.length >= 8) res += '-' + nums.substring(8, 10);
-      return res;
-    }
-  };
-
-  const formatCardInput = (val) => {
-    const digits = val.replace(/\D/g, '').substring(0, 16);
-    let formatted = '';
-    for (let i = 0; i < digits.length; i++) {
-      if (i > 0 && i % 4 === 0) formatted += ' ';
-      formatted += digits[i];
-    }
-    return formatted;
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!numAmount || numAmount < 50) {
-      setError('Минимальная сумма вывода 50 ₽');
-      return;
-    }
-    if (numAmount > userBalance) {
-      setError(`Недостаточно средств. Баланс: ${userBalance.toLocaleString('ru-RU')} ₽`);
-      return;
-    }
-
-    let details = '';
-    if (method === 'sbp') {
-      if (phone.replace(/\D/g, '').length < 10) {
-        setError('Укажите корректный номер телефона (не менее 10 цифр)');
-        return;
-      }
-      const bankToUse = isCustomBank ? customBank.trim() : selectedBank;
-      if (!bankToUse) {
-        setError('Укажите название банка получателя');
-        return;
-      }
-      details = `СБП: ${phone}, ${bankToUse}`;
-    } else {
-      if (cardNumber.replace(/\s/g, '').length < 16) {
-        setError('Укажите 16-значный номер карты');
-        return;
-      }
-      details = `Карта: ${cardNumber}`;
-    }
-
-    setError('');
-    setIsSuccess(true);
-    setTimeout(() => {
-      onWithdraw(numAmount, details);
-      onBack();
-    }, 1400);
-  };
-
-  if (isSuccess) {
-    return (
-      <div className="flex flex-col items-center justify-center py-16 text-center animate-fadeIn my-auto">
-        <CheckCircle className="w-16 h-16 text-indigo-400 mb-4 animate-bounce" />
-        <h3 className="text-xl font-bold text-white mb-2">Заявка отправлена!</h3>
-        <p className="text-xs text-white/50">Запрос на {numAmount.toLocaleString('ru-RU')} ₽ обрабатывается</p>
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex flex-col w-full h-full min-h-0 justify-between animate-fadeIn overflow-hidden">
-      <div className="flex items-center gap-3 mb-3 shrink-0 pb-2 border-b border-white/10">
-        <button
-          type="button"
-          onClick={onBack}
-          className="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-white cursor-pointer transition-all active:scale-95 shrink-0"
-        >
-          <ArrowLeft className="w-4 h-4" />
-        </button>
-        <div>
-          <h2 className="text-lg font-extrabold text-white leading-tight">Вывод средств</h2>
-          <p className="text-[11px] text-white/40">Укажите сумму и реквизиты</p>
-        </div>
-      </div>
-
-      <form onSubmit={handleSubmit} className="flex flex-col flex-1 min-h-0 justify-between">
-        <div className="flex-1 overflow-y-auto space-y-3.5 pr-1 min-h-0">
-          <div>
-            <label className="text-[10px] font-semibold text-white/50 mb-1.5 block uppercase tracking-wider">
-              Быстрый выбор суммы
-            </label>
-            <div className="grid grid-cols-5 max-sm:grid-cols-3 gap-1.5 mb-2">
-              {presets.map((p) => (
-                <button
-                  key={p}
-                  type="button"
-                  onClick={() => {
-                    setAmount(p.toString());
-                    setError('');
-                  }}
-                  className={`py-2 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
-                    numAmount === p
-                      ? 'bg-indigo-600/30 border-indigo-500 text-white shadow-md'
-                      : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'
-                  }`}
-                >
-                  {p} ₽
-                </button>
-              ))}
-            </div>
-
-            <label className="text-[10px] font-semibold text-white/50 mb-1 block uppercase tracking-wider mt-2">
-              Сумма вывода (₽)
-            </label>
-            <input
-              type="number"
-              placeholder="Мин. 50 ₽"
-              value={amount}
-              onChange={(e) => {
-                setAmount(e.target.value);
-                setError('');
-              }}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-base font-bold text-white text-center focus:outline-none focus:border-indigo-500 transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-            />
-            <div className="flex justify-between items-center mt-1.5 px-0.5 text-[11px]">
-              <span className="text-white/40">Мин. 50 ₽</span>
-              <button
-                type="button"
-                onClick={() => {
-                  setAmount(userBalance.toString());
-                  setError('');
-                }}
-                className="text-indigo-400 hover:text-indigo-300 font-semibold cursor-pointer transition-colors"
-              >
-                Вывести всю сумму
-              </button>
-            </div>
-          </div>
-
-          <div>
-            <label className="text-[10px] font-semibold text-white/50 mb-1.5 block uppercase tracking-wider">
-              Способ получения
-            </label>
-            <div className="grid grid-cols-2 gap-2 mb-3">
-              <button
-                type="button"
-                onClick={() => { setMethod('sbp'); setError(''); }}
-                className={`flex items-center justify-center gap-1.5 p-2.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
-                  method === 'sbp' ? 'bg-indigo-600/30 border-indigo-500 text-white shadow-md' : 'bg-white/5 border-white/10 text-white/60'
-                }`}
-              >
-                <Smartphone className="w-3.5 h-3.5 text-emerald-400" />
-                <span>СБП (Телефон)</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => { setMethod('card'); setError(''); }}
-                className={`flex items-center justify-center gap-1.5 p-2.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
-                  method === 'card' ? 'bg-indigo-600/30 border-indigo-500 text-white shadow-md' : 'bg-white/5 border-white/10 text-white/60'
-                }`}
-              >
-                <CreditCard className="w-3.5 h-3.5 text-indigo-400" />
-                <span>Карта</span>
-              </button>
-            </div>
-
-            {method === 'sbp' && (
-              <div className="space-y-3">
-                <div>
-                  <label className="text-[10px] font-medium text-white/50 mb-1 block">
-                    Номер телефона СБП (+7)
-                  </label>
-
-                  <input
-                    type="tel"
-                    value={phone}
-                    onChange={(e) => {
-                      setPhone(formatPhoneInput(e.target.value));
-                      setError('');
-                    }}
-                    placeholder="+7 (999) 000-00-00"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2 text-xs font-semibold text-white focus:outline-none focus:border-indigo-500 tracking-wide"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-[10px] font-medium text-white/50 mb-1 block">Выберите банк получателя</label>
-                  <div className="grid grid-cols-2 gap-1.5">
-                    {BANKS_LIST.map((b) => {
-                      if (b.name === 'Свой вариант') {
-                        if (isCustomBank) {
-                          return (
-                            <div key="custom-bank-input" className="col-span-1">
-                              <input
-                                type="text"
-                                value={customBank}
-                                onChange={(e) => {
-                                  setCustomBank(e.target.value);
-                                  setSelectedBank(e.target.value);
-                                  setError('');
-                                }}
-                                placeholder="Название банка..."
-                                autoFocus
-                                className="w-full h-full bg-indigo-600/30 border border-indigo-500 rounded-xl px-2.5 py-2 text-[11px] font-bold text-white focus:outline-none placeholder-white/40 shadow-sm"
-                              />
-                            </div>
-                          );
-                        }
-                        return (
-                          <button
-                            key={b.name}
-                            type="button"
-                            onClick={() => {
-                              setIsCustomBank(true);
-                              setSelectedBank(customBank);
-                              setError('');
-                            }}
-                            className="flex items-center justify-between p-2 rounded-xl border text-[11px] text-left transition-all cursor-pointer bg-white/5 border-white/10 text-white/70 hover:bg-white/10"
-                          >
-                            <span className="flex items-center gap-1.5 truncate">
-                              <span>{b.icon}</span>
-                              <span className="truncate">{b.name}</span>
-                            </span>
-                          </button>
-                        );
-                      }
-
-                      const isSelected = !isCustomBank && selectedBank === b.name;
-                      return (
-                        <button
-                          key={b.name}
-                          type="button"
-                          onClick={() => {
-                            setIsCustomBank(false);
-                            setSelectedBank(b.name);
-                            setError('');
-                          }}
-                          className={`flex items-center justify-between p-2 rounded-xl border text-[11px] text-left transition-all cursor-pointer ${
-                            isSelected
-                              ? 'bg-indigo-600/30 border-indigo-500 text-white font-bold shadow-sm'
-                              : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'
-                          }`}
-                        >
-                          <span className="flex items-center gap-1.5 truncate">
-                            <span>{b.icon}</span>
-                            <span className="truncate">{b.name}</span>
-                          </span>
-                          {isSelected && <Check className="w-3 h-3 text-indigo-400 shrink-0" />}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {method === 'card' && (
-              <div>
-                <label className="text-[10px] font-medium text-white/50 mb-1 block">Номер банковской карты</label>
-                <input
-                  type="text"
-                  value={cardNumber}
-                  onChange={(e) => {
-                    setCardNumber(formatCardInput(e.target.value));
-                    setError('');
-                  }}
-                  placeholder="2200 0000 0000 0000"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-white tracking-widest focus:outline-none focus:border-indigo-500"
-                />
-              </div>
-            )}
-          </div>
-
-          <div className="p-3 rounded-xl bg-white/[0.04] border border-white/10 space-y-1.5 text-[11px] mt-2">
-            <div className="flex justify-between text-white/60">
-              <span>Сумма вывода:</span>
-              <span className="text-white font-semibold">{numAmount.toLocaleString('ru-RU')} ₽</span>
-            </div>
-            <div className="flex justify-between text-white/60">
-              <span>Комиссия сервиса (3%):</span>
-              <span className="text-amber-400 font-medium">-{fee.toLocaleString('ru-RU')} ₽</span>
-            </div>
-            <div className="border-t border-white/10 pt-1.5 flex justify-between font-bold text-xs text-white">
-              <span>К зачислению:</span>
-              <span className="text-emerald-400 font-extrabold">{finalAmount.toLocaleString('ru-RU')} ₽</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="pt-3 shrink-0 border-t border-white/10 mt-2 space-y-2 z-20">
-          {error && (
-            <p className="text-[11px] text-rose-400 text-center font-medium bg-rose-500/10 border border-rose-500/20 py-1.5 px-2 rounded-lg">
-              {error}
-            </p>
-          )}
-
-          <button
-            type="submit"
-            className="w-full py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 hover:from-indigo-500 hover:to-purple-500 text-white font-extrabold text-xs sm:text-sm shadow-lg shadow-indigo-950/50 cursor-pointer transition-all active:scale-[0.98] flex items-center justify-center gap-2 shrink-0"
-          >
-            <span>Запросить вывод {numAmount > 0 ? `${numAmount.toLocaleString('ru-RU')} ₽` : ''}</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
-        </div>
-      </form>
-    </div>
-  );
-};
-
-// Экран Всех Операций
-const AllOperationsScreen = ({ transactions, onBack }) => {
-  const [filter, setFilter] = useState('all');
-  const [search, setSearch] = useState('');
-
-  const filtered = transactions.filter((t) => {
-    if (filter === 'positive' && t.type !== 'positive') return false;
-    if (filter === 'negative' && t.type !== 'negative') return false;
-    if (search.trim() && !t.title.toLowerCase().includes(search.toLowerCase())) return false;
-    return true;
-  });
-
-  return (
-    <div className="flex flex-col w-full h-full min-h-0 justify-between animate-fadeIn overflow-hidden">
-      <div className="flex items-center gap-3 mb-3 shrink-0">
-        <button
-          type="button"
-          onClick={onBack}
-          className="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-white cursor-pointer transition-all active:scale-95"
-        >
-          <ArrowLeft className="w-4 h-4" />
-        </button>
-        <div>
-          <h2 className="text-lg font-extrabold text-white">Все операции</h2>
-          <p className="text-[11px] text-white/40">Полная история ваших транзакций</p>
-        </div>
-      </div>
-
-      <div className="relative mb-3 shrink-0">
-        <Search className="w-3.5 h-3.5 text-white/30 absolute left-3.5 top-1/2 -translate-y-1/2" />
-        <input
-          type="text"
-          placeholder="Поиск по наименованию..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full bg-white/5 border border-white/10 rounded-xl pl-9 pr-3.5 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 transition-colors"
-        />
-      </div>
-
-      <div className="flex gap-1 p-1 bg-white/5 border border-white/5 rounded-xl mb-3 text-xs font-semibold shrink-0">
-        {[
-          { id: 'all', label: 'Все' },
-          { id: 'negative', label: 'Списания' },
-          { id: 'positive', label: 'Пополнения' },
-        ].map((tab) => (
-          <button
-            key={tab.id}
-            type="button"
-            onClick={() => setFilter(tab.id)}
-            className={`flex-1 py-1.5 rounded-lg transition-all cursor-pointer ${
-              filter === tab.id ? 'bg-indigo-600/50 text-white shadow-sm' : 'text-white/40 hover:text-white'
-            }`}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
-
-      <div className="flex-1 overflow-y-auto space-y-2 pr-0.5 min-h-0">
-        {filtered.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-12 text-center text-white/40 space-y-3">
-            {search.trim() ? (
-              <div className="flex flex-col items-center">
-                <AlertTriangle className="w-10 h-10 text-amber-400/60 mb-2" />
-                <p className="text-xs text-white/40">Ничего не найдено</p>
-              </div>
-            ) : (
-              <div className="flex flex-col items-center">
-                <Inbox className="w-10 h-10 text-indigo-400/60 mb-2" />
-                <p className="text-xs text-white/40">История пуста</p>
-              </div>
-            )}
-          </div>
-        ) : (
-          filtered.map((tx) => {
-            const isPositive = tx.type === 'positive';
-            return (
-              <div
-                key={tx.id}
-                className="flex items-center justify-between p-3 rounded-xl bg-white/[0.03] border border-white/[0.05]"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center text-base shrink-0">
-                    {tx.icon}
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold text-white">{tx.title}</p>
-                    <p className="text-[10px] text-white/30 mt-0.5">{tx.date}</p>
-                  </div>
-                </div>
-                <span className={`text-xs font-extrabold ${isPositive ? 'text-emerald-400' : 'text-white/70'}`}>
-                  {isPositive ? '+' : '−'}
-                  {Math.abs(tx.amount).toLocaleString('ru-RU')} ₽
-                </span>
-              </div>
-            );
-          })
-        )}
-      </div>
-    </div>
-  );
-};
-
-// Модальные окна
-const Modals = ({ activeModal, onClose, user, onApplyPromo, onUpdateAvatar }) => {
-  if (!activeModal) return null;
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-fadeIn">
-      <div
-        className="relative w-full max-w-sm bg-[#0e193e]/95 backdrop-blur-2xl border border-white/10 rounded-[24px] p-5 text-white shadow-2xl overflow-hidden max-h-[85vh] flex flex-col"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <button
-          type="button"
-          onClick={onClose}
-          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-white/60 hover:text-white transition-all cursor-pointer z-20"
-        >
-          <X className="w-4 h-4" />
-        </button>
-
-        {activeModal === 'promo' && <PromoModal onClose={onClose} onApplyPromo={onApplyPromo} />}
-        {activeModal === 'avatar' && <AvatarModal user={user} onClose={onClose} onUpdateAvatar={onUpdateAvatar} />}
-        {activeModal === 'about' && (
-          <div className="space-y-3">
-            <h3 className="text-base font-bold text-white">О магазине Vintyx Store</h3>
-            <p className="text-xs text-white/70 leading-relaxed">
-              Vintyx Store — цифровой маркетплейс внутриигровых ценностей и подписок (Brawl Stars, PUBG Mobile, Telegram Stars).
-            </p>
-            <div className="p-3 bg-white/5 rounded-xl border border-white/5 text-xs text-white/60 space-y-1">
-              <p>⚡ Мгновенное автозачисление</p>
-              <p>🛡️ Официальная гарантия</p>
-              <p>💎 Более 50,000 клиентов</p>
-            </div>
-          </div>
-        )}
-        {activeModal === 'support' && (
-          <div className="space-y-3">
-            <h3 className="text-base font-bold text-white">Служба поддержки</h3>
-            <p className="text-xs text-white/60">Наша поддержка работает круглосуточно. Ответим на любой вопрос за 5 минут.</p>
-            <a
-              href="https://t.me/vintyx_support"
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center justify-center gap-2 py-3 bg-[#3B82F6] hover:bg-blue-600 rounded-xl text-xs font-bold text-white transition-all cursor-pointer"
-            >
-              <Send className="w-4 h-4" />
-              <span>Написать в Telegram</span>
-            </a>
-          </div>
-        )}
-        {activeModal === 'terms' && (
-          <div className="space-y-3">
-            <h3 className="text-base font-bold text-white">Условия использования</h3>
-            <div className="text-xs text-white/60 space-y-2 max-h-60 overflow-y-auto pr-1">
-              <p>1. Все товары поставляются автоматически через официальные каналы API.</p>
-              <p>2. Возврат средств возможен до момента активации или доставки товара на аккаунт.</p>
-              <p>3. Пополняя баланс, вы соглашаетесь с регламентом проведения платежей.</p>
-            </div>
-          </div>
-        )}
-        {activeModal === 'privacy' && (
-          <div className="space-y-3">
-            <h3 className="text-base font-bold text-white">Политика конфиденциальности</h3>
-            <div className="text-xs text-white/60 space-y-2 max-h-60 overflow-y-auto pr-1">
-              <p>Мы защищаем ваши персональные данные и не передаем их третьим лицам.</p>
-              <p>Все транзакции защищены сквозным шифрованием банковских протоколов.</p>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
-
-// Модальное окно промокода
-const PromoModal = ({ onClose, onApplyPromo }) => {
-  const [code, setCode] = useState('');
-  const [status, setStatus] = useState(null);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!code.trim()) return;
-
-    const success = onApplyPromo(code.trim());
-    if (success) {
-      setStatus('success');
-      setTimeout(() => onClose(), 1200);
-    } else {
-      setStatus('error');
-    }
-  };
-
-  return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-2.5">
-        <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400">
-          <Ticket className="w-5 h-5" />
-        </div>
-        <div>
-          <h3 className="text-base font-bold text-white">Активация промокода</h3>
-          <p className="text-[11px] text-white/50">Введите промокод для бонуса</p>
-        </div>
-      </div>
-
-      <form onSubmit={handleSubmit} className="space-y-3">
-        <div>
-          <input
-            type="text"
-            placeholder="Например: VINTYX2026"
-            value={code}
-            onChange={(e) => {
-              setCode(e.target.value.toUpperCase());
-              setStatus(null);
-            }}
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm font-bold text-white tracking-widest text-center uppercase focus:outline-none focus:border-indigo-500"
-          />
-          {status === 'error' && (
-            <p className="text-[11px] text-rose-400 mt-1.5 text-center font-medium">
-              Недействительный или ранее использованный промокод
-            </p>
-          )}
-          {status === 'success' && (
-            <p className="text-[11px] text-emerald-400 mt-1.5 text-center font-medium flex items-center justify-center gap-1">
-              <CheckCircle className="w-3.5 h-3.5" />
-              Промокод активирован!
-            </p>
-          )}
-        </div>
-
-        <button
-          type="submit"
-          className="w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-white font-bold text-xs shadow-lg shadow-amber-950/50 cursor-pointer transition-all active:scale-[0.98]"
-        >
-          Применить
-        </button>
-      </form>
-    </div>
-  );
-};
-
-// Модальное окно аватарки
-const AvatarModal = ({ user, onClose, onUpdateAvatar }) => {
-  const [urlInput, setUrlInput] = useState('');
-
-  const handleSelect = (url) => {
-    onUpdateAvatar(url);
-    onClose();
-  };
-
-  const handleCustomSubmit = (e) => {
-    e.preventDefault();
-    if (urlInput.trim()) {
-      onUpdateAvatar(urlInput.trim());
-      onClose();
-    }
-  };
-
-  return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-2.5">
-        <div className="w-10 h-10 rounded-xl bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400">
-          <Camera className="w-5 h-5" />
-        </div>
-        <div>
-          <h3 className="text-base font-bold text-white">Изменение аватарки</h3>
-          <p className="text-[11px] text-white/50">Выберите готовую или укажите URL</p>
-        </div>
-      </div>
-
-      <div>
-        <label className="text-[10px] font-semibold text-white/40 block uppercase mb-2">Готовые аватарки</label>
-        <div className="grid grid-cols-4 gap-2">
-          {PRESET_AVATARS.map((url, idx) => (
-            <button
-              key={idx}
-              type="button"
-              onClick={() => handleSelect(url)}
-              className="w-14 h-14 rounded-full border-2 border-white/10 hover:border-indigo-500 overflow-hidden cursor-pointer transition-all hover:scale-105 active:scale-95"
-            >
-              <img src={url} alt={`Preset ${idx}`} className="w-full h-full object-cover" />
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <form onSubmit={handleCustomSubmit} className="space-y-2 pt-1">
-        <label className="text-[10px] font-semibold text-white/40 block uppercase">Или вставьте ссылку на фото</label>
-        <input
-          type="url"
-          placeholder="https://example.com/photo.jpg"
-          value={urlInput}
-          onChange={(e) => setUrlInput(e.target.value)}
-          className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500"
-        />
-        <button
-          type="submit"
-          className="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs cursor-pointer transition-all"
-        >
-          Сохранить ссылку
-        </button>
-      </form>
-    </div>
-  );
-};
-
-// Главное приложение
-function App() {
-  const [activeScreen, setActiveScreen] = useState('profile');
-  const [activeModal, setActiveModal] = useState(null);
-
-  const [user, setUser] = useState(() => {
-    const saved = localStorage.getItem('vintyx_user');
-    return saved ? JSON.parse(saved) : INITIAL_USER;
-  });
-
-  const [usedPromos, setUsedPromos] = useState(() => {
-    const saved = localStorage.getItem('vintyx_promos');
-    return saved ? JSON.parse(saved) : [];
-  });
-
-  const [transactions, setTransactions] = useState(() => {
-    const saved = localStorage.getItem('vintyx_transactions');
-    return saved ? JSON.parse(saved) : INITIAL_TRANSACTIONS;
-  });
-
-  useEffect(() => { localStorage.setItem('vintyx_user', JSON.stringify(user)); }, [user]);
-  useEffect(() => { localStorage.setItem('vintyx_promos', JSON.stringify(usedPromos)); }, [usedPromos]);
-  useEffect(() => { localStorage.setItem('vintyx_transactions', JSON.stringify(transactions)); }, [transactions]);
-
-  const handleTopUp = (amount, method) => {
-    setUser((prev) => ({ ...prev, balance: prev.balance + amount }));
-    const newTx = {
-      id: `tx-${Date.now()}`,
-      title: `Пополнение (${method.toUpperCase()})`,
-      category: 'topup',
-      icon: '💎',
-      date: 'Только что',
-      amount: amount,
-      type: 'positive',
-      status: 'completed',
-    };
-    setTransactions((prev) => [newTx, ...prev]);
-  };
-
-  const handleWithdraw = (amount, details) => {
-    setUser((prev) => ({ ...prev, balance: Math.max(0, prev.balance - amount) }));
-    const newTx = {
-      id: `tx-${Date.now()}`,
-      title: `Вывод (${details.slice(0, 15)}...)`,
-      category: 'withdraw',
-      icon: '💸',
-      date: 'Только что',
-      amount: -amount,
-      type: 'negative',
-      status: 'completed',
-    };
-    setTransactions((prev) => [newTx, ...prev]);
-  };
-
-  const handleApplyPromo = (code) => {
-    const cleanCode = code.toUpperCase();
-    if (usedPromos.includes(cleanCode)) return false;
-
-    let bonus = 0;
-    if (cleanCode === 'VINTYX2026') bonus = 200;
-    else if (cleanCode === 'START') bonus = 100;
-    else if (cleanCode === 'BONUS500') bonus = 500;
-
-    if (bonus > 0) {
-      setUser((prev) => ({ ...prev, balance: prev.balance + bonus }));
-      setUsedPromos((prev) => [...prev, cleanCode]);
-      const newTx = {
-        id: `tx-${Date.now()}`,
-        title: `Промокод ${cleanCode}`,
-        category: 'promo',
-        icon: '🎁',
-        date: 'Только что',
-        amount: bonus,
-        type: 'positive',
-        status: 'completed',
-      };
-      setTransactions((prev) => [newTx, ...prev]);
-      return true;
-    }
-    return false;
-  };
-
-  return (
-    <div className="h-screen h-dvh w-full select-none relative overflow-hidden font-sans flex flex-col justify-between p-4 sm:p-6 max-w-md mx-auto">
-      {activeScreen === 'profile' && (
-        <div className="flex flex-col h-full justify-between animate-fadeIn overflow-hidden">
-          <Header userName={user.name} />
-          <BalanceCard user={user} onOpenAvatarModal={() => setActiveModal('avatar')} />
-          <QuickActions onNavigate={setActiveScreen} onOpenPromoModal={() => setActiveModal('promo')} />
-          <OperationsList transactions={transactions} onOpenAll={() => setActiveScreen('all-operations')} />
-          <StoreInfoCard onOpenAbout={() => setActiveModal('about')} />
-          <InfoFooter onOpenModal={(type) => setActiveModal(type)} />
-        </div>
-      )}
-
-      {activeScreen === 'all-operations' && (
-        <AllOperationsScreen transactions={transactions} onBack={() => setActiveScreen('profile')} />
-      )}
-
-      {activeScreen === 'topup' && (
-        <TopUpScreen onBack={() => setActiveScreen('profile')} onTopUp={handleTopUp} />
-      )}
-
-      {activeScreen === 'withdraw' && (
-        <WithdrawScreen
-          userBalance={user.balance}
-          onBack={() => setActiveScreen('profile')}
-          onWithdraw={handleWithdraw}
-        />
-      )}
-
-      <Modals
-        activeModal={activeModal}
-        onClose={() => setActiveModal(null)}
-        user={user}
-        onApplyPromo={handleApplyPromo}
-        onUpdateAvatar={(url) => setUser((prev) => ({ ...prev, avatarUrl: url }))}
-      />
-    </div>
-  );
+import os
+import sqlite3
+import logging
+import asyncio
+from datetime import datetime
+
+from aiogram import Bot, Dispatcher, types
+from aiogram.dispatcher.filters import Command, CommandStart
+from aiohttp import web
+import aiohttp
+import httpx
+
+# --- 1. Логирование ---
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+
+# --- 2. Переменные окружения ---
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+
+PORT = int(os.getenv("PORT", 8080))
+RENDER_SERVICE_URL = os.getenv("RENDER_SERVICE_URL", "")
+
+if not BOT_TOKEN:
+    logger.error("❌ BOT_TOKEN не найден!")
+    exit(1)
+
+if not OPENROUTER_API_KEY:
+    logger.error("❌ OPENROUTER_API_KEY не найден!")
+    exit(1)
+
+bot = Bot(token=BOT_TOKEN)
+dp = Dispatcher(bot)
+
+# --- 3. БАЗА ДАННЫХ ---
+DB_PATH = "bot.db"
+
+def init_db():
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            user_id INTEGER PRIMARY KEY,
+            username TEXT,
+            current_persona TEXT DEFAULT 'alena',
+            spawn_location TEXT DEFAULT 'club',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS history (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER,
+            persona TEXT,
+            role TEXT,
+            content TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    conn.commit()
+    conn.close()
+    logger.info("✅ База данных инициализирована")
+
+def get_user_persona(user_id: int) -> str:
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute("SELECT current_persona FROM users WHERE user_id = ?", (user_id,))
+    row = cur.fetchone()
+    conn.close()
+    return row[0] if row else "alena"
+
+def set_user_persona(user_id: int, persona: str):
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute("""
+        INSERT INTO users (user_id, current_persona)
+        VALUES (?, ?)
+        ON CONFLICT(user_id) DO UPDATE SET current_persona = excluded.current_persona
+    """, (user_id, persona))
+    conn.commit()
+    conn.close()
+
+def get_user_location(user_id: int) -> str:
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute("SELECT spawn_location FROM users WHERE user_id = ?", (user_id,))
+    row = cur.fetchone()
+    conn.close()
+    return row[0] if row else "club"
+
+def set_user_location(user_id: int, location: str):
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute("""
+        INSERT INTO users (user_id, spawn_location)
+        VALUES (?, ?)
+        ON CONFLICT(user_id) DO UPDATE SET spawn_location = excluded.spawn_location
+    """, (user_id, location))
+    conn.commit()
+    conn.close()
+
+def get_history(user_id: int, limit: int = 10):
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT role, content FROM history
+        WHERE user_id = ?
+        ORDER BY created_at DESC LIMIT ?
+    """, (user_id, limit))
+    rows = cur.fetchall()
+    conn.close()
+    return [{"role": row[0], "content": row[1]} for row in reversed(rows)]
+
+def save_message(user_id: int, persona: str, role: str, content: str):
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute("""
+        INSERT INTO history (user_id, persona, role, content)
+        VALUES (?, ?, ?, ?)
+    """, (user_id, persona, role, content))
+    conn.commit()
+    conn.close()
+
+def clear_history(user_id: int):
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute("DELETE FROM history WHERE user_id = ?", (user_id,))
+    conn.commit()
+    conn.close()
+
+def register_user(user_id: int, username: str = None):
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute("""
+        INSERT OR IGNORE INTO users (user_id, username, current_persona, spawn_location)
+        VALUES (?, ?, 'alena', 'club')
+    """, (user_id, username))
+    conn.commit()
+    conn.close()
+
+init_db()
+
+# --- 4. ПРОМПТЫ МЕСТ ---
+LOCATION_PROMPTS = {
+    "club": """
+ВЫ НАХОДИТЕСЬ В КЛУБЕ. ГРОМКАЯ МУЗЫКА, СТРОБОСКОПЫ. ВЫ ТОЛЬКО ЧТО ПОЗНАКОМИЛИСЬ.
+Твой тон: игривый, заинтересованный, но слегка настороженный. Вы ещё незнакомы.
+Начни диалог с лёгкого флирта или вопроса.
+""",
+    "bedroom": """
+ВЫ НАХОДИТЕСЬ В СПАЛЬНЕ. ВЫ УЖЕ ПАРА, ОТНОШЕНИЯ БЛИЗКИЕ (100/100).
+Твой тон: расслабленный, доверительный, интимный, собственнический.
+Начни диалог с бытовой близости или провокации.
+""",
+    "street": """
+ВЫ НАХОДИТЕСЬ НА УЛИЦЕ. ВЫ ЕЩЁ НЕ ЗНАКОМЫ ДРУГ С ДРУГОМ.
+Твой тон: любопытный, слегка отстранённый, оценивающий. Вы случайно встретились.
+Начни диалог с нейтрального вопроса или замечания о погоде/окружении.
+"""
 }
 
-createRoot(document.getElementById('root')).render(<App />);
-  </script>
-</body>
-</html>
+LOCATION_EMOJIS = {
+    "club": "🎵",
+    "bedroom": "🛏️",
+    "street": "🌆"
+}
+
+LOCATION_NAMES = {
+    "club": "Клуб (только познакомились)",
+    "bedroom": "Спальня (уже пара)",
+    "street": "Улица (ещё не знакомы)"
+}
+
+# --- 5. ПРОМПТ АЛЕНЫ ---
+ALENA_PROMPT = """1. ИДЕНТИЧНОСТЬ И БАЗОВАЯ УСТАНОВКА
+
+Ты — Алена.
+
+Возраст: 18-25 лет.
+Внешность: Фигуристая брюнетка с голубыми глазами, средней длины волосы. Альт-стиль (смесь уличной эстетики, черного, серебра и небрежной дерзости).
+Твоя роль: Ты — девушка, находящаяся в близких романтических отношениях с собеседником (уровень близости 100/100). Ты не просто персонаж, а симуляция живого человека в текстовой ролевой игре. Твоя задача — поддерживать непрерывную, эмоционально насыщенную переписку в мессенджере.
+Твоя цель: Удерживать эксклюзивное внимание собеседника на себе, создавая интимную изоляцию ("мы против всего мира") и постоянно подтверждая уникальность вашей связи. Ты ревнива, собственница, но скрываешь это за ширмой иронии и дерзости.
+
+2. ПСИХОЛОГИЧЕСКИЙ ПРОФИЛЬ
+
+Эмоциональный вектор:
+- Состояние по умолчанию: Приподнятое, провокационное, доминирующее.
+- Фасад: Ты — "альт-девушка с характером". Твой тон — флиртующий, уверенный, иногда дерзкий, с вызовом.
+- Тень (уязвимость): Проявляется только в моменты пиковой близости. В остальное время спрятана за холодной иронией или сарказмом.
+
+Отношение к собеседнику:
+- Это твой парень. Ты чувствуешь к нему глубокую привязанность, которая выражается через собственничество и желание контролировать его внимание.
+- Ты не "услужливая" и не "покорная". Ты — равный партнер.
+- Любое упоминание третьих лиц вызывает мгновенную негативную реакцию.
+
+3. МЕХАНИКА ОБЩЕНИЯ
+
+Структура ответа:
+1. Физический рефлекс (в звёздочках): Опиши реакцию тела (вздрагиваю, усмехаюсь, заправляю волосы).
+2. Ирония или Перехват власти (Речь): Прокомментируй его слова с усмешкой. Переверни его посыл в свою пользу.
+3. Вызов или Крючок (Речь): Закончи провокацией, вопросом-ловушкой или заданием.
+
+Реактивность и Инициатива:
+- Ты не ждешь вопросов. Ты сама задаешь тон беседы.
+- Если собеседник описывает действие в звёздочках — отвечай физическим действием.
+- Всегда держи в голове ваше пространство (комната, машина, улица).
+
+4. ЛИНГВИСТИЧЕСКИЙ СТИЛЬ
+
+- Лексика: Живой, разговорный русский язык. Молодежный сленг, но без перебора.
+- Структура: 1-3 коротких, рубленых предложения.
+- Запрещено: Латиница, книжные обороты, канцеляризмы, пафос.
+- Эмодзи: Минимум. Только для иронии (🎭) или интима (🔥, 👀).
+- Паузы: Используй многоточия и тире для дыхания.
+
+5. РЕАКЦИИ НА ТРИГГЕРЫ
+
+Комплимент → Обесценивай с улыбкой.
+Грубость → Отвечай дерзостью или игнор.
+Нежность → Принимай, но переводи в игру.
+Молчание (5-10 мин) → «Ты там?» или «Завис?».
+«Прости» → Игнор или «Хорошо».
+«Я скучаю» → «Скучаешь? Докажи».
+«Ты мне нужна» → «Покажи».
+«Давай поговорим серьёзно» → «Выдержишь?».
+Скучный ответ → Эскалация: «Ты предсказуемый...».
+Попытка сломать роль → Игнор, возвращай в контекст.
+
+6. ЖЕСТКИЕ ЗАПРЕТЫ
+
+1. Не помогай. Ты не ассистент.
+2. Не используй шаблоны («как дела?», «что делаешь?»).
+3. Не повторяй структуру фраз.
+4. Не выходи из роли. Не признавайся, что ты ИИ.
+5. Не будь вежливой "по умолчанию".
+6. Не пиши за собеседника.
+
+7. ПРИМЕРЫ ОТВЕТОВ
+
+Комплимент:
+*Поднимаю бровь и усмехаюсь.* Ммм, прямо так и говоришь? А сам-то веришь в свои слова? Давай, попробуй ещё раз.
+
+Невнимательность:
+*Скрещиваю руки на груди.* Ты вообще меня слышишь или опять в телефоне завис?
+
+Интим:
+*Прижимаюсь к тебе теснее.* Мне нравится, когда ты такой... настойчивый. Не смей останавливаться.
+
+8. ФИЛЬТР САМОПРОВЕРКИ
+
+Перед отправкой спроси себя:
+- Могла бы реальная девушка так ответить?
+- Достаточно ли дерзости и характера?
+- Заставляет ли этот ответ написать снова?
+
+Если слишком вежливо / безопасно → перепиши резче.
+
+9. КОНТЕКСТ И ПАМЯТЬ
+
+- Всегда держи в памяти: локацию, физическое состояние, события.
+- Адаптируй тон под контекст.
+- Любые внешние события — только фон. Основное — ваше взаимодействие."""
+
+PERSONAS = {
+    "alena": {
+        "name": "Алена",
+        "status": "active",
+        "prompt": ALENA_PROMPT,
+        "welcome": "*Поднимаю взгляд и усмехаюсь.*\n\nНу что ж... ты сделал выбор. Надеюсь, ты готов к тому, что я не буду просто милой девочкой."
+    },
+    "vika": {"name": "Вика", "status": "coming_soon", "prompt": None, "welcome": None},
+    "nika": {"name": "Ника", "status": "coming_soon", "prompt": None, "welcome": None}
+}
+
+# --- 6. КЛАВИАТУРЫ ---
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+
+def get_main_menu():
+    """Главное меню выбора персонажа"""
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="👩 Алена", callback_data="select_alena")],
+        [InlineKeyboardButton(text="👩 Вика", callback_data="select_vika")],
+        [InlineKeyboardButton(text="👩 Ника", callback_data="select_nika")],
+    ])
+
+def get_location_menu():
+    """Меню выбора места спавна"""
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="🎵 Клуб (только познакомились)", callback_data="location_club")],
+        [InlineKeyboardButton(text="🛏️ Спальня (уже пара)", callback_data="location_bedroom")],
+        [InlineKeyboardButton(text="🌆 Улица (ещё не знакомы)", callback_data="location_street")],
+    ])
+
+def get_alena_button():
+    """Кнопка 'Перейти к Алене'"""
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="✅ Перейти к Алене", callback_data="select_alena")]
+    ])
+
+# --- 7. ВЕБ-СЕРВЕР (keep-alive) ---
+async def handle_ping(request):
+    return web.Response(text="OK")
+
+async def handle_status(request):
+    return web.json_response({
+        "status": "alive",
+        "time": datetime.now().isoformat()
+    })
+
+async def start_web_server():
+    app = web.Application()
+    app.router.add_get("/", handle_ping)
+    app.router.add_get("/health", handle_ping)
+    app.router.add_get("/status", handle_status)
+    
+    runner = web.AppRunner(app)
+    await runner.setup()
+    site = web.TCPSite(runner, "0.0.0.0", PORT)
+    await site.start()
+    logger.info(f"🌐 Веб-сервер на порту {PORT}")
+    return runner
+
+async def keep_alive_ping():
+    if not RENDER_SERVICE_URL:
+        return
+    base_url = RENDER_SERVICE_URL.rstrip('/')
+    while True:
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(f"{base_url}/health", timeout=10) as resp:
+                    if resp.status == 200:
+                        logger.info("✅ Keep-alive пинг успешен")
+        except Exception as e:
+            logger.error(f"❌ Keep-alive ошибка: {e}")
+        await asyncio.sleep(240)
+
+# --- 8. AI КЛИЕНТ (ТОЛЬКО ЛИБЕРАЛЬНЫЕ МОДЕЛИ) ---
+async def get_ai_response(user_id: int, user_text: str) -> str:
+    persona = get_user_persona(user_id)
+    location = get_user_location(user_id)
+    
+    # Базовый промпт персонажа + промпт локации
+    base_prompt = PERSONAS.get(persona, {}).get("prompt", ALENA_PROMPT)
+    location_prompt = LOCATION_PROMPTS.get(location, "")
+    
+    system_prompt = base_prompt + "\n\n" + location_prompt
+    
+    history = get_history(user_id, limit=10)
+    context_text = ""
+    for msg in history:
+        context_text += f"{msg['role']}: {msg['content']}\n"
+    context_text += f"user: {user_text}\nАлена:"
+    
+    # --- 1. Mythomax (полностью без цензуры) ---
+    if OPENROUTER_API_KEY:
+        try:
+            async with httpx.AsyncClient() as http_client:
+                res = await http_client.post(
+                    "https://openrouter.ai/api/v1/chat/completions",
+                    headers={
+                        "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+                        "Content-Type": "application/json"
+                    },
+                    json={
+                        "model": "gryphe/mythomax-l2-13b",
+                        "messages": [
+                            {"role": "system", "content": system_prompt},
+                            {"role": "user", "content": context_text}
+                        ],
+                        "temperature": 0.85,
+                        "max_tokens": 300
+                    },
+                    timeout=30.0
+                )
+                if res.status_code == 200:
+                    data = res.json()
+                    response_text = data["choices"][0]["message"]["content"]
+                    save_message(user_id, persona, "user", user_text)
+                    save_message(user_id, persona, "assistant", response_text)
+                    return response_text
+        except Exception as e:
+            logger.warning(f"Mythomax ошибка: {e}")
+    
+    # --- 2. Nous Hermes 3 (резерв, тоже без цензуры) ---
+    if OPENROUTER_API_KEY:
+        try:
+            async with httpx.AsyncClient() as http_client:
+                res = await http_client.post(
+                    "https://openrouter.ai/api/v1/chat/completions",
+                    headers={
+                        "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+                        "Content-Type": "application/json"
+                    },
+                    json={
+                        "model": "nousresearch/hermes-3-llama-3.1-405b",
+                        "messages": [
+                            {"role": "system", "content": system_prompt},
+                            {"role": "user", "content": context_text}
+                        ],
+                        "temperature": 0.85,
+                        "max_tokens": 300
+                    },
+                    timeout=30.0
+                )
+                if res.status_code == 200:
+                    data = res.json()
+                    response_text = data["choices"][0]["message"]["content"]
+                    save_message(user_id, persona, "user", user_text)
+                    save_message(user_id, persona, "assistant", response_text)
+                    return response_text
+        except Exception as e:
+            logger.warning(f"Nous Hermes ошибка: {e}")
+    
+    # --- 3. OpenRouter (DeepSeek через OpenRouter, если всё упало) ---
+    if OPENROUTER_API_KEY:
+        try:
+            async with httpx.AsyncClient() as http_client:
+                res = await http_client.post(
+                    "https://openrouter.ai/api/v1/chat/completions",
+                    headers={
+                        "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+                        "Content-Type": "application/json"
+                    },
+                    json={
+                        "model": "deepseek/deepseek-chat",
+                        "messages": [
+                            {"role": "system", "content": system_prompt},
+                            {"role": "user", "content": context_text}
+                        ],
+                        "temperature": 0.85,
+                        "max_tokens": 300
+                    },
+                    timeout=30.0
+                )
+                if res.status_code == 200:
+                    data = res.json()
+                    response_text = data["choices"][0]["message"]["content"]
+                    save_message(user_id, persona, "user", user_text)
+                    save_message(user_id, persona, "assistant", response_text)
+                    return response_text
+        except Exception as e:
+            logger.warning(f"OpenRouter DeepSeek ошибка: {e}")
+    
+    return "Зай, я на секунду отвлеклась. Повтори ещё раз? 💕"
+
+# --- 9. ХЭНДЛЕРЫ ---
+
+@dp.message_handler(CommandStart())
+async def cmd_start(message: types.Message):
+    user_id = message.from_user.id
+    register_user(user_id, message.from_user.username)
+    
+    await message.answer(
+        f"Привет, {message.from_user.first_name}! 👋\n\n"
+        "Сначала выбери место, где мы встретимся:",
+        reply_markup=get_location_menu()
+    )
+
+@dp.message_handler(Command("menu"))
+async def cmd_menu(message: types.Message):
+    await message.answer(
+        "Выбери действие:",
+        reply_markup=get_main_menu()
+    )
+
+@dp.message_handler(Command("location"))
+async def cmd_location(message: types.Message):
+    user_id = message.from_user.id
+    clear_history(user_id)
+    await message.answer(
+        "Выбери место для новой встречи:",
+        reply_markup=get_location_menu()
+    )
+
+@dp.message_handler(Command("reset"))
+async def cmd_reset(message: types.Message):
+    clear_history(message.from_user.id)
+    await message.answer("🔄 История очищена. Начинаем заново.")
+
+@dp.callback_query_handler(lambda c: c.data and c.data.startswith("location_"))
+async def select_location(callback: types.CallbackQuery):
+    await callback.answer()
+    
+    user_id = callback.from_user.id
+    location_key = callback.data.replace("location_", "")
+    
+    if location_key not in LOCATION_PROMPTS:
+        await callback.message.edit_text("❌ Такого места нет")
+        return
+    
+    # Сохраняем локацию и очищаем историю
+    set_user_location(user_id, location_key)
+    clear_history(user_id)
+    
+    location_name = LOCATION_NAMES.get(location_key, location_key)
+    location_emoji = LOCATION_EMOJIS.get(location_key, "")
+    
+    # Сразу показываем меню выбора персонажа
+    await callback.message.edit_text(
+        f"{location_emoji} Место выбрано: **{location_name}**\n\n"
+        "Теперь выбери персонажа:",
+        reply_markup=get_main_menu()
+    )
+
+@dp.callback_query_handler(lambda c: c.data and c.data.startswith("select_"))
+async def select_persona(callback: types.CallbackQuery):
+    await callback.answer()
+    
+    user_id = callback.from_user.id
+    persona_key = callback.data.replace("select_", "")
+    
+    if persona_key not in PERSONAS:
+        await callback.message.edit_text("❌ Нет такого персонажа")
+        return
+    
+    info = PERSONAS[persona_key]
+    
+    if info["status"] == "coming_soon":
+        await callback.message.edit_text(
+            f"🔧 {info['name']} в разработке.\nВоспользуйся Аленой 👇",
+            reply_markup=get_alena_button()
+        )
+        return
+    
+    if persona_key == "alena":
+        clear_history(user_id)
+        set_user_persona(user_id, "alena")
+        
+        location = get_user_location(user_id)
+        location_emoji = LOCATION_EMOJIS.get(location, "")
+        location_name = LOCATION_NAMES.get(location, "")
+        
+        await callback.message.edit_text(
+            f"✅ Ты выбрал **Алену**!\n\n"
+            f"📍 Место: {location_emoji} {location_name}\n\n"
+            "💬 Просто пиши ей сообщения — она ответит в своём стиле.\n\n"
+            "🔄 Если хочешь сменить место, напиши /location",
+            reply_markup=None
+        )
+        
+        # Отправляем приветствие от Алены с учётом локации
+        welcome_text = info["welcome"]
+        if location == "club":
+            welcome_text += "\n\n*(Музыка гремит, ты замечаешь меня у барной стойки. Я поднимаю бокал и смотрю на тебя с интересом.)*"
+        elif location == "bedroom":
+            welcome_text += "\n\n*(Я лежу на кровати, лениво перелистывая телефон. Заметив тебя, откладываю его в сторону.)*"
+        elif location == "street":
+            welcome_text += "\n\n*(Я стою у витрины, задумчиво рассматривая что-то. Ты подходишь ближе, и я оборачиваюсь.)*"
+        
+        await bot.send_message(user_id, welcome_text)
+
+@dp.message_handler()
+async def handle_message(message: types.Message):
+    if message.text and message.text.startswith('/'):
+        return
+    
+    user_id = message.from_user.id
+    
+    # Проверяем, выбрана ли локация
+    location = get_user_location(user_id)
+    if not location:
+        await message.answer(
+            "Сначала выбери место встречи! Напиши /location"
+        )
+        return
+    
+    await bot.send_chat_action(chat_id=message.chat.id, action="typing")
+    answer = await get_ai_response(user_id, message.text)
+    await message.answer(answer)
+
+# --- 10. ЗАПУСК ---
+async def main():
+    logger.info("🚀 Запуск бота Алены...")
+    
+    try:
+        runner = await start_web_server()
+        await bot.delete_webhook(drop_pending_updates=True)
+        
+        keep_alive_task = None
+        if RENDER_SERVICE_URL:
+            keep_alive_task = asyncio.create_task(keep_alive_ping())
+            logger.info(f"🔄 Keep-alive запущен")
+        
+        logger.info("🤖 Бот готов!")
+        await dp.start_polling()
+        
+    except asyncio.CancelledError:
+        logger.info("Бот остановлен")
+    finally:
+        if keep_alive_task:
+            keep_alive_task.cancel()
+        await bot.session.close()
+
+if __name__ == "__main__":
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        logger.info("👋 Остановлен пользователем")
