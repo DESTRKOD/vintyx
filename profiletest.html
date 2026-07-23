@@ -1,606 +1,373 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Vintyx Store — Профиль</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Vintyx Profile</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        /* ======================================================
-                   БАЗА
-                   ====================================================== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
-        body {
-            font-family: -apple-system, 'Helvetica Neue', 'Segoe UI', system-ui, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+        html, body {
+            background: #0A0A0F;
+            font-family: -apple-system, 'Segoe UI', 'Roboto', system-ui, sans-serif;
+            height: 100%;
+            overflow: hidden;
             color: #FFFFFF;
+        }
+        .page {
+            display: none;
             background: radial-gradient(ellipse at 20% 50%, rgba(91, 140, 255, 0.12) 0%, transparent 60%),
                 radial-gradient(ellipse at 80% 20%, rgba(125, 216, 255, 0.08) 0%, transparent 50%),
                 radial-gradient(ellipse at 50% 100%, rgba(102, 117, 255, 0.08) 0%, transparent 40%),
                 linear-gradient(145deg, #0A0A1A 0%, #1A1A3E 30%, #2D1B69 70%, #1A1A3E 100%);
             background-attachment: fixed;
+            height: 100%;
+            overflow-y: auto;
+            padding: 20px 20px 100px;
         }
-
-        /* ======================================================
-                   КОНТЕЙНЕР ПРОФИЛЯ
-                   ====================================================== */
-        .profile-screen {
-            max-width: 420px;
-            width: 100%;
+        .page.active {
+            display: block;
+            animation: fadeUp 0.3s ease;
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .container {
+            max-width: 440px;
             margin: 0 auto;
-            padding: 8px 0 20px;
         }
 
-        /* ======================================================
-                   ЗАГОЛОВОК "ПРОФИЛЬ"
-                   ====================================================== */
-        .profile-header {
+        /* Хедер профиля */
+        .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
-            padding: 0 4px;
+            margin-bottom: 20px;
+        }
+        .header-title {
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+        }
+        .header-user {
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
         }
 
-        .profile-header .profile-title {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: rgba(255, 255, 255, 0.9);
-            letter-spacing: 0.5px;
-        }
-
-        /* ======================================================
-                   БАЛАНСОВАЯ КАРТА — БЕЗ РАМОК И ФОНА
-                   ====================================================== */
+        /* Карточка баланса */
         .balance-card {
             position: relative;
-            border-radius: 32px;
-            overflow: hidden;
-            margin-bottom: 28px;
-            height: 200px;
-            background: transparent;
+            height: 170px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 28px;
+            margin-bottom: 24px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 0;
-            /* Убираем все рамки и тени */
-            box-shadow: none;
-            border: none;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
         }
-
-        /* Фоновое изображение на всю карту */
-        .balance-card .card-bg-image {
-            position: absolute;
-            inset: 0;
-            z-index: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 32px;
-        }
-
-        /* Лёгкая накладка для читаемости текста */
-        .balance-card .card-overlay {
-            position: absolute;
-            inset: 0;
-            z-index: 1;
-            background: rgba(0, 0, 0, 0.15);
-            border-radius: 32px;
-        }
-
-        /* Контент поверх изображения */
-        .balance-card>*:not(.card-bg-image):not(.card-overlay) {
-            position: relative;
-            z-index: 2;
-        }
-
-        /* Аватарка в левом верхнем углу — строго на месте */
-        .balance-card .avatar-wrap {
+        /* Круглая аватарка слева */
+        .avatar-circle {
             position: absolute;
             top: 20px;
             left: 20px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6675FF, #7DD8FF);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1.5px solid rgba(255, 255, 255, 0.12);
-            overflow: hidden;
-            flex-shrink: 0;
-            z-index: 3;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #FFF;
+            box-shadow: 0 8px 16px rgba(91, 140, 255, 0.3);
         }
-
-        .balance-card .avatar-wrap img {
+        .avatar-circle img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: block;
+            border-radius: 50%;
         }
-
-        .balance-card .avatar-wrap .fallback {
-            font-size: 1.2rem;
+        .balance-label {
+            font-size: 0.7rem;
             font-weight: 600;
-            color: rgba(255, 255, 255, 0.6);
-            letter-spacing: 0.5px;
-        }
-
-        /* Баланс — строго по центру, поднят выше */
-        .balance-card .balance-center {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            z-index: 2;
-            position: relative;
-            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
-            margin-top: -20px;
-        }
-
-        .balance-card .balance-label {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 0.4);
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 2px;
+            margin-bottom: 4px;
+        }
+        .balance-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #7DD8FF 0%, #6675FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .balance-card .balance-amount {
-            font-size: 3.8rem;
-            font-weight: 700;
-            color: #FFFFFF;
-            letter-spacing: -0.5px;
-            line-height: 1;
-        }
-
-        .balance-card .balance-currency {
-            font-size: 1.4rem;
-            font-weight: 400;
-            color: rgba(255, 255, 255, 0.3);
-            margin-left: 4px;
-        }
-
-        /* ======================================================
-                   ОСТАЛЬНЫЕ СТИЛИ
-                   ====================================================== */
-        .quick-actions {
-            display: flex;
-            gap: 10px;
+        /* Кнопки действий */
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
             margin-bottom: 32px;
         }
-
-        .quick-actions .qa-btn {
-            flex: 1;
-            height: 52px;
+        .action-btn {
+            height: 54px;
             border-radius: 16px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: rgba(255, 255, 255, 0.8);
-            font-size: 0.85rem;
+            font-size: 0.7rem;
             font-weight: 600;
-            font-family: inherit;
-            cursor: pointer;
-            transition: background 0.2s ease, transform 0.15s ease;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            letter-spacing: 0.3px;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            padding: 0 6px;
-            white-space: nowrap;
+            gap: 4px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.2s;
         }
-
-        .quick-actions .qa-btn:active {
+        .action-btn:active {
             transform: scale(0.96);
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.09);
         }
 
-        .quick-actions .qa-btn svg {
-            width: 18px;
-            height: 18px;
-            stroke: rgba(255, 255, 255, 0.5);
-            stroke-width: 2;
-            fill: none;
-            flex-shrink: 0;
-        }
-
+        /* Список операций */
         .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 16px;
         }
-
-        .section-header .section-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #FFFFFF;
-            letter-spacing: -0.2px;
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
         }
-
-        .section-header .section-link {
+        .see-all-btn {
             font-size: 0.75rem;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.25);
+            color: #3B82F6;
+            background: none;
+            border: none;
+            font-weight: 600;
             cursor: pointer;
-            transition: color 0.2s;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 4px;
         }
-
-        .section-header .section-link:hover {
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .section-header .section-link svg {
-            width: 14px;
-            height: 14px;
-            stroke: rgba(255, 255, 255, 0.2);
-            stroke-width: 2;
-            fill: none;
-        }
-
-        .operations-list {
+        .tx-list {
             display: flex;
             flex-direction: column;
-            gap: 2px;
-            margin-bottom: 32px;
+            gap: 12px;
         }
-
-        .operation-item {
+        .tx-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 12px 14px;
-            border-radius: 14px;
+            padding: 14px 16px;
+            border-radius: 18px;
             background: rgba(255, 255, 255, 0.02);
-            transition: background 0.15s ease;
-            cursor: default;
-        }
-
-        .operation-item:active {
-            background: rgba(255, 255, 255, 0.04);
-        }
-
-        .operation-item .op-left {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            flex: 1;
-            min-width: 0;
-        }
-
-        .operation-item .op-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .tx-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .tx-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1rem;
-            flex-shrink: 0;
-            color: rgba(255, 255, 255, 0.2);
+            font-size: 1.2rem;
         }
-
-        .operation-item .op-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .operation-item .op-name {
+        .tx-title {
             font-size: 0.85rem;
-            font-weight: 500;
-            color: #FFFFFF;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .operation-item .op-date {
-            font-size: 0.6rem;
-            color: rgba(255, 255, 255, 0.15);
-            font-weight: 400;
-            margin-top: 1px;
-        }
-
-        .operation-item .op-amount {
-            font-size: 0.9rem;
             font-weight: 600;
-            color: #FFFFFF;
-            flex-shrink: 0;
-            margin-left: 12px;
         }
-
-        .operation-item .op-amount.negative {
-            color: rgba(255, 255, 255, 0.5);
+        .tx-date {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.3);
+            margin-top: 2px;
         }
-
-        .operation-item .op-amount.positive {
-            color: #4ADE80;
+        .tx-amount {
+            font-size: 0.85rem;
+            font-weight: 700;
         }
+        .tx-amount.positive { color: #10B981; }
+        .tx-amount.negative { color: rgba(255, 255, 255, 0.7); }
 
-        .operations-empty {
-            text-align: center;
-            padding: 28px 0 12px;
-            color: rgba(255, 255, 255, 0.08);
-            font-size: 0.8rem;
-        }
-
-        .info-block {
+        /* Островок навигации на 3 пункта */
+        .bottom-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(20, 20, 50, 0.6);
+            backdrop-filter: blur(24px);
+            border-radius: 50px;
+            padding: 6px 12px;
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            gap: 6px 20px;
-            padding: 16px 4px 8px;
-            border-top: 1px solid rgba(255, 255, 255, 0.04);
-            margin-top: 8px;
-            text-align: center;
+            gap: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 100;
         }
-
-        .info-block .info-item {
-            font-size: 0.7rem;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.2);
-            cursor: pointer;
-            transition: color 0.2s;
-            text-decoration: none;
-            letter-spacing: 0.2px;
-            padding: 4px 0;
-        }
-
-        .info-block .info-item:hover {
+        .nav-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: none;
+            background: transparent;
             color: rgba(255, 255, 255, 0.4);
+            font-size: 0.65rem;
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
         }
-
-        .info-block .info-item:active {
-            opacity: 0.5;
-        }
-
-        /* ======================================================
-                   АДАПТИВНОСТЬ
-                   ====================================================== */
-        @media (max-width: 420px) {
-            .balance-card {
-                border-radius: 28px;
-                height: 180px;
-            }
-
-            .balance-card .avatar-wrap {
-                top: 16px;
-                left: 16px;
-                width: 42px;
-                height: 42px;
-            }
-
-            .balance-card .balance-label {
-                font-size: 0.8rem;
-            }
-
-            .balance-card .balance-amount {
-                font-size: 3.2rem;
-            }
-
-            .profile-header .profile-title {
-                font-size: 1.4rem;
-            }
-
-            .quick-actions .qa-btn {
-                height: 46px;
-                font-size: 0.75rem;
-                border-radius: 14px;
-            }
-
-            .quick-actions .qa-btn svg {
-                width: 16px;
-                height: 16px;
-            }
-
-            .operation-item {
-                padding: 10px 12px;
-            }
-
-            .operation-item .op-icon {
-                width: 32px;
-                height: 32px;
-                font-size: 0.85rem;
-            }
-
-            .operation-item .op-name {
-                font-size: 0.8rem;
-            }
-
-            .info-block {
-                gap: 4px 14px;
-                padding: 14px 2px 4px;
-            }
-
-            .info-block .info-item {
-                font-size: 0.65rem;
-            }
-        }
-
-        @media (max-width: 360px) {
-            .balance-card {
-                height: 160px;
-                border-radius: 24px;
-            }
-
-            .balance-card .avatar-wrap {
-                top: 14px;
-                left: 14px;
-                width: 36px;
-                height: 36px;
-            }
-
-            .balance-card .avatar-wrap .fallback {
-                font-size: 0.9rem;
-            }
-
-            .balance-card .balance-label {
-                font-size: 0.7rem;
-            }
-
-            .balance-card .balance-amount {
-                font-size: 2.6rem;
-            }
-
-            .profile-header .profile-title {
-                font-size: 1.2rem;
-            }
-
-            .quick-actions {
-                gap: 6px;
-            }
-
-            .quick-actions .qa-btn {
-                font-size: 0.65rem;
-                height: 40px;
-                padding: 0 4px;
-            }
-
-            .quick-actions .qa-btn svg {
-                width: 14px;
-                height: 14px;
-            }
+        .nav-btn.active {
+            background: rgba(91, 140, 255, 0.25);
+            color: #FFFFFF;
+            border: 1px solid rgba(91, 140, 255, 0.3);
         }
     </style>
 </head>
 <body>
 
-    <div class="profile-screen">
-
-        <!-- ============================================
-        ЗАГОЛОВОК "ПРОФИЛЬ"
-        ============================================ -->
-        <div class="profile-header">
-            <span class="profile-title">ПРОФИЛЬ</span>
-        </div>
-
-        <!-- ============================================
-        БАЛАНСОВАЯ КАРТА — БЕЗ РАМОК
-        ============================================ -->
-        <div class="balance-card">
-
-            <!-- Фоновое изображение -->
-            <img class="card-bg-image"
-                 src="https://i.imgur.com/BgiOzRI.png"
-                 alt="Card background"
-                 loading="lazy" />
-
-            <!-- Лёгкая накладка -->
-            <div class="card-overlay"></div>
-
-            <!-- Аватарка — строго в левом верхнем углу -->
-            <div class="avatar-wrap">
-                <span class="fallback">V</span>
+    <!-- Главная страница профиля -->
+    <div id="pageProfile" class="page active">
+        <div class="container">
+            <div class="header">
+                <div class="header-title">ПРОФИЛЬ</div>
+                <div class="header-user" id="headerName">Пользователь</div>
             </div>
 
-            <!-- Баланс — по центру, поднят выше -->
-            <div class="balance-center">
-                <span class="balance-label">Баланс</span>
-                <div>
-                    <span class="balance-amount">1 488</span>
-                    <span class="balance-currency">₽</span>
+            <div class="balance-card">
+                <div class="avatar-circle" id="avatarBox">
+                    <span id="avatarLetter">U</span>
                 </div>
+                <div class="balance-label">Баланс</div>
+                <div class="balance-value"><span id="balanceText">1 488</span> ₽</div>
             </div>
-        </div>
 
-        <!-- ============================================
-        БЫСТРЫЕ ДЕЙСТВИЯ
-        ============================================ -->
-        <div class="quick-actions">
-            <button class="qa-btn" onclick="alert('Вывод')">
-                <svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
-                Вывод
-            </button>
-            <button class="qa-btn" onclick="alert('Пополнить')">
-                <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
-                Пополнить
-            </button>
-            <button class="qa-btn" onclick="alert('Промокод')">
-                <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                Промокод
-            </button>
-        </div>
+            <div class="actions-grid">
+                <button class="action-btn" onclick="openPage('pageWithdraw')">
+                    <span>↗ Вывод</span>
+                </button>
+                <button class="action-btn" onclick="openPage('pageTopUp')">
+                    <span>+ Пополнить</span>
+                </button>
+                <button class="action-btn" onclick="alert('Промокод')">
+                    <span>🎟 Промокод</span>
+                </button>
+            </div>
 
-        <!-- ============================================
-        ОПЕРАЦИИ
-        ============================================ -->
-        <div class="section-header">
-            <span class="section-title">Мои операции</span>
-            <span class="section-link" onclick="alert('Все операции')">
-                Все операции
-                <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </span>
-        </div>
+            <div class="section-header">
+                <div class="section-title">Операции</div>
+                <button class="see-all-btn" onclick="openPage('pageAllOps')">Смотреть все →</button>
+            </div>
 
-        <div class="operations-list">
-            <div class="operation-item">
-                <div class="op-left">
-                    <div class="op-icon">🎮</div>
-                    <div class="op-info">
-                        <div class="op-name">Brawl Pass</div>
-                        <div class="op-date">Сегодня, 14:32</div>
+            <div class="tx-list" id="txList">
+                <div class="tx-item">
+                    <div class="tx-left">
+                        <div class="tx-icon">🎮</div>
+                        <div>
+                            <div class="tx-title">Brawl Pass</div>
+                            <div class="tx-date">Сегодня, 14:32</div>
+                        </div>
                     </div>
+                    <div class="tx-amount negative">−149 ₽</div>
                 </div>
-                <span class="op-amount negative">−149 ₽</span>
-            </div>
-
-            <div class="operation-item">
-                <div class="op-left">
-                    <div class="op-icon">⚡</div>
-                    <div class="op-info">
-                        <div class="op-name">Гемы</div>
-                        <div class="op-date">Вчера, 09:15</div>
+                <div class="tx-item">
+                    <div class="tx-left">
+                        <div class="tx-icon">⚡</div>
+                        <div>
+                            <div class="tx-title">Гемы</div>
+                            <div class="tx-date">Вчера, 09:15</div>
+                        </div>
                     </div>
+                    <div class="tx-amount negative">−299 ₽</div>
                 </div>
-                <span class="op-amount negative">−299 ₽</span>
-            </div>
-
-            <div class="operation-item">
-                <div class="op-left">
-                    <div class="op-icon">💎</div>
-                    <div class="op-info">
-                        <div class="op-name">Пополнение</div>
-                        <div class="op-date">12 мар, 18:00</div>
-                    </div>
-                </div>
-                <span class="op-amount positive">+500 ₽</span>
             </div>
         </div>
-
-        <!-- ============================================
-        ИНФОРМАЦИОННЫЙ БЛОК
-        ============================================ -->
-        <div class="info-block">
-            <span class="info-item" onclick="alert('О магазине')">О магазине</span>
-            <span class="info-item" onclick="alert('Поддержка')">Поддержка</span>
-            <span class="info-item" onclick="alert('Условия')">Условия</span>
-            <span class="info-item" onclick="alert('Политика конфиденциальности')">Политика</span>
-        </div>
-
     </div>
 
+    <!-- Полный экран Всех Операций -->
+    <div id="pageAllOps" class="page">
+        <div class="container">
+            <button onclick="openPage('pageProfile')" style="background:none;border:none;color:#3B82F6;margin-bottom:16px;cursor:pointer;">← Назад в профиль</button>
+            <h2 style="font-size:1.4rem;font-weight:800;margin-bottom:20px;">Все операции</h2>
+            <div class="tx-list">
+                <div class="tx-item">
+                    <div class="tx-left">
+                        <div class="tx-icon">🎮</div>
+                        <div>
+                            <div class="tx-title">Brawl Pass</div>
+                            <div class="tx-date">Сегодня, 14:32</div>
+                        </div>
+                    </div>
+                    <div class="tx-amount negative">−149 ₽</div>
+                </div>
+                <div class="tx-item">
+                    <div class="tx-left">
+                        <div class="tx-icon">💎</div>
+                        <div>
+                            <div class="tx-title">Пополнение СБП</div>
+                            <div class="tx-date">12 мар, 18:00</div>
+                        </div>
+                    </div>
+                    <div class="tx-amount positive">+500 ₽</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Островок навигации из 3 пунктов -->
+    <nav class="bottom-nav">
+        <button class="nav-btn active" onclick="openPage('pageProfile')">Профиль</button>
+        <button class="nav-btn" onclick="alert('Главная')">Главная</button>
+        <button class="nav-btn" onclick="alert('Корзина')">Корзина</button>
+    </nav>
+
+    <script>
+        const tg = window.Telegram?.WebApp;
+        if (tg) {
+            tg.ready();
+            const user = tg.initDataUnsafe?.user;
+            if (user) {
+                const name = user.first_name || 'Игрок';
+                document.getElementById('headerName').textContent = name;
+                if (user.photo_url) {
+                    document.getElementById('avatarBox').innerHTML = `<img src="${user.photo_url}">`;
+                } else {
+                    document.getElementById('avatarLetter').textContent = name.charAt(0).toUpperCase();
+                }
+            }
+        }
+
+        function openPage(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+    </script>
 </body>
 </html>
