@@ -3,851 +3,650 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Профиль пользователя</title>
+    <title>Профиль Пользователя — Vintyx Store</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0A0A14',
+                    },
+                    animation: {
+                        'fadeIn': 'fadeIn 0.25s ease-out forwards',
+                        'bounceShort': 'bounceShort 0.5s ease',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'scale(0.96) translateY(8px)' },
+                            '100%': { opacity: '1', transform: 'scale(1) translateY(0)' },
+                        },
+                        bounceShort: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-6px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        /* ======================================================
-           СБРОС И БАЗОВЫЕ СТИЛИ
-           ====================================================== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #0A0A14;
+            color: #FFFFFF;
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #06060D;
-            background-image: 
-                radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 85% 85%, rgba(168, 85, 247, 0.12) 0%, transparent 40%);
-            padding: 16px;
-            color: #FFFFFF;
+            user-select: none;
+            -webkit-user-select: none;
         }
-
-        /* ======================================================
-           ОСНОВНОЙ КОНТЕЙНЕР ПРОФИЛЯ
-           ====================================================== */
-        .profile-card {
-            width: 100%;
-            max-width: 440px;
-            background: rgba(13, 13, 26, 0.85);
-            backdrop-filter: blur(28px) saturate(1.8);
-            -webkit-backdrop-filter: blur(28px) saturate(1.8);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 36px;
-            padding: 24px;
-            box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.12);
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 4px;
         }
-
-        /* ХЕДЕР ПОЛЬЗОВАТЕЛЯ */
-        .user-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .avatar-container {
-            position: relative;
-            width: 52px;
-            height: 52px;
-        }
-
-        .avatar {
-            width: 100%;
-            height: 100%;
-            border-radius: 18px;
-            object-fit: cover;
-            border: 2px solid rgba(255, 255, 255, 0.15);
-            background: #1A1A2E;
-        }
-
-        .status-dot {
-            position: absolute;
-            bottom: -2px;
-            right: -2px;
-            width: 14px;
-            height: 14px;
-            background: #10B981;
-            border: 3px solid #0D0D1A;
-            border-radius: 50%;
-        }
-
-        .user-details h2 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #FFF;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .user-details p {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.45);
-        }
-
-        .level-badge {
-            background: rgba(99, 102, 241, 0.15);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            color: #A5B4FC;
-            font-size: 0.7rem;
-            font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 12px;
-        }
-
-        /* КАРТОЧКА БАЛАНСА */
-        .balance-card {
-            background: linear-gradient(135deg, rgba(30, 27, 75, 0.6) 0%, rgba(15, 15, 35, 0.8) 100%);
-            border: 1px solid rgba(129, 140, 248, 0.2);
-            border-radius: 26px;
-            padding: 20px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .balance-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, transparent 70%);
-            pointer-events: none;
-        }
-
-        .balance-label {
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.5);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .balance-amount {
-            font-size: 2.1rem;
-            font-weight: 800;
-            color: #FFFFFF;
-            letter-spacing: -0.5px;
-        }
-
-        .hide-toggle {
-            background: none;
-            border: none;
-            color: rgba(255, 255, 255, 0.4);
-            cursor: pointer;
-            padding: 4px;
-            transition: color 0.2s;
-        }
-
-        .hide-toggle:hover {
-            color: #FFF;
-        }
-
-        /* КНОПКИ ДЕЙСТВИЙ: ВЫВОД / ПОПОЛНИТЬ / ПРОМОКОД */
-        .actions-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-        }
-
-        .action-btn {
-            height: 60px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 0.72rem;
-            font-weight: 600;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .action-btn:hover {
-            background: rgba(255, 255, 255, 0.09);
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .action-btn:active {
-            transform: scale(0.95);
-        }
-
-        .action-btn svg {
-            width: 20px;
-            height: 20px;
-            stroke-width: 2.2;
-            transition: transform 0.2s;
-        }
-
-        .btn-withdraw svg { stroke: #60A5FA; }
-        .btn-topup svg { stroke: #34D399; }
-        .btn-promo svg { stroke: #FBBF24; }
-
-        .action-btn:hover svg {
-            transform: scale(1.15);
-        }
-
-        /* ПРОХОДКА / ТОВАР С СВГ ИКОНКОЙ */
-        .pass-card {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 22px;
-            padding: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-        }
-
-        .pass-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        /* Иконка SVG на проходке */
-        .pass-icon-box {
-            width: 44px;
-            height: 44px;
-            border-radius: 14px;
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(217, 119, 6, 0.1) 100%);
-            border: 1px solid rgba(245, 158, 11, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .pass-icon-box svg {
-            width: 24px;
-            height: 24px;
-            stroke: #FBBF24;
-            fill: rgba(251, 191, 36, 0.15);
-        }
-
-        .pass-text h4 {
-            font-size: 0.9rem;
-            font-weight: 700;
-        }
-
-        .pass-text p {
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.4);
-        }
-
-        .buy-pass-btn {
-            background: rgba(245, 158, 11, 0.15);
-            border: 1px solid rgba(245, 158, 11, 0.4);
-            color: #FBBF24;
-            font-weight: 700;
-            font-size: 0.78rem;
-            padding: 8px 14px;
-            border-radius: 14px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .buy-pass-btn:hover {
-            background: rgba(245, 158, 11, 0.3);
-        }
-
-        /* ИСТОРИЯ ОПЕРАЦИЙ */
-        .operations-section {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .section-header h3 {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.5);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .operations-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            max-height: 180px;
-            overflow-y: auto;
-        }
-
-        .op-item {
+        ::-webkit-scrollbar-track {
             background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
         }
-
-        .op-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .op-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .op-icon.in { background: rgba(52, 211, 153, 0.15); color: #34D399; }
-        .op-icon.out { background: rgba(96, 165, 250, 0.15); color: #60A5FA; }
-
-        .op-info h5 { font-size: 0.82rem; font-weight: 600; }
-        .op-info span { font-size: 0.7rem; color: rgba(255, 255, 255, 0.4); }
-
-        .op-amount {
-            font-size: 0.85rem;
-            font-weight: 700;
-        }
-
-        .op-amount.plus { color: #34D399; }
-        .op-amount.minus { color: #F87171; }
-
-        /* ======================================================
-           МОДАЛЬНЫЕ ОКНА (ПОПОЛНЕНИЕ, ВЫВОД, ПРОМОКОД)
-           ====================================================== */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(12px);
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.25s ease;
-        }
-
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .modal-card {
-            width: 100%;
-            max-width: 380px;
-            background: #121224;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 32px;
-            padding: 24px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
-            transform: scale(0.9);
-            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-            position: relative;
-        }
-
-        .modal-overlay.active .modal-card {
-            transform: scale(1);
-        }
-
-        .modal-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .modal-header h3 {
-            font-size: 1.1rem;
-            font-weight: 700;
-        }
-
-        .close-btn {
-            background: rgba(255, 255, 255, 0.08);
-            border: none;
-            color: #FFF;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-
-        /* Формы внутри модалок */
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.5);
-            margin-bottom: 8px;
-        }
-
-        .input-field {
-            width: 100%;
-            height: 48px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 16px;
-            padding: 0 16px;
-            color: #FFF;
-            font-size: 0.95rem;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .input-field:focus {
-            border-color: #6366F1;
-        }
-
-        .presets-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-
-        .preset-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            padding: 8px;
-            color: #FFF;
-            font-size: 0.8rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .preset-btn:hover {
-            background: rgba(99, 102, 241, 0.2);
-            border-color: #6366F1;
-        }
-
-        .submit-btn {
-            width: 100%;
-            height: 50px;
-            border: none;
-            border-radius: 16px;
-            font-weight: 700;
-            font-size: 0.95rem;
-            color: #FFF;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 8px;
-        }
-
-        .btn-green { background: linear-gradient(135deg, #10B981, #059669); }
-        .btn-blue { background: linear-gradient(135deg, #3B82F6, #2563EB); }
-        .btn-amber { background: linear-gradient(135deg, #F59E0B, #D97706); }
-
-        .submit-btn:hover { opacity: 0.9; transform: translateY(-1px); }
-        .submit-btn:active { transform: scale(0.98); }
-
-        /* Уведомления (Toasts) */
-        .toast {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-100px);
-            background: rgba(16, 185, 129, 0.95);
-            color: #FFF;
-            padding: 12px 24px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            z-index: 200;
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            pointer-events: none;
-        }
-
-        .toast.show {
-            transform: translateX(-50%) translateY(0);
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
         }
     </style>
 </head>
-<body>
+<body class="flex flex-col items-center justify-center p-4 max-sm:p-2 min-h-screen relative overflow-x-hidden">
 
-    <!-- Уведомление -->
-    <div id="toast" class="toast">Успешно!</div>
+    <!-- ФОНОВЫЕ СВЕЧЕНИЯ -->
+    <div class="fixed top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-indigo-600/15 rounded-full blur-[120px] pointer-events-none"></div>
+    <div class="fixed bottom-1/4 left-1/2 -translate-x-1/2 w-[300px] h-[300px] bg-purple-600/15 rounded-full blur-[100px] pointer-events-none"></div>
 
-    <!-- ГЛАВНАЯ КАРТОЧКА ПРОФИЛЯ -->
-    <div class="profile-card">
-        
-        <!-- Хедер пользователя -->
-        <div class="user-header">
-            <div class="user-info">
-                <div class="avatar-container">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80" alt="Avatar" class="avatar" />
-                    <span class="status-dot"></span>
+    <!-- ГЛАВНЫЙ КОНТЕЙНЕР ПРОФИЛЯ -->
+    <main class="w-full max-w-[440px] min-h-[620px] mx-auto p-7 max-sm:p-5 rounded-[40px] max-sm:rounded-[32px] bg-[#0A0A14]/90 border border-white/[0.08] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.8)] backdrop-blur-2xl relative flex flex-col z-10">
+
+        <!-- 1. ШАПКА ПРОФИЛЯ -->
+        <header class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-3">
+                <!-- Аватарка с кнопкой смены -->
+                <div class="relative group cursor-pointer" onclick="openModal('avatar')">
+                    <div id="userAvatarContainer" class="w-12 h-12 rounded-full border border-white/10 bg-white/5 overflow-hidden flex items-center justify-center text-white font-bold text-lg shadow-inner group-hover:border-indigo-500/50 transition-all">
+                        <!-- Динамический аватар -->
+                        <span id="avatarText">V</span>
+                    </div>
+                    <div class="absolute inset-0 bg-black/40 rounded-full opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                    </div>
                 </div>
-                <div class="user-details">
-                    <h2>Alexey <span class="level-badge">LVL 12</span></h2>
-                    <p>ID: #849201</p>
+
+                <!-- Никнейм и ID -->
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 id="userNameDisplay" class="text-base font-bold text-white tracking-tight">Vintyx User</h1>
+                        <!-- Telegram Badge -->
+                        <div class="flex items-center gap-1 bg-sky-500/10 border border-sky-500/20 px-1.5 py-0.5 rounded-full text-[10px] text-sky-400 font-medium">
+                            <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.67-.52.36-1 .54-1.43.53-.47-.01-1.37-.26-2.05-.48-.82-.27-1.47-.42-1.42-.88.03-.24.37-.49 1.02-.75 3.99-1.74 6.66-2.89 8.01-3.45 3.81-1.59 4.6-.1.87 4.6-.1.87 0 .3 0 .58-.04.83-.12z"/></svg>
+                            <span>TG</span>
+                        </div>
+                    </div>
+                    <p id="userIdDisplay" class="text-xs text-white/40 font-mono mt-0.5">ID: 849201</p>
                 </div>
             </div>
-        </div>
 
-        <!-- Карточка баланса -->
-        <div class="balance-card">
-            <div class="balance-label">
-                <span>Основной баланс</span>
-                <button class="hide-toggle" id="toggleBalanceBtn" onclick="toggleBalance()">
-                    👁️
+            <!-- Кнопка копирования ID -->
+            <button onclick="copyUserId()" class="px-3 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-white/70 hover:text-white text-xs font-medium transition-all active:scale-95 flex items-center gap-1.5 cursor-pointer">
+                <svg id="copyIcon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                <span id="copyText">ID</span>
+            </button>
+        </header>
+
+        <!-- 2. КАРТОЧКА БАЛАНСА -->
+        <section class="p-5 rounded-[24px] bg-gradient-to-b from-white/[0.07] to-white/[0.02] border border-white/10 mb-5 relative overflow-hidden backdrop-blur-md shadow-lg">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-semibold text-white/50 tracking-wider uppercase">Общий баланс</span>
+                <!-- Кнопка скрыть/показать баланс -->
+                <button onclick="toggleBalanceVisibility()" class="text-white/40 hover:text-white transition-colors cursor-pointer p-1">
+                    <svg id="eyeIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
                 </button>
             </div>
-            <div class="balance-amount" id="balanceDisplay">12 450 ₽</div>
-        </div>
 
-        <!-- КНОПКИ ДЕЙСТВИЙ: ВЫВОД / ПОПОЛНИТЬ / ПРОМОКОД -->
-        <div class="actions-grid">
-            
-            <!-- Вывод -->
-            <button class="action-btn btn-withdraw" onclick="openModal('withdrawModal')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path d="M7 17L17 7M17 7H7M17 7V17" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <span>Вывод</span>
-            </button>
+            <!-- Сумма баланса -->
+            <div class="flex items-baseline gap-1.5 mb-4">
+                <span id="balanceValue" class="text-3xl max-sm:text-2xl font-black text-white tracking-tight">1 250</span>
+                <span id="balanceCurrency" class="text-lg font-bold text-indigo-400">₽</span>
+            </div>
 
-            <!-- Пополнить -->
-            <button class="action-btn btn-topup" onclick="openModal('topupModal')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path d="M12 5V19M5 12H19" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <span>Пополнить</span>
-            </button>
-
-            <!-- Промокод -->
-            <button class="action-btn btn-promo" onclick="openModal('promoModal')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path d="M15 5V7M15 11V13M15 17V19M5 5H19C20.1 5 21 5.9 21 7V9C19.9 9 19 9.9 19 11C19 12.1 19.9 13 21 13V17C21 18.1 20.1 19 19 19H5C3.9 19 3 18.1 3 17V13C4.1 13 5 12.1 5 11C5 9.9 4.1 9 3 9V7C3 5.9 3.9 5 5 5Z" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <span>Промокод</span>
-            </button>
-
-        </div>
-
-        <!-- ПРОХОДКА (С SVG ИКОНКОЙ) -->
-        <div class="pass-card">
-            <div class="pass-info">
-                <!-- SVG Иконка на проходке -->
-                <div class="pass-icon-box">
-                    <svg viewBox="0 0 24 24">
-                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
+            <!-- Дополнительная информация -->
+            <div class="grid grid-cols-2 gap-2 pt-3 border-t border-white/5 text-xs">
+                <div>
+                    <span class="text-white/40 block text-[10px]">Наличные</span>
+                    <span id="cashValue" class="font-bold text-emerald-400">1 250 ₽</span>
                 </div>
-                <div class="pass-text">
-                    <h4>Brawl Pass Plus</h4>
-                    <p>Сезон 28 • Активен</p>
+                <div>
+                    <span class="text-white/40 block text-[10px]">Заморожено</span>
+                    <span class="font-bold text-white/60">0 ₽</span>
                 </div>
             </div>
-            <button class="buy-pass-btn" onclick="buyPass()">799 ₽</button>
-        </div>
+        </section>
 
-        <!-- ИСТОРИЯ ОПЕРАЦИЙ -->
-        <div class="operations-section">
-            <div class="section-header">
-                <h3>История операций</h3>
-            </div>
-            <div class="operations-list" id="operationsList">
-                <!-- Заполняется через JS -->
-            </div>
-        </div>
+        <!-- 3. БЫСТРЫЕ ДЕЙСТВИЯ (ВЫВОД, ПОПОЛНИТЬ, ПРОМОКОД) -->
+        <section class="grid grid-cols-3 gap-2.5 mb-6">
+            <!-- Кнопка ВЫВОД -->
+            <button onclick="openModal('withdraw')" class="h-[60px] max-sm:h-[56px] rounded-[18px] bg-white/[0.05] hover:bg-white/[0.09] active:scale-[0.96] border border-white/10 text-white transition-all duration-200 flex flex-col items-center justify-center gap-1 backdrop-blur-md cursor-pointer group px-1">
+                <svg class="w-5 h-5 text-white/70 group-hover:text-blue-400 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7V17"></path></svg>
+                <span class="text-[11px] max-sm:text-[10px] font-semibold text-white/80 group-hover:text-white whitespace-nowrap">Вывод</span>
+            </button>
 
-    </div>
+            <!-- Кнопка ПОПОЛНИТЬ -->
+            <button onclick="openModal('topup')" class="h-[60px] max-sm:h-[56px] rounded-[18px] bg-white/[0.05] hover:bg-white/[0.09] active:scale-[0.96] border border-white/10 text-white transition-all duration-200 flex flex-col items-center justify-center gap-1 backdrop-blur-md cursor-pointer group px-1">
+                <svg class="w-5 h-5 text-white/70 group-hover:text-emerald-400 group-hover:scale-110 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                <span class="text-[11px] max-sm:text-[10px] font-semibold text-white/80 group-hover:text-white whitespace-nowrap">Пополнить</span>
+            </button>
 
-    <!-- ======================================================
-       МОДАЛЬНОЕ ОКНО: ПОПОЛНЕНИЕ
-       ====================================================== -->
-    <div id="topupModal" class="modal-overlay">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3>Пополнение баланса</h3>
-                <button class="close-btn" onclick="closeModal('topupModal')">✕</button>
-            </div>
-            <div class="form-group">
-                <label>Выберите или введите сумму (₽)</label>
-                <div class="presets-grid">
-                    <button class="preset-btn" onclick="setTopupAmount(300)">300 ₽</button>
-                    <button class="preset-btn" onclick="setTopupAmount(500)">500 ₽</button>
-                    <button class="preset-btn" onclick="setTopupAmount(1000)">1 000 ₽</button>
-                </div>
-                <input type="number" id="topupInput" class="input-field" placeholder="Сумма пополнения..." value="500" />
-            </div>
-            <button class="submit-btn btn-green" onclick="handleTopup()">Пополнить счет</button>
-        </div>
-    </div>
+            <!-- Кнопка ПРОМОКОД -->
+            <button onclick="openModal('promo')" class="h-[60px] max-sm:h-[56px] rounded-[18px] bg-white/[0.05] hover:bg-white/[0.09] active:scale-[0.96] border border-white/10 text-white transition-all duration-200 flex flex-col items-center justify-center gap-1 backdrop-blur-md cursor-pointer group px-1">
+                <svg class="w-5 h-5 text-white/70 group-hover:text-amber-400 group-hover:rotate-12 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"></path></svg>
+                <span class="text-[11px] max-sm:text-[10px] font-semibold text-white/80 group-hover:text-white whitespace-nowrap">Промокод</span>
+            </button>
+        </section>
 
-    <!-- ======================================================
-       МОДАЛЬНОЕ ОКНО: ВЫВОД
-       ====================================================== -->
-    <div id="withdrawModal" class="modal-overlay">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3>Вывод средств</h3>
-                <button class="close-btn" onclick="closeModal('withdrawModal')">✕</button>
+        <!-- 4. ИСТОРИЯ ОПЕРАЦИЙ -->
+        <section class="flex-1 flex flex-col mb-4">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="text-xs font-bold text-white/70 uppercase tracking-wider">История операций</h3>
+                <button onclick="openModal('all-operations')" class="text-xs text-indigo-400 hover:text-indigo-300 font-medium transition-colors cursor-pointer">
+                    Все операции →
+                </button>
             </div>
-            <div class="form-group">
-                <label>Номер карты или телефона (СБП)</label>
-                <input type="text" id="withdrawTarget" class="input-field" placeholder="+7 (900) 000-00-00" />
-            </div>
-            <div class="form-group">
-                <label>Сумма вывода (₽)</label>
-                <input type="number" id="withdrawAmount" class="input-field" placeholder="Сумма..." value="1000" />
-            </div>
-            <button class="submit-btn btn-blue" onclick="handleWithdraw()">Запросить вывод</button>
-        </div>
-    </div>
 
-    <!-- ======================================================
-       МОДАЛЬНОЕ ОКНО: ПРОМОКОД
-       ====================================================== -->
-    <div id="promoModal" class="modal-overlay">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3>Активация промокода</h3>
-                <button class="close-btn" onclick="closeModal('promoModal')">✕</button>
+            <div id="operationsList" class="space-y-2 flex-1 overflow-y-auto max-h-[190px] pr-1">
+                <!-- Заполняется динамически -->
             </div>
-            <div class="form-group">
-                <label>Введите ваш секретный промокод</label>
-                <input type="text" id="promoInput" class="input-field" placeholder="Например: BRAWL500" style="text-transform: uppercase;" />
-            </div>
-            <p style="font-size: 0.72rem; color: rgba(255,255,255,0.4); margin-bottom: 12px;">
-                Попробуйте промокоды: <b style="color: #FBBF24;">BRAWL500</b>, <b style="color: #FBBF24;">BONUS</b> или <b style="color: #FBBF24;">START</b>
-            </p>
-            <button class="submit-btn btn-amber" onclick="handlePromo()">Активировать</button>
+        </section>
+
+        <!-- 5. ИНФО И ПОДДЕРЖКА -->
+        <footer class="pt-4 border-t border-white/5 grid grid-cols-2 gap-2 text-center text-[11px]">
+            <button onclick="openModal('about')" class="py-1.5 px-2 rounded-xl bg-white/[0.02] hover:bg-white/[0.06] text-white/50 hover:text-white transition-colors cursor-pointer">
+                О магазине
+            </button>
+            <button onclick="openModal('support')" class="py-1.5 px-2 rounded-xl bg-white/[0.02] hover:bg-white/[0.06] text-white/50 hover:text-white transition-colors cursor-pointer">
+                Поддержка
+            </button>
+            <button onclick="openModal('terms')" class="py-1.5 px-2 rounded-xl bg-white/[0.02] hover:bg-white/[0.06] text-white/50 hover:text-white transition-colors cursor-pointer">
+                Правила
+            </button>
+            <button onclick="openModal('privacy')" class="py-1.5 px-2 rounded-xl bg-white/[0.02] hover:bg-white/[0.06] text-white/50 hover:text-white transition-colors cursor-pointer">
+                Конфиденциальность
+            </button>
+        </footer>
+
+    </main>
+
+    <!-- ==========================================
+                 МОДАЛЬНЫЕ ОКНА
+    ========================================== -->
+    <div id="modalBackdrop" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/75 backdrop-blur-md">
+        <div class="relative w-full max-w-md bg-[#0A0A14]/95 border border-white/10 rounded-[32px] p-6 text-white shadow-[0_50px_100px_-20px_rgba(0,0,0,0.9)] animate-fadeIn">
+            <!-- Кнопка закрытия -->
+            <button onclick="closeModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-white/60 hover:text-white transition-all cursor-pointer z-20">
+                ✕
+            </button>
+
+            <!-- Контент модалок -->
+            <div id="modalContent"></div>
         </div>
     </div>
 
-    <!-- ======================================================
-       ЛОГИКА ПРИЛОЖЕНИЯ (JAVASCRIPT)
-       ====================================================== -->
+    <!-- ==========================================
+                   СКРИПТ ЛОГИКИ
+    ========================================== -->
     <script>
-        // Состояние баланса и истории
-        let currentBalance = 12450;
-        let isBalanceHidden = false;
+        // ИНИЦИАЛИЗАЦИЯ СОСТОЯНИЯ
+        const state = {
+            user: {
+                name: 'Vintyx User',
+                id: '849201',
+                balance: 1250,
+                cash: 1250,
+                frozen: 0,
+                avatar: null
+            },
+            isBalanceHidden: false,
+            transactions: [
+                { id: '1', title: 'Покупка Brawl Pass', amount: -490, date: 'Сегодня, 14:20', type: 'negative', icon: '💎' },
+                { id: '2', title: 'Пополнение через СБП', amount: 1000, date: 'Вчера, 18:05', type: 'positive', icon: '💳' },
+                { id: '3', title: 'Промокод VINTYX', amount: 500, date: '20 Июля', type: 'positive', icon: '🎁' }
+            ],
+            selectedTopUpAmount: 500,
+            selectedTopUpMethod: 'sbp'
+        };
 
-        let operations = [
-            { id: 1, title: "Пополнение СБП", date: "Сегодня, 14:20", amount: "+ 500 ₽", type: "plus" },
-            { id: 2, title: "Покупка Brawl Pass", date: "Вчера, 18:45", amount: "- 799 ₽", type: "minus" },
-            { id: 3, title: "Промокод BRAWL500", date: "21 июля", amount: "+ 500 ₽", type: "plus" }
-        ];
+        // ТЕМПОРАЛЬНЫЕ ПРОМОКОДЫ
+        const PROMO_CODES = {
+            'VINTYX': 500,
+            'BONUS100': 100,
+            'GEMS': 300,
+            'FREE': 250
+        };
 
-        // Рендер баланса
+        const usedPromos = new Set();
+
+        // ОБНОВЛЕНИЕ ИНТЕРФЕЙСА БАЛАНСА
         function renderBalance() {
-            const display = document.getElementById('balanceDisplay');
-            if (isBalanceHidden) {
-                display.textContent = "•••••• ₽";
+            const valElem = document.getElementById('balanceValue');
+            const cashElem = document.getElementById('cashValue');
+            
+            if (state.isBalanceHidden) {
+                valElem.textContent = '•••••';
+                cashElem.textContent = '••••• ₽';
             } else {
-                display.textContent = currentBalance.toLocaleString('ru-RU') + " ₽";
+                valElem.textContent = state.user.balance.toLocaleString('ru-RU');
+                cashElem.textContent = `${state.user.balance.toLocaleString('ru-RU')} ₽`;
             }
         }
 
-        // Переключение видимости баланса
-        function toggleBalance() {
-            isBalanceHidden = !isBalanceHidden;
-            document.getElementById('toggleBalanceBtn').textContent = isBalanceHidden ? "🔒" : "👁️";
+        // ПЕРЕКЛЮЧЕНИЕ ВИДИМОСТИ БАЛАНСА
+        function toggleBalanceVisibility() {
+            state.isBalanceHidden = !state.isBalanceHidden;
+            const icon = document.getElementById('eyeIcon');
+            if (state.isBalanceHidden) {
+                icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858-5.908a10.018 10.018 0 013.682-.763c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21M3 3l18 18" />`;
+            } else {
+                icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />`;
+            }
             renderBalance();
         }
 
-        // Рендер истории операций
+        // РЕНДЕР ОПЕРАЦИЙ
         function renderOperations() {
             const list = document.getElementById('operationsList');
-            list.innerHTML = operations.map(op => `
-                <div class="op-item">
-                    <div class="op-left">
-                        <div class="op-icon ${op.type === 'plus' ? 'in' : 'out'}">
-                            ${op.type === 'plus' ? '↓' : '↑'}
-                        </div>
-                        <div class="op-info">
-                            <h5>${op.title}</h5>
-                            <span>${op.date}</span>
+            list.innerHTML = '';
+
+            state.transactions.slice(0, 4).forEach(tx => {
+                const item = document.createElement('div');
+                item.className = 'flex items-center justify-between p-3 rounded-2xl bg-white/[0.03] border border-white/[0.05] hover:bg-white/[0.06] transition-all';
+                item.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-xl bg-white/5 flex items-center justify-center text-sm">${tx.icon}</div>
+                        <div>
+                            <p class="text-xs font-semibold text-white/90">${tx.title}</p>
+                            <p class="text-[10px] text-white/40">${tx.date}</p>
                         </div>
                     </div>
-                    <div class="op-amount ${op.type}">
-                        ${op.amount}
+                    <span class="text-xs font-bold ${tx.type === 'positive' ? 'text-emerald-400' : 'text-white/70'}">
+                        ${tx.type === 'positive' ? '+' : '−'}${Math.abs(tx.amount)} ₽
+                    </span>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        // КОПИРОВАНИЕ ID
+        function copyUserId() {
+            navigator.clipboard.writeText(state.user.id);
+            const copyText = document.getElementById('copyText');
+            copyText.textContent = 'Скопировано!';
+            setTimeout(() => {
+                copyText.textContent = 'ID';
+            }, 1800);
+        }
+
+        // ОТКРЫТИЕ И ЗАКРЫТИЕ МОДАЛОК
+        function openModal(type) {
+            const backdrop = document.getElementById('modalBackdrop');
+            const content = document.getElementById('modalContent');
+            backdrop.classList.remove('hidden');
+            backdrop.classList.add('flex');
+
+            if (type === 'topup') {
+                content.innerHTML = renderTopUpModal();
+            } else if (type === 'withdraw') {
+                content.innerHTML = renderWithdrawModal();
+            } else if (type === 'promo') {
+                content.innerHTML = renderPromoModal();
+            } else if (type === 'all-operations') {
+                content.innerHTML = renderAllOperationsModal();
+            } else if (type === 'avatar') {
+                content.innerHTML = renderAvatarModal();
+            } else if (type === 'about') {
+                content.innerHTML = `
+                    <h3 class="text-lg font-bold text-white mb-2">О магазине Vintyx Store</h3>
+                    <p class="text-xs text-white/70 leading-relaxed mb-3">
+                        Vintyx Store — премиальный цифровой маркетплейс внутриигровых товаров, гемов и подписок.
+                    </p>
+                    <div class="p-3 bg-white/5 rounded-2xl border border-white/5 text-xs text-white/60 space-y-1.5">
+                        <p>⚡ Мгновенное автозачисление 24/7</p>
+                        <p>🛡️ Официальная гарантия безопасности</p>
+                        <p>💎 Более 50,000 довольных клиентов</p>
                     </div>
+                `;
+            } else if (type === 'support') {
+                content.innerHTML = `
+                    <h3 class="text-lg font-bold text-white mb-2">Служба поддержки</h3>
+                    <p class="text-xs text-white/60 mb-4">Наша служба поддержки работает круглосуточно без выходных.</p>
+                    <div class="p-4 bg-indigo-950/40 border border-indigo-500/20 rounded-2xl flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-semibold text-white">Telegram бот</p>
+                            <p class="text-[11px] text-indigo-300">@vintyx_support</p>
+                        </div>
+                        <button onclick="navigator.clipboard.writeText('@vintyx_support'); alert('Скопировано в буфер!');" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-medium cursor-pointer">
+                            Скопировать
+                        </button>
+                    </div>
+                `;
+            } else if (type === 'terms') {
+                content.innerHTML = `
+                    <h3 class="text-lg font-bold text-white mb-2">Условия использования</h3>
+                    <div class="space-y-2 text-xs text-white/70">
+                        <p>1. Использование сервиса Vintyx Store означает согласие с правилами.</p>
+                        <p>2. Оплата и доставка осуществляется в автоматическом режиме.</p>
+                    </div>
+                `;
+            } else if (type === 'privacy') {
+                content.innerHTML = `
+                    <h3 class="text-lg font-bold text-white mb-2">Конфиденциальность</h3>
+                    <p class="text-xs text-white/70">Мы гарантируем сохранность ваших персональных данных. Данные передаются по защищенному SSL протоколу.</p>
+                `;
+            }
+        }
+
+        function closeModal() {
+            const backdrop = document.getElementById('modalBackdrop');
+            backdrop.classList.add('hidden');
+            backdrop.classList.remove('flex');
+        }
+
+        // РЕНДЕР МОДАЛКИ ПОПОЛНЕНИЯ
+        function renderTopUpModal() {
+            return `
+                <div class="flex flex-col gap-4">
+                    <div>
+                        <h3 class="text-lg font-bold text-white mb-1">Пополнение баланса</h3>
+                        <p class="text-xs text-white/50">Выберите сумму и способ оплаты</p>
+                    </div>
+
+                    <div>
+                        <label class="text-[10px] font-bold text-white/50 uppercase tracking-wider mb-2 block">Сумма пополнения</label>
+                        <div class="grid grid-cols-3 gap-2 mb-2">
+                            ${[100, 300, 500, 1000, 2500].map(val => `
+                                <button onclick="selectTopUpPreset(${val})" class="py-2.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${state.selectedTopUpAmount === val ? 'bg-indigo-600/30 border-indigo-500 text-white shadow-md' : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'}">
+                                    ${val} ₽
+                                </button>
+                            `).join('')}
+                        </div>
+                        <input id="customTopUpInput" type="number" placeholder="Другая сумма (₽)" oninput="handleCustomTopUp(this.value)" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition-colors" />
+                    </div>
+
+                    <div>
+                        <label class="text-[10px] font-bold text-white/50 uppercase tracking-wider mb-2 block">Способ оплаты</label>
+                        <div class="space-y-2">
+                            ${[
+                                { id: 'sbp', label: 'СБП (Система быстрых платежей)', icon: '📱' },
+                                { id: 'card', label: 'Банковская карта (Мир, Visa, MC)', icon: '💳' },
+                                { id: 'crypto', label: 'Криптовалюта (TON, USDT)', icon: '⚡' }
+                            ].map(m => `
+                                <button onclick="selectTopUpMethod('${m.id}')" class="w-full flex items-center justify-between p-3 rounded-xl border text-xs font-medium transition-all cursor-pointer ${state.selectedTopUpMethod === m.id ? 'bg-indigo-600/20 border-indigo-500 text-white' : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'}">
+                                    <div class="flex items-center gap-2">
+                                        <span>${m.icon}</span>
+                                        <span>${m.label}</span>
+                                    </div>
+                                    <div class="w-4 h-4 rounded-full border flex items-center justify-center ${state.selectedTopUpMethod === m.id ? 'border-indigo-500 bg-indigo-500' : 'border-white/20'}">
+                                        ${state.selectedTopUpMethod === m.id ? '<div class="w-1.5 h-1.5 bg-white rounded-full"></div>' : ''}
+                                    </div>
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <button onclick="processTopUp()" class="w-full mt-2 py-3.5 rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xs shadow-lg cursor-pointer transition-all active:scale-98">
+                        Оплатить <span id="topupBtnAmount">${state.selectedTopUpAmount}</span> ₽
+                    </button>
                 </div>
-            `).join('');
+            `;
         }
 
-        // Уведомления (Toast)
-        function showToast(text, isError = false) {
-            const toast = document.getElementById('toast');
-            toast.textContent = text;
-            toast.style.background = isError ? "rgba(239, 68, 68, 0.95)" : "rgba(16, 185, 129, 0.95)";
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2500);
+        function selectTopUpPreset(val) {
+            state.selectedTopUpAmount = val;
+            const input = document.getElementById('customTopUpInput');
+            if (input) input.value = '';
+            document.getElementById('modalContent').innerHTML = renderTopUpModal();
         }
 
-        // Управление модальными окнами
-        function openModal(id) {
-            document.getElementById(id).classList.add('active');
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).classList.remove('active');
-        }
-
-        // --- ЛОГИКА ПОПОЛНЕНИЯ ---
-        function setTopupAmount(val) {
-            document.getElementById('topupInput').value = val;
-        }
-
-        function handleTopup() {
-            const val = parseInt(document.getElementById('topupInput').value);
-            if (!val || val <= 0) {
-                showToast("Введите корректную сумму!", true);
-                return;
+        function handleCustomTopUp(val) {
+            if (val && !isNaN(Number(val))) {
+                state.selectedTopUpAmount = Number(val);
+                const btnAmount = document.getElementById('topupBtnAmount');
+                if (btnAmount) btnAmount.textContent = state.selectedTopUpAmount;
             }
+        }
 
-            currentBalance += val;
-            operations.unshift({
-                id: Date.now(),
-                title: "Пополнение баланса",
-                date: "Только что",
-                amount: `+ ${val.toLocaleString('ru-RU')} ₽`,
-                type: "plus"
+        function selectTopUpMethod(method) {
+            state.selectedTopUpMethod = method;
+            document.getElementById('modalContent').innerHTML = renderTopUpModal();
+        }
+
+        function processTopUp() {
+            const amt = state.selectedTopUpAmount;
+            if (!amt || amt <= 0) return;
+
+            state.user.balance += amt;
+            state.user.cash += amt;
+            state.transactions.unshift({
+                id: Date.now().toString(),
+                title: `Пополнение (${state.selectedTopUpMethod.toUpperCase()})`,
+                amount: amt,
+                date: 'Только что',
+                type: 'positive',
+                icon: '💳'
             });
 
             renderBalance();
             renderOperations();
-            closeModal('topupModal');
-            showToast(`Успешно пополнено на ${val} ₽!`);
+
+            document.getElementById('modalContent').innerHTML = `
+                <div class="py-8 text-center flex flex-col items-center">
+                    <div class="w-14 h-14 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl mb-3 animate-bounceShort">✓</div>
+                    <h3 class="text-base font-bold text-white mb-1">Баланс пополнен!</h3>
+                    <p class="text-xs text-white/50">+${amt.toLocaleString('ru-RU')} ₽ успешно зачислены</p>
+                </div>
+            `;
+
+            setTimeout(closeModal, 1500);
         }
 
-        // --- ЛОГИКА ВЫВОДА ---
-        function handleWithdraw() {
-            const target = document.getElementById('withdrawTarget').value.trim();
-            const val = parseInt(document.getElementById('withdrawAmount').value);
+        // РЕНДЕР МОДАЛКИ ВЫВОДА
+        function renderWithdrawModal() {
+            return `
+                <div class="flex flex-col gap-4">
+                    <div>
+                        <h3 class="text-lg font-bold text-white mb-1">Вывод средств</h3>
+                        <p class="text-xs text-white/50">Доступно: <span class="text-white font-semibold">${state.user.balance.toLocaleString('ru-RU')} ₽</span></p>
+                    </div>
 
-            if (!target) {
-                showToast("Укажите реквизиты для вывода!", true);
+                    <div>
+                        <label class="text-xs font-medium text-white/60 mb-1 block">Сумма вывода (₽)</label>
+                        <input id="withdrawAmountInput" type="number" placeholder="Мин. 100 ₽" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500" />
+                    </div>
+
+                    <div>
+                        <label class="text-xs font-medium text-white/60 mb-1 block">Реквизиты (Карта / Телефон СБП)</label>
+                        <input id="withdrawDetailsInput" type="text" placeholder="+7 (999) 000-00-00" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500" />
+                    </div>
+
+                    <p id="withdrawError" class="text-xs text-red-400 hidden"></p>
+
+                    <button onclick="processWithdraw()" class="w-full mt-2 py-3.5 rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 text-white font-bold text-xs shadow-lg cursor-pointer transition-all active:scale-98">
+                        Запросить вывод
+                    </button>
+                </div>
+            `;
+        }
+
+        function processWithdraw() {
+            const amtInput = document.getElementById('withdrawAmountInput');
+            const detInput = document.getElementById('withdrawDetailsInput');
+            const errElem = document.getElementById('withdrawError');
+
+            const amt = Number(amtInput.value);
+            const details = detInput.value.trim();
+
+            if (!amt || amt <= 0) {
+                errElem.textContent = 'Введите корректную сумму';
+                errElem.classList.remove('hidden');
                 return;
             }
-            if (!val || val <= 0) {
-                showToast("Введите корректную сумму!", true);
+            if (amt > state.user.balance) {
+                errElem.textContent = 'Недостаточно средств на балансе';
+                errElem.classList.remove('hidden');
                 return;
             }
-            if (val > currentBalance) {
-                showToast("Недостаточно средств на балансе!", true);
+            if (!details) {
+                errElem.textContent = 'Укажите реквизиты вывода';
+                errElem.classList.remove('hidden');
                 return;
             }
 
-            currentBalance -= val;
-            operations.unshift({
-                id: Date.now(),
-                title: "Вывод средств",
-                date: "Только что",
-                amount: `- ${val.toLocaleString('ru-RU')} ₽`,
-                type: "minus"
+            state.user.balance -= amt;
+            state.user.cash -= amt;
+            state.transactions.unshift({
+                id: Date.now().toString(),
+                title: 'Запрос на вывод средств',
+                amount: -amt,
+                date: 'Только что',
+                type: 'negative',
+                icon: '💸'
             });
 
             renderBalance();
             renderOperations();
-            closeModal('withdrawModal');
-            showToast(`Заявка на вывод ${val} ₽ создана!`);
+
+            document.getElementById('modalContent').innerHTML = `
+                <div class="py-8 text-center flex flex-col items-center">
+                    <div class="w-14 h-14 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-2xl mb-3 animate-bounceShort">✓</div>
+                    <h3 class="text-base font-bold text-white mb-1">Заявка создана!</h3>
+                    <p class="text-xs text-white/50">Вывод ${amt} ₽ обрабатывается</p>
+                </div>
+            `;
+
+            setTimeout(closeModal, 1500);
         }
 
-        // --- ЛОГИКА ПРОМОКОДОВ ---
-        function handlePromo() {
-            const code = document.getElementById('promoInput').value.trim().toUpperCase();
-            
-            if (!code) {
-                showToast("Введите промокод!", true);
+        // РЕНДЕР МОДАЛКИ ПРОМОКОДА
+        function renderPromoModal() {
+            return `
+                <div class="flex flex-col gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 text-xl">🎁</div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white">Активация промокода</h3>
+                            <p class="text-xs text-white/50">Введите промокод для получения бонуса</p>
+                        </div>
+                    </div>
+
+                    <input id="promoInput" type="text" placeholder="ПРОМОКОД (напр. VINTYX)" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white uppercase tracking-widest font-bold text-center focus:outline-none focus:border-amber-500" />
+
+                    <p id="promoMessage" class="text-xs text-center font-medium hidden"></p>
+
+                    <button onclick="processPromo()" class="w-full py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shadow-lg cursor-pointer transition-all active:scale-98">
+                        Активировать
+                    </button>
+                </div>
+            `;
+        }
+
+        function processPromo() {
+            const input = document.getElementById('promoInput');
+            const msg = document.getElementById('promoMessage');
+            const code = input.value.trim().toUpperCase();
+
+            if (!code) return;
+
+            if (usedPromos.has(code)) {
+                msg.textContent = 'Вы уже активировали этот промокод!';
+                msg.className = 'text-xs text-center font-medium text-rose-400 block';
                 return;
             }
 
-            let bonus = 0;
-            if (code === 'BRAWL500' || code === 'START') bonus = 500;
-            else if (code === 'BONUS') bonus = 1000;
-            else if (code === 'PROMO100') bonus = 100;
-
-            if (bonus > 0) {
-                currentBalance += bonus;
-                operations.unshift({
-                    id: Date.now(),
+            const reward = PROMO_CODES[code];
+            if (reward) {
+                usedPromos.add(code);
+                state.user.balance += reward;
+                state.user.cash += reward;
+                state.transactions.unshift({
+                    id: Date.now().toString(),
                     title: `Промокод ${code}`,
-                    date: "Только что",
-                    amount: `+ ${bonus} ₽`,
-                    type: "plus"
+                    amount: reward,
+                    date: 'Только что',
+                    type: 'positive',
+                    icon: '🎁'
                 });
+
                 renderBalance();
                 renderOperations();
-                closeModal('promoModal');
-                document.getElementById('promoInput').value = '';
-                showToast(`Промокод активирован! +${bonus} ₽`);
+
+                msg.textContent = `Успешно! Начислено +${reward} ₽`;
+                msg.className = 'text-xs text-center font-medium text-emerald-400 block';
+
+                setTimeout(closeModal, 1500);
             } else {
-                showToast("Неверный или недействительный промокод!", true);
+                msg.textContent = 'Неверный промокод';
+                msg.className = 'text-xs text-center font-medium text-rose-400 block';
             }
         }
 
-        // Покупка проходки
-        function buyPass() {
-            if (currentBalance < 799) {
-                showToast("Недостаточно средств!", true);
-                openModal('topupModal');
-                return;
-            }
-            currentBalance -= 799;
-            operations.unshift({
-                id: Date.now(),
-                title: "Покупка Brawl Pass Plus",
-                date: "Только что",
-                amount: "- 799 ₽",
-                type: "minus"
-            });
-            renderBalance();
-            renderOperations();
-            showToast("Brawl Pass Plus успешно приобретен!");
+        // РЕНДЕР МОДАЛКИ ВСЕХ ОПЕРАЦИЙ
+        function renderAllOperationsModal() {
+            return `
+                <div class="flex flex-col h-full max-h-[70vh]">
+                    <h3 class="text-lg font-bold text-white mb-3">История всех операций</h3>
+                    <div class="overflow-y-auto space-y-2 pr-1 flex-1">
+                        ${state.transactions.map(tx => `
+                            <div class="flex items-center justify-between p-3 rounded-2xl bg-white/[0.03] border border-white/[0.05]">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-xl bg-white/5 flex items-center justify-center text-sm">${tx.icon}</div>
+                                    <div>
+                                        <p class="text-xs font-semibold text-white">${tx.title}</p>
+                                        <p class="text-[10px] text-white/30">${tx.date}</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-bold ${tx.type === 'positive' ? 'text-emerald-400' : 'text-white/70'}">
+                                    ${tx.type === 'positive' ? '+' : '−'}${Math.abs(tx.amount)} ₽
+                                </span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
         }
 
-        // Первичная инициализация
+        // РЕНДЕР МОДАЛКИ АВАТАРА
+        function renderAvatarModal() {
+            const presets = [
+                'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=150&auto=format&fit=crop&q=80',
+                'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80',
+                'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=150&auto=format&fit=crop&q=80'
+            ];
+
+            return `
+                <div class="flex flex-col gap-4">
+                    <h3 class="text-lg font-bold text-white">Выбор аватарки</h3>
+                    <div class="flex gap-3">
+                        ${presets.map((url, i) => `
+                            <img src="${url}" onclick="setAvatar('${url}')" class="w-12 h-12 rounded-full border border-white/20 hover:scale-110 transition-transform cursor-pointer object-cover" />
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function setAvatar(url) {
+            state.user.avatar = url;
+            const container = document.getElementById('userAvatarContainer');
+            container.innerHTML = `<img src="${url}" class="w-full h-full object-cover rounded-full" />`;
+            closeModal();
+        }
+
+        // ПЕРВОНАЧАЛЬНЫЙ РЕНДЕР
         renderBalance();
         renderOperations();
     </script>
