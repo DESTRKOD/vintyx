@@ -5,27 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Vintyx Store — Профиль</title>
 
-  <!-- Tailwind CSS v4 Browser CDN -->
+  <!-- Tailwind CSS v4 CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
-  <!-- Import map с полной поддержкой Safari и React 19 -->
+  <!-- Import map для React 19 и зависимостей -->
   <script type="importmap">
   {
     "imports": {
       "react": "https://esm.sh/react@19.0.1",
       "react/jsx-runtime": "https://esm.sh/react@19.0.1/jsx-runtime",
       "react-dom/client": "https://esm.sh/react-dom@19.0.1/client",
-      "lucide-react": "https://esm.sh/lucide-react@0.546.0?external=react",
-      "motion/react": "https://esm.sh/motion@12.23.24/react?external=react,react-dom"
+      "lucide-react": "https://esm.sh/lucide-react@0.546.0?external=react"
     }
   }
   </script>
 
-  <!-- Babel Standalone для компиляции JSX прямо в браузере -->
+  <!-- Babel Standalone для транспиляции JSX -->
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
   <style>
-    /* Блокировка прокрутки и раскачивания страницы */
     html, body, #root {
       width: 100%;
       height: 100vh;
@@ -40,82 +38,111 @@
     }
 
     body {
-      background-color: #0A0A0F;
+      background-color: #0A0A18;
       background-image:
-        radial-gradient(ellipse at 20% 50%, rgba(91, 140, 255, 0.12) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 20%, rgba(125, 216, 255, 0.08) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 100%, rgba(102, 117, 255, 0.08) 0%, transparent 40%),
-        linear-gradient(145deg, #0A0A1A 0%, #1A1A3E 30%, #2D1B69 70%, #1A1A3E 100%);
+        radial-gradient(ellipse at 50% 0%, rgba(102, 117, 255, 0.22) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 40%, rgba(125, 216, 255, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 20% 80%, rgba(147, 51, 234, 0.15) 0%, transparent 50%),
+        linear-gradient(160deg, #090A16 0%, #12132D 35%, #1F1B4E 70%, #0D0E22 100%);
       background-attachment: fixed;
       color: #FFFFFF;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to { opacity: 1; transform: translateY(0); }
+    ::-webkit-scrollbar {
+      width: 4px;
     }
-
-    .animate-fadeIn {
-      animation: fadeIn 0.22s ease-out forwards;
+    ::-webkit-scrollbar-track {
+      background: transparent;
     }
-
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 9999px; }
-    ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.3); }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
   </style>
 </head>
 <body>
   <div id="root"></div>
 
   <script type="text/babel" data-type="module" data-presets="react">
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
   Camera, ArrowUpRight, Plus, Ticket, ArrowRight, X, CheckCircle,
-  Smartphone, CreditCard, Send, Zap, Gift, Copy, Check, Search,
-  ArrowLeft, Inbox, AlertTriangle
+  Smartphone, CreditCard, Send, Zap, Gift, Search, ArrowLeft, Inbox, AlertTriangle, Check
 } from 'lucide-react';
 
-/* =========================================================================
-   1. Header
-   ========================================================================= */
-const Header = ({ userName }) => {
-  return (
-    <div className="flex items-center justify-between mb-3 px-0.5 shrink-0">
-      <h1 className="text-xs font-extrabold text-white/40 tracking-[2px] font-sans uppercase">
-        ПРОФИЛЬ
-      </h1>
-      <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-[11px] font-semibold text-white/70 backdrop-blur-md">
-        <span>{userName}</span>
-      </div>
-    </div>
-  );
+// Данные
+const INITIAL_USER = {
+  name: 'Vintyx User',
+  username: '@vintyx_member',
+  userId: '849201',
+  avatarUrl: null,
+  avatarFallback: 'V',
+  balance: 1488,
+  currency: '₽',
+  isPremium: true,
+  joinedDate: '12 марта 2026',
 };
 
-/* =========================================================================
-   2. BalanceCard
-   ========================================================================= */
+const INITIAL_TRANSACTIONS = [
+  { id: 'tx-1', title: 'Brawl Pass Plus', category: 'pass', icon: '🎮', date: 'Сегодня, 14:32', amount: -149, type: 'negative', status: 'completed' },
+  { id: 'tx-2', title: '80 Гемов Brawl Stars', category: 'gems', icon: '⚡', date: 'Вчера, 09:15', amount: -299, type: 'negative', status: 'completed' },
+  { id: 'tx-3', title: 'Пополнение СБП', category: 'topup', icon: '💎', date: '12 мар, 18:00', amount: 500, type: 'positive', status: 'completed' },
+  { id: 'tx-4', title: 'Telegram Stars (100 шт)', category: 'stars', icon: '⭐️', date: '10 мар, 12:40', amount: -190, type: 'negative', status: 'completed' },
+  { id: 'tx-5', title: 'Вывод на карту', category: 'withdraw', icon: '💸', date: '08 мар, 21:10', amount: -1000, type: 'negative', status: 'completed' },
+];
+
+const PRESET_AVATARS = [
+  'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80',
+];
+
+const BANKS_LIST = [
+  { name: 'Т-Банк (Тинькофф)', icon: '🟡' },
+  { name: 'Сбербанк', icon: '🟢' },
+  { name: 'Альфа-Банк', icon: '🔴' },
+  { name: 'ВТБ', icon: '🔵' },
+  { name: 'Райффайзен', icon: '🟡' },
+  { name: 'Совкомбанк', icon: '🔵' },
+];
+
+// Шапка
+const Header = ({ userName }) => (
+  <div className="flex items-center justify-between mb-3 px-0.5 shrink-0">
+    <h1 className="text-xs font-extrabold text-white/40 tracking-[2px] uppercase">
+      ПРОФИЛЬ
+    </h1>
+    <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-[11px] font-semibold text-white/70 backdrop-blur-md">
+      <span>{userName}</span>
+    </div>
+  </div>
+);
+
+// Карточка баланса
 const BalanceCard = ({ user, onOpenAvatarModal }) => {
   const formattedBalance = user.balance.toLocaleString('ru-RU');
 
   return (
-    <div className="relative w-full h-[135px] sm:h-[145px] bg-white/[0.03] backdrop-blur-[12px] border border-white/10 rounded-[24px] mb-3 flex flex-col justify-center items-center shadow-xl overflow-hidden group shrink-0">
+    <div className="relative w-full h-[135px] sm:h-[150px] bg-white/[0.03] backdrop-blur-[12px] border border-white/10 rounded-[24px] mb-4 flex flex-col justify-center items-center shadow-xl overflow-hidden group shrink-0">
       <button
         type="button"
         onClick={onOpenAvatarModal}
-        className="absolute top-3.5 left-3.5 z-10 flex items-center justify-center w-11 h-11 rounded-full bg-gradient-to-br from-[#6675FF] to-[#7DD8FF] border-2 border-white/20 shadow-[0_6px_14px_rgba(91,140,255,0.3)] overflow-hidden cursor-pointer hover:scale-105 active:scale-95 transition-all group/avatar"
+        className="absolute top-4 left-4 z-10 flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-[#6675FF] to-[#7DD8FF] border-2 border-white/20 shadow-[0_6px_14px_rgba(91,140,255,0.3)] overflow-hidden cursor-pointer hover:scale-105 active:scale-95 transition-all group/avatar"
         title="Сменить аватарку"
       >
         {user.avatarUrl ? (
-          <img src={user.avatarUrl} alt="User Avatar" className="w-full h-full object-cover rounded-full" />
+          <img src={user.avatarUrl} alt="Avatar" className="w-full h-full object-cover rounded-full" />
         ) : (
-          <span className="text-lg font-bold text-white tracking-wider font-sans">
+          <span className="text-lg sm:text-xl font-bold text-white tracking-wider">
             {user.avatarFallback || user.name.charAt(0).toUpperCase()}
           </span>
         )}
-
         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/avatar:opacity-100 flex items-center justify-center transition-opacity rounded-full">
           <Camera className="w-4 h-4 text-white/90" />
         </div>
@@ -126,10 +153,10 @@ const BalanceCard = ({ user, onOpenAvatarModal }) => {
           Текущий баланс
         </span>
         <div className="flex items-baseline justify-center tracking-[-1px]">
-          <span className="text-[38px] sm:text-[42px] font-extrabold text-white leading-none font-sans">
+          <span className="text-[38px] sm:text-[44px] font-extrabold text-white leading-none">
             {formattedBalance}
           </span>
-          <span className="text-xl font-light text-white/30 ml-1.5 font-sans">
+          <span className="text-xl sm:text-2xl font-light text-white/30 ml-1.5">
             {user.currency}
           </span>
         </div>
@@ -138,57 +165,50 @@ const BalanceCard = ({ user, onOpenAvatarModal }) => {
   );
 };
 
-/* =========================================================================
-   3. QuickActions
-   ========================================================================= */
-const QuickActions = ({ onNavigate, onOpenPromoModal }) => {
-  return (
-    <div className="grid grid-cols-3 gap-2 mb-3 shrink-0">
-      <button
-        type="button"
-        onClick={() => onNavigate('withdraw')}
-        className="h-[52px] rounded-[16px] bg-white/[0.05] hover:bg-white/[0.09] active:scale-[0.96] border border-white/10 text-white transition-all duration-200 flex flex-col items-center justify-center gap-0.5 backdrop-blur-md cursor-pointer group px-1"
-      >
-        <ArrowUpRight className="w-4 h-4 text-white/70 group-hover:text-blue-400 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-all" />
-        <span className="text-[10px] font-semibold text-white/80 group-hover:text-white whitespace-nowrap">Вывод</span>
-      </button>
+// Быстрые действия
+const QuickActions = ({ onNavigate, onOpenPromoModal }) => (
+  <div className="grid grid-cols-3 gap-2 mb-4 shrink-0">
+    <button
+      type="button"
+      onClick={() => onNavigate('withdraw')}
+      className="h-[54px] sm:h-[58px] rounded-[16px] bg-white/[0.05] hover:bg-white/[0.09] active:scale-[0.96] border border-white/10 text-white transition-all duration-200 flex flex-col items-center justify-center gap-0.5 backdrop-blur-md cursor-pointer group px-1"
+    >
+      <ArrowUpRight className="w-4 h-4 text-white/70 group-hover:text-blue-400 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-all" />
+      <span className="text-[10px] sm:text-[11px] font-semibold text-white/80 group-hover:text-white whitespace-nowrap">Вывод</span>
+    </button>
 
-      <button
-        type="button"
-        onClick={() => onNavigate('topup')}
-        className="h-[52px] rounded-[16px] bg-white/[0.05] hover:bg-white/[0.09] active:scale-[0.96] border border-white/10 text-white transition-all duration-200 flex flex-col items-center justify-center gap-0.5 backdrop-blur-md cursor-pointer group px-1"
-      >
-        <Plus className="w-4 h-4 text-white/70 group-hover:text-emerald-400 group-hover:scale-110 transition-all" />
-        <span className="text-[10px] font-semibold text-white/80 group-hover:text-white whitespace-nowrap">Пополнить</span>
-      </button>
+    <button
+      type="button"
+      onClick={() => onNavigate('topup')}
+      className="h-[54px] sm:h-[58px] rounded-[16px] bg-white/[0.05] hover:bg-white/[0.09] active:scale-[0.96] border border-white/10 text-white transition-all duration-200 flex flex-col items-center justify-center gap-0.5 backdrop-blur-md cursor-pointer group px-1"
+    >
+      <Plus className="w-4 h-4 text-white/70 group-hover:text-emerald-400 group-hover:scale-110 transition-all" />
+      <span className="text-[10px] sm:text-[11px] font-semibold text-white/80 group-hover:text-white whitespace-nowrap">Пополнить</span>
+    </button>
 
-      <button
-        type="button"
-        onClick={onOpenPromoModal}
-        className="h-[52px] rounded-[16px] bg-white/[0.05] hover:bg-white/[0.09] active:scale-[0.96] border border-white/10 text-white transition-all duration-200 flex flex-col items-center justify-center gap-0.5 backdrop-blur-md cursor-pointer group px-1"
-      >
-        <Ticket className="w-4 h-4 text-white/70 group-hover:text-amber-400 group-hover:rotate-12 transition-all" />
-        <span className="text-[10px] font-semibold text-white/80 group-hover:text-white whitespace-nowrap">Промокод</span>
-      </button>
-    </div>
-  );
-};
+    <button
+      type="button"
+      onClick={onOpenPromoModal}
+      className="h-[54px] sm:h-[58px] rounded-[16px] bg-white/[0.05] hover:bg-white/[0.09] active:scale-[0.96] border border-white/10 text-white transition-all duration-200 flex flex-col items-center justify-center gap-0.5 backdrop-blur-md cursor-pointer group px-1"
+    >
+      <Ticket className="w-4 h-4 text-white/70 group-hover:text-amber-400 group-hover:rotate-12 transition-all" />
+      <span className="text-[10px] sm:text-[11px] font-semibold text-white/80 group-hover:text-white whitespace-nowrap">Промокод</span>
+    </button>
+  </div>
+);
 
-/* =========================================================================
-   4. OperationsList (Всегда ровно 3 штуки на главном)
-   ========================================================================= */
+// Список операций (ровно 3 элемента)
 const OperationsList = ({ transactions, onOpenAll }) => {
-  // Ровно 3 операции
   const displayTransactions = transactions.slice(0, 3);
 
   return (
-    <div className="mb-3 flex-1 min-h-0 flex flex-col justify-start overflow-hidden">
-      <div className="flex items-center justify-between mb-2 px-0.5 shrink-0">
-        <h2 className="text-sm font-bold text-white tracking-tight">Операции</h2>
+    <div className="mb-4 flex-1 min-h-0 flex flex-col justify-start overflow-hidden">
+      <div className="flex items-center justify-between mb-2.5 px-0.5 shrink-0">
+        <h2 className="text-base font-bold text-white tracking-tight">Операции</h2>
         <button
           type="button"
           onClick={onOpenAll}
-          className="text-[11px] font-medium text-[#3B82F6] hover:text-blue-400 transition-colors flex items-center gap-1 cursor-pointer group"
+          className="text-xs font-medium text-[#3B82F6] hover:text-blue-400 transition-colors flex items-center gap-1 cursor-pointer group"
         >
           <span>Смотреть все</span>
           <ArrowRight className="w-3.5 h-3.5 text-[#3B82F6] group-hover:translate-x-0.5 transition-transform" />
@@ -200,16 +220,16 @@ const OperationsList = ({ transactions, onOpenAll }) => {
           История операций пуста
         </div>
       ) : (
-        <div className="space-y-1.5 my-auto">
+        <div className="space-y-2 overflow-y-auto pr-0.5 my-auto">
           {displayTransactions.map((tx) => {
             const isPositive = tx.type === 'positive';
             return (
               <div
                 key={tx.id}
-                className="flex items-center justify-between p-2.5 rounded-[14px] bg-white/[0.02] hover:bg-white/[0.04] border border-white/[0.04] transition-all"
+                className="flex items-center justify-between p-2.5 sm:p-3 rounded-[16px] bg-white/[0.02] hover:bg-white/[0.04] border border-white/[0.04] transition-all"
               >
                 <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                  <div className="w-8 h-8 rounded-[10px] bg-white/[0.05] flex items-center justify-center text-[15px] shrink-0">
+                  <div className="w-9 h-9 rounded-[10px] bg-white/[0.05] flex items-center justify-center text-[16px] shrink-0">
                     {tx.icon}
                   </div>
                   <div className="min-w-0 flex-1">
@@ -231,31 +251,25 @@ const OperationsList = ({ transactions, onOpenAll }) => {
   );
 };
 
-/* =========================================================================
-   5. InfoFooter
-   ========================================================================= */
-const InfoFooter = ({ onOpenModal }) => {
-  return (
-    <div className="flex flex-wrap justify-center items-center gap-3 pt-2.5 pb-0 border-t border-white/[0.05] mt-auto shrink-0 text-center">
-      <button type="button" onClick={() => onOpenModal('about')} className="text-[11px] font-medium text-white/30 hover:text-white/60 transition-colors cursor-pointer py-0.5">
-        Магазин
-      </button>
-      <button type="button" onClick={() => onOpenModal('support')} className="text-[11px] font-medium text-white/30 hover:text-white/60 transition-colors cursor-pointer py-0.5">
-        Поддержка
-      </button>
-      <button type="button" onClick={() => onOpenModal('terms')} className="text-[11px] font-medium text-white/30 hover:text-white/60 transition-colors cursor-pointer py-0.5">
-        Условия
-      </button>
-      <button type="button" onClick={() => onOpenModal('privacy')} className="text-[11px] font-medium text-white/30 hover:text-white/60 transition-colors cursor-pointer py-0.5">
-        Политика
-      </button>
-    </div>
-  );
-};
+// Футер
+const InfoFooter = ({ onOpenModal }) => (
+  <div className="flex flex-wrap justify-center items-center gap-3.5 pt-3 pb-0 border-t border-white/[0.05] mt-auto shrink-0 text-center">
+    <button type="button" onClick={() => onOpenModal('about')} className="text-[11px] font-medium text-white/30 hover:text-white/60 transition-colors cursor-pointer py-0.5">
+      Магазин
+    </button>
+    <button type="button" onClick={() => onOpenModal('support')} className="text-[11px] font-medium text-white/30 hover:text-white/60 transition-colors cursor-pointer py-0.5">
+      Поддержка
+    </button>
+    <button type="button" onClick={() => onOpenModal('terms')} className="text-[11px] font-medium text-white/30 hover:text-white/60 transition-colors cursor-pointer py-0.5">
+      Условия
+    </button>
+    <button type="button" onClick={() => onOpenModal('privacy')} className="text-[11px] font-medium text-white/30 hover:text-white/60 transition-colors cursor-pointer py-0.5">
+      Политика
+    </button>
+  </div>
+);
 
-/* =========================================================================
-   6. Экран пополнения баланса (TopUpScreen)
-   ========================================================================= */
+// Экран Пополнения
 const TopUpScreen = ({ onBack, onTopUp }) => {
   const [amount, setAmount] = useState(500);
   const [customAmount, setCustomAmount] = useState('');
@@ -264,59 +278,66 @@ const TopUpScreen = ({ onBack, onTopUp }) => {
 
   const presets = [100, 250, 500, 1000, 2500];
 
-  const handleSelectPreset = (val) => { setAmount(val); setCustomAmount(''); };
+  const handleSelectPreset = (val) => {
+    setAmount(val);
+    setCustomAmount('');
+  };
 
   const handleCustomChange = (e) => {
     const val = e.target.value;
     setCustomAmount(val);
-    if (val && !isNaN(Number(val))) setAmount(Number(val));
+    if (val && parseInt(val) > 0) {
+      setAmount(parseInt(val));
+    }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (amount <= 0) return;
+  const handleSubmit = () => {
+    if (!amount || amount <= 0) return;
     setIsSuccess(true);
-    setTimeout(() => { onTopUp(amount, method); onBack(); }, 1200);
+    setTimeout(() => {
+      onTopUp(amount, method);
+      onBack();
+    }, 1200);
   };
 
   if (isSuccess) {
     return (
-      <div className="flex flex-col items-center justify-center py-12 text-center animate-fadeIn">
-        <CheckCircle className="w-14 h-14 text-emerald-400 animate-bounce mb-3" />
-        <h3 className="text-lg font-bold text-white mb-1">Баланс пополнен!</h3>
-        <p className="text-xs text-white/50">+{amount.toLocaleString('ru-RU')} ₽ зачислено на счёт</p>
+      <div className="flex flex-col items-center justify-center py-16 text-center animate-fadeIn my-auto">
+        <CheckCircle className="w-16 h-16 text-emerald-400 mb-4 animate-bounce" />
+        <h3 className="text-xl font-bold text-white mb-2">Баланс пополнен!</h3>
+        <p className="text-xs text-white/50">Зачислено {amount.toLocaleString('ru-RU')} ₽</p>
       </div>
     );
   }
 
   return (
     <div className="flex flex-col w-full h-full min-h-0 justify-between animate-fadeIn overflow-hidden">
-      <div className="flex items-center gap-3 mb-3 shrink-0">
+      <div className="flex items-center gap-3 mb-4 shrink-0">
         <button
           type="button"
           onClick={onBack}
-          className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-white cursor-pointer transition-all active:scale-95"
+          className="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-white cursor-pointer transition-all active:scale-95"
         >
           <ArrowLeft className="w-4 h-4" />
         </button>
         <div>
-          <h2 className="text-base font-extrabold text-white">Пополнение баланса</h2>
-          <p className="text-[10px] text-white/40">Выберите сумму и способ оплаты</p>
+          <h2 className="text-lg font-extrabold text-white">Пополнение баланса</h2>
+          <p className="text-[11px] text-white/40">Выберите сумму и способ оплаты</p>
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto space-y-3.5 pr-0.5 min-h-0">
+      <div className="flex-1 overflow-y-auto space-y-4 pr-0.5 min-h-0">
         <div>
-          <label className="text-[10px] font-semibold text-white/50 mb-1 block uppercase tracking-wider">
+          <label className="text-[10px] font-semibold text-white/50 mb-1.5 block uppercase tracking-wider">
             Быстрый выбор суммы
           </label>
-          <div className="grid grid-cols-5 max-sm:grid-cols-3 gap-1.5 mb-2">
+          <div className="grid grid-cols-5 gap-1.5 mb-2">
             {presets.map((p) => (
               <button
                 key={p}
                 type="button"
                 onClick={() => handleSelectPreset(p)}
-                className={`py-1.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
+                className={`py-2 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
                   amount === p && !customAmount
                     ? 'bg-indigo-600/30 border-indigo-500 text-white shadow-md'
                     : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'
@@ -331,15 +352,15 @@ const TopUpScreen = ({ onBack, onTopUp }) => {
             placeholder="Своя сумма (₽)"
             value={customAmount}
             onChange={handleCustomChange}
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 transition-colors"
+            className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 transition-colors"
           />
         </div>
 
         <div>
-          <label className="text-[10px] font-semibold text-white/50 mb-1 block uppercase tracking-wider">
+          <label className="text-[10px] font-semibold text-white/50 mb-1.5 block uppercase tracking-wider">
             Способ оплаты
           </label>
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             {[
               { id: 'sbp', label: 'СБП (Система быстрых платежей)', icon: <Smartphone className="w-3.5 h-3.5 text-emerald-400" /> },
               { id: 'card', label: 'Банковская карта (Мир, Visa, MC)', icon: <CreditCard className="w-3.5 h-3.5 text-indigo-400" /> },
@@ -356,7 +377,7 @@ const TopUpScreen = ({ onBack, onTopUp }) => {
                     : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'
                 }`}
               >
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2.5">
                   {m.icon}
                   <span>{m.label}</span>
                 </div>
@@ -376,7 +397,7 @@ const TopUpScreen = ({ onBack, onTopUp }) => {
       <button
         type="button"
         onClick={handleSubmit}
-        className="w-full mt-2 py-3 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xs shadow-lg shadow-indigo-950/50 cursor-pointer transition-all active:scale-[0.98] shrink-0"
+        className="w-full mt-3 py-3 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xs shadow-lg shadow-indigo-950/50 cursor-pointer transition-all active:scale-[0.98] shrink-0"
       >
         Перейти к оплате {amount.toLocaleString('ru-RU')} ₽
       </button>
@@ -384,20 +405,7 @@ const TopUpScreen = ({ onBack, onTopUp }) => {
   );
 };
 
-/* =========================================================================
-   7. Экран вывода средств (WithdrawScreen)
-   ========================================================================= */
-const BANKS_LIST = [
-  { name: 'Сбер', icon: '🟢' },
-  { name: 'Т-Банк', icon: '🟡' },
-  { name: 'ВТБ', icon: '🔵' },
-  { name: 'Альфа-Банк', icon: '🔴' },
-  { name: 'Газпромбанк', icon: '🔷' },
-  { name: 'МТС Банк', icon: '📱' },
-  { name: 'Райффайзен', icon: '💛' },
-  { name: 'Свой вариант', icon: '✏️' },
-];
-
+// Экран Вывода
 const WithdrawScreen = ({ userBalance, onBack, onWithdraw }) => {
   const [method, setMethod] = useState('sbp');
   const [amount, setAmount] = useState('');
@@ -411,96 +419,98 @@ const WithdrawScreen = ({ userBalance, onBack, onWithdraw }) => {
   const fee = Math.round(numAmount * 0.03 * 100) / 100;
   const finalAmount = Math.max(0, Math.round((numAmount - fee) * 100) / 100);
 
-  const formatPhoneInput = (val) => {
-    let digits = val.replace(/\D/g, '');
-    if (digits.length === 0) return '+7';
-    if (digits.startsWith('7') || digits.startsWith('8')) digits = digits.substring(1);
-    let res = '+7';
-    if (digits.length > 0) res += ' (' + digits.substring(0, 3);
-    if (digits.length >= 3) res += ') ' + digits.substring(3, 6);
-    if (digits.length >= 6) res += '-' + digits.substring(6, 8);
-    if (digits.length >= 8) res += '-' + digits.substring(8, 10);
-    return res;
-  };
-
-  const formatCardInput = (val) => {
-    const digits = val.replace(/\D/g, '').substring(0, 16);
-    let formatted = '';
-    for (let i = 0; i < digits.length; i++) {
-      if (i > 0 && i % 4 === 0) formatted += ' ';
-      formatted += digits[i];
-    }
-    return formatted;
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!numAmount || numAmount < 50) { setError('Минимальная сумма вывода 50 ₽'); return; }
-    if (numAmount > userBalance) { setError(`Недостаточно средств (${userBalance.toLocaleString('ru-RU')} ₽)`); return; }
+    if (!numAmount || numAmount < 50) {
+      setError('Минимальная сумма вывода 50 ₽');
+      return;
+    }
+    if (numAmount > userBalance) {
+      setError(`Недостаточно средств. Баланс: ${userBalance.toLocaleString('ru-RU')} ₽`);
+      return;
+    }
 
     let details = '';
     if (method === 'sbp') {
-      const cleanPhone = phone.replace(/\D/g, '');
-      if (cleanPhone.length < 10) { setError('Укажите номер телефона СБП'); return; }
-      if (!selectedBank) { setError('Выберите банк получателя'); return; }
-      details = `СБП: ${phone}, Банк: ${selectedBank}`;
+      if (phone.replace(/\D/g, '').length < 10) {
+        setError('Укажите корректный номер телефона');
+        return;
+      }
+      if (!selectedBank) {
+        setError('Выберите банк получателя');
+        return;
+      }
+      details = `СБП: ${phone}, ${selectedBank}`;
     } else {
-      const cleanCard = cardNumber.replace(/\s/g, '');
-      if (cleanCard.length < 16) { setError('Укажите 16-значный номер карты'); return; }
+      if (cardNumber.replace(/\s/g, '').length < 16) {
+        setError('Укажите 16-значный номер карты');
+        return;
+      }
       details = `Карта: ${cardNumber}`;
     }
 
     setError('');
     setIsSuccess(true);
-    setTimeout(() => { onWithdraw(numAmount, details); onBack(); }, 1200);
+    setTimeout(() => {
+      onWithdraw(numAmount, details);
+      onBack();
+    }, 1400);
   };
 
   if (isSuccess) {
     return (
-      <div className="flex flex-col items-center justify-center py-12 text-center animate-fadeIn">
-        <CheckCircle className="w-14 h-14 text-indigo-400 animate-bounce mb-3" />
-        <h3 className="text-lg font-bold text-white mb-1">Заявка отправлена!</h3>
-        <p className="text-xs text-white/50">Вывод {numAmount.toLocaleString('ru-RU')} ₽ обрабатывается</p>
+      <div className="flex flex-col items-center justify-center py-16 text-center animate-fadeIn my-auto">
+        <CheckCircle className="w-16 h-16 text-indigo-400 mb-4 animate-bounce" />
+        <h3 className="text-xl font-bold text-white mb-2">Заявка отправлена!</h3>
+        <p className="text-xs text-white/50">Запрос на {numAmount.toLocaleString('ru-RU')} ₽ обрабатывается</p>
       </div>
     );
   }
 
   return (
     <div className="flex flex-col w-full h-full min-h-0 justify-between animate-fadeIn overflow-hidden">
-      <div className="flex items-center gap-3 mb-2 shrink-0">
+      <div className="flex items-center gap-3 mb-3 shrink-0">
         <button
           type="button"
           onClick={onBack}
-          className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-white cursor-pointer transition-all active:scale-95"
+          className="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-white cursor-pointer transition-all active:scale-95"
         >
           <ArrowLeft className="w-4 h-4" />
         </button>
         <div>
-          <h2 className="text-base font-extrabold text-white">Вывод средств</h2>
-          <p className="text-[10px] text-white/40">Доступно: <span className="text-white font-semibold">{userBalance.toLocaleString('ru-RU')} ₽</span></p>
+          <h2 className="text-lg font-extrabold text-white">Вывод средств</h2>
+          <p className="text-[11px] text-white/40">
+            Доступно: <span className="text-white font-semibold">{userBalance.toLocaleString('ru-RU')} ₽</span>
+          </p>
         </div>
       </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col flex-1 min-h-0 justify-between">
-        <div className="flex-1 overflow-y-auto space-y-3 pr-0.5 min-h-0">
+        <div className="flex-1 overflow-y-auto space-y-3.5 pr-0.5 min-h-0">
           <div>
-            <label className="text-[10px] font-semibold text-white/50 mb-1 block uppercase tracking-wider">Сумма вывода (₽)</label>
+            <label className="text-[10px] font-semibold text-white/50 mb-1 block uppercase tracking-wider">
+              Сумма вывода (₽)
+            </label>
             <input
               type="number"
               placeholder="Мин. 50 ₽"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm font-bold text-white text-center focus:outline-none focus:border-indigo-500 transition-colors"
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-base font-bold text-white text-center focus:outline-none focus:border-indigo-500 transition-colors"
             />
           </div>
 
           <div>
-            <label className="text-[10px] font-semibold text-white/50 mb-1 block uppercase tracking-wider">Способ получения</label>
-            <div className="grid grid-cols-2 gap-1.5 mb-2">
+            <label className="text-[10px] font-semibold text-white/50 mb-1.5 block uppercase tracking-wider">
+              Способ получения
+            </label>
+            <div className="grid grid-cols-2 gap-2 mb-3">
               <button
                 type="button"
                 onClick={() => { setMethod('sbp'); setError(''); }}
-                className={`flex items-center justify-center gap-1.5 p-2 rounded-xl border text-[11px] font-semibold transition-all cursor-pointer ${method === 'sbp' ? 'bg-indigo-600/30 border-indigo-500 text-white shadow-md' : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10'}`}
+                className={`flex items-center justify-center gap-1.5 p-2.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
+                  method === 'sbp' ? 'bg-indigo-600/30 border-indigo-500 text-white shadow-md' : 'bg-white/5 border-white/10 text-white/60'
+                }`}
               >
                 <Smartphone className="w-3.5 h-3.5 text-emerald-400" />
                 <span>СБП (Телефон)</span>
@@ -509,7 +519,9 @@ const WithdrawScreen = ({ userBalance, onBack, onWithdraw }) => {
               <button
                 type="button"
                 onClick={() => { setMethod('card'); setError(''); }}
-                className={`flex items-center justify-center gap-1.5 p-2 rounded-xl border text-[11px] font-semibold transition-all cursor-pointer ${method === 'card' ? 'bg-indigo-600/30 border-indigo-500 text-white shadow-md' : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10'}`}
+                className={`flex items-center justify-center gap-1.5 p-2.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
+                  method === 'card' ? 'bg-indigo-600/30 border-indigo-500 text-white shadow-md' : 'bg-white/5 border-white/10 text-white/60'
+                }`}
               >
                 <CreditCard className="w-3.5 h-3.5 text-indigo-400" />
                 <span>Карта</span>
@@ -517,29 +529,36 @@ const WithdrawScreen = ({ userBalance, onBack, onWithdraw }) => {
             </div>
 
             {method === 'sbp' && (
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <div>
-                  <label className="text-[10px] font-medium text-white/50 mb-0.5 block">Телефон СБП</label>
+                  <label className="text-[10px] font-medium text-white/50 mb-1 block">Номер телефона СБП</label>
                   <input
                     type="tel"
                     value={phone}
-                    onChange={(e) => setPhone(formatPhoneInput(e.target.value))}
+                    onChange={(e) => setPhone(e.target.value)}
                     placeholder="+7 (999) 000-00-00"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-indigo-500"
                   />
                 </div>
 
                 <div>
-                  <label className="text-[10px] font-medium text-white/50 mb-0.5 block">Выберите банк</label>
-                  <div className="grid grid-cols-2 gap-1">
+                  <label className="text-[10px] font-medium text-white/50 mb-1 block">Выберите банк</label>
+                  <div className="grid grid-cols-2 gap-1.5">
                     {BANKS_LIST.map((b) => (
                       <button
                         key={b.name}
                         type="button"
                         onClick={() => setSelectedBank(b.name)}
-                        className={`flex items-center justify-between p-1.5 rounded-lg border text-[10px] text-left transition-all cursor-pointer ${selectedBank === b.name ? 'bg-indigo-600/20 border-indigo-500 text-white font-medium' : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'}`}
+                        className={`flex items-center justify-between p-2 rounded-xl border text-[11px] text-left transition-all cursor-pointer ${
+                          selectedBank === b.name
+                            ? 'bg-indigo-600/20 border-indigo-500 text-white font-medium'
+                            : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'
+                        }`}
                       >
-                        <span className="flex items-center gap-1 truncate"><span>{b.icon}</span><span className="truncate">{b.name}</span></span>
+                        <span className="flex items-center gap-1.5 truncate">
+                          <span>{b.icon}</span>
+                          <span className="truncate">{b.name}</span>
+                        </span>
                         {selectedBank === b.name && <Check className="w-3 h-3 text-indigo-400 shrink-0" />}
                       </button>
                     ))}
@@ -554,27 +573,36 @@ const WithdrawScreen = ({ userBalance, onBack, onWithdraw }) => {
                 <input
                   type="text"
                   value={cardNumber}
-                  onChange={(e) => setCardNumber(formatCardInput(e.target.value))}
+                  onChange={(e) => setCardNumber(e.target.value)}
                   placeholder="2200 0000 0000 0000"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs font-semibold text-white tracking-widest focus:outline-none focus:border-indigo-500"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-white tracking-widest focus:outline-none focus:border-indigo-500"
                 />
               </div>
             )}
           </div>
 
-          <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06] space-y-1 text-[10px]">
-            <div className="flex justify-between text-white/60"><span>Сумма:</span><span className="text-white font-semibold">{numAmount.toLocaleString('ru-RU')} ₽</span></div>
-            <div className="flex justify-between text-white/60"><span>Комиссия (3%):</span><span className="text-amber-400 font-medium">{fee.toLocaleString('ru-RU')} ₽</span></div>
-            <div className="border-t border-white/10 pt-1 flex justify-between font-bold text-xs text-white"><span>К получению:</span><span className="text-emerald-400">{finalAmount.toLocaleString('ru-RU')} ₽</span></div>
+          <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] space-y-1.5 text-[11px]">
+            <div className="flex justify-between text-white/60">
+              <span>Сумма вывода:</span>
+              <span className="text-white font-semibold">{numAmount.toLocaleString('ru-RU')} ₽</span>
+            </div>
+            <div className="flex justify-between text-white/60">
+              <span>Комиссия (3%):</span>
+              <span className="text-amber-400 font-medium">{fee.toLocaleString('ru-RU')} ₽</span>
+            </div>
+            <div className="border-t border-white/10 pt-1.5 flex justify-between font-bold text-xs text-white">
+              <span>К получению:</span>
+              <span className="text-emerald-400">{finalAmount.toLocaleString('ru-RU')} ₽</span>
+            </div>
           </div>
 
-          {error && <p className="text-[10px] text-rose-400 text-center">{error}</p>}
+          {error && <p className="text-[11px] text-rose-400 text-center">{error}</p>}
         </div>
 
         <button
           type="submit"
           disabled={numAmount < 50 || numAmount > userBalance}
-          className="w-full mt-2 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 disabled:opacity-40 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xs shadow-lg shadow-indigo-950/50 cursor-pointer transition-all active:scale-[0.98] shrink-0"
+          className="w-full mt-3 py-3 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 disabled:opacity-40 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xs shadow-lg shadow-indigo-950/50 cursor-pointer transition-all active:scale-[0.98] shrink-0"
         >
           Запросить вывод
         </button>
@@ -583,9 +611,7 @@ const WithdrawScreen = ({ userBalance, onBack, onWithdraw }) => {
   );
 };
 
-/* =========================================================================
-   8. Экран «Все операции» (Отдельный полноэкранный раздел)
-   ========================================================================= */
+// Экран Всех Операций
 const AllOperationsScreen = ({ transactions, onBack }) => {
   const [filter, setFilter] = useState('all');
   const [search, setSearch] = useState('');
@@ -599,32 +625,32 @@ const AllOperationsScreen = ({ transactions, onBack }) => {
 
   return (
     <div className="flex flex-col w-full h-full min-h-0 justify-between animate-fadeIn overflow-hidden">
-      <div className="flex items-center gap-3 mb-2 shrink-0">
+      <div className="flex items-center gap-3 mb-3 shrink-0">
         <button
           type="button"
           onClick={onBack}
-          className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-white cursor-pointer transition-all active:scale-95"
+          className="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-white cursor-pointer transition-all active:scale-95"
         >
           <ArrowLeft className="w-4 h-4" />
         </button>
         <div>
-          <h2 className="text-base font-extrabold text-white">Все операции</h2>
-          <p className="text-[10px] text-white/40">Полная история ваших транзакций</p>
+          <h2 className="text-lg font-extrabold text-white">Все операции</h2>
+          <p className="text-[11px] text-white/40">Полная история ваших транзакций</p>
         </div>
       </div>
 
-      <div className="relative mb-2 shrink-0">
-        <Search className="w-3.5 h-3.5 text-white/30 absolute left-3 top-1/2 -translate-y-1/2" />
+      <div className="relative mb-3 shrink-0">
+        <Search className="w-3.5 h-3.5 text-white/30 absolute left-3.5 top-1/2 -translate-y-1/2" />
         <input
           type="text"
           placeholder="Поиск по наименованию..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full bg-white/5 border border-white/10 rounded-xl pl-8 pr-3 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition-colors"
+          className="w-full bg-white/5 border border-white/10 rounded-xl pl-9 pr-3.5 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 transition-colors"
         />
       </div>
 
-      <div className="flex gap-1 p-1 bg-white/5 border border-white/5 rounded-xl mb-2 text-xs font-semibold shrink-0">
+      <div className="flex gap-1 p-1 bg-white/5 border border-white/5 rounded-xl mb-3 text-xs font-semibold shrink-0">
         {[
           { id: 'all', label: 'Все' },
           { id: 'negative', label: 'Списания' },
@@ -634,33 +660,50 @@ const AllOperationsScreen = ({ transactions, onBack }) => {
             key={tab.id}
             type="button"
             onClick={() => setFilter(tab.id)}
-            className={`flex-1 py-1 rounded-lg transition-all cursor-pointer text-[11px] ${filter === tab.id ? 'bg-indigo-600/50 text-white shadow-sm' : 'text-white/40 hover:text-white'}`}
+            className={`flex-1 py-1.5 rounded-lg transition-all cursor-pointer ${
+              filter === tab.id ? 'bg-indigo-600/50 text-white shadow-sm' : 'text-white/40 hover:text-white'
+            }`}
           >
             {tab.label}
           </button>
         ))}
       </div>
 
-      <div className="flex-1 overflow-y-auto space-y-1.5 pr-0.5 min-h-0">
+      <div className="flex-1 overflow-y-auto space-y-2 pr-0.5 min-h-0">
         {filtered.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-10 text-center text-white/40 space-y-2">
-            <Inbox className="w-10 h-10 text-indigo-400/60" />
-            <p className="text-xs text-white/40">Ничего не найдено</p>
+          <div className="flex flex-col items-center justify-center py-12 text-center text-white/40 space-y-3">
+            {search.trim() ? (
+              <div className="flex flex-col items-center">
+                <AlertTriangle className="w-10 h-10 text-amber-400/60 mb-2" />
+                <p className="text-xs text-white/40">Ничего не найдено</p>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center">
+                <Inbox className="w-10 h-10 text-indigo-400/60 mb-2" />
+                <p className="text-xs text-white/40">История пуста</p>
+              </div>
+            )}
           </div>
         ) : (
           filtered.map((tx) => {
             const isPositive = tx.type === 'positive';
             return (
-              <div key={tx.id} className="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.05] transition-all">
-                <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                  <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-sm shrink-0">{tx.icon}</div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-xs font-bold text-white truncate">{tx.title}</p>
-                    <p className="text-[9px] text-white/30 font-normal mt-0.5">{tx.date}</p>
+              <div
+                key={tx.id}
+                className="flex items-center justify-between p-3 rounded-xl bg-white/[0.03] border border-white/[0.05]"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center text-base shrink-0">
+                    {tx.icon}
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-white">{tx.title}</p>
+                    <p className="text-[10px] text-white/30 mt-0.5">{tx.date}</p>
                   </div>
                 </div>
-                <span className={`text-xs font-extrabold shrink-0 ml-2 ${isPositive ? 'text-emerald-400' : 'text-white/70'}`}>
-                  {isPositive ? '+' : '−'}{Math.abs(tx.amount).toLocaleString('ru-RU')} ₽
+                <span className={`text-xs font-extrabold ${isPositive ? 'text-emerald-400' : 'text-white/70'}`}>
+                  {isPositive ? '+' : '−'}
+                  {Math.abs(tx.amount).toLocaleString('ru-RU')} ₽
                 </span>
               </div>
             );
@@ -671,32 +714,70 @@ const AllOperationsScreen = ({ transactions, onBack }) => {
   );
 };
 
-/* =========================================================================
-   9. Модальные окна (Modals)
-   ========================================================================= */
+// Модальные окна
 const Modals = ({ activeModal, onClose, user, onApplyPromo, onUpdateAvatar }) => {
   if (!activeModal) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-fadeIn">
       <div
-        className="relative w-full max-w-sm bg-[#0A0A14]/95 backdrop-blur-2xl border border-white/10 rounded-[24px] p-5 text-white shadow-2xl overflow-hidden max-h-[85vh] flex flex-col"
+        className="relative w-full max-w-sm bg-[#0A0A18]/95 backdrop-blur-2xl border border-white/10 rounded-[24px] p-5 text-white shadow-2xl overflow-hidden max-h-[85vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-3.5 right-3.5 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-white/60 hover:text-white transition-all cursor-pointer z-20"
+          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-white/60 hover:text-white transition-all cursor-pointer z-20"
         >
           <X className="w-4 h-4" />
         </button>
 
         {activeModal === 'promo' && <PromoModal onClose={onClose} onApplyPromo={onApplyPromo} />}
         {activeModal === 'avatar' && <AvatarModal user={user} onClose={onClose} onUpdateAvatar={onUpdateAvatar} />}
-        {activeModal === 'about' && <AboutModal />}
-        {activeModal === 'support' && <SupportModal />}
-        {activeModal === 'terms' && <TermsModal />}
-        {activeModal === 'privacy' && <PrivacyModal />}
+        {activeModal === 'about' && (
+          <div className="space-y-3">
+            <h3 className="text-base font-bold text-white">О магазине Vintyx Store</h3>
+            <p className="text-xs text-white/70 leading-relaxed">
+              Vintyx Store — цифровой маркетплейс внутриигровых ценностей и подписок (Brawl Stars, PUBG Mobile, Telegram Stars).
+            </p>
+            <div className="p-3 bg-white/5 rounded-xl border border-white/5 text-xs text-white/60 space-y-1">
+              <p>⚡ Мгновенное автозачисление</p>
+              <p>🛡️ Официальная гарантия</p>
+              <p>💎 Более 50,000 клиентов</p>
+            </div>
+          </div>
+        )}
+        {activeModal === 'support' && (
+          <div className="space-y-3">
+            <h3 className="text-base font-bold text-white">Служба поддержки</h3>
+            <p className="text-xs text-white/60">Наша поддержка работает круглосуточно 24/7.</p>
+            <div className="p-3 bg-indigo-950/40 border border-indigo-500/20 rounded-xl flex items-center justify-between">
+              <div>
+                <p className="text-xs font-semibold text-white">Telegram бот</p>
+                <p className="text-[11px] text-indigo-300">@vintyx_support</p>
+              </div>
+              <button
+                onClick={() => navigator.clipboard.writeText('@vintyx_support')}
+                className="px-3 py-1.5 bg-indigo-600 text-white rounded-lg text-xs font-medium cursor-pointer"
+              >
+                Скопировать
+              </button>
+            </div>
+          </div>
+        )}
+        {activeModal === 'terms' && (
+          <div className="space-y-2 text-xs text-white/70">
+            <h3 className="text-base font-bold text-white mb-2">Условия использования</h3>
+            <p>1. Использование Vintyx Store означает согласие с правилами.</p>
+            <p>2. Зачисление производиться автоматически после оплаты.</p>
+          </div>
+        )}
+        {activeModal === 'privacy' && (
+          <div className="space-y-2 text-xs text-white/70">
+            <h3 className="text-base font-bold text-white mb-2">Политика конфиденциальности</h3>
+            <p>Мы гарантируем сохранность и конфиденциальность ваших данных.</p>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -713,176 +794,112 @@ const PromoModal = ({ onClose, onApplyPromo }) => {
     const ok = onApplyPromo(code.trim().toUpperCase());
     if (ok) {
       setMessage({ text: 'Промокод активирован!', success: true });
-      setTimeout(() => onClose(), 1200);
+      setTimeout(onClose, 1200);
     } else {
-      setMessage({ text: 'Неверный промокод', success: false });
+      setMessage({ text: 'Неверный или уже использованный промокод', success: false });
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-      <div className="flex items-center gap-2.5">
+      <div className="flex items-center gap-3">
         <div className="w-9 h-9 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400">
           <Gift className="w-4 h-4" />
         </div>
         <div>
           <h3 className="text-base font-bold text-white">Промокод</h3>
-          <p className="text-[10px] text-white/50">Введите промокод для бонуса</p>
+          <p className="text-[11px] text-white/50">Введите промокод для бонуса</p>
         </div>
       </div>
 
-      <div>
-        <input
-          type="text"
-          placeholder="ВВЕДИТЕ ПРОМОкод"
-          value={code}
-          onChange={(e) => setCode(e.target.value)}
-          className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white uppercase tracking-widest font-semibold focus:outline-none focus:border-amber-500 transition-colors text-center"
-        />
-        <p className="text-[10px] text-white/30 text-center mt-1">
-          Попробуйте: <span className="text-amber-300 font-mono">VINTYX2026</span> или <span className="text-amber-300 font-mono">START</span>
+      <input
+        type="text"
+        placeholder="ВВЕДИТЕ ПРОМОКОД"
+        value={code}
+        onChange={(e) => setCode(e.target.value)}
+        className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white uppercase font-semibold text-center focus:outline-none focus:border-amber-500"
+      />
+      <p className="text-[10px] text-white/40 text-center">
+        Попробуйте: <span className="text-amber-300 font-mono">VINTYX2026</span> или <span className="text-amber-300 font-mono">START</span>
+      </p>
+
+      {message && (
+        <p className={`text-xs text-center font-medium ${message.success ? 'text-emerald-400' : 'text-rose-400'}`}>
+          {message.text}
         </p>
-      </div>
+      )}
 
-      {message && <p className={`text-xs text-center font-medium ${message.success ? 'text-emerald-400' : 'text-rose-400'}`}>{message.text}</p>}
-
-      <button type="submit" className="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shadow-lg cursor-pointer transition-all active:scale-[0.98]">
+      <button
+        type="submit"
+        className="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs cursor-pointer"
+      >
         Активировать
       </button>
     </form>
   );
 };
 
-const AvatarModal = ({ user, onClose, onUpdateAvatar }) => {
-  const PRESET_AVATARS = [
-    'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=150&auto=format&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=150&auto=format&fit=crop&q=80',
-  ];
-
-  const [customUrl, setCustomUrl] = useState('');
-
-  const handleSelect = (url) => { onUpdateAvatar(url); onClose(); };
-
-  const handleCustomSubmit = (e) => {
-    e.preventDefault();
-    if (customUrl.trim()) { onUpdateAvatar(customUrl.trim()); onClose(); }
-  };
-
-  return (
-    <div className="flex flex-col gap-3">
-      <div>
-        <h3 className="text-base font-bold text-white mb-0.5">Аватар профиля</h3>
-        <p className="text-[10px] text-white/50">Выберите предустановленный аватар</p>
-      </div>
-
-      <div className="flex gap-2.5 justify-center py-1">
-        {PRESET_AVATARS.map((url, idx) => (
-          <button key={idx} type="button" onClick={() => handleSelect(url)} className="w-11 h-11 rounded-full border border-white/20 overflow-hidden hover:scale-105 cursor-pointer">
-            <img src={url} alt={`Preset ${idx}`} className="w-full h-full object-cover" />
-          </button>
-        ))}
-        <button type="button" onClick={() => handleSelect(null)} className="w-11 h-11 rounded-full border border-white/20 bg-white/10 flex items-center justify-center font-bold text-white text-xs cursor-pointer">
-          {user.avatarFallback}
+const AvatarModal = ({ user, onClose, onUpdateAvatar }) => (
+  <div className="flex flex-col gap-3">
+    <div>
+      <h3 className="text-base font-bold text-white mb-1">Выбор аватарки</h3>
+      <p className="text-[11px] text-white/50">Выберите аватар</p>
+    </div>
+    <div className="flex gap-2 justify-center py-2">
+      {PRESET_AVATARS.map((url, idx) => (
+        <button
+          key={idx}
+          onClick={() => { onUpdateAvatar(url); onClose(); }}
+          className="w-11 h-11 rounded-full border border-white/20 overflow-hidden hover:scale-110 transition-all shrink-0 cursor-pointer"
+        >
+          <img src={url} alt={`Avatar ${idx}`} className="w-full h-full object-cover" />
         </button>
-      </div>
-
-      <form onSubmit={handleCustomSubmit} className="flex gap-2">
-        <input
-          type="url"
-          placeholder="https://ссылка..."
-          value={customUrl}
-          onChange={(e) => setCustomUrl(e.target.value)}
-          className="flex-1 bg-white/5 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500"
-        />
-        <button type="submit" className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs rounded-xl cursor-pointer">ОК</button>
-      </form>
-    </div>
-  );
-};
-
-const AboutModal = () => (
-  <div className="space-y-2 text-xs text-white/70">
-    <h3 className="text-base font-bold text-white">О Vintyx Store</h3>
-    <p>Премиальный цифровой маркетплейс игровых ценностей и подписок.</p>
-    <div className="p-2.5 bg-white/5 rounded-xl border border-white/5 text-[11px] space-y-1 text-white/60">
-      <p>⚡ Мгновенное зачисление 24/7</p>
-      <p>🛡️ Гарантия безопасности</p>
+      ))}
+      <button
+        onClick={() => { onUpdateAvatar(null); onClose(); }}
+        className="w-11 h-11 rounded-full border border-white/20 bg-white/10 flex items-center justify-center font-bold text-white text-xs cursor-pointer"
+      >
+        {user.avatarFallback}
+      </button>
     </div>
   </div>
 );
 
-const SupportModal = () => {
-  const [copied, setCopied] = useState(false);
-  const copyTg = () => {
-    navigator.clipboard.writeText('@vintyx_support');
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  return (
-    <div className="space-y-3">
-      <h3 className="text-base font-bold text-white">Поддержка</h3>
-      <p className="text-xs text-white/60">Служба поддержки работает 24/7.</p>
-      <div className="p-3 bg-indigo-950/40 border border-indigo-500/20 rounded-xl flex items-center justify-between">
-        <div>
-          <p className="text-xs font-semibold text-white">Telegram бот</p>
-          <p className="text-[10px] text-indigo-300">@vintyx_support</p>
-        </div>
-        <button type="button" onClick={copyTg} className="px-2.5 py-1 bg-indigo-600 text-white rounded-lg text-xs flex items-center gap-1 cursor-pointer">
-          {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-          <span>{copied ? 'ОК' : 'Копировать'}</span>
-        </button>
-      </div>
-    </div>
-  );
-};
-
-const TermsModal = () => (
-  <div className="space-y-2 text-xs text-white/70">
-    <h3 className="text-base font-bold text-white">Условия</h3>
-    <p>Зачисление внутриигровых предметов и баланса производится автоматически после подтверждения оплаты.</p>
-  </div>
-);
-
-const PrivacyModal = () => (
-  <div className="space-y-2 text-xs text-white/70">
-    <h3 className="text-base font-bold text-white">Конфиденциальность</h3>
-    <p>Мы гарантируем сохранность ваших данных и безопасность всех транзакций.</p>
-  </div>
-);
-
-/* =========================================================================
-   10. Корневое приложение (App)
-   ========================================================================= */
+// Главное приложение
 function App() {
   const [activeScreen, setActiveScreen] = useState('profile');
   const [activeModal, setActiveModal] = useState(null);
 
-  const [user, setUser] = useState({
-    name: 'Vintyx User',
-    username: '@vintyx_member',
-    userId: '849201',
-    avatarUrl: null,
-    avatarFallback: 'V',
-    balance: 1488,
-    currency: '₽',
+  const [user, setUser] = useState(() => {
+    const saved = localStorage.getItem('vintyx_user');
+    return saved ? JSON.parse(saved) : INITIAL_USER;
   });
 
-  const [usedPromos, setUsedPromos] = useState([]);
+  const [usedPromos, setUsedPromos] = useState(() => {
+    const saved = localStorage.getItem('vintyx_promos');
+    return saved ? JSON.parse(saved) : [];
+  });
 
-  const [transactions, setTransactions] = useState([
-    { id: 'tx-1', title: 'Brawl Pass', category: 'pass', icon: '🎮', date: 'Сегодня, 14:32', amount: -149, type: 'negative', status: 'completed' },
-    { id: 'tx-2', title: 'Гемы', category: 'gems', icon: '⚡', date: 'Вчера, 09:15', amount: -299, type: 'negative', status: 'completed' },
-    { id: 'tx-3', title: 'Пополнение', category: 'topup', icon: '💎', date: '12 мар, 18:00', amount: 500, type: 'positive', status: 'completed' },
-  ]);
+  const [transactions, setTransactions] = useState(() => {
+    const saved = localStorage.getItem('vintyx_transactions');
+    return saved ? JSON.parse(saved) : INITIAL_TRANSACTIONS;
+  });
+
+  useEffect(() => { localStorage.setItem('vintyx_user', JSON.stringify(user)); }, [user]);
+  useEffect(() => { localStorage.setItem('vintyx_promos', JSON.stringify(usedPromos)); }, [usedPromos]);
+  useEffect(() => { localStorage.setItem('vintyx_transactions', JSON.stringify(transactions)); }, [transactions]);
 
   const handleTopUp = (amount, method) => {
     setUser((prev) => ({ ...prev, balance: prev.balance + amount }));
     const newTx = {
       id: `tx-${Date.now()}`,
       title: `Пополнение (${method.toUpperCase()})`,
-      category: 'topup', icon: '💎', date: 'Только что', amount: amount, type: 'positive', status: 'completed',
+      category: 'topup',
+      icon: '💎',
+      date: 'Только что',
+      amount: amount,
+      type: 'positive',
+      status: 'completed',
     };
     setTransactions((prev) => [newTx, ...prev]);
   };
@@ -891,8 +908,13 @@ function App() {
     setUser((prev) => ({ ...prev, balance: Math.max(0, prev.balance - amount) }));
     const newTx = {
       id: `tx-${Date.now()}`,
-      title: `Вывод (${details.slice(0, 12)}...)`,
-      category: 'withdraw', icon: '💸', date: 'Только что', amount: -amount, type: 'negative', status: 'completed',
+      title: `Вывод (${details.slice(0, 15)}...)`,
+      category: 'withdraw',
+      icon: '💸',
+      date: 'Только что',
+      amount: -amount,
+      type: 'negative',
+      status: 'completed',
     };
     setTransactions((prev) => [newTx, ...prev]);
   };
@@ -904,6 +926,7 @@ function App() {
     let bonus = 0;
     if (cleanCode === 'VINTYX2026') bonus = 200;
     else if (cleanCode === 'START') bonus = 100;
+    else if (cleanCode === 'BONUS500') bonus = 500;
 
     if (bonus > 0) {
       setUser((prev) => ({ ...prev, balance: prev.balance + bonus }));
@@ -911,7 +934,12 @@ function App() {
       const newTx = {
         id: `tx-${Date.now()}`,
         title: `Промокод ${cleanCode}`,
-        category: 'promo', icon: '🎁', date: 'Только что', amount: bonus, type: 'positive', status: 'completed',
+        category: 'promo',
+        icon: '🎁',
+        date: 'Только что',
+        amount: bonus,
+        type: 'positive',
+        status: 'completed',
       };
       setTransactions((prev) => [newTx, ...prev]);
       return true;
@@ -920,33 +948,32 @@ function App() {
   };
 
   return (
-    <div className="h-screen h-dvh w-full flex items-center justify-center p-3 sm:p-4 select-none relative overflow-hidden">
-      <main className="w-full max-w-[420px] h-full max-h-[650px] mx-auto p-5 sm:p-6 rounded-[32px] sm:rounded-[36px] bg-[#0A0A14]/90 border border-white/[0.08] shadow-[0_40px_80px_-20px_rgba(0,0,0,0.8)] backdrop-blur-2xl relative flex flex-col justify-between overflow-hidden font-sans">
-        
-        {activeScreen === 'profile' && (
-          <div className="flex flex-col h-full justify-between animate-fadeIn overflow-hidden">
-            <Header userName={user.name} />
-            <BalanceCard user={user} onOpenAvatarModal={() => setActiveModal('avatar')} />
-            <QuickActions onNavigate={setActiveScreen} onOpenPromoModal={() => setActiveModal('promo')} />
-            {/* Всегда ровно 3 операции */}
-            <OperationsList transactions={transactions} onOpenAll={() => setActiveScreen('all-operations')} />
-            <InfoFooter onOpenModal={(type) => setActiveModal(type)} />
-          </div>
-        )}
+    <div className="h-screen h-dvh w-full select-none relative overflow-hidden font-sans flex flex-col justify-between p-4 sm:p-6 max-w-md mx-auto">
+      {activeScreen === 'profile' && (
+        <div className="flex flex-col h-full justify-between animate-fadeIn overflow-hidden">
+          <Header userName={user.name} />
+          <BalanceCard user={user} onOpenAvatarModal={() => setActiveModal('avatar')} />
+          <QuickActions onNavigate={setActiveScreen} onOpenPromoModal={() => setActiveModal('promo')} />
+          <OperationsList transactions={transactions} onOpenAll={() => setActiveScreen('all-operations')} />
+          <InfoFooter onOpenModal={(type) => setActiveModal(type)} />
+        </div>
+      )}
 
-        {/* Отдельный полноэкранный раздел всех операций */}
-        {activeScreen === 'all-operations' && (
-          <AllOperationsScreen transactions={transactions} onBack={() => setActiveScreen('profile')} />
-        )}
+      {activeScreen === 'all-operations' && (
+        <AllOperationsScreen transactions={transactions} onBack={() => setActiveScreen('profile')} />
+      )}
 
-        {activeScreen === 'topup' && (
-          <TopUpScreen onBack={() => setActiveScreen('profile')} onTopUp={handleTopUp} />
-        )}
+      {activeScreen === 'topup' && (
+        <TopUpScreen onBack={() => setActiveScreen('profile')} onTopUp={handleTopUp} />
+      )}
 
-        {activeScreen === 'withdraw' && (
-          <WithdrawScreen userBalance={user.balance} onBack={() => setActiveScreen('profile')} onWithdraw={handleWithdraw} />
-        )}
-      </main>
+      {activeScreen === 'withdraw' && (
+        <WithdrawScreen
+          userBalance={user.balance}
+          onBack={() => setActiveScreen('profile')}
+          onWithdraw={handleWithdraw}
+        />
+      )}
 
       <Modals
         activeModal={activeModal}
