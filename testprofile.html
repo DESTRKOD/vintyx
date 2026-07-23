@@ -15,12 +15,13 @@
       "react": "https://esm.sh/react@19.0.1",
       "react/jsx-runtime": "https://esm.sh/react@19.0.1/jsx-runtime",
       "react-dom/client": "https://esm.sh/react-dom@19.0.1/client",
-      "lucide-react": "https://esm.sh/lucide-react@0.546.0?external=react"
+      "lucide-react": "https://esm.sh/lucide-react@0.546.0?external=react",
+      "motion/react": "https://esm.sh/motion@12.23.24/react?external=react,react-dom"
     }
   }
   </script>
 
-  <!-- Babel Standalone для компиляции JSX -->
+  <!-- Babel Standalone для транспиляции JSX -->
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
   <style>
@@ -72,8 +73,8 @@ import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
   Camera, ArrowUpRight, Plus, Ticket, ArrowRight, X, CheckCircle,
-  Smartphone, CreditCard, Send, Zap, Gift, Check, Search,
-  ArrowLeft, Inbox, AlertTriangle
+  Smartphone, CreditCard, Send, Zap, Gift, Copy, Check, Search,
+  ArrowLeft, Inbox, AlertTriangle, ShieldCheck, Users, ShoppingBag
 } from 'lucide-react';
 
 // Начальные данные
@@ -198,18 +199,18 @@ const QuickActions = ({ onNavigate, onOpenPromoModal }) => (
   </div>
 );
 
-// Блок операций (ровно 3 транзакции в стеклянном контейнере)
+// Компактный список операций
 const OperationsList = ({ transactions, onOpenAll }) => {
   const displayTransactions = transactions.slice(0, 3);
 
   return (
-    <div className="mb-4 flex-1 min-h-0 flex flex-col justify-start bg-white/[0.03] backdrop-blur-[12px] border border-white/10 rounded-[24px] p-3.5 sm:p-4 shadow-xl overflow-hidden">
-      <div className="flex items-center justify-between mb-2.5 px-0.5 shrink-0">
-        <h2 className="text-base font-bold text-white tracking-tight">Операции</h2>
+    <div className="mb-3 shrink-0 bg-white/[0.03] backdrop-blur-[12px] border border-white/10 rounded-[22px] p-3.5 shadow-xl">
+      <div className="flex items-center justify-between mb-2 px-0.5">
+        <h2 className="text-xs font-bold tracking-tight uppercase text-white/50">Операции</h2>
         <button
           type="button"
           onClick={onOpenAll}
-          className="text-xs font-medium text-[#3B82F6] hover:text-blue-400 transition-colors flex items-center gap-1 cursor-pointer group"
+          className="text-xs font-semibold text-[#3B82F6] hover:text-blue-400 transition-colors flex items-center gap-1 cursor-pointer group"
         >
           <span>Смотреть все</span>
           <ArrowRight className="w-3.5 h-3.5 text-[#3B82F6] group-hover:translate-x-0.5 transition-transform" />
@@ -217,25 +218,25 @@ const OperationsList = ({ transactions, onOpenAll }) => {
       </div>
 
       {displayTransactions.length === 0 ? (
-        <div className="text-center py-6 text-white/20 text-xs rounded-[16px] bg-white/[0.02] border border-white/[0.04]">
+        <div className="text-center py-4 text-white/30 text-xs rounded-[14px] bg-white/[0.02] border border-white/[0.04]">
           История операций пуста
         </div>
       ) : (
-        <div className="space-y-2 overflow-y-auto pr-0.5 my-auto">
+        <div className="space-y-1.5">
           {displayTransactions.map((tx) => {
             const isPositive = tx.type === 'positive';
             return (
               <div
                 key={tx.id}
-                className="flex items-center justify-between p-2.5 sm:p-3 rounded-[16px] bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.05] transition-all"
+                className="flex items-center justify-between p-2.5 rounded-[14px] bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.05] transition-all"
               >
                 <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                  <div className="w-9 h-9 rounded-[10px] bg-white/[0.06] flex items-center justify-center text-[16px] shrink-0">
+                  <div className="w-8 h-8 rounded-[10px] bg-white/[0.06] flex items-center justify-center text-[15px] shrink-0">
                     {tx.icon}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="text-xs font-semibold text-white truncate">{tx.title}</p>
-                    <p className="text-[10px] text-white/40 font-normal mt-0.5">{tx.date}</p>
+                    <p className="text-xs font-semibold text-white truncate leading-tight">{tx.title}</p>
+                    <p className="text-[10px] text-white/40 font-normal">{tx.date}</p>
                   </div>
                 </div>
 
@@ -252,7 +253,48 @@ const OperationsList = ({ transactions, onOpenAll }) => {
   );
 };
 
-// Подвал с информацией и копирайтом
+// Блок информации о магазине Vintyx Store
+const StoreInfoCard = ({ onOpenAbout }) => (
+  <div className="mb-3 shrink-0 bg-gradient-to-br from-white/[0.05] to-white/[0.02] backdrop-blur-[12px] border border-white/10 rounded-[22px] p-3.5 shadow-xl">
+    <div className="flex items-center justify-between mb-2.5">
+      <div className="flex items-center gap-2">
+        <div className="w-6 h-6 rounded-lg bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400">
+          <ShoppingBag className="w-3.5 h-3.5" />
+        </div>
+        <span className="text-xs font-extrabold text-white tracking-wide">Vintyx Store</span>
+      </div>
+      <button
+        type="button"
+        onClick={onOpenAbout}
+        className="text-[11px] font-semibold text-white/50 hover:text-white transition-colors cursor-pointer"
+      >
+        Подробнее →
+      </button>
+    </div>
+
+    <div className="grid grid-cols-3 gap-2 text-center">
+      <div className="p-2 rounded-xl bg-white/[0.03] border border-white/[0.04] flex flex-col items-center">
+        <Zap className="w-3.5 h-3.5 text-amber-400 mb-1" />
+        <span className="text-[11px] font-extrabold text-white leading-tight">Авто</span>
+        <span className="text-[9px] text-white/40 mt-0.5">Выдача 24/7</span>
+      </div>
+
+      <div className="p-2 rounded-xl bg-white/[0.03] border border-white/[0.04] flex flex-col items-center">
+        <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 mb-1" />
+        <span className="text-[11px] font-extrabold text-white leading-tight">100%</span>
+        <span className="text-[9px] text-white/40 mt-0.5">Гарантия</span>
+      </div>
+
+      <div className="p-2 rounded-xl bg-white/[0.03] border border-white/[0.04] flex flex-col items-center">
+        <Users className="w-3.5 h-3.5 text-sky-400 mb-1" />
+        <span className="text-[11px] font-extrabold text-white leading-tight">50,000+</span>
+        <span className="text-[9px] text-white/40 mt-0.5">Клиентов</span>
+      </div>
+    </div>
+  </div>
+);
+
+// Футер
 const InfoFooter = ({ onOpenModal }) => (
   <div className="flex flex-col items-center gap-2 pt-3 pb-1 border-t border-white/[0.08] mt-auto shrink-0 text-center">
     <div className="flex flex-wrap justify-center items-center gap-3.5">
@@ -308,7 +350,7 @@ const TopUpScreen = ({ onBack, onTopUp }) => {
 
   if (isSuccess) {
     return (
-      <div className="flex flex-col items-center justify-center py-16 text-center my-auto">
+      <div className="flex flex-col items-center justify-center py-16 text-center animate-fadeIn my-auto">
         <CheckCircle className="w-16 h-16 text-emerald-400 mb-4 animate-bounce" />
         <h3 className="text-xl font-bold text-white mb-2">Баланс пополнен!</h3>
         <p className="text-xs text-white/50">Зачислено {amount.toLocaleString('ru-RU')} ₽</p>
@@ -317,7 +359,7 @@ const TopUpScreen = ({ onBack, onTopUp }) => {
   }
 
   return (
-    <div className="flex flex-col w-full h-full min-h-0 justify-between overflow-hidden">
+    <div className="flex flex-col w-full h-full min-h-0 justify-between animate-fadeIn overflow-hidden">
       <div className="flex items-center gap-3 mb-4 shrink-0">
         <button
           type="button"
@@ -465,7 +507,7 @@ const WithdrawScreen = ({ userBalance, onBack, onWithdraw }) => {
 
   if (isSuccess) {
     return (
-      <div className="flex flex-col items-center justify-center py-16 text-center my-auto">
+      <div className="flex flex-col items-center justify-center py-16 text-center animate-fadeIn my-auto">
         <CheckCircle className="w-16 h-16 text-indigo-400 mb-4 animate-bounce" />
         <h3 className="text-xl font-bold text-white mb-2">Заявка отправлена!</h3>
         <p className="text-xs text-white/50">Запрос на {numAmount.toLocaleString('ru-RU')} ₽ обрабатывается</p>
@@ -474,7 +516,7 @@ const WithdrawScreen = ({ userBalance, onBack, onWithdraw }) => {
   }
 
   return (
-    <div className="flex flex-col w-full h-full min-h-0 justify-between overflow-hidden">
+    <div className="flex flex-col w-full h-full min-h-0 justify-between animate-fadeIn overflow-hidden">
       <div className="flex items-center gap-3 mb-3 shrink-0">
         <button
           type="button"
@@ -630,7 +672,7 @@ const AllOperationsScreen = ({ transactions, onBack }) => {
   });
 
   return (
-    <div className="flex flex-col w-full h-full min-h-0 justify-between overflow-hidden">
+    <div className="flex flex-col w-full h-full min-h-0 justify-between animate-fadeIn overflow-hidden">
       <div className="flex items-center gap-3 mb-3 shrink-0">
         <button
           type="button"
@@ -725,7 +767,7 @@ const Modals = ({ activeModal, onClose, user, onApplyPromo, onUpdateAvatar }) =>
   if (!activeModal) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-fadeIn">
       <div
         className="relative w-full max-w-sm bg-[#0A0A18]/95 backdrop-blur-2xl border border-white/10 rounded-[24px] p-5 text-white shadow-2xl overflow-hidden max-h-[85vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
@@ -747,9 +789,9 @@ const Modals = ({ activeModal, onClose, user, onApplyPromo, onUpdateAvatar }) =>
               Vintyx Store — цифровой маркетплейс внутриигровых ценностей и подписок (Brawl Stars, PUBG Mobile, Telegram Stars).
             </p>
             <div className="p-3 bg-white/5 rounded-xl border border-white/5 text-xs text-white/60 space-y-1">
-              <p>⚡ Мгновенное автозачисление</p>
-              <p>🛡️ Официальная гарантия</p>
-              <p>💎 Более 50,000 клиентов</p>
+              <p>⚡ Мгновенное автозачисление 24/7</p>
+              <p>🛡️ Официальная гарантия сервиса</p>
+              <p>💎 Более 50,000 довольных клиентов</p>
             </div>
           </div>
         )}
@@ -956,11 +998,12 @@ function App() {
   return (
     <div className="h-screen h-dvh w-full select-none relative overflow-hidden font-sans flex flex-col justify-between p-4 sm:p-6 max-w-md mx-auto">
       {activeScreen === 'profile' && (
-        <div className="flex flex-col h-full justify-between overflow-hidden">
+        <div className="flex flex-col h-full justify-between animate-fadeIn overflow-hidden">
           <Header userName={user.name} />
           <BalanceCard user={user} onOpenAvatarModal={() => setActiveModal('avatar')} />
           <QuickActions onNavigate={setActiveScreen} onOpenPromoModal={() => setActiveModal('promo')} />
           <OperationsList transactions={transactions} onOpenAll={() => setActiveScreen('all-operations')} />
+          <StoreInfoCard onOpenAbout={() => setActiveModal('about')} />
           <InfoFooter onOpenModal={(type) => setActiveModal(type)} />
         </div>
       )}
